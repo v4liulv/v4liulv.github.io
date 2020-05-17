@@ -1,19 +1,19 @@
 title: lv-liu # 站点标题
 description: | # 头像背后的信息（html格式），<br/>代表换行
-  SYSU超算17级在读<br/>
-  永远喜欢水野爱<br/>
-  田宫例四驱车<br/>
+  程序员的梦<br/>
+  冬天的情绪<br/>
+  一天的种种<br/>
   ASC<br/>
-  <a href="mailto:i@wu-kan.cn">
+  <a href="mailto:v4liulv@outlook.com">
     <i class="fas fa-envelope"></i>
   </a>
-  <a href="https://github.com/wu-kan">
+  <a href="https://github.com/v4liulv">
     <i class="fab fa-github"></i>
   </a>
-  <a href="https://codeforces.com/profile/WuK">
+  <a href="https://codeforces.com/profile/v4liulv">
     <i class="fas fa-chart-bar"></i>
   </a>
-  <a href="https://vjudge.net/user/WuK">
+  <a href="https://vjudge.net/user/v4liulv">
     <i class="fas fa-smile"></i>
   </a>
   <a href="https://www.zhihu.com/people/wu.kan/activities">
@@ -68,10 +68,6 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
         />
-        <link
-                 rel="stylesheet"
-                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
-       />
       - | # 引入fontawesome图标样式
         <link
           rel="stylesheet"
@@ -188,6 +184,19 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
         </style>
       - | # 网站字体，要换字体建议架梯子上<https://fonts.google.com/>挑选，再通过fonts.loli.net 加速引入
         <style>
+          body {
+              color: #141414;
+              background-color: #fff;
+              -webkit-text-size-adjust: 100%;
+              -ms-text-size-adjust: 100%;
+          }
+          h1, h2, h3, h4, h5, h6 {
+              margin-bottom: .5rem;
+              font-weight: bold;
+              line-height: 1.25;
+              color: #0e0e0e;
+              text-rendering: optimizeLegibility;
+          }
           html,
           h1,
           h2,
@@ -198,20 +207,6 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
           .sidebar {
             font-family: PingFang SC, Menlo, Monaco, "Courier New", Microsoft JhengHei, monospace;
           }
-        </style>
-      - | # 网站字体，要换字体建议架梯子上<https://fonts.google.com/>挑选，再通过fonts.loli.net 加速引入
-        <style>
-           body {
-                   color: #141414;
-                   -webkit-text-size-adjust: 100%;
-               }
-          h1, h2, h3, h4, h5, h6 {
-            margin-bottom: .5rem;
-            font-weight: bold;
-            line-height: 1.25;
-            color: #0e0e0e;
-            text-rendering: optimizeLegibility;
-        }
         </style>
       - | #修复行内图片默认样式
         <style>

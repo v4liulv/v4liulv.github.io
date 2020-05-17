@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>DSEGraph-DataLoader使用手册 | lv-liu</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="DSEGraph-DataLoader使用手册" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="安装GraphLoader" />
+<meta property="og:description" content="安装GraphLoader" />
+<link rel="canonical" href="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" />
+<meta property="og:url" content="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" />
+<meta property="og:site_name" content="lv-liu" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-07-04T00:00:00+08:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"DSEGraph-DataLoader使用手册","dateModified":"2018-07-04T00:00:00+08:00","datePublished":"2018-07-04T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"},"url":"http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/","description":"安装GraphLoader","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+  
+  <meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1"
+/>
+<meta
+  http-equiv="content-type"
+  content="text/html; charset=utf-8"
+/>
+<link
+  rel="alternate"
+  href="/feed.xml"
+  title="RSS"
+  type="application/rss+xml"
+/>
+
+  
+  <link
+  rel="apple-touch-icon-precomposed"
+  href="https://gravatar.loli.net/avatar/289efba375d63424de3c49569c446744?s=320"
+/>
+<link
+  rel="shortcut
+  icon"
+  href="https://gravatar.loli.net/avatar/289efba375d63424de3c49569c446744?s=32"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css"
+/>
+<script
+  async="async"
+  src="https://cdn.jsdelivr.net/combine/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js,gh/Dreamer-Paul/Pio@2.4/static/pio.min.js"
+  onload='
+      let pio_container = document.createElement("div");
+      pio_container.classList.add("pio-container");
+      pio_container.classList.add("right");
+      pio_container.style.bottom = "-2rem";
+      pio_container.style.zIndex = "1";
+      document.body.insertAdjacentElement("beforeend", pio_container);
+      let pio_action = document.createElement("div");
+      pio_action.classList.add("pio-action");
+      pio_container.insertAdjacentElement("beforeend", pio_action);
+      let pio_canvas = document.createElement("canvas");
+      pio_canvas.id = "pio";
+      pio_canvas.style.width = "14rem";
+      pio_canvas.width = "600";
+      pio_canvas.height = "800";
+      pio_container.insertAdjacentElement("beforeend", pio_canvas);
+      let pio = new Paul_Pio({
+        "mode": "fixed",
+        "hidden": true,
+        "night": "for(let i=7; i<16; ++i) if(document.body.classList.contains(`theme-base-0`+i.toString(16))) { document.body.classList.remove(`theme-base-0`+i.toString(16)); document.body.classList.add(`theme-base-0`+((i-6)%9+7).toString(16)); break; }",
+        "content": {
+          "link": ["https://jekyll-theme-WuK.wu-kan.cn"],
+          "skin": ["要换成我的朋友吗？", "让她放个假吧~"],
+          "hidden": true,
+          "custom": [{
+            "selector": "a",
+            "type": "link",
+          }, {
+            "selector": ".sidebar-toggle",
+            "text": "打开侧边栏叭~"
+          }, {
+            "selector": ".effect-info",
+            "text": "哇，你发现了什么！"
+          }, {
+            "selector": "#sidebar-search-input",
+            "text": "想搜索什么呢？很多干货哦！"
+          }, {
+            "selector": "#toc",
+            "text": "这是目录~"
+          }, {
+            "selector": ".page-title",
+            "text": "这是标题~"
+          }, {
+            "selector": ".v",
+            "text": "评论没有审核，要对自己的发言负责哦~"
+          }]
+        },
+        "model": [
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json"]
+      });'
+></script>
+
+  
+  <script
+  src='https://zz.bdstatic.com/linksubmit/push.js'
+  async="async"
+></script>
+
+  
+  <script
+  async="async"
+  src="https://www.googletagmanager.com/gtag/js?id=UA-163543967-1"
+  onload="
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-163543967-1');"
+></script>
+
+  
+  <style>
+  .wrap {
+    transition-property: width,background-size,transform;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+    min-height: 100%;
+    display: inline-block;
+    background-size: 100% auto;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/74559485_p1.webp);
+  }
+  @media (min-aspect-ratio: 2400/1850) {
+    .wrap {
+      background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/71932901_p0.webp);
+    }
+  }
+  .sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
+    width: calc(100% - 14rem);
+    background-size: calc(100% - 14rem) auto;
+    transform: translateX(14rem);
+  }
+  .layout-reverse.sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
+    transform: translateX(0);
+  }
+</style>
+
+  
+  <style>
+  body {
+      color: #141414;
+      background-color: #fff;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+  }
+  h1, h2, h3, h4, h5, h6 {
+      margin-bottom: .5rem;
+      font-weight: bold;
+      line-height: 1.25;
+      color: #0e0e0e;
+      text-rendering: optimizeLegibility;
+  }
+  html,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .sidebar {
+    font-family: PingFang SC, Menlo, Monaco, "Courier New", Microsoft JhengHei, monospace;
+  }
+</style>
+
+  
+  <style>
+  img {
+    display: inline-block;
+    margin: 0;
+  }
+</style>
+
+  
+  <style>
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(45deg, Cyan 0%, Magenta 50%, Yellow 100%);
+  }
+</style>
+
+  
+  <style>
+  ::selection {
+    color: White;
+    background: Black;
+  }
+</style>
+
+  
+</head>
+
+<body
+  class="theme-base-07 layout-reverse sidebar-overlay">
+  
+  
+  
+  <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+  <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox"
+     />
+  <!-- Toggleable sidebar -->
+  <div class="sidebar" id="sidebar">
+    
+    <div class="sidebar-item">
+      <div class="effect effect-right_to_left">
+        <img class="effect-img" src="https://gravatar.loli.net/avatar/289efba375d63424de3c49569c446744?s=320" alt="img" />
+        <div class="effect-info">
+          程序员的梦<br/>
+冬天的情绪<br/>
+一天的种种<br/>
+ASC<br/>
+<a href="mailto:v4liulv@outlook.com">
+  <i class="fas fa-envelope"></i>
+</a>
+<a href="https://github.com/v4liulv">
+  <i class="fab fa-github"></i>
+</a>
+<a href="https://codeforces.com/profile/v4liulv">
+  <i class="fas fa-chart-bar"></i>
+</a>
+<a href="https://vjudge.net/user/v4liulv">
+  <i class="fas fa-smile"></i>
+</a>
+<a href="https://www.zhihu.com/people/wu.kan/activities">
+  <i class="fab fa-zhihu"></i>
+</a>
+<iframe
+  src="https://music.163.com/outchain/player?type=2&id=421934273&auto=0&height=32"
+  width=100%
+  height=52
+  frameborder="no"
+  border="0"
+  marginwidth="0"
+  marginheight="0"
+></iframe>
+
+        </div>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      
+      <a class="sidebar-nav-item" href="/">
+        <i class="fas fa-home fa-fw"></i> 首页
+      </a>
+      
+      <a class="sidebar-nav-item" href="/comments/">
+        <i class="fas fa-comments fa-fw"></i> 留言
+      </a>
+      
+      <a class="sidebar-nav-item" href="/tags/">
+        <i class="fas fa-tags fa-fw"></i> 标签
+      </a>
+      
+      <a class="sidebar-nav-item" href="/archive/">
+        <i class="fas fa-archive fa-fw"></i> 归档
+      </a>
+      
+      <a class="sidebar-nav-item" href="/merger/">
+        <i class="fas fa-coffee fa-fw"></i> 打赏
+      </a>
+      
+    </nav>
+    <div class="sidebar-item">
+      
+      <div>
+        <style>
+  #sidebar-search-input {
+    background: none;
+    border: none;
+    color: White;
+    width: 100%;
+  }
+  #sidebar-search-results-container {
+    overflow: auto auto;
+    max-height: 50vh;
+  }
+</style>
+<input
+  id="sidebar-search-input"
+  placeholder="搜索博文"
+/>
+<ol
+  id="sidebar-search-results-container"
+></ol>
+<script
+  src='https://cdn.jsdelivr.net/npm/simple-jekyll-search/dest/simple-jekyll-search.min.js'
+  async='async'
+  onload='
+    SimpleJekyllSearch({
+      json: "/assets/simple-jekyll-search/search.json",
+      searchInput: document.getElementById("sidebar-search-input"),
+      resultsContainer: document.getElementById("sidebar-search-results-container"),
+      searchResultTemplate: `<li><a href="{url}">{title}</a></li>`,
+      limit: 999,
+      fuzzy: true
+    })'
+></script>
+
+      </div>
+      
+      
+      <style>
+  .sidebar-checkbox {
+    display: none;
+  }
+  .sidebar-toggle {
+    position: fixed;
+  }
+</style>
+
+      
+      <style>
+  .effect {
+    margin: 1rem;
+    perspective: 900px;
+  }
+  .effect-info {
+    text-align: center;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    transform-style: preserve-3d;
+  }
+  .effect-img {
+    z-index: 11;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+  }
+  .effect-img:before {
+    position: absolute;
+    display: block;
+  }
+  .effect-right_to_left .effect-img {
+    transform-origin: 0% 50%;
+  }
+  .effect-right_to_left:hover .effect-img {
+    transform: rotate3d(0, 1, 0, -180deg);
+  }
+</style>
+
+      
+      <style>
+  #toc {
+    overflow: auto auto;
+    max-height: 50vh;
+  }
+</style>
+<aside id="toc">
+</aside>
+<script
+  defer='defer'
+  src='https://cdn.jsdelivr.net/npm/html-contents/html-contents.min.js'
+  onload="htmlContents('#toc', {listType: 'o', filter: function(arr) {return !arr.matches('.masthead-title')}})"
+></script>
+
+      
+      <div>
+  <i class="fas fa-cog fa-spin fa-fw"></i>
+  <span id="run_time_day">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>天
+  <span id="run_time_hour">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>时
+  <span id="run_time_minute">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>分
+  <span id="run_time_second">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>秒
+  <script>
+    setInterval(function (d,h,m,s,b) {
+      function setzero(i) {
+        return i < 10 ? "0" + i : i;
+      }
+      let BirthDay = new Date(b);
+      let today = new Date();
+      let timeold = (today.getTime() - BirthDay.getTime());
+      let sectimeold = timeold / 1000;
+      let secondsold = Math.floor(sectimeold);
+      let msPerDay = 24 * 60 * 60 * 1000;
+      let e_daysold = timeold / msPerDay;
+      let daysold = Math.floor(e_daysold);
+      let e_hrsold = (e_daysold - daysold) * 24;
+      let hrsold = Math.floor(e_hrsold);
+      let e_minsold = (e_hrsold - hrsold) * 60;
+      let minsold = Math.floor((e_hrsold - hrsold) * 60);
+      let seconds = Math.floor((e_minsold - minsold) * 60);
+      d.textContent = daysold;
+      h.textContent = setzero(hrsold);
+      m.textContent = setzero(minsold);
+      s.textContent = setzero(seconds);
+    },
+    1000,
+    document.getElementById("run_time_day"),
+    document.getElementById("run_time_hour"),
+    document.getElementById("run_time_minute"),
+    document.getElementById("run_time_second"),
+    "10/04/2017 11:03:56")// 这是我第一篇CSDN博客的时间
+  </script>
+</div>
+
+      
+      <div>
+  <div>
+    <i class="fas fa-eye fa-fw"></i>
+    <span id="busuanzi_value_page_pv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>次
+  </div>
+  <div>
+    <i class="fas fa-paw fa-fw"></i>
+    <span id="busuanzi_value_site_pv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>枚
+  </div>
+  <div>
+    <i class="fas fa-user-friends fa-fw"></i>
+    <span id="busuanzi_value_site_uv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>人
+  </div>
+  <script
+    src='https://cdn.jsdelivr.net/npm/busuanzi'
+    async='async'
+  ></script>
+</div>
+
+      
+      <div>
+  <i class="fas fa-thumbs-up fa-fw"></i>
+  <a href="https://jekyll-theme-WuK.wu-kan.cn">
+    jekyll-theme-WuK
+  </a>
+</div>
+
+      
+      <div>
+  <i class="fas fa-copyright fa-fw"></i>
+  2017-2020 WuK
+</div>
+
+      
+      
+    </div>
+  </div>
+  <!-- Wrap is the content to shift when toggling the sidebar. We wrap the content to avoid any CSS collisions with our real content. -->
+  
+  <div class="wrap">
+    
+<style>
+  pre {
+    max-height: 50vh;
+    overflow: auto;
+  }
+</style>
+
+
+<style>
+  @media (min-width: 56em) {
+    .container {
+      max-width: 66.6%;
+    }
+  }
+</style>
+
+
+<style>
+  .masthead,
+  .container.content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 0 .75rem rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95);
+    animation-duration: 2s;
+    animation-name: fadeIn;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/combine/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css,npm/prismjs/plugins/toolbar/prism-toolbar.min.css,gh/PrismJS/prism-themes@1955cfef6953b3a59e66016e8a1e016b45d6cc79/themes/prism-nord.min.css"
+/>
+<script
+  src="https://cdn.jsdelivr.net/combine/npm/prismjs/components/prism-core.min.js,npm/prismjs/plugins/autoloader/prism-autoloader.min.js,npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js,npm/prismjs/plugins/toolbar/prism-toolbar.min.js"
+  defer="defer"
+  onload='
+    Prism.plugins.autoloader.languages_path = "https:\/\/cdn.jsdelivr.net/npm/prismjs/components/";
+    for(let x of document.getElementsByTagName("pre"))
+      x.classList.add("line-numbers");
+    Prism.plugins.toolbar.registerButton("select-code", function (env) {
+      let button = document.createElement("button");
+      button.textContent = "select this " + env.language;
+      button.addEventListener("click", function () {
+        if (document.body.createTextRange) {
+          let range = document.body.createTextRange();
+          range.moveToElementText(env.element);
+          range.select();
+        } else if (window.getSelection) {
+          let selection = window.getSelection();
+          let range = document.createRange();
+          range.selectNodeContents(env.element);
+          selection.removeAllRanges();
+            selection.addRange(range);
+        }
+      });
+      return button;
+    })'
+></script>
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
+/>
+<script
+  src="https://cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/mathtex-script-type.min.js,npm/katex/dist/contrib/auto-render.min.js"
+  defer="defer"
+  onload='renderMathInElement(document.body, { delimiters: [{ left: "$", right: "$", display: false }] })'
+></script>
+
+
+<style>
+  pre.language-mermaid,
+  code.language-mermaid {
+    display: none;
+  }
+</style>
+<script
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  defer="defer"
+  onload='
+    for(let x of document.getElementsByClassName("language-mermaid"))
+      if(x.nodeName=="CODE")
+      {
+        let m = document.createElement("div");
+        m.classList.add("mermaid");
+        m.textContent = x.textContent;
+        x.parentNode.insertAdjacentElement("beforebegin", m);
+      }'
+></script>
+
+
+
+<div class="masthead">
+  <h3 class="container masthead-title">
+    
+    DSEGraph-DataLoader使用手册
+    <a href="http://localhost:4000/" title="Home">
+      <small>
+        lv-liu
+      </small>
+    </a>
+    
+  </h3>
+</div>
+
+<div class="container content">
+  <div class="post">
+  <span class="post-date">
+    
+    <i class="fas fa-calendar-day fa-fw"></i>
+    04 Jul 2018
+    
+    
+    <i class="fas fa-file-word fa-fw"></i>
+    30333字
+    
+    
+    <i class="fas fa-clock fa-fw"></i>
+    102分
+    
+    
+    
+    <i class="fas fa-tag fa-fw"></i>
+    图库
+    
+    <br/>
+<i class="fas fa-coffee fa-fw"></i>
+<a href="/merger/">如果这篇博客帮助到你，可以请我喝一杯咖啡~</a>
+<br/>
+<i class="fab fa-creative-commons-by fa-fw"></i>
+<a
+  href="https://creativecommons.org/licenses/by/4.0/deed.zh"
+  rel="license">
+  CC BY 4.0
+</a>
+（除特别声明或转载文章外）
+
+    
+  </span>
+  <h2 id="安装graphloader">安装GraphLoader</h2>
+
+<p>安装GraphLoader分为以下步骤：</p>
+
+<blockquote>
+  <ul>
+    <li>下载</li>
+    <li>解压</li>
+    <li>设置环境变量</li>
+    <li>检查</li>
+  </ul>
+</blockquote>
+
+<h3 id="下载graph-loader安装包">下载Graph Loader安装包</h3>
+
+<p>点击<a href="https://pan.baidu.com/s/1erorpQrwXr0wUHRMgVQnMA" title="下载地址">下载地址</a>进行下载。</p>
+
+<p>下载得到dse-grap-loader-1.0.1.zip的压缩文件</p>
+
+<p><strong>注意：</strong> 下载提取码为d4t4</p>
+
+<h3 id="解压安装">解压安装</h3>
+
+<h4 id="步骤">步骤：</h4>
+
+<ol>
+  <li>在集群需要安装graph-loader的节点，如19.31节点上创建安装目录
+    <pre><code class="language-sh">mkdir -p /usr/share/dse-graph-loader
+</code></pre>
+  </li>
+  <li>将上面下载的dse-grap-loader-1.0.1.zip的压缩文件通过sftp方式拷贝到/usr/share/dse-graph-loader路径下，如下图</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529315140715_74.png" alt="" /></p>
+
+<ol>
+  <li>执行解压命令
+    <pre><code>cd /usr/share/dse-graph-loader
+unzip dse-graph-loader-1.0.1.zip
+</code></pre>
+  </li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529315807911_42.png" alt="" /></p>
+
+<p>得到<code>/usr/share/dse-graph-loader/</code>的目录即为graph loader目录</p>
+
+<ol>
+  <li>设置环境变量</li>
+</ol>
+
+<p>执行下面命令</p>
+<pre><code class="language-sh">echo 'export DES_GLOADER_HOME=/usr/share/dse-graph-loader' &gt;&gt; /etc/profile
+echo 'export PATH=$DES_GLOADER_HOME:$PATH' &gt;&gt; /etc/profile
+</code></pre>
+
+<pre><code class="language-sh">source /etc/profile
+chmod +755 /usr/share/dse-graph-loader/*.sh
+</code></pre>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529316233010_69.png" alt="" /></p>
+
+<h4 id="检查是否安装成功">检查是否安装成功</h4>
+<p>此命令是查询dse loader和dse的版本信息</p>
+<pre><code>graphloader -v
+</code></pre>
+
+<p>如果出现下图所示证明安装成功:</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529316305475_70.png" alt="" /></p>
+
+<h2 id="配置参数">配置参数</h2>
+
+<p>公共配置文件在<code>/usr/share/dse-graph-loader/scripts/loadJdbc/base</code>目录下的base.groovy</p>
+
+<pre><code class="language-groovy">// 此处调用DataLoaderImpl.config()
+config create_schema: true, load_new: false, load_vertex_threads: 200, load_edge_threads:100, read_threads:100
+//是否自动创建模型，可选默认为true
+create_schema = true
+//是否是数据库导入方式，需要配置为true
+isDatabase = true
+
+// Oracle 连接参数配置
+inputDatabase = '192.168.1.110:1521:orcl'
+user = 'YY_GXKSH_ZSB'
+password = '123456'
+configTable = 'B_DSE_LOADER_CONFIG'
+datePattern = "yyyy-mm-dd hh24:mi:ss"
+</code></pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>配置项</th>
+      <th>值</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>preparation</td>
+      <td>true</td>
+      <td>是一种有效的检查机制。如果preparation设置true，那么就分析该模式是否有效的数据示例</td>
+    </tr>
+    <tr>
+      <td>create_schema</td>
+      <td>true</td>
+      <td>模式是从数据导入过程中创建，如果为false则需要先手动创建模型，生成环境需要设置为false</td>
+    </tr>
+    <tr>
+      <td>load_new</td>
+      <td>true</td>
+      <td>新图如果在加载过程的开始时，顶点记录还不存在，配置load_new可以显著加快加载过程。然而，重要的是用户保证顶点记录确实是新的，或者在图中可以创建重复的顶点。在同一个脚本中创建的边将使用新创建的顶点来表示外向的inV和outV  如果load_new被设置为false，并且载入的数据包含在图中已经存在的任何顶点，就会创建重复的顶点。</td>
+    </tr>
+    <tr>
+      <td>load_vertex_threads</td>
+      <td>200</td>
+      <td>加载顶点数据线程数为200</td>
+    </tr>
+    <tr>
+      <td>load_edge_threads</td>
+      <td>100</td>
+      <td>加载边数据线程数为100</td>
+    </tr>
+    <tr>
+      <td>isDatabase</td>
+      <td>true</td>
+      <td>加载数据来源是否JDBC</td>
+    </tr>
+    <tr>
+      <td>inputDatabase</td>
+      <td>192.168.1.110:1521:orcl</td>
+      <td>数据抽取来源库URL</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>YY_GXKSH_ZSB</td>
+      <td>数据抽取来源库的用户名</td>
+    </tr>
+    <tr>
+      <td>password</td>
+      <td>123456</td>
+      <td>数据抽取来源库的密码</td>
+    </tr>
+    <tr>
+      <td>configTable</td>
+      <td>B_DSE_LOADER_CONFIG</td>
+      <td>数据抽取配置表</td>
+    </tr>
+    <tr>
+      <td>datePattern</td>
+      <td>yyyy-mm-dd hh24:mi:ss</td>
+      <td>时间字符格式</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>注意</strong>：其中数据库配置需要根据现场的数据抽取来源库进行配置修改，其他可选进行修改</p>
+
+<h2 id="数据抽取配置表">数据抽取配置表</h2>
+
+<h3 id="数据抽取配置表---b_dse_loader_config">数据抽取配置表 - B_DSE_LOADER_CONFIG</h3>
+<p><a href="http:///dse/数据抽取/db/B_DSE_LOADER_CONFIG.sql" title="建表语句和插入sql">建表语句和插入sql</a></p>
+
+<p>字段说明：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th>
+      <th>字段类型</th>
+      <th>可为空</th>
+      <th>默认值</th>
+      <th>字段说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2(32)</td>
+      <td> </td>
+      <td>SYS_GUID()</td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>CATEGORY</td>
+      <td>VARCHAR2(50)</td>
+      <td> </td>
+      <td> </td>
+      <td>抽取分类，01代表抽取人轨迹关系抽取配置，可扩展</td>
+    </tr>
+    <tr>
+      <td>ZY_YWMC</td>
+      <td>VARCHAR2(50)</td>
+      <td> </td>
+      <td> </td>
+      <td>抽取资源英文名称</td>
+    </tr>
+    <tr>
+      <td>ZY_ZWMC</td>
+      <td>VARCHAR2(100)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>抽取资源中文名称</td>
+    </tr>
+    <tr>
+      <td>ZY_QWK_VIEW</td>
+      <td>VARCHAR2(30)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>全文库视图</td>
+    </tr>
+    <tr>
+      <td>ZY_YYK_VIEW</td>
+      <td>VARCHAR2(30)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>应用库视图</td>
+    </tr>
+    <tr>
+      <td>ZY_WBZY_VIEW</td>
+      <td>VARCHAR2(30)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>缓冲库库视图</td>
+    </tr>
+    <tr>
+      <td>ZY_WBZY_VIEW</td>
+      <td>VARCHAR2(30)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>缓冲库库视图</td>
+    </tr>
+    <tr>
+      <td>ZY_KETTLE_MC</td>
+      <td>VARCHAR2(255)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>配置kettle的转换名对应PCS_WBZY_DATA.TRANS_LOG传输日志的TRANSNAME，用于生成批次</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_KSSJ</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td> </td>
+      <td>增量抽取_开始时间</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_JSSJ</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td> </td>
+      <td>增量抽取_结束时间</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_ZT</td>
+      <td>VARCHAR2(2)</td>
+      <td> </td>
+      <td>0</td>
+      <td>增量抽取_抽取状态（0初始，1完成, 2抽取中）</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_TYPE</td>
+      <td>VARCHAR2(2)</td>
+      <td> </td>
+      <td> </td>
+      <td>增量配置标签，用于区分每个增量配置信息</td>
+    </tr>
+    <tr>
+      <td>BLZD1-5</td>
+      <td>VARCHAR2(30-1000)</td>
+      <td> </td>
+      <td> </td>
+      <td>扩展字段1-5</td>
+    </tr>
+    <tr>
+      <td>CREATE_USER</td>
+      <td>VARCHAR2(30-1000)</td>
+      <td> </td>
+      <td>‘SYS’</td>
+      <td>创建人</td>
+    </tr>
+    <tr>
+      <td>CREATE_TIME</td>
+      <td>DATE</td>
+      <td> </td>
+      <td>SYSDATE</td>
+      <td>创建时间</td>
+    </tr>
+    <tr>
+      <td>UPDATE_TIME</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td>SYSDATE</td>
+      <td>更新时间</td>
+    </tr>
+    <tr>
+      <td>SCBZ</td>
+      <td>NUMBER(2)</td>
+      <td> </td>
+      <td>0</td>
+      <td>删除标志，0代表未删除，1代表删除</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="数据抽取配置日志表-b_dse_loader_log">数据抽取配置日志表 B_DSE_LOADER_LOG</h3>
+<p><a href="http:///dse/数据抽取/db/B_DSE_LOADER_LOG.sql" title="建表语句和插入sql">建表语句</a></p>
+
+<p>字段说明：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th>
+      <th>字段类型</th>
+      <th>可为空</th>
+      <th>默认值</th>
+      <th>字段说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2(32)</td>
+      <td> </td>
+      <td>SYS_GUID()</td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>CATEGORY</td>
+      <td>VARCHAR2(50)</td>
+      <td> </td>
+      <td> </td>
+      <td>抽取分类，01代表抽取人轨迹关系抽取配置，可扩展</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_TYPE</td>
+      <td>VARCHAR2(2)</td>
+      <td> </td>
+      <td> </td>
+      <td>增量配置标签，用于区分每个增量配置信息</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_KSSJ</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td> </td>
+      <td>增量抽取_开始时间</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_JSSJ</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td> </td>
+      <td>增量抽取_结束时间</td>
+    </tr>
+    <tr>
+      <td>ZLCQ_ZT</td>
+      <td>VARCHAR2(2)</td>
+      <td> </td>
+      <td>0</td>
+      <td>增量抽取_抽取状态（0初始，1完成, 2抽取中）</td>
+    </tr>
+    <tr>
+      <td>BLZD1-5</td>
+      <td>VARCHAR2(30-1000)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>扩展字段1-5</td>
+    </tr>
+    <tr>
+      <td>VERTICES</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>顶点数</td>
+    </tr>
+    <tr>
+      <td>EDGES</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>边数</td>
+    </tr>
+    <tr>
+      <td>PROPERTIES</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>属性数</td>
+    </tr>
+    <tr>
+      <td>ANONYMOUS</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>抽取无效数</td>
+    </tr>
+    <tr>
+      <td>TOTAL</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>抽取总数</td>
+    </tr>
+    <tr>
+      <td>TOTALTIME</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>抽取总耗时</td>
+    </tr>
+    <tr>
+      <td>ERROR</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>0</td>
+      <td>如果抽取状态为0即为失败，那么存在抽取异常信息</td>
+    </tr>
+    <tr>
+      <td>CREATE_USER</td>
+      <td>VARCHAR2(30-1000)</td>
+      <td> </td>
+      <td>‘SYS’</td>
+      <td>创建人</td>
+    </tr>
+    <tr>
+      <td>CREATE_TIME</td>
+      <td>DATE</td>
+      <td> </td>
+      <td>SYSDATE</td>
+      <td>创建时间</td>
+    </tr>
+    <tr>
+      <td>UPDATE_TIME</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td>SYSDATE</td>
+      <td>更新时间</td>
+    </tr>
+    <tr>
+      <td>SCBZ</td>
+      <td>NUMBER(2)</td>
+      <td> </td>
+      <td>0</td>
+      <td>删除标志，0代表未删除，1代表删除</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>注意：根据现场的资源名称修改调整配置表配置信息。</p>
+
+<h2 id="轨迹旅馆住宿关系图-配置抽取">轨迹旅馆住宿关系图-配置抽取</h2>
+
+<h3 id="抽取配置信息">抽取配置信息</h3>
+<p>B_DSE_LOADER_CONFIG表,插入配置数据</p>
+<pre><code class="language-sql">insert into B_DSE_LOADER_CONFIG (CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER,SCBZ)
+values ('01', '旅馆住宿信息', 'T_BZ_LY_LGZSXX', 'T_BZ_LY_LGZSXX', 'T_BZ_LY_LGZSXX', 'T_BZ_LY_LGZSXX', 'ORACLE_DSE_T_BZ_LY_LGZSXX', to_date('10-10-2017 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), to_date('10-10-2017 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), '1', '01', null, null, null, null, null, 'SYS', 0);
+commit;
+</code></pre>
+<p>说明：CATEGORY=01代表轨迹关系图类别，ZLCQ_TYPE=01代表估轨迹旅馆住宿关系图的增量抽取类别
+注意现场导入数据后，需要在创建视图库中创建的资源名为T_BZ_LY_LGZSXX.</p>
+
+<p>验证插入数据</p>
+<pre><code class="language-sql">select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 01;
+</code></pre>
+
+<h3 id="现场视图数据视图准备">现场视图数据视图准备</h3>
+<p>现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。</p>
+
+<p>视图要求,必须包含字段</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th>
+      <th>类型</th>
+      <th>可为空</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>ZJHM</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>身份证号码</td>
+    </tr>
+    <tr>
+      <td>XM</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>姓名</td>
+    </tr>
+    <tr>
+      <td>LGID</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>旅馆ID</td>
+    </tr>
+    <tr>
+      <td>LGMC</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>旅馆名称</td>
+    </tr>
+    <tr>
+      <td>FJH</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>房间号</td>
+    </tr>
+    <tr>
+      <td>RZSJ</td>
+      <td>NUMBER</td>
+      <td> </td>
+      <td>入住时间,必须为毫秒格式</td>
+    </tr>
+    <tr>
+      <td>TFSJ</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>退房时间,必须为毫秒格式</td>
+    </tr>
+    <tr>
+      <td>BZK_GXSJ_DATE</td>
+      <td>DATA</td>
+      <td> </td>
+      <td>增量时间，DATE类型</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。</p>
+
+<h3 id="抽取脚本">抽取脚本</h3>
+<p>模型是-人员旅馆住宿关系图</p>
+
+<p>脚本文件：<code>/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_lgzs.groovy</code></p>
+
+<p>脚本内容：</p>
+<pre><code class="language-grovy">//需要修改配置，根据抽取资源进行调整
+category = "01" //轨迹分析类型
+zlcqType='01' //需要调整,
+
+bzkGxsjField='BZK_GXSJ_DATE'
+
+//person node
+personKey='zjhm' //key必须为小写字段名
+personFieldes='ZJHM, XM' //需要导入图库人员信息节点属性的相关字段，必须包含Key字段
+personLabel='person'
+
+//guiji轨迹节点
+guijiKey='lgid' //需要修改, key必须为小写字段名
+guijiFieldes='LGID,LGMC' //需要修改，需要导入图库轨迹节点属性的相关字段
+guijiLabel='hotel' //需要修改，轨迹节点标签名
+
+//人的轨迹关系
+relsKey='systemid' //key必须为小写字段名
+//必须包含rels的主键字段和其属性字段，还需要包含startNode和endNode的主键字段
+relsFieldes='SYSTEMID,ZJHM,LGID,FJH,RZSJ,TFSJ' //需要修改，需要导入的轨迹关系属性的相关字段，必须包含全部的主键
+relsLabel='lgzs' //需要修改，轨迹关系标签名
+
+
+
+// #################################################################################################################################
+//以下内容为模版配置不需要修改调整，固定程序配置，可了解
+...
+</code></pre>
+
+<h3 id="旅馆住宿数据">旅馆住宿数据</h3>
+<p>如旅馆住宿信息表</p>
+
+<p>Oracle数据必须字段</p>
+<pre><code>zjhm：证件号码
+xm：姓名
+lgid:旅馆ID
+fjh：房间号
+rzsj：入住时间
+tfsj：退房时间
+bzk_gxsj：标准库更新时间
+bzk_gxsj_date：标准库更新时间（date类型)
+</code></pre>
+
+<p>注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。</p>
+
+<h3 id="执行脚本检查并生成graph模型">执行脚本检查并生成Graph模型</h3>
+
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+</code></pre>
+<p><strong>注： graphloader命令参数详细解</strong>
+oracle_model.groovy ： 为脚本导入的脚本文件名称
+-graph test01  ：代表导入的图表为test1,这个只是测试图表
+-address dse01  ：DSE图数据库地址，这个dse01可以使用hostname，可以是集群的任何一个启动Graph的节点的ip地址和hostname,也可以是直接导入机器localhost
+-username admin  ：DSE集群启动认证的用户名（默认的用户）
+-passaword hnzx@123   ：DSE集群启动认证的用户密码（默认的默认）
+-dryrun true 启动脚本检查测试，不会真正执行结果，只是测试脚本运行是否正常。</p>
+
+<p>运行情况： 如果出现 DSE Loader Succes,那么证明执行成功</p>
+<pre><code>root@dse02 ~]# 
+[root@dse02 ~]# 
+[root@dse02 ~]# cd /usr/share/dse-graph-loader/scripts/loadJdbc
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+2018-06-18 17:45:07 INFO  JDBCSource:239 - Update [update B_DSE_LOADER_CONFIG set zlcq_zt = '2' where zlcq_type = '01'] date success, The updated data volume is 1
+2018-06-18 17:45:07 INFO  Executable:155 - The groovy script reads to see if schema is created [create_schema:true]
+2018-06-18 17:45:07 WARN  Executable:165 - As of DGL 6.0, transformation functions will be dep
+...
+...
+...
+
+2018-06-18 17:45:17 INFO  Executable:304 - DSE Loader Succes, TotalTime : 4 S
+</code></pre>
+
+<h3 id="数据建模语句">数据建模语句</h3>
+
+<p>以下为通过 -dryrun true生成的模型以及索引</p>
+
+<pre><code class="language-java">//旅馆住宿信息Schema
+schema.propertyKey('systemid').Text().single().create()
+schema.propertyKey('lgmc').Text().single().create()
+schema.propertyKey('lgid').Text().single().create()
+schema.propertyKey('xm').Text().single().create()
+schema.propertyKey('fjh').Text().single().create()
+schema.propertyKey('rzsj').Decimal().single().create()
+schema.propertyKey('zjhm').Text().single().create()
+schema.propertyKey('tfsj').Decimal().single().create()
+schema.vertexLabel('person').properties('zjhm', 'xm').create()
+schema.vertexLabel('hotel').properties('lgid', 'lgmc').create()
+schema.edgeLabel('lgzs').properties('systemid', 'fjh', 'tfsj', 'rzsj').connection('person', 'hotel').create()
+
+//Vertex Index
+schema.vertexLabel('person').index('byXm').materialized().by('xm').add()
+schema.vertexLabel('person').index('byZjhm').materialized().by('zjhm').add()
+schema.vertexLabel('hotel').index('byLgid').materialized().by('lgid').add()
+schema.vertexLabel('hotel').index('byLgmc').materialized().by('lgmc').add()
+
+schema.vertexLabel('person').index('search').search().by('xm').by('zjhm').add()
+schema.vertexLabel('hotel').index('search').search().by('lgid').by('lgmc').add()
+
+//Edge Index
+schema.vertexLabel('person').index('bySystemid').inE('lgzs').by('systemid').ifNotExists().add()
+schema.vertexLabel('hotel').index('bySystemid').inE('lgzs').by('systemid').ifNotExists().add()
+schema.vertexLabel('hotel').index('ratedBySystemid').outE('lgzs').by('systemid').ifNotExists().add()
+schema.vertexLabel('person').index('ratedBySystemid').outE('lgzs').by('systemid').ifNotExists().add()
+schema.vertexLabel('person').index('byFjh').inE('lgzs').by('fjh').ifNotExists().add()
+schema.vertexLabel('hotel').index('byFjh').inE('lgzs').by('fjh').ifNotExists().add()
+schema.vertexLabel('hotel').index('ratedByFjh').outE('lgzs').by('fjh').ifNotExists().add()
+schema.vertexLabel('person').index('ratedByFjh').outE('lgzs').by('fjh').ifNotExists().add()
+schema.vertexLabel('person').index('byRzsj').inE('lgzs').by('rzsj').ifNotExists().add()
+schema.vertexLabel('hotel').index('byRzsj').inE('lgzs').by('rzsj').ifNotExists().add()
+schema.vertexLabel('hotel').index('ratedByRzsj').outE('lgzs').by('rzsj').ifNotExists().add()
+schema.vertexLabel('person').index('ratedByRzsj').outE('lgzs').by('rzsj').ifNotExists().add()
+schema.vertexLabel('person').index('byTfsj').inE('lgzs').by('tfsj').ifNotExists().add()
+schema.vertexLabel('hotel').index('byTfsj').inE('lgzs').by('tfsj').ifNotExists().add()
+schema.vertexLabel('hotel').index('ratedByTfsj').outE('lgzs').by('tfsj').ifNotExists().add()
+schema.vertexLabel('person').index('ratedByTfsj').outE('lgzs').by('tfsj').ifNotExists().add()
+</code></pre>
+
+<p>通过上面模型创建后，后续不自动创建模型，需要修改base.groovy配置参数
+create_schema都修改为false</p>
+
+<h3 id="数据全量抽取">数据全量抽取</h3>
+
+<h4 id="修改配置表增量时间">修改配置表增量时间</h4>
+
+<pre><code class="language-sql">UPDATE B_DSE_LOADER_CONFIG t
+SET t.ZLCQ_KSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd hh24:mi:ss'), t.ZLCQ_JSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd HH24:MI:SS') WHERE CATEGORY = 01 and ZLCQ_TYPE = 01;
+commit;
+</code></pre>
+
+<p>更新后查询验证</p>
+<pre><code class="language-sql">select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 01;
+</code></pre>
+
+<h4 id="执行抽取命令">执行抽取命令</h4>
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+</code></pre>
+
+<p>相对于执行脚本检查命令只是少了个参数-dryrun true</p>
+
+<p>**运行情况 **：
+如果出现 DSE Loader Succes,那么证明执行成功,执行过程出现下面导入多少条记录信息
+Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+表示导入了7个顶点，6条边和12条属性记录。</p>
+
+<pre><code>[root@dse02 loadJdbc]# graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+
+....
+...
+...
+2018-06-18 17:47:43 INFO  Reporter:101 - Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+2018-06-18 17:47:43 INFO  Reporter:104 - 25 total elements written
+...
+...
+...
+2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
+</code></pre>
+
+<h3 id="数据增量抽取">数据增量抽取</h3>
+
+<h4 id="创建执行调度shell脚本">创建执行调度shell脚本</h4>
+
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader
+mkdir graphloader_lgzs.sh
+echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' &gt;&gt; graphloader_lgzs.sh
+echo '/usr/share/dse-graph-loader/graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123' &gt;&gt; graphloader_lgzs.sh
+</code></pre>
+
+<h4 id="定时调度">定时调度</h4>
+
+<p>crontab添加前检查</p>
+<pre><code class="language-sh">sudo -uroot /usr/share/dse-graph-loader/1.0.1/graphloader_lgzs.sh
+</code></pre>
+
+<p>通过Linux的定时器crontab进行定时调度配置, 相关命令如下：</p>
+
+<pre><code>crontab -e
+</code></pre>
+<p>编辑添加定时器，每5分钟执行一次，或者每1小时执行一次</p>
+
+<p>每5分钟执行一次</p>
+<pre><code class="language-sh">*/5 * * * * /usr/share/dse-graph-loader/graphloader_lgzs.sh &gt; /var/log/graphloader/lgzs/graphloader_lgzs.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>每1小时执行一次</p>
+<pre><code class="language-sh"> 0 */1 * * *  /usr/share/dse-graph-loader/graphloader_lgzs.sh &gt; /var/log/graphloader/lgzs/graphloader_lgzs.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>设置日志修改 每周星期六晚上11点重新命名日志文件</p>
+<pre><code class="language-sh">0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh lgzs graphloader_lgzs.log &gt;&gt; /var/log/graphloader/lgzs/graphloader_lgzs_renamefile.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<h4 id="抽取调度执行结果检查">抽取调度执行结果检查</h4>
+
+<p>可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查</p>
+<pre><code class="language-sql">select t.*, t.rowid from B_DSE_LOADER_LOG t order by create_time desc;
+</code></pre>
+
+<p>如下图，比如我们设置每间隔1分钟执行一次，图下图日志情况</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529338757622_48.png" alt="" /></p>
+
+<h2 id="轨迹航班关系图-配置抽取">轨迹航班关系图-配置抽取</h2>
+
+<h4 id="抽取配置信息-1">抽取配置信息</h4>
+<p>B_DSE_LOADER_CONFIG表,插入配置数据</p>
+<pre><code class="language-sql">insert into B_DSE_LOADER_CONFIG (SYSTEMID, CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER, CREATE_TIME, UPDATE_TIME, SCBZ)
+values ('A685BE72D5E84572A374CD80DECE1F3D', '01', '民航出入港信息', 'T_BZ_MH_CRGXX', 'T_BZ_MH_CRGXX', 'T_BZ_MH_CRGXX', 'T_BZ_MH_CRGXX', 'ORACLE_DSE_T_BZ_MH_CRGXX', to_date('10-10-2017 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), to_date('10-10-2017 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), '1', '02', null, null, null, null, null, 'SYS', to_date('26-05-2018 22:56:54', 'dd-mm-yyyy hh24:mi:ss'), to_date('26-05-2018 22:56:54', 'dd-mm-yyyy hh24:mi:ss'), 0);
+commit;
+</code></pre>
+<p>说明：CATEGORY=01代表轨迹关系图类别，ZLCQ_TYPE=02代表乘坐航班关系图的增量抽取类别
+注意现场导入数据后，需要在创建视图库中创建的资源名为T_BZ_MH_CRGXX.</p>
+
+<p>验证插入数据</p>
+<pre><code class="language-sql">select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 02;
+</code></pre>
+
+<h3 id="现场视图数据视图准备-1">现场视图数据视图准备</h3>
+<p>现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。</p>
+
+<p>视图要求,必须包含字段</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th>
+      <th>类型</th>
+      <th>可为空</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>ZJLX</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>证件类型</td>
+    </tr>
+    <tr>
+      <td>ZJHM</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>证件号码</td>
+    </tr>
+    <tr>
+      <td>CHN_NM</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>中文名</td>
+    </tr>
+    <tr>
+      <td>FST_NM</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>英文名</td>
+    </tr>
+    <tr>
+      <td>HBH</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>航班号</td>
+    </tr>
+    <tr>
+      <td>QFZ</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>起飞站</td>
+    </tr>
+    <tr>
+      <td>DDZ</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>到达站</td>
+    </tr>
+    <tr>
+      <td>HBRQ</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>航班日期，格式为年月日如:20160714</td>
+    </tr>
+    <tr>
+      <td>QFSJ</td>
+      <td>NUMBER</td>
+      <td> </td>
+      <td>起飞时间,必须为毫秒格式进行计算</td>
+    </tr>
+    <tr>
+      <td>DDSJ</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>退房时间,必须为毫秒格式</td>
+    </tr>
+    <tr>
+      <td>BZK_GXSJ_DATE</td>
+      <td>DATA</td>
+      <td> </td>
+      <td>增量时间，DATE类型</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。</p>
+
+<h3 id="抽取脚本-1">抽取脚本</h3>
+<p>模型是-人员旅馆住宿关系图</p>
+
+<p>脚本文件：<code>/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_czhb.groovy</code></p>
+
+<p>脚本内容：</p>
+<pre><code class="language-grovy">//需要修改配置，根据抽取资源进行调整
+category = "01" //轨迹分析类型
+zlcqType='02' //名航出入港"乘坐航班"关系图，需要调整
+
+bzkGxsjField='BZK_GXSJ_DATE'
+
+//person node
+personKey='zjhm' //key必须为小写字段名
+personFieldes='ZJHM, ZJLX, CHN_NM, FST_NM' //需要修改，需要导入图库人员信息节点属性的相关字段，必须包含Key字段
+personLabel='person'
+
+//guiji轨迹节点
+guijiKey='hbh' //需要修改, key必须为小写字段名
+guijiFieldes='HBH, QFZ, DDZ' //需要修改，需要导入图库轨迹节点属性的相关字段
+guijiLabel='flight' //需要修改，轨迹节点标签名
+
+//人的轨迹关系
+relsKey='systemid' //key必须为小写字段名
+//必须包含rels的主键字段和其属性字段，还需要包含startNode和endNode的主键字段
+relsFieldes='SYSTEMID, ZJHM, HBH, QFZ, DDZ, HBRQ, QFSJ, DDSJ' //需要修改，需要导入的轨迹关系属性的相关字段，必须包含全部的主键
+relsLabel='czhb' //需要修改，轨迹关系标签名
+
+// #################################################################################################################################
+//以下内容为模版配置不需要修改调整，固定程序配置，可了解
+...
+</code></pre>
+
+<p><strong>航班信息数据</strong>
+名航出入港信息表</p>
+
+<p>Oracle数据字段必须包含</p>
+<pre><code>ZJLX ： 证件类型
+ZJHM ： 证件号码
+CHN_NM ： 中文名
+FST_NM ： 英文名
+HBH ： 航班号
+QFZ ： 起飞站
+DDZ ： 到达站
+HBRQ ： 航班日期
+QFSJ ： 起飞时间
+DDSJ ： 到达时间
+bzk_gxsj_date：标准库更新时间（date类型)
+</code></pre>
+
+<p>注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。</p>
+
+<h3 id="执行脚本检查并生成graph模型-1">执行脚本检查并生成Graph模型</h3>
+
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model_czhb.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+</code></pre>
+<p><strong>注： graphloader命令参数详细解</strong>
+oracle_model.groovy ： 为脚本导入的脚本文件名称
+-graph test01  ：代表导入的图表为test1,这个只是测试图表
+-address dse01  ：DSE图数据库地址，这个dse01可以使用hostname，可以是集群的任何一个启动Graph的节点的ip地址和hostname,也可以是直接导入机器localhost
+-username admin  ：DSE集群启动认证的用户名（默认的用户）
+-passaword hnzx@123   ：DSE集群启动认证的用户密码（默认的默认）
+-dryrun true 启动脚本检查测试，不会真正执行结果，只是测试脚本运行是否正常。</p>
+
+<p>运行情况： 如果出现 DSE Loader Succes,那么证明执行成功</p>
+<pre><code>root@dse02 ~]# 
+[root@dse02 ~]# 
+[root@dse02 ~]# cd /usr/share/dse-graph-loader/scripts/loadJdbc
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+2018-06-18 17:45:07 INFO  JDBCSource:239 - Update [update B_DSE_LOADER_CONFIG set zlcq_zt = '2' where zlcq_type = '01'] date success, The updated data volume is 1
+2018-06-18 17:45:07 INFO  Executable:155 - The groovy script reads to see if schema is created [create_schema:true]
+2018-06-18 17:45:07 WARN  Executable:165 - As of DGL 6.0, transformation functions will be dep
+...
+...
+...
+
+2018-06-18 17:45:17 INFO  Executable:304 - DSE Loader Succes, TotalTime : 4 S
+</code></pre>
+
+<h3 id="数据全量抽取-1">数据全量抽取</h3>
+
+<h4 id="修改配置表增量时间-1">修改配置表增量时间</h4>
+
+<pre><code class="language-sql">UPDATE B_DSE_LOADER_CONFIG t
+SET t.ZLCQ_KSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd hh24:mi:ss'), t.ZLCQ_JSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd HH24:MI:SS') WHERE CATEGORY = 01 and ZLCQ_TYPE = 02;
+commit;
+</code></pre>
+
+<p>更新后查询验证</p>
+<pre><code class="language-sql">select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 02;
+</code></pre>
+
+<h4 id="执行抽取命令-1">执行抽取命令</h4>
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model_czhb.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+</code></pre>
+
+<p>相对于执行脚本检查命令只是少了个参数-dryrun true</p>
+
+<p>**运行情况 **：
+如果出现 DSE Loader Succes,那么证明执行成功,执行过程出现下面导入多少条记录信息
+Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+表示导入了7个顶点，6条边和12条属性记录。</p>
+
+<pre><code>[root@dse02 loadJdbc]# graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+
+....
+...
+...
+2018-06-18 17:47:43 INFO  Reporter:101 - Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+2018-06-18 17:47:43 INFO  Reporter:104 - 25 total elements written
+...
+...
+...
+2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
+</code></pre>
+
+<h3 id="数据增量抽取-1">数据增量抽取</h3>
+
+<h4 id="创建执行调度shell脚本-1">创建执行调度shell脚本</h4>
+
+<pre><code class="language-sh">sudo cd /usr/share/dse-graph-loader
+sudo mkdir graphloader_czhb.sh
+sudo echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' &gt;&gt; graphloader_czhb.sh
+sudo echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhb.groovy -graph test01 -address dse01 -username admin -password hnzx@123' &gt;&gt; graphloader_czhb.sh
+</code></pre>
+
+<h4 id="定时调度-1">定时调度</h4>
+
+<p>创建定时调度前先创建日志文件目录</p>
+<pre><code class="language-sh">sudo mkdir -p /var/log/graphloader/czhb
+</code></pre>
+<p>注意：其中的czh为每个关系图标签名称</p>
+
+<p>crontab添加前检查</p>
+<pre><code class="language-sh">sudo -uroot /usr/share/dse-graph-loader/graphloader_czhb.sh
+</code></pre>
+
+<p>通过Linux的定时器crontab进行定时调度配置, 相关命令如下：</p>
+
+<pre><code class="language-sh">crontab -e
+</code></pre>
+<p>编辑添加定时器，每5分钟执行一次，或者每1小时执行一次</p>
+
+<p>每10分钟执行一次</p>
+<pre><code class="language-sh">*/10 * * * * /usr/share/dse-graph-loader/graphloader_czhb.sh &gt; /var/log/graphloader/czhb/graphloader_czhb.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>每1小时执行一次</p>
+<pre><code class="language-sh"> 0 */1 * * *  /usr/share/dse-graph-loader/graphloader_czhb.sh &gt; /var/log/graphloader/czhb/graphloader_czhb.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>设置日志修改 每周星期六晚上11点重新命名日志文件</p>
+<pre><code class="language-sh">0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh czhb graphloader_czhb.log &gt;&gt; /var/log/graphloader/czhb/graphloader_czhb_renamefile.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<h4 id="抽取调度执行结果检查-1">抽取调度执行结果检查</h4>
+
+<p>可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查</p>
+<pre><code class="language-sql">select t.*, t.rowid from B_DSE_LOADER_LOG t where t.category = 01 and zlcq_type = 02 order by create_time desc;
+</code></pre>
+
+<p>如下图，比如我们设置每间隔10分钟执行一次，图下图日志情况</p>
+
+<p><img src="http://localhost:8081/assets/msg/upload/1529338757622_48.png" alt="" /></p>
+
+<h2 id="轨迹火车关系图-配置抽取">轨迹火车关系图-配置抽取</h2>
+
+<h3 id="抽取配置信息-2">抽取配置信息</h3>
+<p>B_DSE_LOADER_CONFIG表,插入配置数据</p>
+<pre><code class="language-sql">insert into B_DSE_LOADER_CONFIG (SYSTEMID, CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER, CREATE_TIME, UPDATE_TIME, SCBZ)
+values ('533FA13A99F74ACDA805C5C2E0FC1E9D', '01', '乘坐火车信息', 'T_BZ_HCSK_GPXX', 'T_BZ_HCSK_GPXX', 'T_BZ_HCSK_GPXX', 'T_BZ_HCSK_GPXX', 'ORACLE_DSE_T_BZ_HCSK_GPXX', to_date('10-10-2017 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), to_date('10-10-2010 14:42:59', 'dd-mm-yyyy hh24:mi:ss'), '1', '03', null, null, null, null, null, 'SYS', to_date('26-05-2018 22:56:54', 'dd-mm-yyyy hh24:mi:ss'), to_date('26-05-2010 22:56:54', 'dd-mm-yyyy hh24:mi:ss'), 0);
+commit;
+</code></pre>
+<p>说明：CATEGORY=01代表轨迹关系图类别，ZLCQ_TYPE=03代表乘坐航班关系图的增量抽取类别
+注意现场导入数据后，需要在创建视图库中创建的资源名为T_BZ_HCSK_GPXX</p>
+
+<p>验证插入数据</p>
+<pre><code class="language-sql">select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 03;
+</code></pre>
+
+<p>如下：</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1530673721770_18.png" alt="" /></p>
+
+<h3 id="现场视图数据视图准备-2">现场视图数据视图准备</h3>
+<p>现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。</p>
+
+<p>视图要求,必须包含字段</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段名</th>
+      <th>类型</th>
+      <th>可为空</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>ZJLX</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>证件类型</td>
+    </tr>
+    <tr>
+      <td>ZJHM</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>证件号码</td>
+    </tr>
+    <tr>
+      <td>CHN_NM</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>中文名</td>
+    </tr>
+    <tr>
+      <td>FST_NM</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>英文名</td>
+    </tr>
+    <tr>
+      <td>CC</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>车次</td>
+    </tr>
+    <tr>
+      <td>SFZ</td>
+      <td>VARCHAR2</td>
+      <td>Y</td>
+      <td>始发站</td>
+    </tr>
+    <tr>
+      <td>ZDZ</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>终点站</td>
+    </tr>
+    <tr>
+      <td>FCRQ</td>
+      <td>VARCHAR2</td>
+      <td> </td>
+      <td>发车日期，格式为年月日如:20160714</td>
+    </tr>
+    <tr>
+      <td>FCSJ</td>
+      <td>NUMBER</td>
+      <td> </td>
+      <td>发车时间,必须为毫秒格式进行计算</td>
+    </tr>
+    <tr>
+      <td>DDSJ</td>
+      <td>NUMBER</td>
+      <td>Y</td>
+      <td>到达时间,必须为毫秒格式</td>
+    </tr>
+    <tr>
+      <td>BZK_GXSJ_DATE</td>
+      <td>DATA</td>
+      <td> </td>
+      <td>增量时间，DATE类型</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。</p>
+
+<h3 id="抽取脚本-2">抽取脚本</h3>
+<p>模型是-人员旅馆住宿关系图</p>
+
+<p>脚本文件：<code>/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_czhc.groovy</code></p>
+
+<p>脚本内容：</p>
+<pre><code class="language-grovy">//需要修改配置，根据抽取资源进行调整
+category = "01" //轨迹分析类型
+zlcqType='03' //名航出入港"乘坐火车"关系图，需要调整
+
+bzkGxsjField='BZK_GXSJ_DATE'
+
+//person node
+personKey='zjhm' //key必须为小写字段名
+personFieldes='ZJHM, ZJLX, CHN_NM, FST_NM' //需要修改，需要导入图库人员信息节点属性的相关字段，必须包含Key字段
+personLabel='person'
+
+//guiji轨迹节点
+guijiKey='hbh' //需要修改, key必须为小写字段名
+guijiFieldes='CC, SFZ, ZDZ' //需要修改，需要导入图库轨迹节点属性的相关字段
+guijiLabel='flight' //需要修改，轨迹节点标签名
+
+//人的轨迹关系
+relsKey='systemid' //key必须为小写字段名
+//必须包含rels的主键字段和其属性字段，还需要包含startNode和endNode的主键字段
+relsFieldes='SYSTEMID, ZJHM, CC, SFZ, ZDZ, FCRQ, FFSJ, DDSJ' //需要修改，需要导入的轨迹关系属性的相关字段，必须包含全部的主键
+relsLabel='czhb' //需要修改，轨迹关系标签名
+
+// #################################################################################################################################
+//以下内容为模版配置不需要修改调整，固定程序配置，可了解
+...
+</code></pre>
+
+<p><strong>航班信息数据</strong>
+名航出入港信息表</p>
+
+<p>Oracle数据字段必须包含</p>
+<pre><code>ZJLX ： 证件类型
+ZJHM ： 证件号码
+CHN_NM ： 中文名
+FST_NM ： 英文名
+HBH ： 航班号
+QFZ ： 起飞站
+DDZ ： 到达站
+HBRQ ： 航班日期
+QFSJ ： 起飞时间
+DDSJ ： 到达时间
+bzk_gxsj_date：标准库更新时间（date类型)
+</code></pre>
+
+<p>注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。</p>
+
+<h3 id="执行脚本检查并生成graph模型-2">执行脚本检查并生成Graph模型</h3>
+
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model_czhc.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+</code></pre>
+<p><strong>注： graphloader命令参数详细解</strong>
+oracle_model.groovy ： 为脚本导入的脚本文件名称
+-graph test01  ：代表导入的图表为test1,这个只是测试图表
+-address dse01  ：DSE图数据库地址，这个dse01可以使用hostname，可以是集群的任何一个启动Graph的节点的ip地址和hostname,也可以是直接导入机器localhost
+-username admin  ：DSE集群启动认证的用户名（默认的用户）
+-passaword hnzx@123   ：DSE集群启动认证的用户密码（默认的默认）
+-dryrun true 启动脚本检查测试，不会真正执行结果，只是测试脚本运行是否正常。</p>
+
+<p>运行情况： 如果出现 DSE Loader Succes,那么证明执行成功</p>
+<pre><code>root@dse02 ~]# 
+[root@dse02 ~]# 
+[root@dse02 ~]# cd /usr/share/dse-graph-loader/scripts/loadJdbc
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# 
+[root@dse02 loadJdbc]# graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+2018-06-18 17:45:07 INFO  JDBCSource:239 - Update [update B_DSE_LOADER_CONFIG set zlcq_zt = '2' where zlcq_type = '01'] date success, The updated data volume is 1
+2018-06-18 17:45:07 INFO  Executable:155 - The groovy script reads to see if schema is created [create_schema:true]
+2018-06-18 17:45:07 WARN  Executable:165 - As of DGL 6.0, transformation functions will be dep
+...
+...
+...
+
+2018-06-18 17:45:17 INFO  Executable:304 - DSE Loader Succes, TotalTime : 4 S
+</code></pre>
+
+<h3 id="数据全量抽取-2">数据全量抽取</h3>
+
+<h4 id="修改配置表增量时间-2">修改配置表增量时间</h4>
+
+<pre><code class="language-sql">UPDATE B_DSE_LOADER_CONFIG t
+SET t.ZLCQ_KSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd hh24:mi:ss'), t.ZLCQ_JSSJ = to_date('1990-01-01 0:00:00','yyyy-mm-dd HH24:MI:SS') WHERE CATEGORY = 01 and ZLCQ_TYPE = 03;
+commit;
+</code></pre>
+
+<p>更新后查询验证</p>
+<pre><code class="language-sql">select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 03;
+</code></pre>
+
+<h4 id="执行抽取命令-2">执行抽取命令</h4>
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/scripts/loadJdbc
+
+graphloader oracle_model_czhc.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+</code></pre>
+
+<p>相对于执行脚本检查命令只是少了个参数-dryrun true</p>
+
+<p>**运行情况 **：
+如果出现 DSE Loader Succes,那么证明执行成功,执行过程出现下面导入多少条记录信息
+Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+表示导入了7个顶点，6条边和12条属性记录。</p>
+
+<pre><code>[root@dse02 loadJdbc]# graphloader oracle_model_czhc.groovy -graph test01 -address dse01 -username admin -password hnzx@123
+/usr/java/latest/bin/java -Xms1691M -Xmx1691M -Dio.netty.tmpdir=/tmp -Djava.io.tmpdir=/tmp -cp :/usr/share/dse-g-loader/dse-graph-loader-1.0.1/*:/usr/share/dse-g-loader/dse-graph-loader-1.0.1/lib/* com.datastax.dsegraphloader.cli.Executable oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123 -dryrun true
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration address=dse01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration username=admin
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration graph=test01
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration password=&lt;redacted&gt;
+2018-06-18 17:45:02 INFO  Executable:119 - Setting configuration dryrun=true
+2018-06-18 17:45:03 INFO  ClockFactory:52 - Using native clock to generate timestamps.
+2018-06-18 17:45:03 INFO  NettyUtil:83 - Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2018-06-18 17:45:04 WARN  ReplicationStrategy$NetworkTopologyStrategy:200 - Error while computing token map for keyspace system_auth with datacenter dc1: could not achieve replication factor 3 (found 2 replicas only), check your keyspace replication settings.
+2018-06-18 17:45:04 INFO  DCAwareRoundRobinPolicy:95 - Using data-center name 'dc1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host dse01/192.168.19.30:9042 added
+2018-06-18 17:45:04 INFO  Cluster:1543 - New Cassandra host /192.168.19.31:9042 added
+
+....
+...
+...
+2018-06-18 17:47:43 INFO  Reporter:101 - Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
+2018-06-18 17:47:43 INFO  Reporter:104 - 25 total elements written
+...
+...
+...
+2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
+</code></pre>
+
+<h3 id="数据增量抽取-2">数据增量抽取</h3>
+
+<h4 id="创建执行调度shell脚本-2">创建执行调度shell脚本</h4>
+
+<p>创建crontab执行命令文件graphloader_czhc.sh</p>
+<pre><code class="language-sh">cd /usr/share/dse-graph-loader/
+mkdir graphloader_czhc.sh
+echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' &gt;&gt; graphloader_czhc.sh
+echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph test01 -address dse01 -username admin -password hnzx@123' &gt;&gt; graphloader_czhc.sh
+</code></pre>
+
+<h4 id="定时调度-2">定时调度</h4>
+
+<p>crontab添加前检查</p>
+<pre><code class="language-sh">sudo -uroot /usr/share/dse-graph-loader/graphloader_czhc.sh
+</code></pre>
+
+<p>通过Linux的定时器crontab进行定时调度配置, 相关命令如下：</p>
+
+<pre><code class="language-sh">crontab -e
+</code></pre>
+<p>编辑添加定时器，每5分钟执行一次，或者每1小时执行一次</p>
+
+<p>每5分钟执行一次</p>
+<pre><code class="language-sh">*/5 * * * * /usr/share/dse-graph-loader/graphloader_czhc.sh &gt; /var/log/graphloader/czhb/graphloader_czhc.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>每1小时执行一次</p>
+<pre><code class="language-sh"> 0 */1 * * *  /usr/share/dse-graph-loader/graphloader_czhc.sh &gt; /var/log/graphloader/czhb/graphloader_czhc.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<p>设置日志修改 每周星期六晚上11点重新命名日志文件</p>
+<pre><code class="language-sh">0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh czhc graphloader_czhc.log &gt;&gt; /var/log/graphloader/czhc/graphloader_czhb_renamefile.log  2&gt;&amp;1 &amp;
+</code></pre>
+
+<h4 id="抽取调度执行结果检查-2">抽取调度执行结果检查</h4>
+
+<p>可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查</p>
+<pre><code class="language-sql">select t.*, t.rowid from B_DSE_LOADER_LOG t where t.category = 01 and zlcq_type = 03 order by create_time desc;
+</code></pre>
+
+<p>如下图，比如我们设置每间隔1分钟执行一次，图下图日志情况</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1529338757622_48.png" alt="" /></p>
+
+<p>END!</p>
+
+</div>
+<div class="v">
+  <i class="fas fa-spinner fa-pulse"></i>
+</div>
+<script
+  src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'
+  defer='defer'
+  onload='
+    new Valine({
+      "el": document.getElementsByClassName("v")[0],
+      "appId": "9hABRddSuEkTgqLrt1VSK5B1-gzGzoHsz",
+      "appKey": "NJ7RwmgrxsF7KDzlqU7YewlL",
+      "placeholder": "在这里评论吧！填写邮箱可以获得 Gravatar 头像和回复通知哦",
+      "requiredFields": ["nick","mail"],
+      "visitor": true,
+      "recordIP": true
+    })'
+></script>
+
+</div>
+  </div>
+  
+  <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+  
+</body>
+
+</html>
