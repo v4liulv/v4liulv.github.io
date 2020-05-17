@@ -8,11 +8,11 @@ tags: 图库
 
 ## 下载Graph Loader安装包
 
-点击[下载地址](http:///dse/数据抽取/dse-graph-loader-1.0.1.zip "下载地址")进行下载。
+点击[下载地址](https://pan.baidu.com/s/1erorpQrwXr0wUHRMgVQnMA "下载地址")进行下载。
 
 下载得到dse-grap-loader-1.0.1.zip的压缩文件
 
-注意：点击[下载地址](http://dse/数据抽取/dse-graph-loader-1.0.1.zip "下载地址").
+**注意：** 下载提取码为d4t4
 
 ## 解压安装
 
