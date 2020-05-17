@@ -64,10 +64,14 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
           href="https://gravatar.loli.net/avatar/289efba375d63424de3c49569c446744?s=32"
         />
       - | # 来自lanyon的页面样式，不要改
+     #  <link
+     #    rel="stylesheet"
+     #    href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+      #  />
         <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
-        />
+                 rel="stylesheet"
+                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+       />
       - | # 引入fontawesome图标样式
         <link
           rel="stylesheet"
