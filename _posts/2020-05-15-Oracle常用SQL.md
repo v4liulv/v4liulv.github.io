@@ -243,13 +243,13 @@ REVOKE CONNECT, RESOURCE FROM test;
 
 除了前面讲到的三种系统角色----connect、resource和dba，用户还可以在oracle创建自己的role。用户创建的role可以由表或系统权限或两者的组合构成。为了创建role，用户必须具有create role系统权限。
 
-### 1》创建角色
+>1.创建角色
 
 语法： CREATE ROLE 角色名;
 
 例子： CREATE ROLE testRole;
 
-2》授权角色
+>2.授权角色
 
 语法： GRANT SELECT ON CLASS to 角色名;
 
@@ -257,7 +257,7 @@ REVOKE CONNECT, RESOURCE FROM test;
 
 注：现在，拥有testRole角色的所有用户都具有对class表的select查询权限
 
-3》删除角色
+>3.删除角色
 
 语法： DROP ROLE 角色名;
 
