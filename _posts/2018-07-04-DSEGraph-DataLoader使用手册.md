@@ -4,7 +4,13 @@ tags: 图库
 ---
 
 ## 安装GraphLoader
---
+
+安装GraphLoader分为以下步骤：
+
+>- 下载
+>- 解压
+>- 设置环境变量
+>- 检查
 
 ### 下载Graph Loader安装包
 
