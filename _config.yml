@@ -64,13 +64,13 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
           href="https://gravatar.loli.net/avatar/289efba375d63424de3c49569c446744?s=32"
         />
       - | # 来自lanyon的页面样式，不要改
-     #  <link
-     #    rel="stylesheet"
-     #    href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
-      #  />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+        />
         <link
                  rel="stylesheet"
-                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css"
+                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
        />
       - | # 引入fontawesome图标样式
         <link
@@ -198,12 +198,19 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
           .sidebar {
             font-family: PingFang SC, Menlo, Monaco, "Courier New", Microsoft JhengHei, monospace;
           }
-          body {
-              color: #141414;
-              background-color: #fff;
-              -webkit-text-size-adjust: 100%;
-              -ms-text-size-adjust: 100%;
-          }
+        </style>
+        <style>
+           body {
+                   color: #141414;
+                   -webkit-text-size-adjust: 100%;
+               }
+          h1, h2, h3, h4, h5, h6 {
+            margin-bottom: .5rem;
+            font-weight: bold;
+            line-height: 1.25;
+            color: #0e0e0e;
+            text-rendering: optimizeLegibility;
+        }
         </style>
       - | #修复行内图片默认样式
         <style>
