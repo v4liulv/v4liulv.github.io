@@ -10,15 +10,13 @@
 - Phone: **+86 12345123**
 - Site: **<https://v4liulv.github.io>**
 
--- <!-- slide vertical=true -->
-
 - E-mail:
   - **[i@com](mailto:469549118@qq.com)**
   - **[v4liulv@outlook.com](mailto:v4liulv@outlook.co)**
 - WeChat: **Wu-\_-Kan**
 - QQ: **469549118**
 
-<!-- slide -->
+分页展示使用 **<!-- slide vertical=true --> 或 <!-- slide -->**
 
 ## 我的博客
 
