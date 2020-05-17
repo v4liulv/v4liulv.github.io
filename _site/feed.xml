@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-17T15:00:39+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">wu-kan</title><subtitle>SYSU超算17级在读&lt;br/&gt;
+永远喜欢水野爱&lt;br/&gt;
+田宫例四驱车&lt;br/&gt;
+ASC&lt;br/&gt;
+&lt;a href=&quot;mailto:i@wu-kan.cn&quot;&gt;
+  &lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;
+&lt;/a&gt;
+&lt;a href=&quot;https://github.com/wu-kan&quot;&gt;
+  &lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt;
+&lt;/a&gt;
+&lt;a href=&quot;https://codeforces.com/profile/WuK&quot;&gt;
+  &lt;i class=&quot;fas fa-chart-bar&quot;&gt;&lt;/i&gt;
+&lt;/a&gt;
+&lt;a href=&quot;https://vjudge.net/user/WuK&quot;&gt;
+  &lt;i class=&quot;fas fa-smile&quot;&gt;&lt;/i&gt;
+&lt;/a&gt;
+&lt;a href=&quot;https://www.zhihu.com/people/wu.kan/activities&quot;&gt;
+  &lt;i class=&quot;fab fa-zhihu&quot;&gt;&lt;/i&gt;
+&lt;/a&gt;
+&lt;iframe
+  src=&quot;https://music.163.com/outchain/player?type=0&amp;id=155059595&amp;auto=0&amp;height=32&quot;
+  width=100%
+  height=52
+  frameborder=&quot;no&quot;
+  border=&quot;0&quot;
+  marginwidth=&quot;0&quot;
+  marginheight=&quot;0&quot;
+&gt;&lt;/iframe&gt;
+</subtitle><entry><title type="html">2015ACM-ICPC亚洲区合肥站-重现赛（感谢中科大）</title><link href="http://localhost:4000/_posts/2019-10-13-ACMICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%90%88%E8%82%A5%E7%AB%99%E9%87%8D%E7%8E%B0%E8%B5%9B/" rel="alternate" type="text/html" title="2015ACM-ICPC亚洲区合肥站-重现赛（感谢中科大）" /><published>2019-10-13T00:00:00+08:00</published><updated>2019-10-13T00:00:00+08:00</updated><id>http://localhost:4000/_posts/ACMICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%90%88%E8%82%A5%E7%AB%99%E9%87%8D%E7%8E%B0%E8%B5%9B</id><content type="html" xml:base="http://localhost:4000/_posts/2019-10-13-ACMICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%90%88%E8%82%A5%E7%AB%99%E9%87%8D%E7%8E%B0%E8%B5%9B/">&lt;h2 id=&quot;land-of-farms&quot;&gt;&lt;a href=&quot;https://vjudge.net/problem/HDU-5556&quot;&gt;Land of Farms&lt;/a&gt;&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cpp&quot;&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+using namespace std;
+const int N = 15;
+char s[N][N];
+int t, n, m, kase, ans, cnt[N], a[N][N];
+struct Hungary
+{
+#define N 127
+	vector&amp;lt;int&amp;gt; g[N];
+	int n, fl[N], fr[N], vr[N];
+	int dfs(int x, int rt)
+	{
+		for (auto y : g[x])
+			if (vr[y] != rt)
+				if (vr[y] = rt, fr[y] == N || dfs(fr[y], rt))
+					return fl[fr[y] = x] = y, 1;
+		return 0;
+	}
+	void ask()
+	{
+		fill(fl, fl + n, N), fill(fr, fr + n, N), fill(vr, vr + n, N);
+		for (int i = 0; i &amp;lt; n; ++i)
+			if (fl[i] == N)
+				dfs(i, i);
+	}
+#undef N
+} h;
+bool ok(int x, int y, int cur)
+{
+	if (!(0 &amp;lt;= x &amp;amp;&amp;amp; x &amp;lt; n &amp;amp;&amp;amp; 0 &amp;lt;= y &amp;amp;&amp;amp; y &amp;lt; m))
+		return 0;
+	if (isdigit(s[x][y]))
+		return 0;
+	if (x &amp;amp;&amp;amp; isdigit(s[x - 1][y]) &amp;amp;&amp;amp; (cur &amp;amp; (1 &amp;lt;&amp;lt; s[x - 1][y] - '0')))
+		return 0;
+	if (x &amp;lt; n - 1 &amp;amp;&amp;amp; isdigit(s[x + 1][y]) &amp;amp;&amp;amp; (cur &amp;amp; (1 &amp;lt;&amp;lt; s[x + 1][y] - '0')))
+		return 0;
+	if (y &amp;amp;&amp;amp; isdigit(s[x][y - 1]) &amp;amp;&amp;amp; (cur &amp;amp; (1 &amp;lt;&amp;lt; s[x][y - 1] - '0')))
+		return 0;
+	if (y &amp;lt; m - 1 &amp;amp;&amp;amp; isdigit(s[x][y + 1]) &amp;amp;&amp;amp; (cur &amp;amp; (1 &amp;lt;&amp;lt; s[x][y + 1] - '0')))
+		return 0;
+	return 1;
+}
+void dfs(int k, int cur, int cont)
+{
+	if (k &amp;gt; 9)
+	{
+		for (int x = 0; x &amp;lt; n; ++x)
+			for (int y = 0; y &amp;lt; m; ++y)
+			{
+				h.g[x * m + y].clear();
+				if (ok(x, y, cur))
+				{
+					++cont;
+					if (ok(x - 1, y, cur))
+						h.g[x * m + y].push_back((x - 1) * m + y);
+					if (ok(x + 1, y, cur))
+						h.g[x * m + y].push_back((x + 1) * m + y);
+					if (ok(x, y - 1, cur))
+						h.g[x * m + y].push_back(x * m + y - 1);
+					if (ok(x, y + 1, cur))
+						h.g[x * m + y].push_back(x * m + y + 1);
+				}
+			}
+		h.n = n * m;
+		h.ask();
+		int c = 0;
+		for (int i = 0; i &amp;lt; h.n; ++i)
+			if (0 &amp;lt;= h.fl[i] &amp;amp;&amp;amp; h.fl[i] &amp;lt; h.n)
+				++c;
+		ans = max(ans, cont - (c &amp;gt;&amp;gt; 1));
+		return;
+	}
+	dfs(k + 1, cur, cont);
+	if (!cnt[k])
+		return;
+	for (int i = 0; i &amp;lt; k; ++i)
+		if (a[i][k] &amp;amp;&amp;amp; (cur &amp;amp; (1 &amp;lt;&amp;lt; i)))
+			return;
+	dfs(k + 1, cur | (1 &amp;lt;&amp;lt; k), cont + 1);
+}
+int main()
+{
+	for (scanf(&quot;%d&quot;, &amp;amp;t); t--;)
+	{
+		scanf(&quot;%d%d&quot;, &amp;amp;n, &amp;amp;m);
+		fill(cnt, cnt + N, 0);
+		for (int i = 0; i &amp;lt; N; ++i)
+			fill(a[i], a[i] + N, 0);
+		for (int i = 0; i &amp;lt; n; ++i)
+		{
+			scanf(&quot;%s&quot;, s[i]);
+			for (int j = 0; j &amp;lt; m; ++j)
+				if (isdigit(s[i][j]))
+				{
+					++cnt[s[i][j] - '0'];
+					if (j &amp;amp;&amp;amp; isdigit(s[i][j - 1]))
+						a[s[i][j] - '0'][s[i][j - 1] - '0'] = a[s[i][j - 1] - '0'][s[i][j] - '0'] = 1;
+					if (i &amp;amp;&amp;amp; isdigit(s[i - 1][j]))
+						a[s[i][j] - '0'][s[i - 1][j] - '0'] = a[s[i - 1][j] - '0'][s[i][j] - '0'] = 1;
+				}
+		}
+		dfs(0, 0, ans = 0);
+		printf(&quot;Case #%d: %d\n&quot;, ++kase, ans);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;frog-and-string&quot;&gt;&lt;a href=&quot;https://vjudge.net/problem/HDU-5559&quot;&gt;Frog and String&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;蛤。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cpp&quot;&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+using namespace std;
+int T, n, m, k;
+int main()
+{
+	scanf(&quot;%d&quot;, &amp;amp;T);
+	for (int t = 1; t &amp;lt;= T; t++)
+	{
+		scanf(&quot;%d%d%d&quot;, &amp;amp;n, &amp;amp;m, &amp;amp;k);
+		printf(&quot;Case #%d:\n&quot;, t);
+		if (n == 8 &amp;amp;&amp;amp; m == 7 &amp;amp;&amp;amp; k == 2)
+		{
+			printf(&quot;AABBABAA\n&quot;);
+			continue;
+		}
+		if (m &amp;gt; n)
+			printf(&quot;Impossible\n&quot;);
+		else if (k == 1 || n == m)
+		{
+			if (n == m)
+				for (int i = 1; i &amp;lt;= n; i++)
+					printf(&quot;A&quot;);
+			else
+				printf(&quot;Impossible&quot;);
+			printf(&quot;\n&quot;);
+		}
+		else if (k &amp;gt;= 3)
+		{
+			if (m &amp;lt; 3)
+				printf(&quot;Impossible&quot;);
+			else
+			{
+				for (int i = 1; i &amp;lt;= m - 3; i++)
+					printf(&quot;A&quot;);
+				int now = 0;
+				for (int i = m - 2; i &amp;lt;= n; i++)
+				{
+					if (now == 0)
+						printf(&quot;A&quot;);
+					if (now == 1)
+						printf(&quot;B&quot;);
+					if (now == 2)
+						printf(&quot;C&quot;);
+					now = (now + 1) % 3;
+				}
+			}
+			printf(&quot;\n&quot;);
+		}
+		else if (k == 2)
+		{
+			if (m &amp;gt;= 8)
+			{
+				for (int i = 1; i &amp;lt;= m - 8; i++)
+					printf(&quot;A&quot;);
+				int now = 0;
+				for (int i = m - 7; i &amp;lt;= n; i++)
+				{
+					if (now == 0)
+						printf(&quot;A&quot;);
+					if (now == 1)
+						printf(&quot;B&quot;);
+					if (now == 2)
+						printf(&quot;A&quot;);
+					if (now == 3)
+						printf(&quot;A&quot;);
+					if (now == 4)
+						printf(&quot;B&quot;);
+					if (now == 5)
+						printf(&quot;B&quot;);
+					now = (now + 1) % 6;
+				}
+			}
+			else
+				printf(&quot;Impossible&quot;);
+			printf(&quot;\n&quot;);
+		}
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;</content><author><name></name></author><category term="ACM" /><summary type="html">Land of Farms</summary></entry><entry><title type="html">基于Jekyll搭建个人博客</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="基于Jekyll搭建个人博客" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;h2 id=&quot;引言&quot;&gt;引言&lt;/h2&gt;
+
+&lt;p&gt;最开始我是在&lt;a href=&quot;https://blog.csdn.net/w_weilan&quot;&gt;CSDN&lt;/a&gt;上写博客的。博客写了一年多，访问量勉强破万，感觉其中至少有三成是自己贡献的。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用。&lt;/p&gt;
+
+&lt;p&gt;十一月份，在青岛的 ICPC 区域赛失利之后，想要重新开始，和过去告别。也从此转移自己写博客的阵地。考虑过转投暂时还比较干净而且可以部分定义页面的&lt;a href=&quot;https://www.cnblogs.com/wu-kan/&quot;&gt;博客园&lt;/a&gt;，但是最终还是决定在&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;上搭建属于自己的博客。&lt;/p&gt;
+
+&lt;p&gt;然后，翻了一些网上的教程，用&lt;a href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt;框架和&lt;a href=&quot;https://github.com/theme-next/hexo-theme-next&quot;&gt;NexT&lt;/a&gt;主题搭了一个比较素雅的符合个人审美的博客。然而，Hexo 搭建的博客需要先在本地生成博客页面然后再上传到服务器上，每次发博客都需要在电脑重新生成页面并上传，感觉没有那么方便。在不同电脑上想要发博客更是十分困难，感觉如果胡乱操作后本地部署的文件发生了一定的错乱，恢复起来会十分麻烦。&lt;/p&gt;
+
+&lt;p&gt;后来发现，Github Pages 原生支持&lt;a href=&quot;https://www.jekyll.com.cn/&quot;&gt;Jekyll&lt;/a&gt;，因此如果只需要推送文章可以直接在 github 的仓库里做。于是决定在期末考试后用 Jekyll 重新搭建个人博客。原来的博客不再维护。&lt;/p&gt;
+
+&lt;h2 id=&quot;构思&quot;&gt;构思&lt;/h2&gt;
+
+&lt;p&gt;目前博客的 demo 如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://jekyll-theme-WuK.wu-kan.cn/screenshot.png&quot; alt=&quot;demo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;想搭建一个足够干净、页面几乎不要有多余元素的博客，同时博客的功能还要足够丰富，满足我以下的需求：&lt;/p&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;用 Markdown 写博客&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;支持 Latex 公式&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;支持 mermaid 等插件&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;个性化 Live2D&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;分享一些我在其他网站的个人账号&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;移动端适配&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;足够快的加载速度&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;访问量统计，评论互动&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;需求是会逐渐增长的！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;其中，Live2D 是我某次访问别人的博客初次见到的，感觉非常吸引人。最终的目标是去掉网页上所有多余的元素，只剩下博文和 Live2D 看板娘，看板娘本身还可以作为博客访问的导航，感觉会十分有新意。&lt;/p&gt;
+
+&lt;h2 id=&quot;搭建过程不定期更新&quot;&gt;搭建过程（不定期更新）&lt;/h2&gt;
+
+&lt;p&gt;我目前读的专业是计科超算方向，所以软件工程专业相关方面的基础几乎为 0😌，大部分的内容都是参考网上教程慢慢摸索的，假如对某些过程有意见和建议欢迎向我提出！&lt;/p&gt;
+
+&lt;h3 id=&quot;开发环境&quot;&gt;开发环境&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;我的博客使用 bundle 作为版本管理！如果你的环境里已经有 bundle 了，可以跳过此步！&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这个学期选了一门 Linux 相关的公选课，感觉还不错，因此直接把开发环境是搭建在 Windows Subsystem for Linux（简称 WSL）上了，Windows 下也可以直接访问其中的环境，详见&lt;a href=&quot;https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/&quot;&gt;这篇博客&lt;/a&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo apt install -y ruby ruby-dev zlib1g.dev make gcc g++
+# gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
+sudo gem install bundler
+# bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jekyll 博客是基于 ruby 语言开发的，要先将 ruby 装进来。此外，国内访问一些资源可能会很慢，推荐去掉上面的注释，使用国内镜像。&lt;/p&gt;
+
+&lt;h3 id=&quot;在本地运行博客&quot;&gt;在本地运行博客&lt;/h3&gt;
+
+&lt;p&gt;依次执行下述指令，可以自动下载并部署我博客的所有依赖。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;git clone https://github.com/wu-kan/wu-kan.github.io
+cd wu-kan.github.io
+bundle install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不想下载我的博文和图片，可以根据这个&lt;a href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/7&quot;&gt;issue&lt;/a&gt;，使用 svn 代替 git，从而快速下载必要的文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;svn checkout https://github.com/wu-kan/wu-kan.github.io/trunk/ --depth=files
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;github 上的 jekyll 和普通的 jekyll 是有一点点区别的，比如说只支持特定的插件。我希望与 github 保持兼容，因此配置的依赖是直接引入了 github 版本的 jekyll，安装时间略久。&lt;/p&gt;
+
+&lt;p&gt;我在一个全新的 Linux 中安装了一遍，需要的依赖已经在上面的“开发环境中列出来的”。如果&lt;code&gt;bundle install&lt;/code&gt;在你的机器上还是报错，要看报错信息，缺啥装啥。&lt;/p&gt;
+
+&lt;p&gt;运行下述指令，检验（我自己做的时候遇到了一个很奇怪的问题&lt;code&gt;jekyll 3.8.5 | Error: Operation not permitted @ apply2files&lt;/code&gt;，重开 WSL 终端就好了）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;bundle exec jekyll s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于我的博客已经达到了三百篇以上，在本地生成网页的速度有些慢，在我的机器上要跑三分钟（关掉配置项中的侧边栏总字数统计就快了，可达 25s）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看到如上内容时就成功了，本地访问&lt;a href=&quot;http://127.0.0.1:4000/&quot;&gt;http://127.0.0.1:4000/&lt;/a&gt;即可查看效果。&lt;/p&gt;
+
+&lt;h3 id=&quot;定制&quot;&gt;定制&lt;/h3&gt;
+
+&lt;p&gt;我把博客实现的的插件基本上都封装起来了，可以直接在浏览器按 F12 查看我是怎么引入的。如果你想增加新的渲染规则，可以新建&lt;code&gt;_layouts&lt;/code&gt;目录，将你自己的渲染规则放进去，见&lt;a href=&quot;http://jekyllcn.com/docs/structure/&quot;&gt;目录结构 -Jekyll&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&quot;加入-live2d-看板娘&quot;&gt;加入 Live2D 看板娘&lt;/h4&gt;
+
+&lt;p&gt;参考了：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.fghrsh.net/post/123.html&quot;&gt;网页添加 Live2D 看板娘&lt;/a&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98&quot;&gt;在网页中添加 Live2D 看板娘&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://paugram.com/coding/add-poster-girl-with-plugin.html&quot;&gt;给你的博客增加动态看板娘&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由于 live2d 的协议是 GPL，这里我不把它的源码拷贝到自己的博客项目了，直接用链接引入。在 html 的任意位置，或是我博客对应的&lt;code&gt;append&lt;/code&gt;选项下插入下述 html 代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;link
+  rel=&quot;stylesheet&quot;
+  href=&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css&quot;
+/&amp;gt;
+&amp;lt;script
+  defer=&quot;defer&quot;
+  src=&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js&quot;
+&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script
+  defer=&quot;defer&quot;
+  src=&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.js&quot;
+  onload='
+    if (screen.width &amp;gt; screen.height)
+    {
+      let pio_container = document.createElement(&quot;div&quot;);
+      pio_container.classList.add(&quot;pio-container&quot;);
+      pio_container.classList.add(&quot;right&quot;);
+      document.body.insertAdjacentElement(&quot;beforeend&quot;, pio_container);
+      let pio_action = document.createElement(&quot;div&quot;);
+      pio_action.classList.add(&quot;pio-action&quot;);
+      pio_container.insertAdjacentElement(&quot;beforeend&quot;, pio_action);
+      let pio_canvas = document.createElement(&quot;canvas&quot;);
+      pio_canvas.id = &quot;pio&quot;;
+      pio_canvas.style.width = &quot;14rem&quot;;
+      pio_canvas.width = &quot;600&quot;;
+      pio_canvas.height = &quot;800&quot;;
+      pio_container.insertAdjacentElement(&quot;beforeend&quot;, pio_canvas);
+      let pio = new Paul_Pio({
+        &quot;mode&quot;: &quot;draggable&quot;,
+        &quot;hidden&quot;: true,
+        &quot;content&quot;: {
+          &quot;skin&quot;: [&quot;要换成我的朋友吗？&quot;, &quot;让她放个假吧~&quot;],
+          &quot;custom&quot;: [{
+            &quot;selector&quot;: &quot;a&quot;,
+            &quot;type&quot;: &quot;link&quot;,
+          }, {
+            &quot;selector&quot;: &quot;.sidebar-toggle&quot;,
+            &quot;text&quot;: &quot;打开侧边栏叭~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.effect-info&quot;,
+            &quot;text&quot;: &quot;哇，你发现了什么！&quot;
+          }, {
+            &quot;selector&quot;: &quot;#sidebar-search-input&quot;,
+            &quot;text&quot;: &quot;想搜索什么呢？很多干货哦！&quot;
+          }, {
+            &quot;selector&quot;: &quot;#toc&quot;,
+            &quot;text&quot;: &quot;这是目录~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.page-title&quot;,
+            &quot;text&quot;: &quot;这是标题~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.v&quot;,
+            &quot;text&quot;: &quot;评论没有审核，要对自己的发言负责哦~&quot;
+          }]
+        },
+        &quot;model&quot;: [
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/seele/model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json&quot;]
+      });
+    }'
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自定义参数见&lt;a href=&quot;https://github.com/Dreamer-Paul/Pio&quot;&gt;Dreamer-Paul/Pio&lt;/a&gt;，模型收集自&lt;a href=&quot;https://github.com/imuncle/live2d&quot;&gt;imuncle/live2d&lt;/a&gt;和&lt;a href=&quot;https://github.com/xiaoski/live2d_models_collection&quot;&gt;xiaoski/live2d_models_collection&lt;/a&gt;，。&lt;/p&gt;
+
+&lt;h4 id=&quot;katex&quot;&gt;$\KaTeX$&lt;/h4&gt;
+
+&lt;p&gt;参考：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/f2b28954d902&quot;&gt;使用 KaTeX 代替 MathJax 渲染公式&lt;/a&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://katex.org/docs/autorender.html&quot;&gt;Auto-render Extension · Katex&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;link rel=&quot;stylesheet&quot; href=&quot;//cdn.jsdelivr.net/npm/katex/dist/katex.min.css&quot; /&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/katex/dist/katex.min.js&quot;
+  defer=&quot;defer&quot;
+&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='renderMathInElement(document.body, { delimiters: [{ left: &quot;$&quot;, right: &quot;$&quot;, display: false }] })'
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不过这样仅能显示$E=mc^2$这样的行间公式，行内公式是没有办法显示的（&lt;a href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/1&quot;&gt;issue&lt;/a&gt;）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-tex&quot;&gt;$$
+E=mc^2
+$$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一种方法是引入 mathjax 进行渲染，但是这样做就失去了用 katex 的初心了。后来我发现 katex 有对应的插件可以解决这一问题。在上面代码后补充如下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/katex/dist/contrib/mathtex-script-type.min.js&quot;
+  defer=&quot;defer&quot;
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;效果如下。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;E=mc^2&lt;/script&gt;
+
+&lt;p&gt;可以在&lt;a href=&quot;https://katex.org/docs/libs.html&quot;&gt;这个页面&lt;/a&gt;查看一些别的插件，比如化学方程式的插件等等，都是可以引入的。&lt;/p&gt;
+
+&lt;h4 id=&quot;mermaid-图&quot;&gt;mermaid 图&lt;/h4&gt;
+
+&lt;p&gt;我希望自己能按照 markdown 代码块扩展的规则来写 mermaid 流程图：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markdown&quot;&gt;```mermaid
+sequenceDiagram
+Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
+loop Healthcheck
+    John-&amp;gt;&amp;gt;John: Fight against hypochondria
+end
+Note right of John: Rational thoughts!
+John--&amp;gt;&amp;gt;Alice: Great!
+John-&amp;gt;&amp;gt;Bob: How about you?
+Bob--&amp;gt;&amp;gt;John: Jolly good!
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其效果如下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;sequenceDiagram
+Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
+loop Healthcheck
+    John-&amp;gt;&amp;gt;John: Fight against hypochondria
+end
+Note right of John: Rational thoughts!
+John--&amp;gt;&amp;gt;Alice: Great!
+John-&amp;gt;&amp;gt;Bob: How about you?
+Bob--&amp;gt;&amp;gt;John: Jolly good!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因此需要插入如下内容（将代码块隐藏，并在原位置插入 mermaid 图）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;style&amp;gt;
+  pre.language-mermaid,
+  code.language-mermaid {
+    display: none;
+  }
+&amp;lt;/style&amp;gt;
+&amp;lt;script
+  src=&quot;https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='
+    for(let x of document.getElementsByClassName(&quot;language-mermaid&quot;))
+      if(x.nodeName==&quot;CODE&quot;)
+      {
+        let m = document.createElement(&quot;div&quot;);
+        m.classList.add(&quot;mermaid&quot;);
+        m.textContent = x.textContent;
+        x.parentNode.insertAdjacentElement(&quot;beforebegin&quot;, m);
+      }'
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;prism-代码高亮&quot;&gt;prism 代码高亮&lt;/h4&gt;
+
+&lt;p&gt;默认的代码高亮器&lt;code&gt;rouge&lt;/code&gt;渲染出来的效果一般，同时代码行号效果非常差。这里使用了 prismjs 来进行代码渲染。它的好处是模块化程度非常高，且支持自定义插件。&lt;/p&gt;
+
+&lt;p&gt;这里我引入了三个插件（代码行号、动态代码高亮、工具栏，且自己写了一个选中全部代码的按钮）作为例子，也可以像我一样自己定制。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;link
+  rel=&quot;stylesheet&quot;
+  href=&quot;//cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.min.css&quot;
+/&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js&quot;
+  defer=&quot;defer&quot;
+&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='Prism.plugins.autoloader.languages_path = &quot;https:\/\/cdn.jsdelivr.net/npm/prismjs/components/&quot;'
+&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;link
+  rel=&quot;stylesheet&quot;
+  href=&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css&quot;
+/&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='
+    for(let x of document.getElementsByTagName(&quot;pre&quot;))
+      x.classList.add(&quot;line-numbers&quot;);'
+&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;link
+  rel=&quot;stylesheet&quot;
+  href=&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.css&quot;
+/&amp;gt;
+&amp;lt;script
+  src=&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='
+    Prism.plugins.toolbar.registerButton(&quot;select-code&quot;, function (env) {
+      let button = document.createElement(&quot;button&quot;);
+      button.textContent = &quot;select this &quot; + env.language;
+      button.addEventListener(&quot;click&quot;, function () {
+        if (document.body.createTextRange) {
+          let range = document.body.createTextRange();
+          range.moveToElementText(env.element);
+          range.select();
+        } else if (window.getSelection) {
+          let selection = window.getSelection();
+          let range = document.createRange();
+          range.selectNodeContents(env.element);
+          selection.removeAllRanges();
+            selection.addRange(range);
+        }
+      });
+      return button;
+    })'
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;valine-评论&quot;&gt;valine 评论&lt;/h4&gt;
+
+&lt;p&gt;配置详见&lt;a href=&quot;https://valine.js.org/&quot;&gt;官方手册&lt;/a&gt;，说得很清楚了。引入这个插件后，会在 html 页面中寻找&lt;code&gt;.v&lt;/code&gt;的页面元素。其中 appId 和 appKey 都要自己去申请，我的 leanCloud 开了白名单，直接使用我的是不能用的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;div class=&quot;v&quot;&amp;gt;
+  &amp;lt;i class=&quot;fas fa-spinner fa-pulse&quot;&amp;gt;&amp;lt;/i&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;script
+  src=&quot;https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js&quot;
+  defer=&quot;defer&quot;
+  onload='
+    new Valine({
+      &quot;el&quot;: document.getElementsByClassName(&quot;v&quot;)[0],
+      &quot;appId&quot;: &quot;9hABRddSuEkTgqLrt1VSK5B1-gzGzoHsz&quot;,
+      &quot;appKey&quot;: &quot;NJ7RwmgrxsF7KDzlqU7YewlL&quot;,
+      &quot;placeholder&quot;: &quot;在这里评论吧！填写邮箱可以获得 Gravatar 头像和回复通知哦&quot;,
+      &quot;requiredFields&quot;: [&quot;nick&quot;,&quot;mail&quot;],
+      &quot;visitor&quot;: true,
+      &quot;recordIP&quot;: true
+    })'
+&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;下一步计划&quot;&gt;下一步计划&lt;/h2&gt;
+
+&lt;p&gt;详细的开发计划及建站内容详见&lt;a href=&quot;https://jekyll-theme-WuK.wu-kan.cn/&quot;&gt;主题详情页&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;从&lt;a href=&quot;https://magical-girl.site/&quot;&gt;这个页面&lt;/a&gt;得到的灵感，目标是博客上除了文章和作为导航的 Live2D 之外不出现其他的模块，尽量的干净、快速。&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;大部分的参考链接已在原文给出，同时搭建本博客的过程中还参考了以下内容，感谢作者们：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/9f198d5779e6&quot;&gt;Jekyll + Github Pages 博客搭建入门&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/ds19991999/article/details/81516568&quot;&gt;Jekyll 博客 Next 主题超深度配置&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/bb184f61c9ae&quot;&gt;【应用软件】Jekyll 配置&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="博客搭建" /><summary type="html">引言</summary></entry></feed>
