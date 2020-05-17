@@ -16,7 +16,7 @@
 - WeChat: **Wu-\_-Kan**
 - QQ: **469549118**
 
-分页展示使用 **<!-- slide vertical=true --> 或 <!-- slide -->**
+分页展示使用 **<!-- slide vertical=true -->  <!-- slide -->**
 
 ## 我的博客
 
