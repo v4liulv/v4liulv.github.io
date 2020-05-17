@@ -3,10 +3,10 @@ title: DSEGraph-DataLoader使用手册
 tags: 图库
 ---
 
-# 安装GraphLoader
+## 安装GraphLoader
 --
 
-## 下载Graph Loader安装包
+### 下载Graph Loader安装包
 
 点击[下载地址](https://pan.baidu.com/s/1erorpQrwXr0wUHRMgVQnMA "下载地址")进行下载。
 
@@ -14,9 +14,9 @@ tags: 图库
 
 **注意：** 下载提取码为d4t4
 
-## 解压安装
+### 解压安装
 
-### 步骤：
+#### 步骤：
 
 1. 在集群需要安装graph-loader的节点，如19.31节点上创建安装目录
 ```sh
@@ -52,7 +52,7 @@ chmod +755 /usr/share/dse-graph-loader/*.sh
 
 ![](https://v4liulv.github.io/assets/image/1529316233010_69.png)
 
-### 检查是否安装成功
+#### 检查是否安装成功
 此命令是查询dse loader和dse的版本信息
 ```
 graphloader -v
@@ -63,7 +63,7 @@ graphloader -v
 ![](https://v4liulv.github.io/assets/image/1529316305475_70.png)
 
 
-# 配置参数
+## 配置参数
 
 公共配置文件在`/usr/share/dse-graph-loader/scripts/loadJdbc/base`目录下的base.groovy
 
@@ -99,9 +99,9 @@ datePattern = "yyyy-mm-dd hh24:mi:ss"
 
 **注意**：其中数据库配置需要根据现场的数据抽取来源库进行配置修改，其他可选进行修改
 
-# 数据抽取配置表
+## 数据抽取配置表
 
-## 数据抽取配置表 - B_DSE_LOADER_CONFIG
+### 数据抽取配置表 - B_DSE_LOADER_CONFIG
 [建表语句和插入sql](http:///dse/数据抽取/db/B_DSE_LOADER_CONFIG.sql "建表语句和插入sql")
 
 字段说明：
@@ -127,7 +127,7 @@ datePattern = "yyyy-mm-dd hh24:mi:ss"
 | UPDATE_TIME | DATE | Y | SYSDATE | 更新时间 |
 | SCBZ | NUMBER(2) |  | 0 | 删除标志，0代表未删除，1代表删除 |
 
-## 数据抽取配置日志表 B_DSE_LOADER_LOG
+### 数据抽取配置日志表 B_DSE_LOADER_LOG
 [建表语句](http:///dse/数据抽取/db/B_DSE_LOADER_LOG.sql "建表语句和插入sql")
 
 字段说明：
@@ -155,9 +155,9 @@ datePattern = "yyyy-mm-dd hh24:mi:ss"
 
 注意：根据现场的资源名称修改调整配置表配置信息。
 
-# 轨迹旅馆住宿关系图-配置抽取
+## 轨迹旅馆住宿关系图-配置抽取
 
-## 抽取配置信息
+### 抽取配置信息
 B_DSE_LOADER_CONFIG表,插入配置数据
 ```sql
 insert into B_DSE_LOADER_CONFIG (CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER,SCBZ)
@@ -172,7 +172,7 @@ commit;
 select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 01;
 ```
 
-## 现场视图数据视图准备
+### 现场视图数据视图准备
 现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。
 
 视图要求,必须包含字段
@@ -192,7 +192,7 @@ select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 01;
 还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。
 
 
-## 抽取脚本
+### 抽取脚本
 模型是-人员旅馆住宿关系图
 
 脚本文件：`/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_lgzs.groovy`
@@ -228,7 +228,7 @@ relsLabel='lgzs' //需要修改，轨迹关系标签名
 ...
 ```
 
-## 旅馆住宿数据
+### 旅馆住宿数据
 如旅馆住宿信息表
 
 Oracle数据必须字段
@@ -246,7 +246,7 @@ bzk_gxsj_date：标准库更新时间（date类型)
 注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。
 
 
-## 执行脚本检查并生成Graph模型
+### 执行脚本检查并生成Graph模型
 
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
@@ -291,7 +291,7 @@ root@dse02 ~]#
 2018-06-18 17:45:17 INFO  Executable:304 - DSE Loader Succes, TotalTime : 4 S
 ```
 
-## 数据建模语句
+### 数据建模语句
 
 以下为通过 -dryrun true生成的模型以及索引
 
@@ -341,9 +341,9 @@ schema.vertexLabel('person').index('ratedByTfsj').outE('lgzs').by('tfsj').ifNotE
 create_schema都修改为false
 
 
-## 数据全量抽取
+### 数据全量抽取
 
-### 修改配置表增量时间
+#### 修改配置表增量时间
 
 ```sql
 UPDATE B_DSE_LOADER_CONFIG t
@@ -356,7 +356,7 @@ commit;
 select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 01;
 ```
 
-### 执行抽取命令
+#### 执行抽取命令
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
 
@@ -396,9 +396,9 @@ Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
 2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
 ```
 
-## 数据增量抽取
+### 数据增量抽取
 
-### 创建执行调度shell脚本
+#### 创建执行调度shell脚本
 
 ```sh
 cd /usr/share/dse-graph-loader
@@ -407,7 +407,7 @@ echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' >> graphloader_lgzs.sh
 echo '/usr/share/dse-graph-loader/graphloader oracle_model.groovy -graph test01 -address dse01 -username admin -password hnzx@123' >> graphloader_lgzs.sh
 ```
 
-### 定时调度
+#### 定时调度
 
 crontab添加前检查
 ```sh
@@ -436,7 +436,7 @@ crontab -e
 0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh lgzs graphloader_lgzs.log >> /var/log/graphloader/lgzs/graphloader_lgzs_renamefile.log  2>&1 &
 ```
 
-### 抽取调度执行结果检查
+#### 抽取调度执行结果检查
 
 可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查
 ```sql
@@ -448,9 +448,9 @@ select t.*, t.rowid from B_DSE_LOADER_LOG t order by create_time desc;
 ![](https://v4liulv.github.io/assets/image/1529338757622_48.png)
 
 
-# 轨迹航班关系图-配置抽取
+## 轨迹航班关系图-配置抽取
 
-## 抽取配置信息
+#### 抽取配置信息
 B_DSE_LOADER_CONFIG表,插入配置数据
 ```sql
 insert into B_DSE_LOADER_CONFIG (SYSTEMID, CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER, CREATE_TIME, UPDATE_TIME, SCBZ)
@@ -465,7 +465,7 @@ commit;
 select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 02;
 ```
 
-## 现场视图数据视图准备
+### 现场视图数据视图准备
 现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。
 
 视图要求,必须包含字段
@@ -488,7 +488,7 @@ select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 02;
 还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。
 
 
-## 抽取脚本
+### 抽取脚本
 模型是-人员旅馆住宿关系图
 
 脚本文件：`/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_czhb.groovy`
@@ -543,7 +543,7 @@ bzk_gxsj_date：标准库更新时间（date类型)
 注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。
 
 
-## 执行脚本检查并生成Graph模型
+### 执行脚本检查并生成Graph模型
 
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
@@ -589,9 +589,9 @@ root@dse02 ~]#
 ```
 
 
-## 数据全量抽取
+### 数据全量抽取
 
-### 修改配置表增量时间
+#### 修改配置表增量时间
 
 ```sql
 UPDATE B_DSE_LOADER_CONFIG t
@@ -604,7 +604,7 @@ commit;
 select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 02;
 ```
 
-### 执行抽取命令
+#### 执行抽取命令
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
 
@@ -644,9 +644,9 @@ Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
 2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
 ```
 
-## 数据增量抽取
+### 数据增量抽取
 
-### 创建执行调度shell脚本
+#### 创建执行调度shell脚本
 
 ```sh
 sudo cd /usr/share/dse-graph-loader
@@ -655,7 +655,7 @@ sudo echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' >> graphloader_czhb.
 sudo echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhb.groovy -graph test01 -address dse01 -username admin -password hnzx@123' >> graphloader_czhb.sh
 ```
 
-### 定时调度
+#### 定时调度
 
 创建定时调度前先创建日志文件目录
 ```sh
@@ -690,7 +690,7 @@ crontab -e
 0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh czhb graphloader_czhb.log >> /var/log/graphloader/czhb/graphloader_czhb_renamefile.log  2>&1 &
 ```
 
-### 抽取调度执行结果检查
+#### 抽取调度执行结果检查
 
 可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查
 ```sql
@@ -702,9 +702,9 @@ select t.*, t.rowid from B_DSE_LOADER_LOG t where t.category = 01 and zlcq_type 
 ![](http://localhost:8081/assets/msg/upload/1529338757622_48.png)
 
 
-# 轨迹火车关系图-配置抽取
+## 轨迹火车关系图-配置抽取
 
-## 抽取配置信息
+### 抽取配置信息
 B_DSE_LOADER_CONFIG表,插入配置数据
 ```sql
 insert into B_DSE_LOADER_CONFIG (SYSTEMID, CATEGORY, ZY_ZWMC, ZY_YWMC, ZY_QWK_VIEW, ZY_YYK_VIEW, ZY_WBZY_VIEW, ZY_KETTLE_MC, ZLCQ_KSSJ, ZLCQ_JSSJ, ZLCQ_ZT, ZLCQ_TYPE, BLZD1, BLZD2, BLZD3, BLZD4, BLZD5, CREATE_USER, CREATE_TIME, UPDATE_TIME, SCBZ)
@@ -724,7 +724,7 @@ select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 03;
 ![](https://v4liulv.github.io/assets/image/1530673721770_18.png)
 
 
-## 现场视图数据视图准备
+### 现场视图数据视图准备
 现场需要根据旅馆住宿信息表，创建视图库后，创建资源名为T_BZ_LY_LGZSXX的视图。
 
 视图要求,必须包含字段
@@ -747,7 +747,7 @@ select t.* from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 03;
 还有其他需要抽取进图的全部字段。根据现场的资源情况而定，最好是其他全部字段都配置进视图。
 
 
-## 抽取脚本
+### 抽取脚本
 模型是-人员旅馆住宿关系图
 
 脚本文件：`/usr/share/dse-graph-loader/scripts/loadJdbc/oracle_model_czhc.groovy`
@@ -802,7 +802,7 @@ bzk_gxsj_date：标准库更新时间（date类型)
 注意： 根据现场的字段信息修改调整脚本中对应的personInputSql、personHotelInputSql、personHotelInputSql语句中的查询字段名。
 
 
-## 执行脚本检查并生成Graph模型
+### 执行脚本检查并生成Graph模型
 
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
@@ -848,9 +848,9 @@ root@dse02 ~]#
 ```
 
 
-## 数据全量抽取
+### 数据全量抽取
 
-### 修改配置表增量时间
+#### 修改配置表增量时间
 
 ```sql
 UPDATE B_DSE_LOADER_CONFIG t
@@ -863,7 +863,7 @@ commit;
 select t.ZLCQ_KSSJ, t.ZLCQ_JSSJ from B_DSE_LOADER_CONFIG t where CATEGORY = 01 and ZLCQ_TYPE = 03;
 ```
 
-### 执行抽取命令
+#### 执行抽取命令
 ```sh
 cd /usr/share/dse-graph-loader/scripts/loadJdbc
 
@@ -903,9 +903,9 @@ Current total additions: 7 vertices 6 edges 12 properties 0 anonymous
 2018-06-18 17:47:45 INFO  Executable:304 - DSE Loader Succes, TotalTime : 11 S
 ```
 
-## 数据增量抽取
+### 数据增量抽取
 
-### 创建执行调度shell脚本
+#### 创建执行调度shell脚本
 
 创建crontab执行命令文件graphloader_czhc.sh
 ```sh
@@ -915,7 +915,7 @@ echo 'cd /usr/share/dse-graph-loader/scripts/loadJdbc' >> graphloader_czhc.sh
 echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph test01 -address dse01 -username admin -password hnzx@123' >> graphloader_czhc.sh
 ```
 
-### 定时调度
+#### 定时调度
 
 crontab添加前检查
 ```sh
@@ -944,7 +944,7 @@ crontab -e
 0 23 * * 6 /usr/share/dse-graph-loader/renamefile.sh czhc graphloader_czhc.log >> /var/log/graphloader/czhc/graphloader_czhb_renamefile.log  2>&1 &
 ```
 
-### 抽取调度执行结果检查
+#### 抽取调度执行结果检查
 
 可以检查/opt/graphloader_lgzs.log打印信息，也可以通过配置抽取log表检查
 ```sql
