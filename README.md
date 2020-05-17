@@ -13,7 +13,7 @@
 - E-mail:
   - **[i@com](mailto:469549118@qq.com)**
   - **[v4liulv@outlook.com](mailto:v4liulv@outlook.co)**
-- WeChat: **Wu-\_-Kan**
+- WeChat: **Liu-\_-LV**
 - QQ: **469549118**
 
 <!-- slide -->
