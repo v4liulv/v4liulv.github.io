@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T02:12:13+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T02:16:10+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -26,7 +26,332 @@ ASC&lt;br/&gt;
   marginwidth=&quot;0&quot;
   marginheight=&quot;0&quot;
 &gt;&lt;/iframe&gt;
-</subtitle><entry><title type="html">基于Jekyll搭建个人博客</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="基于Jekyll搭建个人博客" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;h2 id=&quot;引言&quot;&gt;引言&lt;/h2&gt;
+</subtitle><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp
+         TEMPFILE 'd:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf'
+         SIZE 32m
+         AUTOEXTEND ON 
+         NEXT  32m
+         EXTENT MANAGEMENT LOCAL;
+         
+CREATE TABLESPACE PCS_JKPT_DATA
+         LOGGING
+         DATAFILE 'D:\Oracle\app\oradata\gz\PCS_JKPT_DATA.dbf'
+         SIZE 32M
+         AUTOEXTEND ON
+         NEXT 32M MAXSIZE UNLIMITED
+         EXTENT MANAGEMENT LOCAL;
+
+         
+---CREATE USER pcs_sd_jzcq_pzk IDENTIFIED BY pcs_sd_jzcq_pzk;
+
+---DROP USER pcs_sd_jzcq_pzk;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者用户提示删除正在使用，那么通过下面方式删除&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;select username,sid,serial## from v$session; 
+alter system kill session '66,294'; --66为删除用户的id,294为serial#的值
+DROP USER pcs_yn_hiveIncrupdate_pzk cascade;
+
+
+CREATE USER PCS_JCGLPT IDENTIFIED BY pcs_jcglpt
+         ACCOUNT UNLOCK
+         DEFAULT TABLESPACE PCS_JCGLPT
+         TEMPORARY TABLESPACE PCS_JCGLPT_tmp;
+         
+GRANT CONNECT, RESOURCE TO PCS_JCGLPT;
+GRANT UNLIMITED TABLESPACE to PCS_JCGLPT; --使用表空间
+GRANT CREATE TABLE TO PCS_JCGLPT;--建表
+GRANT DROP TABLE TO PCS_JCGLPT;
+GRANT INSERT TABLE TO PCS_JCGLPT;
+GRANT UPDATE TABLE TO PCS_JCGLPT;
+GRANT ALTER SESSION TO PCS_JCGLPT;--修改会话
+GRANT CREATE CLUSTER TO PCS_JCGLPT;--建立聚簇
+GRANT CREATE DATABASE LINK TO PCS_JCGLPT;--建立数据库链接
+GRANT CREATE SEQUENCE TO PCS_JCGLPT;--建立序列
+GRANT CREATE SESSION TO PCS_JCGLPT;--建立会话
+GRANT CREATE SYNONYM TO PCS_JCGLPT;--建立同义词
+GRANT CREATE VIEW TO PCS_JCGLPT;--建立视图
+GRANT CREATE CLUSTER TO PCS_JCGLPT;--建立聚簇
+GRANT CREATE PROCEDURE TO PCS_JCGLPT; --建立过程
+GRANT CREATE SEQUENCE TO PCS_JCGLPT; --建立序列
+GRANT CREATE TRIGGER TO PCS_JCGLPT;--建立触发器
+GRANT CREATE TYPE TO PCS_JCGLPT; --建立类型
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;用户被锁定解决办法&quot;&gt;用户被锁定，解决办法&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;alter user pcs_yn_hiveIncrupdate_pzk account unlock; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;创建数据库&quot;&gt;创建数据库&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;开始 -&amp;gt; 程序 —&amp;gt;Oracle-Oracle11g_home1—&amp;gt;配置和移植工具—&amp;gt;Database Configuration Assistant命令，启动DBCA，出现“欢迎使用”窗口，
+–&amp;gt; 点击下一步
+    &lt;blockquote&gt;
+      &lt;ul&gt;
+        &lt;li&gt;步骤1 创建数据库 点击下一步&lt;/li&gt;
+        &lt;li&gt;步骤2 数据库模版，默认使用一般用途和事务处理，点击下一步&lt;/li&gt;
+        &lt;li&gt;步骤3 数据库标识，并输入全局数据库名：dse.cs.sinobest，SID：dse
+–&amp;gt; 后面全部下一步，然后完成&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;删除数据库&quot;&gt;删除数据库&lt;/h2&gt;
+&lt;p&gt;开始”—&amp;gt;“程序”—&amp;gt;Oracle-Oracle11g_home1—&amp;gt;配置和移植工具—&amp;gt;Database Configuration Assistant命令，启动DBCA，出现“欢迎使用”窗口，
+–&amp;gt; 点击下一步&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;步骤1 选择删除数据库 点击下一步&lt;/li&gt;
+    &lt;li&gt;步骤2 选择需要删除的数据库 点击下一步&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;创建表空间&quot;&gt;创建表空间&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;1 . 创建用户之前要创建”临时表空间”，若不创建则默认的临时表空间为temp
+&lt;strong&gt;语法：&lt;/strong&gt;&lt;/p&gt;
+  &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE db_temp
+         TEMPFILE 'D:appAdministratororadataNewDBDB_TEMP.DBF'
+         SIZE 32M
+         AUTOEXTEND ON
+         NEXT 32M MASIZE UNLIMITED
+         EXTENT MANAGEMENT LOCAL;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;例子：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE pcs_editor_tmp
+         TEMPFILE 'd:\oracle\app\oradata\basic\pcs_editor_tpm.dbf'
+         SIZE 32m
+         AUTOEXTEND on
+         NEXT 32m
+         EXTENT MANAGEMENT local;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE pcs_zstp_tmp
+         TEMPFILE 'd:\oracle\app\oradata\zstp\pcs_zstp_tmp.dbf'
+         SIZE 32m
+         AUTOEXTEND ON 
+         NEXT 32m
+         EXTENT MANAGEMENT LOCAL;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;创建用户之前先要创建数据表空间，若没有创建则默认永久性表空间是system。
+&lt;strong&gt;语法：&lt;/strong&gt;
+      &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TABLESPACE db_data
+      LOGGING
+      DATAFILE 'D:appAdministratororadataNewDBDB_DATA.DBF'
+      SIZE 32M
+      AUTOEXTEND ON
+      NEXT 32M MAXSIZE UNLIMITED
+      EXTENT MANAGEMENT LOCAL;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;例：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TABLESPACE pcs_editor_data
+         LOGGING
+         DATAFILE 'D:\Oracle\app\oradata\basic\pcs_editor_data.dbf'
+         SIZE 32M
+         AUTOEXTEND ON
+         NEXT 32M MAXSIZE UNLIMITED
+         EXTENT MANAGEMENT LOCAL;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中&lt;strong&gt;DB_DATA&lt;/strong&gt;和&lt;strong&gt;DB_TEMP&lt;/strong&gt;是你自定义的数据表空间名称和临时表空间名称，可以任意取名；&lt;strong&gt;D:appAdministratororadataNewDBDB_DATA.DBF&lt;/strong&gt;是数据文件的存放位置，&lt;strong&gt;DB_DATA.DBF&lt;/strong&gt;文件名也是任意取；&lt;strong&gt;size 32M&lt;/strong&gt;是指定该数据文件的大小，也就是表空间的大小。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TABLESPACE pcs_zstp_data
+         LOGGING
+         DATAFILE 'D:\Oracle\app\oradata\zstp\pcs_zstp_data.DBF'
+         SIZE 32M
+         AUTOEXTEND ON
+         NEXT 32M MAXSIZE UNLIMITED
+         EXTENT MANAGEMENT LOCAL;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;创建修改用户&quot;&gt;创建修改用户&lt;/h2&gt;
+
+&lt;p&gt;oracle 内部有两个建好的用户：system 和 sys。用户可直接登录到 system 用户以创建其他用户，因为system具有创建别 的用户的 权限。 在安装 oracle 时，用户或系统管理员首先可以为自己建立一个用户。&lt;/p&gt;
+
+&lt;p&gt;管理员 sys/123456 登录。&lt;/p&gt;
+
+&lt;p&gt;语法[创建用户]： create user 用户名 identified by 口令[即密码]；
+例子使用默认表空间：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE USER test IDENTIFIED BY test;
+CREATE USER yy_editor_csb IDENTIFIED BY 123456;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;例子使用已经创建的表空间&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE USER yy_editor_csb IDENTIFIED BY 123456
+         ACCOUNT UNLOCK
+         DEFAULT TABLESPACE pcs_editor_data
+         TEMPORARY TABLESPACE pcs_editor_tmp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;语法[更改用户]: alter user 用户名 identified by 口令[改变的口令];
+例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;ALTER USER test IDENTIFIED BY 123456;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;删除用户&quot;&gt;删除用户&lt;/h2&gt;
+
+&lt;p&gt;语法：drop user 用户名;
+例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;DROP USER yy_editor_csb;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;若用户拥有对象，则不能直接删除，否则将返回一个错误值。指定关键字cascade,可删除用户所有的对象，然后再删除用户。
+语法： drop user 用户名 cascade;
+例子：  删除test用户对象&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;DROP USER test cascade;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;授权角色&quot;&gt;授权角色&lt;/h2&gt;
+&lt;p&gt;oracle为兼容以前版本，提供三种标准角色（role）:connect/resource和dba.&lt;/p&gt;
+
+&lt;h3 id=&quot;三种标准角色&quot;&gt;三种标准角色&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;connect role(连接角色)&lt;/strong&gt;
+–临时用户，特指不需要建表的用户，通常只赋予他们connect role. 
+–connect是使用oracle简单权限，这种权限只对其他用户的表有访问权限，包括select/insert/update和delete等。
+–拥有connect role 的用户还能够创建表、视图、序列（sequence）、簇（cluster）、同义词(synonym)、回话（session）和其他  数据的链（link）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;resource role(资源角色)&lt;/strong&gt;
+–更可靠和正式的数据库用户可以授予resource role。
+–resource提供给用户另外的权限以创建他们自己的表、序列（sequence）、过程(procedure)、触发器(trigger)、索引(index)和簇(cluster)。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;dba role(数据库管理员角色)&lt;/strong&gt;
+–dba role拥有所有的系统权限
+–包括无限制的空间限额和给其他用户授予各种权限的能力。system由dba用户拥有。&lt;/p&gt;
+
+&lt;h3 id=&quot;授权命令&quot;&gt;授权命令&lt;/h3&gt;
+&lt;p&gt;语法：grant connect, resource to 用户名;
+例子授权connect和resource权限：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;GRANT CONNECT, RESOURCE TO test;
+GRANT CONNECT, RESOURCE TO yy_editor_csb;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;例子授权DBA权限：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;GRANT DBA TO test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;授权某个用户访问另外用户权限&quot;&gt;授权某个用户访问另外用户权限&lt;/h3&gt;
+&lt;p&gt;//把JBQDEDI读写权限 授权给JBQD&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;select 'Grant all on '||table_name||'to JBQD ;' from all_tables
+where owner = upper('JBQDEDI');
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;//把当前登陆的用户表查询权限授权给b用户&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;select 'GRANT SELECT ON '||table_name||' to b;'  from user_tables
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;得到所有表的授权命名，如果需要授权那个表复制进行执行授权即可，如：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;GRANT SELECT ON b_editor_abstract TO yy_editor_csb;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;撤销权限&quot;&gt;撤销权限&lt;/h3&gt;
+&lt;p&gt;语法： revoke connect, resource from 用户名;
+列子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;REVOKE CONNECT, RESOURCE FROM test;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;创建授权删除角色&quot;&gt;创建/授权/删除角色&lt;/h2&gt;
+
+&lt;p&gt;除了前面讲到的三种系统角色—-connect、resource和dba，用户还可以在oracle创建自己的role。用户创建的role可以由表或系统权限或两者的组合构成。为了创建role，用户必须具有create role系统权限。&lt;/p&gt;
+
+&lt;h3 id=&quot;1创建角色&quot;&gt;1》创建角色&lt;/h3&gt;
+
+&lt;p&gt;语法： CREATE ROLE 角色名;&lt;/p&gt;
+
+&lt;p&gt;例子： CREATE ROLE testRole;&lt;/p&gt;
+
+&lt;p&gt;2》授权角色&lt;/p&gt;
+
+&lt;p&gt;语法： GRANT SELECT ON CLASS to 角色名;&lt;/p&gt;
+
+&lt;p&gt;列子： GRANT SELECT ON CLASS TO testRole;&lt;/p&gt;
+
+&lt;p&gt;注：现在，拥有testRole角色的所有用户都具有对class表的select查询权限&lt;/p&gt;
+
+&lt;p&gt;3》删除角色&lt;/p&gt;
+
+&lt;p&gt;语法： DROP ROLE 角色名;&lt;/p&gt;
+
+&lt;p&gt;例子： DROP ROLE testRole;&lt;/p&gt;
+
+&lt;p&gt;注：与testRole角色相关的权限将从数据库全部删除&lt;/p&gt;
+
+&lt;h2 id=&quot;复制表数据&quot;&gt;复制表数据&lt;/h2&gt;
+&lt;p&gt;语法：insert into 插入表 select * from 复制来源表
+例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;INSERT INTO b_editor_abstract SELECT * FROM yy_gxksh_zsb.b_editor_abstract;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;函数日期格式转换&quot;&gt;函数日期格式转换&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE OR REPLACE PACKAGE pkg_otou AS
+/******************************************************************************
+   NAME:       pkg_otou
+   PURPOSE:
+
+   REVISIONS:
+   Ver        Date        Author           Description
+   ---------  ----------  ---------------  ------------------------------------
+   1.0        11/19/2014      defu       1. Created this package.
+******************************************************************************/
+  --传入日期型，返回unix型日期
+  function otou(in_date IN DATE) return varchar2;
+  --传入字符型日期，格式：yyyymmddhh24miss，返回unix型日期
+  function otou(in_date IN varchar2) return varchar2;
+   --传入数字型日期，格式：yyyymmddhh24miss，返回unix型日期
+  function otou(in_date IN number) return varchar2;
+    --传入字符型日期，格式：yyyy-mm-dd hh24:mi:ss，返回unix型日期
+  function otou2(in_date IN varchar2) return varchar2;
+
+  ----例子
+  /* SELECT pkg_otou.otou(sysdate),
+        pkg_otou.otou2('2014-11-10 10:01:02') ,
+        pkg_otou.otou(20141110100102),
+        pkg_otou.otou('20141110100102')
+   FROM DUAL;*/
+
+END pkg_otou;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;触发器&quot;&gt;触发器&lt;/h2&gt;
+
+&lt;h3 id=&quot;检测某个表如果更新则更新另外一个表&quot;&gt;检测某个表如果更新，则更新另外一个表&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE OR REPLACE TRIGGER tr_update_pkey_index
+  --INSERT数据库插入会触发此触发器，after表示在数据库动作之后触发器执行;
+AFTER UPDATE ON b_titan_propertykey
+  --for each row：对表的每一行触发器执行一次。如果没有这一选项，则只对整个表执行一次。
+FOR EACH ROW
+  BEGIN
+    --复制来源的表值可以使用 :new.字段名称
+    UPDATE B_TITAN_INDEX SET
+      PKEYS = :new.PKEY_NAME,
+      INDEX_LABEL = :new.PKEY_LABEL,
+      INDEX_LABEL_TYPE = :new.PKEY_TYPE,
+      ISUNIQ = :new.PKEY_INDEX_UNIQ
+    WHERE INDEX_NAME = :new.PKEY_NAME;
+  END;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;检测某个表如果插入则插入另外一个表&quot;&gt;检测某个表如果插入，则插入另外一个表&lt;/h3&gt;
+&lt;p&gt;```sql
+  CREATE OR REPLACE TRIGGER TR_COPY_PKEY_INDEX
+  –INSERT数据库插入会触发此触发器，after表示在数据库动作之后触发器执行;
+after INSERT on B_TITAN_PROPERTYKEY
+–for each row：对表的每一行触发器执行一次。如果没有这一选项，则只对整个表执行一次。
+for each row
+BEGIN
+  INSERT INTO B_TITAN_INDEX(INDEX_NAME, PKEYS, INDEX_LABEL, INDEX_LABEL_TYPE, ISUNIQ)
+  VALUES
+    –复制来源的表值可以使用 :new.字段名称
+    (:new.PKEY_NAME, :new.PKEY_NAME, :new.PKEY_LABEL, :new.PKEY_TYPE, :new.PKEY_INDEX_UNIQ);
+END;
+``&lt;/p&gt;</content><author><name></name></author><category term="数据库" /><summary type="html">Oracle 创建用流程 ```sql CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp TEMPFILE ‘d:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf’ SIZE 32m AUTOEXTEND ON NEXT 32m EXTENT MANAGEMENT LOCAL; CREATE TABLESPACE PCS_JKPT_DATA LOGGING DATAFILE ‘D:\Oracle\app\oradata\gz\PCS_JKPT_DATA.dbf’ SIZE 32M AUTOEXTEND ON NEXT 32M MAXSIZE UNLIMITED EXTENT MANAGEMENT LOCAL;</summary></entry><entry><title type="html">基于Jekyll搭建个人博客</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="基于Jekyll搭建个人博客" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;h2 id=&quot;引言&quot;&gt;引言&lt;/h2&gt;
 
 &lt;p&gt;最开始我是在&lt;a href=&quot;https://blog.csdn.net/w_weilan&quot;&gt;CSDN&lt;/a&gt;上写博客的。博客写了一年多，访问量勉强破万，感觉其中至少有三成是自己贡献的。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用。&lt;/p&gt;
 

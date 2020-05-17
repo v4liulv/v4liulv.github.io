@@ -2,6 +2,15 @@
 [
   
     {
+      "title"    : "Oracle常用SQL",
+      "category" : "",
+      "tags"     : "数据库",
+      "date"     : "2020-05-15 00:00:00 +0800",
+      
+      "url"      : "http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/"
+    } ,
+  
+    {
       "title"    : "基于Jekyll搭建个人博客",
       "category" : "",
       "tags"     : "博客搭建",
