@@ -70,7 +70,7 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
       #  />
         <link
                  rel="stylesheet"
-                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+                 href="https://github.com/v4liulv/v4liulv.github.io/blob/master/css/pools.css"
        />
       - | # 引入fontawesome图标样式
         <link
