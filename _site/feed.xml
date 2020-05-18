@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T11:09:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T13:03:30+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -26,7 +26,57 @@ ASC&lt;br/&gt;
   marginwidth=&quot;0&quot;
   marginheight=&quot;0&quot;
 &gt;&lt;/iframe&gt;
-</subtitle><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
+</subtitle><entry><title type="html">TBDS</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="TBDS" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;调整内容&quot;&gt;调整内容&lt;/h2&gt;
+
+&lt;p&gt;主要针对新增的工作流和现场环境进行调整，以下满足现状的情况，并开发对应测试类，主要有以下调整来满足现状：&lt;/p&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;内网Maven缺包问题&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例列表接口&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例日志列表接口&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例日志详情接口&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增根据工作流和任务名获取某一个数据时间运行日志详情&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;单独分离测试代码&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;需求是会逐渐增长的！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;调整内容-1&quot;&gt;调整内容&lt;/h3&gt;
+
+&lt;p&gt;调整内容主要包含以下内容：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;测试内全部分离到test下&lt;/li&gt;
+    &lt;li&gt;DEMO类独立作为API借口实现&lt;/li&gt;
+    &lt;li&gt;Maven支持外网环境打包把依赖包全部打包到lib目录下&lt;/li&gt;
+    &lt;li&gt;内网环境可注释到Maven依赖，通过导入本地包方式导入lib目录下依赖包&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;新增内容&quot;&gt;新增内容&lt;/h3&gt;
+
+&lt;p&gt;新增内容主要包含以下内容：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;DEMO类新增查看任务实例运行情况taskInstanceList方法&lt;/li&gt;
+    &lt;li&gt;DEMO类新增获取任务ID方法getTaskID&lt;/li&gt;
+    &lt;li&gt;DEMO类新增任务实例日志列表方法&lt;/li&gt;
+    &lt;li&gt;DEMO串联通过工作流ID和任务ID获取某一具体任务实例的日志信息&lt;/li&gt;
+    &lt;li&gt;测试新增获取任务实例列表测试方法taskInstanceTest&lt;/li&gt;
+    &lt;li&gt;测试新增获取任务实例日志详情测试方法taskInstanceLog&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;版本信息&quot;&gt;版本信息&lt;/h2&gt;
+
+&lt;p&gt;当前版本为1.0.1&lt;/p&gt;
+
+&lt;p&gt;历史版本为1.0.0&lt;/p&gt;
+
+&lt;h2 id=&quot;调整详情&quot;&gt;调整详情&lt;/h2&gt;
+
+&lt;h2 id=&quot;新增详情&quot;&gt;新增详情&lt;/h2&gt;</content><author><name></name></author><category term="工作流API工程新增调整说明" /><summary type="html">调整内容</summary></entry><entry><title type="html">Hadoop</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="Hadoop" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/"></content><author><name></name></author><category term="MapReduce工程Demo说明" /><summary type="html"></summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp
          TEMPFILE 'd:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf'
          SIZE 32m
@@ -2102,7 +2152,9 @@ echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph te
 
 &lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/1529338757622_48.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;END!&lt;/p&gt;</content><author><name></name></author><category term="图库" /><summary type="html">安装GraphLoader</summary></entry><entry><title type="html">Neo4j图库建模手册</title><link href="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="Neo4j图库建模手册" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;模型分析&quot;&gt;模型分析&lt;/h2&gt;
+&lt;p&gt;END!&lt;/p&gt;</content><author><name></name></author><category term="图库" /><summary type="html">安装GraphLoader</summary></entry><entry><title type="html">测试</title><link href="http://localhost:4000/_posts/2018-05-15-test/" rel="alternate" type="text/html" title="测试" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/test</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-test/">&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;
+
+&lt;h3 id=&quot;测试1&quot;&gt;测试1&lt;/h3&gt;</content><author><name></name></author><category term="测试" /><summary type="html">测试</summary></entry><entry><title type="html">Neo4j图库建模手册</title><link href="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="Neo4j图库建模手册" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;模型分析&quot;&gt;模型分析&lt;/h2&gt;
 
 &lt;p&gt;典型人员轨迹分析：旅馆同住、同火车、同航班…&lt;/p&gt;
 
@@ -3053,6 +3105,4 @@ echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph te
       &lt;td&gt;N&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</content><author><name></name></author><category term="图库" /><summary type="html">模型分析</summary></entry><entry><title type="html">测试</title><link href="http://localhost:4000/_posts/2018-05-15-test/" rel="alternate" type="text/html" title="测试" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/test</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-test/">&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;
-
-&lt;h3 id=&quot;测试1&quot;&gt;测试1&lt;/h3&gt;</content><author><name></name></author><category term="测试" /><summary type="html">测试</summary></entry></feed>
+&lt;/table&gt;</content><author><name></name></author><category term="图库" /><summary type="html">模型分析</summary></entry></feed>
