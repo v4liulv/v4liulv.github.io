@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T19:51:37+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T20:09:13+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -26,7 +26,15 @@ ASC&lt;br/&gt;
   marginwidth=&quot;0&quot;
   marginheight=&quot;0&quot;
 &gt;&lt;/iframe&gt;
-</subtitle><entry><title type="html">工作流API工程DEMO新增调整说明</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="工作流API工程DEMO新增调整说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;新增调整概述&quot;&gt;新增调整概述&lt;/h2&gt;
+</subtitle><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;工程说明&quot;&gt;工程说明&lt;/h2&gt;
+
+&lt;h2 id=&quot;demo概述&quot;&gt;DEMO概述&lt;/h2&gt;
+
+&lt;h2 id=&quot;功能说明&quot;&gt;功能说明&lt;/h2&gt;
+
+&lt;h2 id=&quot;代码详解&quot;&gt;代码详解&lt;/h2&gt;
+
+&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;</content><author><name></name></author><category term="Hadoop" /><summary type="html">工程说明</summary></entry><entry><title type="html">工作流API工程DEMO新增调整说明</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="工作流API工程DEMO新增调整说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;新增调整概述&quot;&gt;新增调整概述&lt;/h2&gt;
 
 &lt;p&gt;主要针对新增的工作流和现场环境进行调整，以下满足现状的情况，并开发对应测试类，主要有以下调整来满足现状：&lt;/p&gt;
 
@@ -479,15 +487,7 @@ ASC&lt;br/&gt;
         String taskName = &quot;compress-doc&quot;;
         WorkflowDemo.taskInstanceLogInfo(workflowName, taskName);
     }
-&lt;/code&gt;&lt;/pre&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html">新增调整概述</summary></entry><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;工程说明&quot;&gt;工程说明&lt;/h2&gt;
-
-&lt;h2 id=&quot;demo概述&quot;&gt;DEMO概述&lt;/h2&gt;
-
-&lt;h2 id=&quot;功能说明&quot;&gt;功能说明&lt;/h2&gt;
-
-&lt;h2 id=&quot;代码详解&quot;&gt;代码详解&lt;/h2&gt;
-
-&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;</content><author><name></name></author><category term="Hadoop" /><summary type="html">工程说明</summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html">新增调整概述</summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp
          TEMPFILE 'd:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf'
          SIZE 32m
@@ -4495,4 +4495,194 @@ echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph te
       &lt;td&gt;N&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</content><author><name></name></author><category term="图库" /><summary type="html">模型分析</summary></entry></feed>
+&lt;/table&gt;</content><author><name></name></author><category term="图库" /><summary type="html">模型分析</summary></entry><entry><title type="html">Neo4j Batchimport使用手册</title><link href="http://localhost:4000/_posts/2018-05-15-Neo4j-BatchImport%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="Neo4j Batchimport使用手册" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j-BatchImport%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-Neo4j-BatchImport%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">&lt;p&gt;% Neo4j-BatchImport使用手册
+% Liulv
+% May 15, 2018&lt;/p&gt;
+
+&lt;h1 id=&quot;提前准备&quot;&gt;提前准备&lt;/h1&gt;
+
+&lt;h2 id=&quot;下载&quot;&gt;下载&lt;/h2&gt;
+
+&lt;p&gt;下载3.3.1版本的&lt;a href=&quot;https://pan.baidu.com/s/1KWEBveZ4OostHOCePQHliQ&quot; title=&quot;neo4j-batchimport-tool-3.3.1&quot;&gt;neo4j-batchimport-tool-3.3.1.zip&lt;/a&gt;压缩包&lt;/p&gt;
+
+&lt;p&gt;注意：压缩码为m084&lt;/p&gt;
+
+&lt;h2 id=&quot;解压&quot;&gt;解压&lt;/h2&gt;
+
+&lt;p&gt;解压上面下载好的压缩包，到&lt;code&gt;D:\neo4j&lt;/code&gt;文件夹下，会得到类似的路径&lt;code&gt;D:\neo4j\neo4j-batchimport-tool-3.3.1&lt;/code&gt;，如下图1:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;jdk&quot;&gt;JDK&lt;/h2&gt;
+
+&lt;p&gt;服务器必须安装JDK1.8.X以上版本, 本文推荐安装&lt;a href=&quot;&quot; title=&quot;dk-8u172-windows-x64.exe&quot;&gt;1.8.0.172&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;neo4j安装&quot;&gt;Neo4j安装&lt;/h2&gt;
+
+&lt;p&gt;已经安装Neo4j 3.3.1 版本的图数据库，如果您还没有进行进行安装，可以参考&lt;a href=&quot;/Neo4j图库操作手册.pdf&quot;&gt;Neo4j图库操作手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;neo4j-csv数据准备&quot;&gt;Neo4j-CSV数据准备&lt;/h2&gt;
+
+&lt;p&gt;这里必须按照规范相关的CSV数据，具体详情可查看&lt;a href=&quot;https://liulv.work/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD).pdf&quot; title=&quot;Neo4j图库数据入库方案(OLD)&quot;&gt;Neo4j图库数据入库方案OLD&lt;/a&gt;和&lt;a href=&quot;&quot; title=&quot;Neo4j图库数据入库方案KETTLE&quot;&gt;Neo4j图库数据入库方案KETTLE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;备注：&lt;/strong&gt; 如果只是测试使用，可以使用&lt;code&gt;D:\neo4j\neo4j-batchimport-tool-3.3.1\cvs&lt;/code&gt;下的数据CSV文件进行测试&lt;/p&gt;
+
+&lt;h1 id=&quot;batchimport-数据导入&quot;&gt;BatchImport 数据导入&lt;/h1&gt;
+
+&lt;p&gt;BatchImport是Neo4j进行比较大数据量的导入的一种批处理的导入CSV生成Neo4j数据库的一种方式，特别注意这里是生成那么就代表不能在已有的数据库的基础上进行处理，只能在用着初始化数据库的一种方式，不能用于增量处理，只能用于全量第一次初始化Neo4j数据库时候，执行BatchImport导入是通过预先生成CSV节点和关系数据文件，然后通过import命令进行生成相关的数据库的一种大数据量的数据入库创建数据库的方式。生成完成数据库后通过Neo4j切换数据库使用生成后的数据库。&lt;/p&gt;
+
+&lt;h2 id=&quot;import-csv数据文件结构&quot;&gt;Import-CSV数据文件结构&lt;/h2&gt;
+
+&lt;p&gt;import命令的CSV数据文件分为两种：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;节点CSV文件&lt;/li&gt;
+  &lt;li&gt;关系CSV文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;备注：&lt;/strong&gt;CSV文件的分割都使用tab来进行分割&lt;/p&gt;
+
+&lt;h3 id=&quot;节点csv数据文件结构&quot;&gt;节点CSV数据文件结构&lt;/h3&gt;
+
+&lt;p&gt;文件头：如user.csv文件：&lt;code&gt;1:label    zjhm:string:zjhm  name:string:name&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;1:label&lt;/code&gt;定义节点的标签，为固定不可修改
+&lt;code&gt;zjhm:string:zjhm&lt;/code&gt; 定义节点的属性zjhm, 第一个zjhm代表属性的key，string代表类型，第二个zjhm代表创建索引名，需要在配置文件batch.properties添加相关索引配置，如果属性不需要创建索引则不需要&lt;code&gt;:zjhm&lt;/code&gt;，如&lt;code&gt;zjhm:string&lt;/code&gt;即可。
+name:string:name` 定义节点的属性姓名，说明和上面完全一致，属性是可以无限扩展的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;例 ：user.csv&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1:label&lt;/th&gt;
+      &lt;th&gt;zjhm:string:zjhm&lt;/th&gt;
+      &lt;th&gt;xm:string:xm&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;User&lt;/td&gt;
+      &lt;td&gt;520000000000000001&lt;/td&gt;
+      &lt;td&gt;张三&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;User&lt;/td&gt;
+      &lt;td&gt;520000000000000001&lt;/td&gt;
+      &lt;td&gt;李四&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;User&lt;/td&gt;
+      &lt;td&gt;520000000000000001&lt;/td&gt;
+      &lt;td&gt;王二&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;关系csv数据文件结构&quot;&gt;关系CSV数据文件结构&lt;/h3&gt;
+
+&lt;p&gt;文件头：&lt;code&gt;zjhm:string:zjhm  hotelId:string:hotelId  type:string:type createTime:string&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;格式与节点CSV数据文件类似，其中第一行的&lt;code&gt;zjhm:string:zjhm&lt;/code&gt;代表关系开始节点的指定zjhm.
+第二行&lt;code&gt;hotelId:string:hotelId&lt;/code&gt;代表结束节点（箭头指向节点）的hotelID
+第三行&lt;code&gt;type:string:type&lt;/code&gt;关系的类别也就是关系的标签
+第四行代表 属性，属性可以配置多个，在后台添加相关的行即可&lt;/p&gt;
+
+&lt;p&gt;例 ：hotel-rels.csv&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;zjhm:string:zjhm&lt;/th&gt;
+      &lt;th&gt;hotelId:string:hotelId&lt;/th&gt;
+      &lt;th&gt;type:string:type&lt;/th&gt;
+      &lt;th&gt;createTime:string&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;520000000000000004&lt;/td&gt;
+      &lt;td&gt;PCT52000&lt;/td&gt;
+      &lt;td&gt;旅馆住宿&lt;/td&gt;
+      &lt;td&gt;20170822144242&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;520000000000000005&lt;/td&gt;
+      &lt;td&gt;PCT52000&lt;/td&gt;
+      &lt;td&gt;旅馆住宿&lt;/td&gt;
+      &lt;td&gt;20170822144242&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;import-命令说明&quot;&gt;Import 命令说明&lt;/h2&gt;
+
+&lt;p&gt;命令格式： &lt;code&gt;import 参数1 参数2 参数3&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;参数1：&lt;/strong&gt; 生成数据库的文件路径，必须保证此路径最终文件夹不存在
+比如&lt;code&gt;D:\neo4j\neo4j-community-3.3.1\data\dbtest.db&lt;/code&gt;, 必须保证&lt;code&gt;dbtest.db&lt;/code&gt; 不存在。&lt;/p&gt;
+
+&lt;p&gt;备注：此路径最好写在Neo4j安装路径的数据库文件夹下，如&lt;code&gt;..\neo4j-community-3.3.1\data\database\kshfx.db&lt;/code&gt;,&lt;code&gt;kshfx.db&lt;/code&gt;一定不能跟&lt;code&gt;database&lt;/code&gt;文件夹下的其他文件夹重名，执行前必须检查下。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;参数2：&lt;/strong&gt; 节点CSV文件路径，如&lt;code&gt;csv\user.csv&lt;/code&gt;
+注意：必须保证csv文件存在，并且符合Neo4j 导入的规范，如果导入多个节点CSV文件可以使用’,’进行分割
+如&lt;code&gt;csv\user.csv,csv\hotel.csv&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;参数3：&lt;/strong&gt; 关系CSV文件路径，如：&lt;code&gt;csv\hotel-rels.csv&lt;/code&gt;，多个关系CSV文件导入可以使用’,’进行分割，
+如：&lt;code&gt;csv\hotel-rels.csv,csv\train-rels.csv&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;注意：关系CSV文件必须与节点的CSV文件对应，并且其中的数据也与节点CSV文件对应&lt;/p&gt;
+
+&lt;h2 id=&quot;索引提前配置&quot;&gt;索引提前配置&lt;/h2&gt;
+
+&lt;p&gt;import 命令在导入CSV文件，如果CSV文件添加了相关索引配置如节点CSV文件中&lt;code&gt;zjhm:string:zjhm&lt;/code&gt;那么代表创建名为zjhm的索引需要在配置&lt;code&gt;D:\neo4j\neo4j-batchimport-tool-3.3.1\batch.properties&lt;/code&gt;文件中添加相关索引配置：&lt;code&gt;batch_import.node_index.zjhm=exact&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;具体步骤windows命令模式&quot;&gt;具体步骤：(Windows命令模式)&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;进入cmd命令模式
+      &lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;cd D:\neo4j\neo4j-batchimport-tool-3.3.1
+D:
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/li&gt;
+    &lt;li&gt;执行import命令进行csv数据导入
+测试命令如下：
+&lt;code&gt;import ..\neo4j-community-3.3.1\data\databases\dbtest.db csv\kshfx\user.csv,csv\kshfx\hotel.csv,csv\kshfx\train.csv csv\kshfx\hotel-rels.csv,csv\kshfx\train-rels.csv,csv\kshfx\flight.csv&lt;/code&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;如果成功会提示创建多少个节点和关系。请看下图导入数据并创建数据库成功&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-02.png&quot; title=&quot;BatchImport导入成功图&quot;&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-02.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;查看是否生成数据库文件,下图可以看到已经生成kshfx.db数据库文件夹&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-03.png&quot; alt=&quot;&quot; /&gt;]&lt;/p&gt;
+
+&lt;h2 id=&quot;neo4j数据库切换&quot;&gt;Neo4j数据库切换&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;找到Neo4j安装目录下的&lt;code&gt;conf/neo4j.conf&lt;/code&gt;进行修改，如安装在&lt;code&gt;D:\neo4j\neo4j-community-3.3.1&lt;/code&gt;，如下图&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-04.png&quot; alt=&quot;&quot; /&gt;]&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑修改neo4j.conf内容，dbms.active_database修改为新生成的dbtest.db，如下
+&lt;code&gt;dbms.active_database=kshfx.db&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;cmd命令重启Neo4j
+&lt;code&gt;neo4j restart&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-05.png&quot; alt=&quot;&quot; /&gt;]&lt;/p&gt;
+
+&lt;h2 id=&quot;图库连接数据库数据验证&quot;&gt;图库连接数据库数据验证&lt;/h2&gt;
+
+&lt;p&gt;重启完成图库后，通过browser连接图库进行新生成的数据库的数据验证，如下图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:8081/images/neo4j-batch-import/batch-import-06.png&quot; alt=&quot;&quot; /&gt;]&lt;/p&gt;
+
+&lt;p&gt;如果出现此结果，那么整个Import导入流程就已经完成，如果您需要生成正式的数据，需要提供相关的CSV数据文件放到csv路径下，通过上面的流程进行简单的修改就可以进行生成正式的数据库！&lt;/p&gt;
+
+&lt;p&gt;End !!!&lt;/p&gt;</content><author><name></name></author><summary type="html">% Neo4j-BatchImport使用手册 % Liulv % May 15, 2018</summary></entry></feed>
