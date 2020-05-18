@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T13:11:41+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T14:15:18+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -46,7 +46,7 @@ ASC&lt;br/&gt;
 
 &lt;blockquote&gt;
   &lt;ul&gt;
-    &lt;li&gt;测试内全部分离到test下&lt;/li&gt;
+    &lt;li&gt;测试全部分离到test下&lt;/li&gt;
     &lt;li&gt;DEMO类独立作为API借口实现&lt;/li&gt;
     &lt;li&gt;Maven支持外网环境打包把依赖包全部打包到lib目录下&lt;/li&gt;
     &lt;li&gt;内网环境可注释到Maven依赖，通过导入本地包方式导入lib目录下依赖包&lt;/li&gt;
@@ -75,6 +75,12 @@ ASC&lt;br/&gt;
 &lt;p&gt;历史版本为1.0.0&lt;/p&gt;
 
 &lt;h2 id=&quot;调整详情&quot;&gt;调整详情&lt;/h2&gt;
+
+&lt;h3 id=&quot;测试代码调整&quot;&gt;测试代码调整&lt;/h3&gt;
+
+&lt;p&gt;之前代码测试代码和DEMO业务实现代码内，现在测试代码必须放到test下。那么依赖scope设置为test,如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;新增详情&quot;&gt;新增详情&lt;/h2&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html">新增调整概述</summary></entry><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;工程说明&quot;&gt;工程说明&lt;/h2&gt;
 
