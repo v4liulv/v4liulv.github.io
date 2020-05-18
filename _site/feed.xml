@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T13:03:30+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T13:07:24+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -26,7 +26,7 @@ ASC&lt;br/&gt;
   marginwidth=&quot;0&quot;
   marginheight=&quot;0&quot;
 &gt;&lt;/iframe&gt;
-</subtitle><entry><title type="html">TBDS</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="TBDS" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;调整内容&quot;&gt;调整内容&lt;/h2&gt;
+</subtitle><entry><title type="html">工作流API工程新增调整说明</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="工作流API工程新增调整说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;调整内容&quot;&gt;调整内容&lt;/h2&gt;
 
 &lt;p&gt;主要针对新增的工作流和现场环境进行调整，以下满足现状的情况，并开发对应测试类，主要有以下调整来满足现状：&lt;/p&gt;
 
@@ -76,7 +76,15 @@ ASC&lt;br/&gt;
 
 &lt;h2 id=&quot;调整详情&quot;&gt;调整详情&lt;/h2&gt;
 
-&lt;h2 id=&quot;新增详情&quot;&gt;新增详情&lt;/h2&gt;</content><author><name></name></author><category term="工作流API工程新增调整说明" /><summary type="html">调整内容</summary></entry><entry><title type="html">Hadoop</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="Hadoop" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/"></content><author><name></name></author><category term="MapReduce工程Demo说明" /><summary type="html"></summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
+&lt;h2 id=&quot;新增详情&quot;&gt;新增详情&lt;/h2&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html">调整内容</summary></entry><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;工程说明&quot;&gt;工程说明&lt;/h2&gt;
+
+&lt;h2 id=&quot;demo概述&quot;&gt;DEMO概述&lt;/h2&gt;
+
+&lt;h2 id=&quot;功能说明&quot;&gt;功能说明&lt;/h2&gt;
+
+&lt;h2 id=&quot;代码详解&quot;&gt;代码详解&lt;/h2&gt;
+
+&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;</content><author><name></name></author><category term="Hadoop" /><summary type="html">工程说明</summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp
          TEMPFILE 'd:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf'
          SIZE 32m
