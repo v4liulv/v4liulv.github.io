@@ -65,9 +65,9 @@
     } ,
   
     {
-      "title"    : "Neo4j Batchimport使用手册",
+      "title"    : "2018-05-15-Neo4j-BatchImport使用手册",
       "category" : "",
-      "tags"     : "",
+      "tags"     : "图库",
       "date"     : "2018-05-15 00:00:00 +0800",
       
       "url"      : "http://localhost:4000/_posts/2018-05-15-Neo4j-BatchImport%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"
