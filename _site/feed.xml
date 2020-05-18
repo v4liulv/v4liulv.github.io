@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T19:44:58+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T19:51:37+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -1180,7 +1180,986 @@ Bob--&amp;gt;&amp;gt;John: Jolly good!
   &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/9f198d5779e6&quot;&gt;Jekyll + Github Pages 博客搭建入门&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/ds19991999/article/details/81516568&quot;&gt;Jekyll 博客 Next 主题超深度配置&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/bb184f61c9ae&quot;&gt;【应用软件】Jekyll 配置&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="博客搭建" /><summary type="html">引言</summary></entry><entry><title type="html">DSEGraph-DataLoader使用手册</title><link href="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="DSEGraph-DataLoader使用手册" /><published>2018-07-04T00:00:00+08:00</published><updated>2018-07-04T00:00:00+08:00</updated><id>http://localhost:4000/_posts/DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;安装graphloader&quot;&gt;安装GraphLoader&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="博客搭建" /><summary type="html">引言</summary></entry><entry><title type="html">Neo4j数据数据入库方案（OLD）</title><link href="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/" rel="alternate" type="text/html" title="Neo4j数据数据入库方案（OLD）" /><published>2018-08-15T00:00:00+08:00</published><updated>2018-08-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)</id><content type="html" xml:base="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/">&lt;h2 id=&quot;第一章-neo4j数据入库方式&quot;&gt;第一章 Neo4j数据入库方式&lt;/h2&gt;
+&lt;p&gt;Neo4j支持多种方式的数据入库的方式包含Neo4j Import、&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;Batch Import&quot;&gt;Batch Import&lt;/a&gt;、Load CSV、Cypher。&lt;/p&gt;
+
+&lt;p&gt;下面按照数据量级别进行划分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;千万级别以上数据量：BatchImport和Neo4jImport。只能在初始化建库使用，已经存储的库不支持。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;十万到千万级别的数据量：Load CSV的方式，支持已有库的数据追加，适合大增量级别和中等数据量全量入库。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;小数据量级别五万级以下：Cypher的方式，支持已有库的小数据量增量入库，灵活方便，支持事务。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;第二章-图库信息&quot;&gt;第二章 图库信息&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;业务图库&lt;/strong&gt;：是根据现有的业务基础和特定需求进行建库，其中节点和关系可以进行系统的评估和预测，选择可行性的入库方式。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;业务需求&lt;/strong&gt;：基于公安内部基础资源库进行人员信息的轨迹和行为进行关联的一种关系图。可以基于Cypher查询分析人员的行为轨迹进行人与人之间的各种关系查询。&lt;/p&gt;
+
+&lt;h3 id=&quot;21人的基本信息&quot;&gt;2.1.人的基本信息&lt;/h3&gt;
+
+&lt;p&gt;姓名、证件号码、家庭住址、户的家庭成员、详细地址、婚姻状态等&lt;/p&gt;
+
+&lt;h3 id=&quot;22人的轨迹行为&quot;&gt;2.2.人的轨迹行为&lt;/h3&gt;
+
+&lt;p&gt;旅馆住宿、乘坐航班、乘坐火车、乘坐客车、上网、出入境、迁移、租赁房屋等。&lt;/p&gt;
+
+&lt;h3 id=&quot;23建库的目的&quot;&gt;2.3.建库的目的&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于人的轨迹行为的查询，可视化展示。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于人的轨迹行为通过特定的规则进行人与人之间存在的行为轨迹关系进行数据挖掘和分析，得出存在的关系脉络和可能存在的关系网。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;24图库数据量预估&quot;&gt;2.4.图库数据量预估&lt;/h3&gt;
+
+&lt;p&gt;前提先得了解&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;数据建模&quot;&gt;数据建模&lt;/a&gt;才能进行相关的信息的评估，可视化分析的根据贵州的情况最初预估在5亿-10亿的节点之间、10亿-30亿的边，因为各个省的信息有差异所以此只是一个基本的评估。&lt;/p&gt;
+
+&lt;h2 id=&quot;第三章-全量方案&quot;&gt;第三章 全量方案&lt;/h2&gt;
+
+&lt;p&gt;基于上面图库数据量预估，以及参考&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;数据建模&quot;&gt;数据建模&lt;/a&gt;手册可以得出，图库的全量入库只能是Neo4j Import 或者 Batch Import进行导入新键库。&lt;/p&gt;
+
+&lt;p&gt;查看此章节前必看&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;数据建模手册&quot;&gt;数据建模手册&lt;/a&gt;和&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;Batch Import手册&quot;&gt;Batch Import手册&lt;/a&gt;，也可参考&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;Neo4j 操作手册&quot;&gt;Neo4j 操作手册&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;31全量方式选择&quot;&gt;3.1.全量方式选择&lt;/h3&gt;
+
+&lt;p&gt;本方案通过HBase资源库生成CSV文件，然后选择Batch Import读取进行全量数据的导入。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择Batch Import具体原因有以下几点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Batch Import是大批量处理的Neo4j的一直快速有效的方式。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Batch Import可以支持索引的创建而Neo4j Import导入时候不支持索引创建。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Batch Import 不依赖Neo4j的安装，在任何服务器都可以执行，生成库后可以直接复制到需要使用的Neo4j的安装服务器上即可，而Neo4j Import必须依赖Neo4j的安装服务器才能使用。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Batch Import支持可配置内存，而Neo4j Import只能依赖Neo4j安装的使用内存。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;通用缺点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;不管是Neo4j Import 还是Batch Import都不支持已经存在的图库进行数据追加，只能在第一次初始化使用通过Import命令进行新图库创建。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;需要先提前准备好需要入库的CSV数据文件&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果已经生成完成了图库，如果需要在添加某个类别的一个大数据量级别的节点和关系，需要全部重新建库，这是致命的缺陷属于Neo4j设计上的缺陷。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;导入CSV如果关系中依赖的节点ID在节点CSV文件中找不到将可能会异常。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;32全量方案图&quot;&gt;3.2.全量方案图&lt;/h3&gt;
+
+&lt;p&gt;通过下面图进行全量方案简要流程说明：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/1522374353832_25.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;通过ODBA标准库或HBase资源库、其他可能来源库，生成图库规则的CSV数据文件&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CSV数据文件包含节点和关系的数据文件，再通过Batch Import将CSV数据文件生成图数据库&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;33csv数据文件&quot;&gt;3.3.CSV数据文件&lt;/h3&gt;
+
+&lt;h4 id=&quot;331使用方式&quot;&gt;3.3.1.使用方式&lt;/h4&gt;
+
+&lt;p&gt;通过MapReduce读取源库的方式生成CSV数据文件&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;方式一：MR读取Oracle标准库生成CSV（支持）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;方式二：MR读取HBase资源库生成CSV（推荐）&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;本案例使用方式二。&lt;/p&gt;
+
+&lt;h4 id=&quot;332实现原理&quot;&gt;3.3.2.实现原理&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通过Oracle或者HBase某类资源作为MapReduce的输入&lt;/li&gt;
+  &lt;li&gt;然后在通过Map读取字段配置信息，过滤处理&lt;/li&gt;
+  &lt;li&gt;再通过Reduce读取配置信息提供的规则组装生成输出文件（CSV文件）输出到HDFS&lt;/li&gt;
+  &lt;li&gt;从HDFS拷贝到本地&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;问题：所有的关系都是基于人员信息去关联的，那么人员信息在现在标准库是找不到这样一个一个已经有资源表，只能通过多个轨迹类资源表去合成大宽表，这样就需要合成实现抽取一个大宽表到User的合成表中，下面将介绍这部分内容，合成身份证号的大宽表。&lt;/p&gt;
+
+&lt;h3 id=&quot;34身份证号大宽表&quot;&gt;3.4.身份证号大宽表&lt;/h3&gt;
+
+&lt;p&gt;通过读取配置信息作为输入过滤，读取MR的配置信息进行MR抽取到User人员信息的大宽表。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;配置信息表：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;大宽表MR抽取的公共配置信息 B_BIGWID_TAB_GGPZXX&lt;/li&gt;
+  &lt;li&gt;大宽表MR的JOB配置表 B_BIGWID_TAB_TASK&lt;/li&gt;
+  &lt;li&gt;大宽表的列配置表 B_BIGWID_TAB_QUALIFIER&lt;/li&gt;
+  &lt;li&gt;大宽表User身份证号配置信息 B_USER_BIGTAB_PZXXB&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;35数据库配置表的表公共字段结构&quot;&gt;3.5.数据库配置表的表公共字段结构&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;：&lt;em&gt;这是后续所有配置表的公共字段，每个表都包含这些字段，后续不再出现&lt;/em&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SYSTEMID&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;SYS_GUID()&lt;/td&gt;
+      &lt;td&gt;主键&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CREATE_USER&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;‘SYS’&lt;/td&gt;
+      &lt;td&gt;创建人&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CREATE_TIME&lt;/td&gt;
+      &lt;td&gt;DATE&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;SYSDATE&lt;/td&gt;
+      &lt;td&gt;创建时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;UPDATE_TIME&lt;/td&gt;
+      &lt;td&gt;DATE&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt;SYSDATE&lt;/td&gt;
+      &lt;td&gt;更新时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCBZ&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;删除标志，0代表未删除，1代表已删除&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLZD1&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;保留字段1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLZD2&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;保留字段2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLZD3&lt;/td&gt;
+      &lt;td&gt;VARCHAR3(300)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;保留字段3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLZD4&lt;/td&gt;
+      &lt;td&gt;VARCHAR4(500)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;保留字段4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLZD5&lt;/td&gt;
+      &lt;td&gt;VARCHAR4(1000)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;保留字段5&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;36-全量数据入库配置表信息&quot;&gt;3.6 全量数据入库配置表信息&lt;/h3&gt;
+
+&lt;h4 id=&quot;361-b_bigwid_tab_ggpzxx&quot;&gt;3.6.1 B_BIGWID_TAB_GGPZXX&lt;/h4&gt;
+&lt;p&gt;大宽表MR抽取的公共配置信息表&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BIGWID_TYPE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;大宽表类型，如01代表User大宽表，02代表关系分析宽表，人员标签大宽表代表03，标识号大宽04&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BIGWID_DEL&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(1000)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;大宽表类型详情&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE_ROWKEY_DELIM&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(10)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;ROWKEY分割符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE_VALUE_DELIM&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(10)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;值的分隔符号&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCAN_CACHE&lt;/td&gt;
+      &lt;td&gt;NUMBER(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;1000&lt;/td&gt;
+      &lt;td&gt;一次RPC请求数，默认为1000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCAN_BATCH&lt;/td&gt;
+      &lt;td&gt;NUMBER(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;100&lt;/td&gt;
+      &lt;td&gt;一次请求的最大的列数，默认为100&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IS_COMPRESS&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;是否启动压缩，0代表否，1代表是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;COMPRESS_TYPE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;01为default,02为ZIP2, 03为snapp&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;362-b_bigwid_tab_task&quot;&gt;3.6.2 B_BIGWID_TAB_TASK&lt;/h4&gt;
+&lt;p&gt;大宽表MR的JOB配置表&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BIGWID_ID&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(32)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;大宽表类型外键一对多对应GGPZXX表的主键&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TASK_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;区分各个抽取来源表的Shell的参数，唯一&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;JOB_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;运行MR-JOB作业的名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;JAR_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;MR-JAR包名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TMP_TARGET_DIR&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(300)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;输出HDFS的临时目录&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;HBASE的源表英文名（大写）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE_FAMILY&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;CF&lt;/td&gt;
+      &lt;td&gt;MR输入源表的列族&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;MR输出到HBASE表名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE_FAMILY&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(20)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;CF&lt;/td&gt;
+      &lt;td&gt;MR输出表目标表的列族，默认CF&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE_ROWKEY&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;ZJHM&lt;/td&gt;
+      &lt;td&gt;输出表的主键，也就是输出表主键来源输出表那个字段或者那些字段&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_TABLE_QUALIFIER&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;输出表的列名，可以配置多个列名，来源输入的表列名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TARGET_VALUE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;输出表列值，来源输入表的多个字段，如zd1:zd2..&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;363-b_bigwid_tab_qualifier&quot;&gt;3.6.3 B_BIGWID_TAB_QUALIFIER&lt;/h4&gt;
+
+&lt;p&gt;大宽表的列配置表&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TASK_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;task name 启动作业名，task外键与B_BIGWID_TAB_TASK的taskName一对一关联&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;列名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_VALUE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;列值对应源表列名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_NAME_IS_TIME&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;是否是日期字段&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_NAME_DATA_TYPE&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;数据格式类型，0代表201501格式，1代表DATE类型2015/01,2代表毫秒格式&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_NAME_TYPE&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0代表是源字段的值，1代表是配置就直接赋值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_NAME_IS_DATEZH&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;列值是否是日期字段&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_VALUE_DATA_TYPE&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;列值格式类型，0代表201501格式，1代表DATE类型2015/01,2代表毫秒格式&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_VALUE_TYPE&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;列值，0代表是源字段的值，1代表是配置就直接赋值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QUALIFIER_VALUE_IS_DATEZH&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;列值，是否进行日期字段转换标准格式201701..,0代表否，1代表是&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;464-b_user_bigtab_pzxxb&quot;&gt;4.6.4 B_USER_BIGTAB_PZXXB&lt;/h4&gt;
+&lt;p&gt;大宽表User身份证号配置信息&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CODE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(10)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;code值,区分某类别大表的标识符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE_YWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;源表英文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE_ZWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;源表中文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ZJHM_ZD_YWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;证件号码字段英文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ZJHM_ZD_ZWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;证件号码字段中文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;XM_ZD_YWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;姓名字段英文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;XM_ZD_ZWMC&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;姓名字段中文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;HBASE_TABLE_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;HBASE入库表名，大写&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;365-现场需要配置修改&quot;&gt;3.6.5 现场需要配置修改&lt;/h4&gt;
+&lt;p&gt;需要根据现场实际HBase资源库资源库表进行适配修改：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;B_BIGWID_TAB_TASK表&lt;/strong&gt;
+    &lt;ol&gt;
+      &lt;li&gt;修改B_BIGWID_TAB_TASK中的关联资源表名的SOURCE_TABLE&lt;/li&gt;
+      &lt;li&gt;修改B_BIGWID_TAB_TASK中的TARGET_TABLE_ROWKEY为关联资源表名的身份证号码字段名称&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;B_BIGWID_TAB_QUALIFIER表&lt;/strong&gt;
+    &lt;ol&gt;
+      &lt;li&gt;修改B_BIGWID_TAB_QUALIFIER表中的TaskName和QUALIFIER_NAME适配修改QUALIFIER_VALUE的值其对应字段名称。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;B_USER_BIGTAB_PZXXB表&lt;/strong&gt;
+    &lt;ol&gt;
+      &lt;li&gt;修改其SOURCE_TABLE_YWMC（源表英文名）、SOURCE_TABLE_ZWMC（源表中文名）&lt;/li&gt;
+      &lt;li&gt;ZJHM_ZD_YWMC（证件号码字段英文名）、ZJHM_ZD_ZWMC（证件号码字段中文名）&lt;/li&gt;
+      &lt;li&gt;如果表中有姓名，配置XM_ZD_YWMC（姓名字段英文名）、XM_ZD_ZWMC（姓名号码字段中文名）&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;366-数据抽取生成user身份证号大宽表&quot;&gt;3.6.6 数据抽取生成User(身份证号)大宽表&lt;/h4&gt;
+
+&lt;p&gt;抽取HBase资源库的数据到User(身份证号)大宽表，需要Hadoop集群有相关的执行环境。&lt;/p&gt;
+
+&lt;p&gt;具体步骤：
+1、拷贝程序Jar包到Hadoop集群的&lt;code&gt;/home/hadoop/Kshfx/jar&lt;/code&gt;目录下。
+2、拷贝程序运行需要的Jar包到Hadoop集群&lt;code&gt;/home/hadoop/Kshfx/libs/&lt;/code&gt;目录下。
+3、拷贝运行的Shell脚本到Hadoop集群的&lt;code&gt;/home/hadoop/Kshfx/shell/&lt;/code&gt;目录下。
+4、给shell脚步授权执行权限&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chmod 755 /home/hadoop/Kshfx/shell/*.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;5、执行命令进行全量抽取。如下面命令抽取Hotel旅馆住宿信息表的身份证号信息到User大宽表，其他类似。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sh /home/hadoop/Kshfx/bin/kshxf-bigtab.sh USER_BIGWID_HOTEL
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;6、Yarn界面查看执行情况，如果成功在看下一步，异常情况在格外进行排查处理。
+7、HBase shell命令查看B_USER_BIG_TABLE是否已经抽取成功。&lt;/p&gt;
+
+&lt;p&gt;详细信息请查看[现场实施手册]&lt;/p&gt;
+
+&lt;h3 id=&quot;37-生成csv数据文件&quot;&gt;3.7 生成CSV数据文件&lt;/h3&gt;
+&lt;p&gt;上节已经进行User身份证号的大宽表抽取，那么需要的全部源表资源已经全部就绪，可以进行生成CSV数据文件操作。&lt;/p&gt;
+
+&lt;h4 id=&quot;371-配置表&quot;&gt;3.7.1 配置表&lt;/h4&gt;
+
+&lt;p&gt;配置表包含：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;B_BIMP_PZXXB（BatchImportCsv的Node的创建CSV的配置表）&lt;/li&gt;
+  &lt;li&gt;B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）&lt;/li&gt;
+  &lt;li&gt;B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;3711-b_bimp_pzxxb配置库信息表详情&quot;&gt;3.7.1.1 B_BIMP_PZXXB配置库信息表详情&lt;/h5&gt;
+&lt;p&gt;B_BIMP_PZXXB（BatchImportCsv的Node的创建CSV的配置表）-提供对应Neo4j标签和类型以及源表等配置信息&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TYPE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(10)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;抽取资源类型，如001为旅馆住宿，002为航班信息。。。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TYPE_DET&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(300)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;TYPE详情描述&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LABEL&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;图数据库的NODE的标签&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;来源表源表英文名称&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;3712-b_bimp_title-batchimport-csv的文件头配置信息表&quot;&gt;3.7.1.2 B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）&lt;/h5&gt;
+
+&lt;p&gt;B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）提供对应Import CSV对应的文件头的信息，以及关联字段等配置信息。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TYPE_ID&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;TYPE配置信息表外键,关联B_BIMP_PZXXB表的主键&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;T_TYPE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(10)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;图库的标题的类型，KIND=NEO4J_IMPORT_CSV_TITLE_TYPE, 00代表UserNode的相关配置，01代表本NODE,02代表全量的RELS&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TITLE_VALUE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;标题的值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SORT_NUM&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;CSV标题排序 0 1 2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GLZD_TYPE&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;关联字段类型，0代表字段，1代表直接赋值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GLZD_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;关联字段名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GLZD_ISDATE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;关联字段源字段是否是Date类型，0代表是毫秒，1代表date类型，2代表其他类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GLZD_ISTIME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(30)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;关联字段是否是日期字段，0代表否，1代表是日期字段&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GLZD_BZ&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;关联字段标准，初始化定义后不可更改，用于Neo4j和SparkStreaming建模等&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;3713-b_bimp_mr_hbase-batchimport-csv的mapreduce读取hbase输入的配置信息表&quot;&gt;3.7.1.3 B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）&lt;/h5&gt;
+
+&lt;p&gt;B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）提供输入源为HBase的时候的MR读取HBase作为输入的相关配置信息。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;字段&lt;/th&gt;
+      &lt;th&gt;字段长度&lt;/th&gt;
+      &lt;th&gt;是否允许为空&lt;/th&gt;
+      &lt;th&gt;默认值&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TYPE_ID&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;TYPE配置信息表外键,关联B_BIMP_PZXXB表的主键&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;JAR_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;gxksh.Jar&lt;/td&gt;
+      &lt;td&gt;MR运行的Jar包名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TASK_NAME&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;MR运行的作业的名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SOURCE_TABLE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(50)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;MR输入源表英文名&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCAN_CACHE&lt;/td&gt;
+      &lt;td&gt;NUMBER(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;1000&lt;/td&gt;
+      &lt;td&gt;HBASE的SCAN每次rpc的请求记录数,默认为1000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCAN_BATCH&lt;/td&gt;
+      &lt;td&gt;NUMBER(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;100&lt;/td&gt;
+      &lt;td&gt;HBASE的SCAN的每次取的列数，默认100列&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;OUTPUT_DIR&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(200)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;MR的输出的HDFS路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;NUM_REDUCE_TASKS&lt;/td&gt;
+      &lt;td&gt;NUMBER(4)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;MR执行的Reduce的并发数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IS_MR_OUTPUT_COMPRESS&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;是否启用Reduce输出压缩，KIND=IS_MR_OUTPUT_COMPRESS,0代码不启动压缩，1代表启动&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MR_OUTPUT_COMPRESS_TYPE&lt;/td&gt;
+      &lt;td&gt;VARCHAR2(100)&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;压缩类型，kind=MR_OUTPUT_COMPRESS_TYPE, BZIP2,DEFAULT,SNAPP&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SCAN_CACHEBLOCKS&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;scan的所有数据是否放在缓存中，默认为0不放在缓存中，1代表放在缓存中&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MAP_SPECULATIVE_EXECUTION&lt;/td&gt;
+      &lt;td&gt;NUMBER(2)&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;是否开启mr的map备用任务机制，默认0 不开启，1代表开启&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;3.7.2 现场适配配置修改&lt;/p&gt;
+
+&lt;p&gt;因为暂时没有Web端的应用配置支持，所以需要在配置库层面进行处理，比如初始化第一次创建图库全量前，需要修改那么配置项。&lt;/p&gt;
+
+&lt;p&gt;配置库实施配置时候已经生成了相关配置表和数据，因此只是需要修改其中的关联资源和关联字段即可，需要找出复合现场情况HBase资源库关联源和关联字段名。先看下面表格：
+表格-类型对应的
+| IMP_TYPE  | IMP_TYPE_DETAL  |
+| ———— | ———— |
+| 0200  | 人员信息  |
+| 0201  | 旅馆信息  |
+| 0202  | 火车信息  |
+| 0203  | 名航信息  |
+| 0204  | 网吧信息  |&lt;/p&gt;
+
+&lt;p&gt;下面的修改都需要按照此表格对应的IMP_TYPE去进行每个标签类别的修改。
+&lt;strong&gt;修改源表名&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;select t.*, t.rowid from B_BIMP_PZXXB t;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;根据现场的HBase基础资源库对应表名称修改其源表名SOURCE_TABLE(也就是HBase中对应资源表名称)
+注意：其中的User是合成的大表，不需要修改。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;修改CSV文件头配置&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;select  t.TYPE_ID, t.T_TYPE, t.TITLE_VALUE, t.SORT_NUM, t.GLZD_TYPE, t.GLZD_NAME, t.GLZD_ISDATE, t.GLZD_ISTIME, t.rowid 
+from B_BIMP_TITLE T
+where t.type_id = (select d.systemid from B_BIMP_PZXXB d where d.type = '0201' and d.scbz = 0)
+and t.t_type = '01'
+and t.SCBZ = 0
+and t.GLZD_TYPE = 0
+order by t.sort_num;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注意：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;？其中where条件中的t.type = ‘0200’ 是上面表格类型对应表的IMP_TYPE,0200代表人员信息标签，以此类推0201代表旅馆信息…&lt;/li&gt;
+  &lt;li&gt;？其中where条件中的t.t_type = ‘01’ 代表的节点还是关系，01代表节点，02代表关系，在人员信息里面没有定义关系，在相关的轨迹信息标签定义关系,也就是除了人员信息以外都要修改其关系，将t.type修改为02&lt;/li&gt;
+  &lt;li&gt;？需要修改的字段为t.GLZD_NAME,根据现场情况的HBase库的字段进行适配修改&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;？注意字段类型是否date类型，如果在源库中或者视图库中抽取到HBase定义为Date类型，那么需要修改对应的GLZD_ISDATE和GLZD_ISTIME为1，如自定义主键由多个字段组成LGID&lt;/td&gt;
+          &lt;td&gt;FJH，那么对应的GLZD_ISDATE和GLZD_ISTIME为0&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;特别注意：此修改必须熟悉图库数据建模，如果不了解数据建模可参考数据建模手册
+此修改过程如果有不明白的地方可以联系开发人员。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;373-生成user节点csv文件&quot;&gt;3.7.3 生成User节点CSV文件&lt;/h4&gt;
+
+&lt;p&gt;注意：如果了解现场Hadoop集群的话，此过程必须由现场的Hadoop集群的管理员协助完成，其中的包由开发人员提供。&lt;/p&gt;
+
+&lt;p&gt;步骤：&lt;/p&gt;
+
+&lt;p&gt;1、打包相关的kshfx-0.1.0.jar到Hadoop集群的主节点的&lt;code&gt;/home/hadoop/Kshfx/jar/&lt;/code&gt;目录下。&lt;/p&gt;
+
+&lt;p&gt;2、拷贝运行的Jar包到Hadoop集群的主节点的&lt;code&gt;/home/hadoop/Kshfx/libs/&lt;/code&gt;目录下。&lt;/p&gt;
+
+&lt;p&gt;3、拷贝相关的shell执行文件到&lt;code&gt;/home/hadoop/Kshfx/bin/&lt;/code&gt;目录下。&lt;/p&gt;
+
+&lt;p&gt;4、授权Shell执行脚步的执行权限&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;chmode 755 /home/hadoop/Kshfx/bin/*.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;5、执行命令进行CSV文件生成&lt;/p&gt;
+
+&lt;p&gt;执行成功在配置的hdfs路径上找到相关的生成的CSV数据文件，拷贝到Neo4j服务器。&lt;/p&gt;
+
+&lt;p&gt;具体详情可以查看【现场实施手册】&lt;/p&gt;
+
+&lt;h4 id=&quot;374-生成其他轨迹类节点和关系csv文件&quot;&gt;3.7.4 生成其他轨迹类节点和关系CSV文件&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;此部分内容完全和上一节一致，需要修改的是执行命令参数修改即可。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;3.8 全量导入Neo4j图库&lt;/p&gt;
+
+&lt;p&gt;我们通过上一章节介绍了生成CSV数据文件，本机拷贝到Batch Import的服务器上，那么直接通过Batch Import的import命令进行导入生成新的图库。Batch Import如何使用请阅读【&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;Neo4j-Batch-Import使用手册V0.1.0&quot;&gt;Neo4j-Batch-Import使用手册V0.1.0&lt;/a&gt;】。&lt;/p&gt;
+
+&lt;p&gt;比如已经生成了相关user.csv,hotel.csv,hotel-rels.csv的CSV数据文件并且拷贝到Batch Import服务器，执行下面命令进行生成：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;import ..\data\databases\kshfx.db csv\kshfx\user.csv,csv\kshfx\hotel.csv csv\kshfx\hotel-rels.csv.csv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成kshfx.db新的图数据库后，Neo4j切换图数据，即可使用。&lt;/p&gt;
+
+&lt;h2 id=&quot;第四章-增量方案&quot;&gt;第四章 增量方案&lt;/h2&gt;
+
+&lt;h3 id=&quot;41增量实现原理&quot;&gt;4.1.增量实现原理&lt;/h3&gt;
+
+&lt;p&gt;为了保证数据的一致性和数据节点和关系的唯一性原则，那么只能使用Cypher的Merge的方法进行增量的入库方式。增量方案使用Flume动态实时读取Oralce标准库的实时增量并且使用Pool方式推送到Spark Streaming，然后Spark 流处理实时在线的方式读取增量时间组装Cypher语句进行增量Neo4j的数据写入。&lt;/p&gt;
+
+&lt;h3 id=&quot;42优缺点&quot;&gt;4.2.优缺点&lt;/h3&gt;
+
+&lt;p&gt;Neo4j为了保证节点和关系的实时增量和唯一性数据问题，只能考虑Merge的方式，这样的合并处理会损失大量的性能。
+此方案的优点：
+1、可以完全保证实时性，5s-10s的范围增量时间差
+2、可以保证数据的唯一性，使用Merge进行合并
+3、可以动态更新想要更新的属性&lt;/p&gt;
+
+&lt;p&gt;缺点：
+1、通过Cypher本身性能就差，不到2000条/s
+2、Merger合并写事务操作，更是消耗更多的性能，速度会下降几个数量级
+3、Spark Stream流处理的检查点需要再进一步完善
+4、需要添加Flume的SQL插件，兼容Hadoop平台需要需要结合生产环境测试验证&lt;/p&gt;
+
+&lt;h3 id=&quot;43增量方案流程图&quot;&gt;4.3.增量方案流程图&lt;/h3&gt;
+
+&lt;p&gt;Oracle –&amp;gt;Flume–&amp;gt;Spark流–&amp;gt;Neo4j图库&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/1522384223866_43.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;44增量实现&quot;&gt;4.4.增量实现&lt;/h3&gt;
+
+&lt;p&gt;备：本方案基于CDH5.7.1进行测试可行性，验证增量正常&lt;/p&gt;
+
+&lt;p&gt;增量实现注意以下几点：
+1、FlumeSQL插件兼容性
+本身Flume暂时不支持Oracle的数据增量的读取，需要使用FlumeSQL插件，可能会有兼容Flume版本问题，建议使用Flume1.6.0-cdh5.7.1，后续其他版本待测试验证
+2、Flume ng 的配置SQL配置可参考【&lt;a href=&quot;&quot; title=&quot;Flume SQL NG配置手册&quot;&gt;Flume SQL NG配置手册&lt;/a&gt;】
+3、Flume Pool方式数据到Spark Streaming注意其中的HDFS检查点配置
+4、增量实现代码在&lt;a href=&quot;&quot; title=&quot;Kshfx-Spark模版&quot;&gt;Kshfx-Spark模版&lt;/a&gt;，这里不详细介绍，可以查看API
+Neoj4 Cypher语句组装需要注意结合的业务和建模的实现主要考虑唯一性&lt;/p&gt;
+
+&lt;p&gt;4.5.实施部署&lt;/p&gt;
+
+&lt;p&gt;相关详情可以查看【&lt;a href=&quot;&quot; title=&quot;现场实施手册&quot;&gt;现场实施手册&lt;/a&gt;】&lt;/p&gt;</content><author><name></name></author><category term="图库" /><summary type="html">第一章 Neo4j数据入库方式 Neo4j支持多种方式的数据入库的方式包含Neo4j Import、Batch Import、Load CSV、Cypher。</summary></entry><entry><title type="html">DSEGraph-DataLoader使用手册</title><link href="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="DSEGraph-DataLoader使用手册" /><published>2018-07-04T00:00:00+08:00</published><updated>2018-07-04T00:00:00+08:00</updated><id>http://localhost:4000/_posts/DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-07-04-DSEGraph-DataLoader%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;安装graphloader&quot;&gt;安装GraphLoader&lt;/h2&gt;
 
 &lt;p&gt;安装GraphLoader分为以下步骤：&lt;/p&gt;
 

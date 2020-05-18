@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Neo4j数据数据入库方案（OLD） | lv-liu</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Neo4j数据数据入库方案（OLD）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="第一章 Neo4j数据入库方式 Neo4j支持多种方式的数据入库的方式包含Neo4j Import、Batch Import、Load CSV、Cypher。" />
+<meta property="og:description" content="第一章 Neo4j数据入库方式 Neo4j支持多种方式的数据入库的方式包含Neo4j Import、Batch Import、Load CSV、Cypher。" />
+<link rel="canonical" href="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/" />
+<meta property="og:url" content="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/" />
+<meta property="og:site_name" content="lv-liu" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-15T00:00:00+08:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Neo4j数据数据入库方案（OLD）","dateModified":"2018-08-15T00:00:00+08:00","datePublished":"2018-08-15T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/"},"url":"http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/","description":"第一章 Neo4j数据入库方式 Neo4j支持多种方式的数据入库的方式包含Neo4j Import、Batch Import、Load CSV、Cypher。","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+  
+  <meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1"
+/>
+<meta
+  http-equiv="content-type"
+  content="text/html; charset=utf-8"
+/>
+<link
+  rel="alternate"
+  href="/feed.xml"
+  title="RSS"
+  type="application/rss+xml"
+/>
+
+  
+  <link
+  rel="apple-touch-icon-precomposed"
+  href="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4"
+/>
+<link
+  rel="shortcut
+  icon"
+  href="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+/>
+
+  
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css"
+/>
+<script
+  async="async"
+  src="https://cdn.jsdelivr.net/combine/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js,gh/Dreamer-Paul/Pio@2.4/static/pio.min.js"
+  onload='
+      let pio_container = document.createElement("div");
+      pio_container.classList.add("pio-container");
+      pio_container.classList.add("right");
+      pio_container.style.bottom = "-2rem";
+      pio_container.style.zIndex = "1";
+      document.body.insertAdjacentElement("beforeend", pio_container);
+      let pio_action = document.createElement("div");
+      pio_action.classList.add("pio-action");
+      pio_container.insertAdjacentElement("beforeend", pio_action);
+      let pio_canvas = document.createElement("canvas");
+      pio_canvas.id = "pio";
+      pio_canvas.style.width = "14rem";
+      pio_canvas.width = "600";
+      pio_canvas.height = "800";
+      pio_container.insertAdjacentElement("beforeend", pio_canvas);
+      let pio = new Paul_Pio({
+        "mode": "fixed",
+        "hidden": true,
+        "night": "for(let i=7; i<16; ++i) if(document.body.classList.contains(`theme-base-0`+i.toString(16))) { document.body.classList.remove(`theme-base-0`+i.toString(16)); document.body.classList.add(`theme-base-0`+((i-6)%9+7).toString(16)); break; }",
+        "content": {
+          "link": ["https://jekyll-theme-WuK.wu-kan.cn"],
+          "skin": ["要换成我的朋友吗？", "让她放个假吧~"],
+          "hidden": true,
+          "custom": [{
+            "selector": "a",
+            "type": "link",
+          }, {
+            "selector": ".sidebar-toggle",
+            "text": "打开侧边栏叭~"
+          }, {
+            "selector": ".effect-info",
+            "text": "哇，你发现了什么！"
+          }, {
+            "selector": "#sidebar-search-input",
+            "text": "想搜索什么呢？很多干货哦！"
+          }, {
+            "selector": "#toc",
+            "text": "这是目录~"
+          }, {
+            "selector": ".page-title",
+            "text": "这是标题~"
+          }, {
+            "selector": ".v",
+            "text": "评论没有审核，要对自己的发言负责哦~"
+          }]
+        },
+        "model": [
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json",
+          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json"]
+      });'
+></script>
+
+  
+  <script
+  src='https://zz.bdstatic.com/linksubmit/push.js'
+  async="async"
+></script>
+
+  
+  <script
+  async="async"
+  src="https://www.googletagmanager.com/gtag/js?id=UA-163543967-1"
+  onload="
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-163543967-1');"
+></script>
+
+  
+  <style>
+  .wrap {
+    transition-property: width,background-size,transform;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+    min-height: 100%;
+    display: inline-block;
+    background-size: 100% auto;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/74559485_p1.webp);
+  }
+  @media (min-aspect-ratio: 2400/1850) {
+    .wrap {
+      background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/71932901_p0.webp);
+    }
+  }
+  .sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
+    width: calc(100% - 14rem);
+    background-size: calc(100% - 14rem) auto;
+    transform: translateX(14rem);
+  }
+  .layout-reverse.sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
+    transform: translateX(0);
+  }
+</style>
+
+  
+  <style>
+  body {
+      color: #141414;
+      background-color: #fff;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+  }
+  h1, h2, h3, h4, h5, h6 {
+      margin-bottom: .5rem;
+      font-weight: bold;
+      line-height: 1.25;
+      color: #0e0e0e;
+      text-rendering: optimizeLegibility;
+  }
+  html,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .sidebar {
+    font-family: PingFang SC, Menlo, Monaco, "Courier New", Microsoft JhengHei, monospace;
+  }
+</style>
+
+  
+  <style>
+  img {
+    display: inline-block;
+    margin: 0;
+  }
+</style>
+
+  
+  <style>
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(45deg, Cyan 0%, Magenta 50%, Yellow 100%);
+  }
+</style>
+
+  
+  <style>
+  ::selection {
+    color: White;
+    background: Black;
+  }
+</style>
+
+  
+</head>
+
+<body
+  class="theme-base-08 layout-reverse sidebar-overlay">
+  
+  
+  
+  <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+  <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox"
+     />
+  <!-- Toggleable sidebar -->
+  <div class="sidebar" id="sidebar">
+    
+    <div class="sidebar-item">
+      <div class="effect effect-right_to_left">
+        <img class="effect-img" src="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4" alt="img" />
+        <div class="effect-info">
+          程序员的梦<br/>
+冬天的情绪<br/>
+一天的种种<br/>
+ASC<br/>
+<a href="mailto:v4liulv@outlook.com">
+  <i class="fas fa-envelope"></i>
+</a>
+<a href="https://github.com/v4liulv">
+  <i class="fab fa-github"></i>
+</a>
+<a href="https://codeforces.com/profile/v4liulv">
+  <i class="fas fa-chart-bar"></i>
+</a>
+<a href="https://vjudge.net/user/v4liulv">
+  <i class="fas fa-smile"></i>
+</a>
+<a href="https://www.zhihu.com/people/liu.lv/activities">
+  <i class="fab fa-zhihu"></i>
+</a>
+<iframe
+  src="https://music.163.com/outchain/player?type=2&id=421934273&auto=0&height=32"
+  width=100%
+  height=52
+  frameborder="no"
+  border="0"
+  marginwidth="0"
+  marginheight="0"
+></iframe>
+
+        </div>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      
+      <a class="sidebar-nav-item" href="/">
+        <i class="fas fa-home fa-fw"></i> 首页
+      </a>
+      
+      <a class="sidebar-nav-item" href="/comments/">
+        <i class="fas fa-comments fa-fw"></i> 留言
+      </a>
+      
+      <a class="sidebar-nav-item" href="/tags/">
+        <i class="fas fa-tags fa-fw"></i> 标签
+      </a>
+      
+      <a class="sidebar-nav-item" href="/archive/">
+        <i class="fas fa-archive fa-fw"></i> 归档
+      </a>
+      
+      <a class="sidebar-nav-item" href="/merger/">
+        <i class="fas fa-coffee fa-fw"></i> 打赏
+      </a>
+      
+    </nav>
+    <div class="sidebar-item">
+      
+      <div>
+        <style>
+  #sidebar-search-input {
+    background: none;
+    border: none;
+    color: White;
+    width: 100%;
+  }
+  #sidebar-search-results-container {
+    overflow: auto auto;
+    max-height: 50vh;
+  }
+</style>
+<input
+  id="sidebar-search-input"
+  placeholder="搜索博文"
+/>
+<ol
+  id="sidebar-search-results-container"
+></ol>
+<script
+  src='https://cdn.jsdelivr.net/npm/simple-jekyll-search/dest/simple-jekyll-search.min.js'
+  async='async'
+  onload='
+    SimpleJekyllSearch({
+      json: "/assets/simple-jekyll-search/search.json",
+      searchInput: document.getElementById("sidebar-search-input"),
+      resultsContainer: document.getElementById("sidebar-search-results-container"),
+      searchResultTemplate: `<li><a href="{url}">{title}</a></li>`,
+      limit: 999,
+      fuzzy: true
+    })'
+></script>
+
+      </div>
+      
+      
+      <style>
+  .sidebar-checkbox {
+    display: none;
+  }
+  .sidebar-toggle {
+    position: fixed;
+  }
+</style>
+
+      
+      <style>
+  .effect {
+    margin: 1rem;
+    perspective: 900px;
+  }
+  .effect-info {
+    text-align: center;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    transform-style: preserve-3d;
+  }
+  .effect-img {
+    z-index: 11;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+  }
+  .effect-img:before {
+    position: absolute;
+    display: block;
+  }
+  .effect-right_to_left .effect-img {
+    transform-origin: 0% 50%;
+  }
+  .effect-right_to_left:hover .effect-img {
+    transform: rotate3d(0, 1, 0, -180deg);
+  }
+</style>
+
+      
+      <style>
+  #toc {
+    overflow: auto auto;
+    max-height: 50vh;
+  }
+</style>
+<aside id="toc">
+</aside>
+<script
+  defer='defer'
+  src='https://cdn.jsdelivr.net/npm/html-contents/html-contents.min.js'
+  onload="htmlContents('#toc', {listType: 'o', filter: function(arr) {return !arr.matches('.masthead-title')}})"
+></script>
+
+      
+      <div>
+  <i class="fas fa-cog fa-spin fa-fw"></i>
+  <span id="run_time_day">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>天
+  <span id="run_time_hour">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>时
+  <span id="run_time_minute">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>分
+  <span id="run_time_second">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </span>秒
+  <script>
+    setInterval(function (d,h,m,s,b) {
+      function setzero(i) {
+        return i < 10 ? "0" + i : i;
+      }
+      let BirthDay = new Date(b);
+      let today = new Date();
+      let timeold = (today.getTime() - BirthDay.getTime());
+      let sectimeold = timeold / 1000;
+      let secondsold = Math.floor(sectimeold);
+      let msPerDay = 24 * 60 * 60 * 1000;
+      let e_daysold = timeold / msPerDay;
+      let daysold = Math.floor(e_daysold);
+      let e_hrsold = (e_daysold - daysold) * 24;
+      let hrsold = Math.floor(e_hrsold);
+      let e_minsold = (e_hrsold - hrsold) * 60;
+      let minsold = Math.floor((e_hrsold - hrsold) * 60);
+      let seconds = Math.floor((e_minsold - minsold) * 60);
+      d.textContent = daysold;
+      h.textContent = setzero(hrsold);
+      m.textContent = setzero(minsold);
+      s.textContent = setzero(seconds);
+    },
+    1000,
+    document.getElementById("run_time_day"),
+    document.getElementById("run_time_hour"),
+    document.getElementById("run_time_minute"),
+    document.getElementById("run_time_second"),
+    "10/04/2017 11:03:56")// 这是我第一篇CSDN博客的时间
+  </script>
+</div>
+
+      
+      <div>
+  <div>
+    <i class="fas fa-eye fa-fw"></i>
+    <span id="busuanzi_value_page_pv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>次
+  </div>
+  <div>
+    <i class="fas fa-paw fa-fw"></i>
+    <span id="busuanzi_value_site_pv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>枚
+  </div>
+  <div>
+    <i class="fas fa-user-friends fa-fw"></i>
+    <span id="busuanzi_value_site_uv">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </span>人
+  </div>
+  <script
+    src='https://cdn.jsdelivr.net/npm/busuanzi'
+    async='async'
+  ></script>
+</div>
+
+      
+      <div>
+  <i class="fas fa-thumbs-up fa-fw"></i>
+  <a href="https://jekyll-theme-WuK.wu-kan.cn">
+    jekyll-theme-WuK
+  </a>
+</div>
+
+      
+      <div>
+  <i class="fas fa-copyright fa-fw"></i>
+  2017-2020 WuK
+</div>
+
+      
+      
+    </div>
+  </div>
+  <!-- Wrap is the content to shift when toggling the sidebar. We wrap the content to avoid any CSS collisions with our real content. -->
+  
+  <div class="wrap">
+    
+<style>
+  pre {
+    max-height: 50vh;
+    overflow: auto;
+  }
+</style>
+
+
+<style>
+  @media (min-width: 56em) {
+    .container {
+      max-width: 66.6%;
+    }
+  }
+</style>
+
+
+<style>
+  .masthead,
+  .container.content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 0 .75rem rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95);
+    animation-duration: 2s;
+    animation-name: fadeIn;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/combine/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css,npm/prismjs/plugins/toolbar/prism-toolbar.min.css,gh/PrismJS/prism-themes@1955cfef6953b3a59e66016e8a1e016b45d6cc79/themes/prism-nord.min.css"
+/>
+<script
+  src="https://cdn.jsdelivr.net/combine/npm/prismjs/components/prism-core.min.js,npm/prismjs/plugins/autoloader/prism-autoloader.min.js,npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js,npm/prismjs/plugins/toolbar/prism-toolbar.min.js"
+  defer="defer"
+  onload='
+    Prism.plugins.autoloader.languages_path = "https:\/\/cdn.jsdelivr.net/npm/prismjs/components/";
+    for(let x of document.getElementsByTagName("pre"))
+      x.classList.add("line-numbers");
+    Prism.plugins.toolbar.registerButton("select-code", function (env) {
+      let button = document.createElement("button");
+      button.textContent = "select this " + env.language;
+      button.addEventListener("click", function () {
+        if (document.body.createTextRange) {
+          let range = document.body.createTextRange();
+          range.moveToElementText(env.element);
+          range.select();
+        } else if (window.getSelection) {
+          let selection = window.getSelection();
+          let range = document.createRange();
+          range.selectNodeContents(env.element);
+          selection.removeAllRanges();
+            selection.addRange(range);
+        }
+      });
+      return button;
+    })'
+></script>
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
+/>
+<script
+  src="https://cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/mathtex-script-type.min.js,npm/katex/dist/contrib/auto-render.min.js"
+  defer="defer"
+  onload='renderMathInElement(document.body, { delimiters: [{ left: "$", right: "$", display: false }] })'
+></script>
+
+
+<style>
+  pre.language-mermaid,
+  code.language-mermaid {
+    display: none;
+  }
+</style>
+<script
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  defer="defer"
+  onload='
+    for(let x of document.getElementsByClassName("language-mermaid"))
+      if(x.nodeName=="CODE")
+      {
+        let m = document.createElement("div");
+        m.classList.add("mermaid");
+        m.textContent = x.textContent;
+        x.parentNode.insertAdjacentElement("beforebegin", m);
+      }'
+></script>
+
+
+
+<div class="masthead">
+  <h3 class="container masthead-title">
+    
+    Neo4j数据数据入库方案（OLD）
+    <a href="http://localhost:4000/" title="Home">
+      <small>
+        lv-liu
+      </small>
+    </a>
+    
+  </h3>
+</div>
+
+<div class="container content">
+  <div class="post">
+  <span class="post-date">
+    
+    <i class="fas fa-calendar-day fa-fw"></i>
+    15 Aug 2018
+    
+    
+    <i class="fas fa-file-word fa-fw"></i>
+    9791字
+    
+    
+    <i class="fas fa-clock fa-fw"></i>
+    33分
+    
+    
+    
+    <i class="fas fa-tag fa-fw"></i>
+    图库
+    
+    <br/>
+<i class="fas fa-coffee fa-fw"></i>
+<a href="/merger/">如果这篇博客帮助到你，可以请我喝一杯咖啡~</a>
+<br/>
+<i class="fab fa-creative-commons-by fa-fw"></i>
+<a
+  href="https://creativecommons.org/licenses/by/4.0/deed.zh"
+  rel="license">
+  CC BY 4.0
+</a>
+（除特别声明或转载文章外）
+
+    
+  </span>
+  <h2 id="第一章-neo4j数据入库方式">第一章 Neo4j数据入库方式</h2>
+<p>Neo4j支持多种方式的数据入库的方式包含Neo4j Import、<a href="&quot;&quot;" title="Batch Import">Batch Import</a>、Load CSV、Cypher。</p>
+
+<p>下面按照数据量级别进行划分：</p>
+
+<ul>
+  <li>
+    <p>千万级别以上数据量：BatchImport和Neo4jImport。只能在初始化建库使用，已经存储的库不支持。</p>
+  </li>
+  <li>
+    <p>十万到千万级别的数据量：Load CSV的方式，支持已有库的数据追加，适合大增量级别和中等数据量全量入库。</p>
+  </li>
+  <li>
+    <p>小数据量级别五万级以下：Cypher的方式，支持已有库的小数据量增量入库，灵活方便，支持事务。</p>
+  </li>
+</ul>
+
+<h2 id="第二章-图库信息">第二章 图库信息</h2>
+
+<p><strong>业务图库</strong>：是根据现有的业务基础和特定需求进行建库，其中节点和关系可以进行系统的评估和预测，选择可行性的入库方式。</p>
+
+<p><strong>业务需求</strong>：基于公安内部基础资源库进行人员信息的轨迹和行为进行关联的一种关系图。可以基于Cypher查询分析人员的行为轨迹进行人与人之间的各种关系查询。</p>
+
+<h3 id="21人的基本信息">2.1.人的基本信息</h3>
+
+<p>姓名、证件号码、家庭住址、户的家庭成员、详细地址、婚姻状态等</p>
+
+<h3 id="22人的轨迹行为">2.2.人的轨迹行为</h3>
+
+<p>旅馆住宿、乘坐航班、乘坐火车、乘坐客车、上网、出入境、迁移、租赁房屋等。</p>
+
+<h3 id="23建库的目的">2.3.建库的目的</h3>
+
+<ul>
+  <li>
+    <p>基于人的轨迹行为的查询，可视化展示。</p>
+  </li>
+  <li>
+    <p>基于人的轨迹行为通过特定的规则进行人与人之间存在的行为轨迹关系进行数据挖掘和分析，得出存在的关系脉络和可能存在的关系网。</p>
+  </li>
+</ul>
+
+<h3 id="24图库数据量预估">2.4.图库数据量预估</h3>
+
+<p>前提先得了解<a href="&quot;&quot;" title="数据建模">数据建模</a>才能进行相关的信息的评估，可视化分析的根据贵州的情况最初预估在5亿-10亿的节点之间、10亿-30亿的边，因为各个省的信息有差异所以此只是一个基本的评估。</p>
+
+<h2 id="第三章-全量方案">第三章 全量方案</h2>
+
+<p>基于上面图库数据量预估，以及参考<a href="&quot;&quot;" title="数据建模">数据建模</a>手册可以得出，图库的全量入库只能是Neo4j Import 或者 Batch Import进行导入新键库。</p>
+
+<p>查看此章节前必看<a href="&quot;&quot;" title="数据建模手册">数据建模手册</a>和<a href="&quot;&quot;" title="Batch Import手册">Batch Import手册</a>，也可参考<a href="&quot;&quot;" title="Neo4j 操作手册">Neo4j 操作手册</a>。</p>
+
+<h3 id="31全量方式选择">3.1.全量方式选择</h3>
+
+<p>本方案通过HBase资源库生成CSV文件，然后选择Batch Import读取进行全量数据的导入。</p>
+
+<p><strong>选择Batch Import具体原因有以下几点：</strong></p>
+
+<ol>
+  <li>
+    <p>Batch Import是大批量处理的Neo4j的一直快速有效的方式。</p>
+  </li>
+  <li>
+    <p>Batch Import可以支持索引的创建而Neo4j Import导入时候不支持索引创建。</p>
+  </li>
+  <li>
+    <p>Batch Import 不依赖Neo4j的安装，在任何服务器都可以执行，生成库后可以直接复制到需要使用的Neo4j的安装服务器上即可，而Neo4j Import必须依赖Neo4j的安装服务器才能使用。</p>
+  </li>
+  <li>
+    <p>Batch Import支持可配置内存，而Neo4j Import只能依赖Neo4j安装的使用内存。</p>
+  </li>
+</ol>
+
+<p><strong>通用缺点：</strong></p>
+
+<ol>
+  <li>
+    <p>不管是Neo4j Import 还是Batch Import都不支持已经存在的图库进行数据追加，只能在第一次初始化使用通过Import命令进行新图库创建。</p>
+  </li>
+  <li>
+    <p>需要先提前准备好需要入库的CSV数据文件</p>
+  </li>
+  <li>
+    <p>如果已经生成完成了图库，如果需要在添加某个类别的一个大数据量级别的节点和关系，需要全部重新建库，这是致命的缺陷属于Neo4j设计上的缺陷。</p>
+  </li>
+  <li>
+    <p>导入CSV如果关系中依赖的节点ID在节点CSV文件中找不到将可能会异常。</p>
+  </li>
+</ol>
+
+<h3 id="32全量方案图">3.2.全量方案图</h3>
+
+<p>通过下面图进行全量方案简要流程说明：</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1522374353832_25.png" alt="" /></p>
+
+<ul>
+  <li>
+    <p>通过ODBA标准库或HBase资源库、其他可能来源库，生成图库规则的CSV数据文件</p>
+  </li>
+  <li>
+    <p>CSV数据文件包含节点和关系的数据文件，再通过Batch Import将CSV数据文件生成图数据库</p>
+  </li>
+</ul>
+
+<h3 id="33csv数据文件">3.3.CSV数据文件</h3>
+
+<h4 id="331使用方式">3.3.1.使用方式</h4>
+
+<p>通过MapReduce读取源库的方式生成CSV数据文件</p>
+<ul>
+  <li>
+    <p>方式一：MR读取Oracle标准库生成CSV（支持）</p>
+  </li>
+  <li>
+    <p>方式二：MR读取HBase资源库生成CSV（推荐）</p>
+  </li>
+</ul>
+
+<p>本案例使用方式二。</p>
+
+<h4 id="332实现原理">3.3.2.实现原理</h4>
+
+<ul>
+  <li>通过Oracle或者HBase某类资源作为MapReduce的输入</li>
+  <li>然后在通过Map读取字段配置信息，过滤处理</li>
+  <li>再通过Reduce读取配置信息提供的规则组装生成输出文件（CSV文件）输出到HDFS</li>
+  <li>从HDFS拷贝到本地</li>
+</ul>
+
+<p>问题：所有的关系都是基于人员信息去关联的，那么人员信息在现在标准库是找不到这样一个一个已经有资源表，只能通过多个轨迹类资源表去合成大宽表，这样就需要合成实现抽取一个大宽表到User的合成表中，下面将介绍这部分内容，合成身份证号的大宽表。</p>
+
+<h3 id="34身份证号大宽表">3.4.身份证号大宽表</h3>
+
+<p>通过读取配置信息作为输入过滤，读取MR的配置信息进行MR抽取到User人员信息的大宽表。</p>
+
+<p><strong>配置信息表：</strong></p>
+<ul>
+  <li>大宽表MR抽取的公共配置信息 B_BIGWID_TAB_GGPZXX</li>
+  <li>大宽表MR的JOB配置表 B_BIGWID_TAB_TASK</li>
+  <li>大宽表的列配置表 B_BIGWID_TAB_QUALIFIER</li>
+  <li>大宽表User身份证号配置信息 B_USER_BIGTAB_PZXXB</li>
+</ul>
+
+<h4 id="35数据库配置表的表公共字段结构">3.5.数据库配置表的表公共字段结构</h4>
+
+<p><strong>备注</strong>：<em>这是后续所有配置表的公共字段，每个表都包含这些字段，后续不再出现</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SYSTEMID</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td>SYS_GUID()</td>
+      <td>主键</td>
+    </tr>
+    <tr>
+      <td>CREATE_USER</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td>‘SYS’</td>
+      <td>创建人</td>
+    </tr>
+    <tr>
+      <td>CREATE_TIME</td>
+      <td>DATE</td>
+      <td>N</td>
+      <td>SYSDATE</td>
+      <td>创建时间</td>
+    </tr>
+    <tr>
+      <td>UPDATE_TIME</td>
+      <td>DATE</td>
+      <td>Y</td>
+      <td>SYSDATE</td>
+      <td>更新时间</td>
+    </tr>
+    <tr>
+      <td>SCBZ</td>
+      <td>VARCHAR2(4)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>删除标志，0代表未删除，1代表已删除</td>
+    </tr>
+    <tr>
+      <td>BLZD1</td>
+      <td>VARCHAR2(30)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>保留字段1</td>
+    </tr>
+    <tr>
+      <td>BLZD2</td>
+      <td>VARCHAR2(100)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>保留字段2</td>
+    </tr>
+    <tr>
+      <td>BLZD3</td>
+      <td>VARCHAR3(300)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>保留字段3</td>
+    </tr>
+    <tr>
+      <td>BLZD4</td>
+      <td>VARCHAR4(500)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>保留字段4</td>
+    </tr>
+    <tr>
+      <td>BLZD5</td>
+      <td>VARCHAR4(1000)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>保留字段5</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="36-全量数据入库配置表信息">3.6 全量数据入库配置表信息</h3>
+
+<h4 id="361-b_bigwid_tab_ggpzxx">3.6.1 B_BIGWID_TAB_GGPZXX</h4>
+<p>大宽表MR抽取的公共配置信息表</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BIGWID_TYPE</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>大宽表类型，如01代表User大宽表，02代表关系分析宽表，人员标签大宽表代表03，标识号大宽04</td>
+    </tr>
+    <tr>
+      <td>BIGWID_DEL</td>
+      <td>VARCHAR2(1000)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>大宽表类型详情</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE_ROWKEY_DELIM</td>
+      <td>VARCHAR2(10)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>ROWKEY分割符</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE_VALUE_DELIM</td>
+      <td>VARCHAR2(10)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>值的分隔符号</td>
+    </tr>
+    <tr>
+      <td>SCAN_CACHE</td>
+      <td>NUMBER(4)</td>
+      <td>N</td>
+      <td>1000</td>
+      <td>一次RPC请求数，默认为1000</td>
+    </tr>
+    <tr>
+      <td>SCAN_BATCH</td>
+      <td>NUMBER(4)</td>
+      <td>N</td>
+      <td>100</td>
+      <td>一次请求的最大的列数，默认为100</td>
+    </tr>
+    <tr>
+      <td>IS_COMPRESS</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>是否启动压缩，0代表否，1代表是</td>
+    </tr>
+    <tr>
+      <td>COMPRESS_TYPE</td>
+      <td>VARCHAR2(50)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>01为default,02为ZIP2, 03为snapp</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="362-b_bigwid_tab_task">3.6.2 B_BIGWID_TAB_TASK</h4>
+<p>大宽表MR的JOB配置表</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BIGWID_ID</td>
+      <td>VARCHAR2(32)</td>
+      <td>N</td>
+      <td> </td>
+      <td>大宽表类型外键一对多对应GGPZXX表的主键</td>
+    </tr>
+    <tr>
+      <td>TASK_NAME</td>
+      <td>VARCHAR2(200)</td>
+      <td>N</td>
+      <td> </td>
+      <td>区分各个抽取来源表的Shell的参数，唯一</td>
+    </tr>
+    <tr>
+      <td>JOB_NAME</td>
+      <td>VARCHAR2(200)</td>
+      <td>N</td>
+      <td> </td>
+      <td>运行MR-JOB作业的名称</td>
+    </tr>
+    <tr>
+      <td>JAR_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>MR-JAR包名</td>
+    </tr>
+    <tr>
+      <td>TMP_TARGET_DIR</td>
+      <td>VARCHAR2(300)</td>
+      <td>N</td>
+      <td> </td>
+      <td>输出HDFS的临时目录</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>HBASE的源表英文名（大写）</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE_FAMILY</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td>CF</td>
+      <td>MR输入源表的列族</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>MR输出到HBASE表名</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE_FAMILY</td>
+      <td>VARCHAR2(20)</td>
+      <td>N</td>
+      <td>CF</td>
+      <td>MR输出表目标表的列族，默认CF</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE_ROWKEY</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td>ZJHM</td>
+      <td>输出表的主键，也就是输出表主键来源输出表那个字段或者那些字段</td>
+    </tr>
+    <tr>
+      <td>TARGET_TABLE_QUALIFIER</td>
+      <td>VARCHAR2(200)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>输出表的列名，可以配置多个列名，来源输入的表列名称</td>
+    </tr>
+    <tr>
+      <td>TARGET_VALUE</td>
+      <td>VARCHAR2(200)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>输出表列值，来源输入表的多个字段，如zd1:zd2..</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="363-b_bigwid_tab_qualifier">3.6.3 B_BIGWID_TAB_QUALIFIER</h4>
+
+<p>大宽表的列配置表</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TASK_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>task name 启动作业名，task外键与B_BIGWID_TAB_TASK的taskName一对一关联</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>列名</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_VALUE</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>列值对应源表列名</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_NAME_IS_TIME</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>是否是日期字段</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_NAME_DATA_TYPE</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>数据格式类型，0代表201501格式，1代表DATE类型2015/01,2代表毫秒格式</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_NAME_TYPE</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>0代表是源字段的值，1代表是配置就直接赋值</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_NAME_IS_DATEZH</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>列值是否是日期字段</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_VALUE_DATA_TYPE</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>列值格式类型，0代表201501格式，1代表DATE类型2015/01,2代表毫秒格式</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_VALUE_TYPE</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>列值，0代表是源字段的值，1代表是配置就直接赋值</td>
+    </tr>
+    <tr>
+      <td>QUALIFIER_VALUE_IS_DATEZH</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>列值，是否进行日期字段转换标准格式201701..,0代表否，1代表是</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="464-b_user_bigtab_pzxxb">4.6.4 B_USER_BIGTAB_PZXXB</h4>
+<p>大宽表User身份证号配置信息</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CODE</td>
+      <td>VARCHAR2(10)</td>
+      <td>N</td>
+      <td> </td>
+      <td>code值,区分某类别大表的标识符</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE_YWMC</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td> </td>
+      <td>源表英文名</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE_ZWMC</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>源表中文名</td>
+    </tr>
+    <tr>
+      <td>ZJHM_ZD_YWMC</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td> </td>
+      <td>证件号码字段英文名</td>
+    </tr>
+    <tr>
+      <td>ZJHM_ZD_ZWMC</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>证件号码字段中文名</td>
+    </tr>
+    <tr>
+      <td>XM_ZD_YWMC</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td> </td>
+      <td>姓名字段英文名</td>
+    </tr>
+    <tr>
+      <td>XM_ZD_ZWMC</td>
+      <td>VARCHAR2(100)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>姓名字段中文名</td>
+    </tr>
+    <tr>
+      <td>HBASE_TABLE_NAME</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td> </td>
+      <td>HBASE入库表名，大写</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="365-现场需要配置修改">3.6.5 现场需要配置修改</h4>
+<p>需要根据现场实际HBase资源库资源库表进行适配修改：</p>
+
+<ul>
+  <li><strong>B_BIGWID_TAB_TASK表</strong>
+    <ol>
+      <li>修改B_BIGWID_TAB_TASK中的关联资源表名的SOURCE_TABLE</li>
+      <li>修改B_BIGWID_TAB_TASK中的TARGET_TABLE_ROWKEY为关联资源表名的身份证号码字段名称</li>
+    </ol>
+  </li>
+  <li><strong>B_BIGWID_TAB_QUALIFIER表</strong>
+    <ol>
+      <li>修改B_BIGWID_TAB_QUALIFIER表中的TaskName和QUALIFIER_NAME适配修改QUALIFIER_VALUE的值其对应字段名称。</li>
+    </ol>
+  </li>
+  <li><strong>B_USER_BIGTAB_PZXXB表</strong>
+    <ol>
+      <li>修改其SOURCE_TABLE_YWMC（源表英文名）、SOURCE_TABLE_ZWMC（源表中文名）</li>
+      <li>ZJHM_ZD_YWMC（证件号码字段英文名）、ZJHM_ZD_ZWMC（证件号码字段中文名）</li>
+      <li>如果表中有姓名，配置XM_ZD_YWMC（姓名字段英文名）、XM_ZD_ZWMC（姓名号码字段中文名）</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="366-数据抽取生成user身份证号大宽表">3.6.6 数据抽取生成User(身份证号)大宽表</h4>
+
+<p>抽取HBase资源库的数据到User(身份证号)大宽表，需要Hadoop集群有相关的执行环境。</p>
+
+<p>具体步骤：
+1、拷贝程序Jar包到Hadoop集群的<code>/home/hadoop/Kshfx/jar</code>目录下。
+2、拷贝程序运行需要的Jar包到Hadoop集群<code>/home/hadoop/Kshfx/libs/</code>目录下。
+3、拷贝运行的Shell脚本到Hadoop集群的<code>/home/hadoop/Kshfx/shell/</code>目录下。
+4、给shell脚步授权执行权限</p>
+<pre><code>chmod 755 /home/hadoop/Kshfx/shell/*.sh
+</code></pre>
+<p>5、执行命令进行全量抽取。如下面命令抽取Hotel旅馆住宿信息表的身份证号信息到User大宽表，其他类似。</p>
+<pre><code>sh /home/hadoop/Kshfx/bin/kshxf-bigtab.sh USER_BIGWID_HOTEL
+</code></pre>
+<p>6、Yarn界面查看执行情况，如果成功在看下一步，异常情况在格外进行排查处理。
+7、HBase shell命令查看B_USER_BIG_TABLE是否已经抽取成功。</p>
+
+<p>详细信息请查看[现场实施手册]</p>
+
+<h3 id="37-生成csv数据文件">3.7 生成CSV数据文件</h3>
+<p>上节已经进行User身份证号的大宽表抽取，那么需要的全部源表资源已经全部就绪，可以进行生成CSV数据文件操作。</p>
+
+<h4 id="371-配置表">3.7.1 配置表</h4>
+
+<p>配置表包含：</p>
+<ul>
+  <li>B_BIMP_PZXXB（BatchImportCsv的Node的创建CSV的配置表）</li>
+  <li>B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）</li>
+  <li>B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）</li>
+</ul>
+
+<h5 id="3711-b_bimp_pzxxb配置库信息表详情">3.7.1.1 B_BIMP_PZXXB配置库信息表详情</h5>
+<p>B_BIMP_PZXXB（BatchImportCsv的Node的创建CSV的配置表）-提供对应Neo4j标签和类型以及源表等配置信息</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TYPE</td>
+      <td>VARCHAR2(10)</td>
+      <td>N</td>
+      <td> </td>
+      <td>抽取资源类型，如001为旅馆住宿，002为航班信息。。。</td>
+    </tr>
+    <tr>
+      <td>TYPE_DET</td>
+      <td>VARCHAR2(300)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>TYPE详情描述</td>
+    </tr>
+    <tr>
+      <td>LABEL</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td> </td>
+      <td>图数据库的NODE的标签</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td> </td>
+      <td>来源表源表英文名称</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="3712-b_bimp_title-batchimport-csv的文件头配置信息表">3.7.1.2 B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）</h5>
+
+<p>B_BIMP_TITLE （BatchImport CSV的文件头配置信息表）提供对应Import CSV对应的文件头的信息，以及关联字段等配置信息。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TYPE_ID</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td> </td>
+      <td>TYPE配置信息表外键,关联B_BIMP_PZXXB表的主键</td>
+    </tr>
+    <tr>
+      <td>T_TYPE</td>
+      <td>VARCHAR2(10)</td>
+      <td>N</td>
+      <td> </td>
+      <td>图库的标题的类型，KIND=NEO4J_IMPORT_CSV_TITLE_TYPE, 00代表UserNode的相关配置，01代表本NODE,02代表全量的RELS</td>
+    </tr>
+    <tr>
+      <td>TITLE_VALUE</td>
+      <td>VARCHAR2(200)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>标题的值</td>
+    </tr>
+    <tr>
+      <td>SORT_NUM</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td> </td>
+      <td>CSV标题排序 0 1 2</td>
+    </tr>
+    <tr>
+      <td>GLZD_TYPE</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>关联字段类型，0代表字段，1代表直接赋值</td>
+    </tr>
+    <tr>
+      <td>GLZD_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>关联字段名称</td>
+    </tr>
+    <tr>
+      <td>GLZD_ISDATE</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td> </td>
+      <td>关联字段源字段是否是Date类型，0代表是毫秒，1代表date类型，2代表其他类型</td>
+    </tr>
+    <tr>
+      <td>GLZD_ISTIME</td>
+      <td>VARCHAR2(30)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>关联字段是否是日期字段，0代表否，1代表是日期字段</td>
+    </tr>
+    <tr>
+      <td>GLZD_BZ</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>关联字段标准，初始化定义后不可更改，用于Neo4j和SparkStreaming建模等</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="3713-b_bimp_mr_hbase-batchimport-csv的mapreduce读取hbase输入的配置信息表">3.7.1.3 B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）</h5>
+
+<p>B_BIMP_MR_HBASE （BatchImport CSV的MapReduce读取HBase输入的配置信息表）提供输入源为HBase的时候的MR读取HBase作为输入的相关配置信息。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>字段长度</th>
+      <th>是否允许为空</th>
+      <th>默认值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TYPE_ID</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td> </td>
+      <td>TYPE配置信息表外键,关联B_BIMP_PZXXB表的主键</td>
+    </tr>
+    <tr>
+      <td>JAR_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td>gxksh.Jar</td>
+      <td>MR运行的Jar包名称</td>
+    </tr>
+    <tr>
+      <td>TASK_NAME</td>
+      <td>VARCHAR2(100)</td>
+      <td>N</td>
+      <td> </td>
+      <td>MR运行的作业的名称</td>
+    </tr>
+    <tr>
+      <td>SOURCE_TABLE</td>
+      <td>VARCHAR2(50)</td>
+      <td>N</td>
+      <td> </td>
+      <td>MR输入源表英文名</td>
+    </tr>
+    <tr>
+      <td>SCAN_CACHE</td>
+      <td>NUMBER(4)</td>
+      <td>N</td>
+      <td>1000</td>
+      <td>HBASE的SCAN每次rpc的请求记录数,默认为1000</td>
+    </tr>
+    <tr>
+      <td>SCAN_BATCH</td>
+      <td>NUMBER(4)</td>
+      <td>N</td>
+      <td>100</td>
+      <td>HBASE的SCAN的每次取的列数，默认100列</td>
+    </tr>
+    <tr>
+      <td>OUTPUT_DIR</td>
+      <td>VARCHAR2(200)</td>
+      <td>N</td>
+      <td> </td>
+      <td>MR的输出的HDFS路径</td>
+    </tr>
+    <tr>
+      <td>NUM_REDUCE_TASKS</td>
+      <td>NUMBER(4)</td>
+      <td>N</td>
+      <td>1</td>
+      <td>MR执行的Reduce的并发数</td>
+    </tr>
+    <tr>
+      <td>IS_MR_OUTPUT_COMPRESS</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>是否启用Reduce输出压缩，KIND=IS_MR_OUTPUT_COMPRESS,0代码不启动压缩，1代表启动</td>
+    </tr>
+    <tr>
+      <td>MR_OUTPUT_COMPRESS_TYPE</td>
+      <td>VARCHAR2(100)</td>
+      <td>Y</td>
+      <td> </td>
+      <td>压缩类型，kind=MR_OUTPUT_COMPRESS_TYPE, BZIP2,DEFAULT,SNAPP</td>
+    </tr>
+    <tr>
+      <td>SCAN_CACHEBLOCKS</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>scan的所有数据是否放在缓存中，默认为0不放在缓存中，1代表放在缓存中</td>
+    </tr>
+    <tr>
+      <td>MAP_SPECULATIVE_EXECUTION</td>
+      <td>NUMBER(2)</td>
+      <td>N</td>
+      <td>0</td>
+      <td>是否开启mr的map备用任务机制，默认0 不开启，1代表开启</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>3.7.2 现场适配配置修改</p>
+
+<p>因为暂时没有Web端的应用配置支持，所以需要在配置库层面进行处理，比如初始化第一次创建图库全量前，需要修改那么配置项。</p>
+
+<p>配置库实施配置时候已经生成了相关配置表和数据，因此只是需要修改其中的关联资源和关联字段即可，需要找出复合现场情况HBase资源库关联源和关联字段名。先看下面表格：
+表格-类型对应的
+| IMP_TYPE  | IMP_TYPE_DETAL  |
+| ———— | ———— |
+| 0200  | 人员信息  |
+| 0201  | 旅馆信息  |
+| 0202  | 火车信息  |
+| 0203  | 名航信息  |
+| 0204  | 网吧信息  |</p>
+
+<p>下面的修改都需要按照此表格对应的IMP_TYPE去进行每个标签类别的修改。
+<strong>修改源表名</strong></p>
+<pre><code class="language-sql">select t.*, t.rowid from B_BIMP_PZXXB t;
+</code></pre>
+<p>根据现场的HBase基础资源库对应表名称修改其源表名SOURCE_TABLE(也就是HBase中对应资源表名称)
+注意：其中的User是合成的大表，不需要修改。</p>
+
+<p><strong>修改CSV文件头配置</strong></p>
+<pre><code class="language-sql">select  t.TYPE_ID, t.T_TYPE, t.TITLE_VALUE, t.SORT_NUM, t.GLZD_TYPE, t.GLZD_NAME, t.GLZD_ISDATE, t.GLZD_ISTIME, t.rowid 
+from B_BIMP_TITLE T
+where t.type_id = (select d.systemid from B_BIMP_PZXXB d where d.type = '0201' and d.scbz = 0)
+and t.t_type = '01'
+and t.SCBZ = 0
+and t.GLZD_TYPE = 0
+order by t.sort_num;
+</code></pre>
+<p>注意：</p>
+<ul>
+  <li>？其中where条件中的t.type = ‘0200’ 是上面表格类型对应表的IMP_TYPE,0200代表人员信息标签，以此类推0201代表旅馆信息…</li>
+  <li>？其中where条件中的t.t_type = ‘01’ 代表的节点还是关系，01代表节点，02代表关系，在人员信息里面没有定义关系，在相关的轨迹信息标签定义关系,也就是除了人员信息以外都要修改其关系，将t.type修改为02</li>
+  <li>？需要修改的字段为t.GLZD_NAME,根据现场情况的HBase库的字段进行适配修改</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>？注意字段类型是否date类型，如果在源库中或者视图库中抽取到HBase定义为Date类型，那么需要修改对应的GLZD_ISDATE和GLZD_ISTIME为1，如自定义主键由多个字段组成LGID</td>
+          <td>FJH，那么对应的GLZD_ISDATE和GLZD_ISTIME为0</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p><em>特别注意：此修改必须熟悉图库数据建模，如果不了解数据建模可参考数据建模手册
+此修改过程如果有不明白的地方可以联系开发人员。</em></p>
+
+<h4 id="373-生成user节点csv文件">3.7.3 生成User节点CSV文件</h4>
+
+<p>注意：如果了解现场Hadoop集群的话，此过程必须由现场的Hadoop集群的管理员协助完成，其中的包由开发人员提供。</p>
+
+<p>步骤：</p>
+
+<p>1、打包相关的kshfx-0.1.0.jar到Hadoop集群的主节点的<code>/home/hadoop/Kshfx/jar/</code>目录下。</p>
+
+<p>2、拷贝运行的Jar包到Hadoop集群的主节点的<code>/home/hadoop/Kshfx/libs/</code>目录下。</p>
+
+<p>3、拷贝相关的shell执行文件到<code>/home/hadoop/Kshfx/bin/</code>目录下。</p>
+
+<p>4、授权Shell执行脚步的执行权限</p>
+<pre><code class="language-sh">chmode 755 /home/hadoop/Kshfx/bin/*.sh
+</code></pre>
+
+<p>5、执行命令进行CSV文件生成</p>
+
+<p>执行成功在配置的hdfs路径上找到相关的生成的CSV数据文件，拷贝到Neo4j服务器。</p>
+
+<p>具体详情可以查看【现场实施手册】</p>
+
+<h4 id="374-生成其他轨迹类节点和关系csv文件">3.7.4 生成其他轨迹类节点和关系CSV文件</h4>
+
+<p><em>此部分内容完全和上一节一致，需要修改的是执行命令参数修改即可。</em></p>
+
+<p>3.8 全量导入Neo4j图库</p>
+
+<p>我们通过上一章节介绍了生成CSV数据文件，本机拷贝到Batch Import的服务器上，那么直接通过Batch Import的import命令进行导入生成新的图库。Batch Import如何使用请阅读【<a href="&quot;&quot;" title="Neo4j-Batch-Import使用手册V0.1.0">Neo4j-Batch-Import使用手册V0.1.0</a>】。</p>
+
+<p>比如已经生成了相关user.csv,hotel.csv,hotel-rels.csv的CSV数据文件并且拷贝到Batch Import服务器，执行下面命令进行生成：</p>
+<pre><code class="language-sh">import ..\data\databases\kshfx.db csv\kshfx\user.csv,csv\kshfx\hotel.csv csv\kshfx\hotel-rels.csv.csv
+</code></pre>
+
+<p>生成kshfx.db新的图数据库后，Neo4j切换图数据，即可使用。</p>
+
+<h2 id="第四章-增量方案">第四章 增量方案</h2>
+
+<h3 id="41增量实现原理">4.1.增量实现原理</h3>
+
+<p>为了保证数据的一致性和数据节点和关系的唯一性原则，那么只能使用Cypher的Merge的方法进行增量的入库方式。增量方案使用Flume动态实时读取Oralce标准库的实时增量并且使用Pool方式推送到Spark Streaming，然后Spark 流处理实时在线的方式读取增量时间组装Cypher语句进行增量Neo4j的数据写入。</p>
+
+<h3 id="42优缺点">4.2.优缺点</h3>
+
+<p>Neo4j为了保证节点和关系的实时增量和唯一性数据问题，只能考虑Merge的方式，这样的合并处理会损失大量的性能。
+此方案的优点：
+1、可以完全保证实时性，5s-10s的范围增量时间差
+2、可以保证数据的唯一性，使用Merge进行合并
+3、可以动态更新想要更新的属性</p>
+
+<p>缺点：
+1、通过Cypher本身性能就差，不到2000条/s
+2、Merger合并写事务操作，更是消耗更多的性能，速度会下降几个数量级
+3、Spark Stream流处理的检查点需要再进一步完善
+4、需要添加Flume的SQL插件，兼容Hadoop平台需要需要结合生产环境测试验证</p>
+
+<h3 id="43增量方案流程图">4.3.增量方案流程图</h3>
+
+<p>Oracle –&gt;Flume–&gt;Spark流–&gt;Neo4j图库</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/1522384223866_43.png" alt="" /></p>
+
+<h3 id="44增量实现">4.4.增量实现</h3>
+
+<p>备：本方案基于CDH5.7.1进行测试可行性，验证增量正常</p>
+
+<p>增量实现注意以下几点：
+1、FlumeSQL插件兼容性
+本身Flume暂时不支持Oracle的数据增量的读取，需要使用FlumeSQL插件，可能会有兼容Flume版本问题，建议使用Flume1.6.0-cdh5.7.1，后续其他版本待测试验证
+2、Flume ng 的配置SQL配置可参考【<a href="" title="Flume SQL NG配置手册">Flume SQL NG配置手册</a>】
+3、Flume Pool方式数据到Spark Streaming注意其中的HDFS检查点配置
+4、增量实现代码在<a href="" title="Kshfx-Spark模版">Kshfx-Spark模版</a>，这里不详细介绍，可以查看API
+Neoj4 Cypher语句组装需要注意结合的业务和建模的实现主要考虑唯一性</p>
+
+<p>4.5.实施部署</p>
+
+<p>相关详情可以查看【<a href="" title="现场实施手册">现场实施手册</a>】</p>
+
+</div>
+<div class="v">
+  <i class="fas fa-spinner fa-pulse"></i>
+</div>
+<script
+  src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'
+  defer='defer'
+  onload='
+    new Valine({
+      "el": document.getElementsByClassName("v")[0],
+      "appId": "67Vfc4knk9uWCDqHKfQpSpfp-gzGzoHsz",
+      "appKey": "hLV56LFJxCoIcJSv2AKMMgG8",
+      "placeholder": "在这里评论吧！填写邮箱可以获得 Gravatar 头像和回复通知哦",
+      "requiredFields": ["nick","mail"],
+      "visitor": true,
+      "recordIP": true
+    })'
+></script>
+
+</div>
+  </div>
+  
+  <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+  
+</body>
+
+</html>
