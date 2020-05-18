@@ -616,11 +616,11 @@ ASC<br/>
     
     
     <i class="fas fa-file-word fa-fw"></i>
-    590字
+    6149字
     
     
     <i class="fas fa-clock fa-fw"></i>
-    2分
+    21分
     
     
     
@@ -707,7 +707,395 @@ ASC<br/>
 
 <p><img src="https://v4liulv.github.io/assets/image/20200518_2.png" alt="" /></p>
 
+<p>迁移的测试方法包含：</p>
+
+<ul>
+  <li>创建工作流 createTest</li>
+  <li>启动工作流 startTest</li>
+  <li>停止工作流 stopTest</li>
+  <li>删除工作流 deleteTest</li>
+  <li>工作流串联 workflowSeries</li>
+  <li>重跑工作流任务实例 triggerTaskTest</li>
+</ul>
+
+<h3 id="测试resources调整">测试resources调整</h3>
+
+<p>之前版本直接mian进行测试，那么配置main的resources即可，但是现在测试全部调整到test下，那么需要复制一份main下resource到测试的resources下。</p>
+
+<p>main下resources</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_3.png" alt="" /></p>
+
+<p>复制到test的resources后</p>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_4.png" alt="" /></p>
+
+<h3 id="maven打包调整">maven打包调整</h3>
+
+<p>中行现场都是内网开发，内网私库还不完善，每次折腾这个包消耗大量时间。基于这个问题maven打包进行了调整可以在外面把全部的依赖包下载到工程的lib下，这样内网即可直接注释掉maven依赖部分，直接使用lib下依赖包即可。</p>
+
+<p>要实现这功能需要调整的部分有：</p>
+
+<ol>
+  <li>maven新增打包依赖包下载到lib目录下</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_5.png" alt="" /></p>
+
+<ol>
+  <li>外网环境进行编译打包(可不执行)，因提供包的时候已经打好依赖包到lib下</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_6.png" alt="" /></p>
+
+<ol>
+  <li>内网环境注释掉maven全部依赖配置</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_7.png" alt="" /></p>
+
+<ol>
+  <li>Project Structure 的 Libraries添加Java配置lib目录，并且选择Model</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_8.png" alt="" /></p>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_9.png" alt="" /></p>
+
+<ol>
+  <li>查看包并检查是否已经可编译</li>
+</ol>
+
+<p><img src="https://v4liulv.github.io/assets/image/20200518_9.png" alt="" /></p>
+
 <h2 id="新增详情">新增详情</h2>
+
+<p>新增的内容主要是基于上传版本没有，现在比较确定的需求接口，比如任务实例列表、任务实例日志列表、任务实例日志详情等。</p>
+
+<p>相关新增工作流API接口说明可参考<strong>工作流API任务实例和日志接口说明.doc</strong>相关文档。</p>
+
+<h3 id="获取任务id方法">获取任务ID方法</h3>
+
+<p>获取任务ID方法的方法名为getTaskID，实现功能是通过工作流名和任务名称获取对应的任务ID。</p>
+
+<p><strong>方法说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>所属类</th>
+      <th>方法名</th>
+      <th>参数说明</th>
+      <th>返回值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WorkflowDemo</td>
+      <td>getTaskID</td>
+      <td>参数有两个工作流名和任务名</td>
+      <td>任务ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>参数说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数名</th>
+      <th>参数类型</th>
+      <th>参数说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>workflowName</td>
+      <td>String</td>
+      <td>工作流名称</td>
+    </tr>
+    <tr>
+      <td>taskName</td>
+      <td>String</td>
+      <td>任务名称</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>功能实现：</strong></p>
+
+<ol>
+  <li>通过工作流名调用获取任务列表方法，解析结果报文获取到任务列表数组。</li>
+  <li>循环任务列表数组获取到任务名是否跟输入值任务名是否相同。</li>
+  <li>匹配上的解析报文中获取到任务ID。</li>
+</ol>
+
+<p><strong>代码实现：</strong></p>
+
+<pre><code class="language-java">  /**
+     * 获取taskID
+     *
+     * @param workflowName 工作流名称
+     * @param taskName task 名称
+     * @return 请求报文json
+     */
+    public static String getTaskID(String workflowName, String taskName) throws Exception {
+        String taskList = queryTaskList(workflowName);
+        String taskId = null;
+
+        JSONObject jsonObject  = JSONObject.parseObject(taskList);
+        JSONObject resultData = jsonObject.getJSONObject("resultData");
+        JSONArray content = resultData.getJSONArray("content");
+
+        for (int i = 0; i&lt; content.size(); i++){
+            JSONObject jsonObject1 = content.getJSONObject(i);
+            String taskName1 = jsonObject1.getString("taskName");
+            if(taskName.equals(taskName1)){
+                taskId = jsonObject1.getString("taskId");
+            }
+        }
+        return taskId;
+    }
+</code></pre>
+
+<h3 id="任务实例列表方法和测试方法">任务实例列表方法和测试方法</h3>
+
+<p>任务实例列表方法通过工作流名和任务名获取的全部的任务实例列表情况。</p>
+
+<h4 id="任务实例列表方法">任务实例列表方法</h4>
+
+<p><strong>方法说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>所属类</th>
+      <th>方法名</th>
+      <th>参数说明</th>
+      <th>返回值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WorkflowDemo</td>
+      <td>taskInstanceList</td>
+      <td>参数有两个工作流名和任务名</td>
+      <td>结果报文</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>参数说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数名</th>
+      <th>参数类型</th>
+      <th>参数说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>workflowName</td>
+      <td>String</td>
+      <td>工作流名称</td>
+    </tr>
+    <tr>
+      <td>taskName</td>
+      <td>String</td>
+      <td>任务名称</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>功能实现：</strong></p>
+
+<ol>
+  <li>先通过获取任务ID方法获取任务ID。</li>
+  <li>通过任务ID获取和其他请求参数查询获取任务实例列表API接口。</li>
+  <li>返回结果任务实例列表结果报文。</li>
+</ol>
+
+<p><strong>代码实现：</strong></p>
+
+<pre><code class="language-java">   /**
+     * 查看任务实例情况
+     *
+     * @param workflowName 工作流名
+     * @param taskName 任务名称
+     */
+    public static String taskInstanceList(String workflowName, String taskName) throws Exception {
+        String taskID = getTaskID(workflowName, taskName);
+        String method = "GET";
+        Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+        params.put("pageIndex", "0");
+        params.put("pageSize", "5");
+        params.put("condition[taskParam]", taskID);
+        //params.put("condition[status]", "2");
+        String url = properties.getProperty("tbds_proter_ip") + properties.getProperty("tbds_task_instance_url");
+        return publicHttps(url, method, params);
+    }
+</code></pre>
+
+<p>特别注意：接口的URL地址、请求参数、结果报文说明请查阅<strong>工作流API任务实例和日志接口说明.doc</strong>文档。</p>
+
+<h4 id="任务实例列表测试方法">任务实例列表测试方法</h4>
+
+<p>是进行任务列表方法的测试验证的测试方法，测试方法中工作流名和任务名称请根据实际情况调整。</p>
+
+<p><strong>测试代码：</strong></p>
+
+<pre><code class="language-java">    @Test
+    public void taskInstanceTest() throws Exception {
+        String workflowName = "doc";
+        String taskName = "compress-doc";
+        WorkflowDemo.taskInstanceList(workflowName, taskName);
+    }
+
+</code></pre>
+
+<p><strong>特别注意：</strong> 测试方法后续都在test目录下，并且测试类统一都一样为WorkFlowTest，后续不作说明。</p>
+
+<h3 id="任务实例日志列表方法和测试方法">任务实例日志列表方法和测试方法</h3>
+
+<h4 id="任务实例日志列表方法">任务实例日志列表方法</h4>
+
+<p>任务实例下可能存在多个日志情况，可能是人工重跑或异常重跑，如正常情况是一个任务实例是只有一个日志情况。</p>
+
+<p>如需要获取某个任务实例的日志详情首先得需要获取对应的任务实例的对应的日志列表，按需求获取某个或全部的日志详情信息。</p>
+
+<p><strong>功能实现</strong></p>
+
+<ol>
+  <li>通过工作流名和任务名获取任务ID</li>
+  <li>根据任务ID获取对应的任务实例列表</li>
+  <li>如获取第一个任务实例的获取数据时间</li>
+  <li>根据1中taskID和3的数据时间获取到对应任务实例全部的日志类别</li>
+</ol>
+
+<p><strong><em>代码实现</em></strong></p>
+
+<pre><code class="language-java"> /**
+     *
+     * @param workflowName 工作流名
+     * @param taskName 任务名
+     *
+     * @return 任务实例日志列表结果报文
+     */
+    public static String taskInstanceLogList(String workflowName, String taskName) throws Exception {
+        String method = "GET";
+        Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+        params.put("taskId", getTaskID(workflowName, taskName));
+        String listLogListURL = properties.getProperty("tbds_proter_ip") + properties.getProperty("tbds_task_instance_log_list");
+        String taskInstanceList = taskInstanceList(workflowName, taskName);
+
+        JSONObject rRoot = JSONObject.parseObject(taskInstanceList);
+        //任务实例JSONArray
+        JSONArray content = rRoot.getJSONObject("resultData").getJSONArray("content");
+
+        //最新的那个任务实例getJSONObject(1)
+        String dataTime = content.getJSONObject(1).get("dataTime").toString();
+        params.put("dataTime", dataTime);
+        return publicHttps(listLogListURL, method, params);
+    }
+</code></pre>
+
+<h4 id="任务实例日志列表测试方法">任务实例日志列表测试方法</h4>
+
+<p>测试任务实例日志类别，其中的参数工作流名和任务名称根据实际情况调整。</p>
+
+<p><strong>测试代码：</strong></p>
+
+<pre><code class="language-java">
+    @Test
+    public void taskInstanceLogList() throws Exception {
+        String workflowName = "doc";
+        String taskName = "compress-doc";
+        WorkflowDemo.taskInstanceLogList(workflowName, taskName);
+    }
+</code></pre>
+
+<h3 id="任务实例日志详情方法和测试方法">任务实例日志详情方法和测试方法</h3>
+
+<p>需要获取根据工作流名和任务名获取任务实例的某个或多个日志详情。</p>
+
+<h4 id="任务实例日志详情方法">任务实例日志详情方法</h4>
+
+<p><strong>功能实现</strong></p>
+
+<ol>
+  <li>根据任务实例日志列表方法获取到任务实例</li>
+  <li>通过任务ID和数据时间获取任务实例日志列表</li>
+  <li>根据日志列表获取某个日志列表的IP和尝试次数值</li>
+  <li>根据任务ID、数据时间、IP、尝试次数值获取详细日志</li>
+</ol>
+
+<p><strong>代码实现</strong></p>
+
+<pre><code class="language-java"> String taskID = getTaskID(workflowName, taskName);
+        String method = "GET";
+
+        Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+        params.put("taskId", taskID);
+        String listLogListURL = properties.getProperty("tbds_proter_ip") + properties.getProperty("tbds_task_instance_log_list");
+        String taskInstanceList = taskInstanceList(workflowName, taskName);
+
+        JSONObject rRoot = JSONObject.parseObject(taskInstanceList);
+        //任务实例JSONArray
+        JSONArray content = rRoot.getJSONObject("resultData").getJSONArray("content");
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        //最新的那个任务实例getJSONObject(1)
+        String dataTime = content.getJSONObject(1).get("dataTime").toString();
+        params.put("dataTime", dataTime);
+        String listLogList = publicHttps(listLogListURL, method, params);
+        //{
+        //   "resultCode":"0",
+        //   "message":null,
+        //   "resultData":
+        //   [
+        //      "18K,
+        //      2020-05-13 09:01:22,
+        //      172.27.0.124,
+        //      1"
+        //   ],
+
+        //   "markInfo":null
+        //}
+        // --------------------------------------
+
+        //params.put("condition[status]", "2");
+        String url = properties.getProperty("tbds_proter_ip") + properties.getProperty("tbds_task_instance_log_info");
+        //查询单个任务实例下的任务列表
+        String resultData = JSONObject.parseObject(listLogList).getJSONArray("resultData").get(0).toString();
+
+        //任务调度器的代理服务器IP，也就是任务实例执行的客户端IP
+        params.put("ip", resultData.split(",")[2]);
+        params.put("tries", resultData.split(",")[3]);
+
+        String resultResponse = publicHttps(url, method, params);
+        System.out.println(resultResponse);
+
+        return resultResponse;
+
+</code></pre>
+
+<h4 id="任务实例日志详情测试方法">任务实例日志详情测试方法</h4>
+
+<p>测试方法主要测试获取到的某个任务实例的某个日志的日志详情。</p>
+
+<p><strong>测试代码</strong></p>
+
+<pre><code class="language-java">    @Test
+    public void taskInstanceLog() throws Exception {
+        String workflowName = "doc";
+        String taskName = "compress-doc";
+        WorkflowDemo.taskInstanceLogInfo(workflowName, taskName);
+    }
+</code></pre>
+
 
 </div>
 <div class="v">
