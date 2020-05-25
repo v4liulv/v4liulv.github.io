@@ -421,7 +421,7 @@ jekyll-theme-WuK: # 我的主题的自定义样式都在这个命名空间
         - | # Copyright声明
           <div>
             <i class="fas fa-copyright fa-fw"></i>
-            2017-2020 WuK
+            2017-2020 Liu LV
           </div>
       wordcount: # 全站字数统计
         enable: false # 本地调试时建议关闭，非常影响站点生成速度（所需时间与博文数量的平方成正比）

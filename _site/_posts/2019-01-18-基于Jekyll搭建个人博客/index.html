@@ -1,757 +1,101 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  
-  <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>基于Jekyll搭建个人博客 | lv-liu</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="基于Jekyll搭建个人博客" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="引言" />
-<meta property="og:description" content="引言" />
-<link rel="canonical" href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" />
-<meta property="og:url" content="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" />
-<meta property="og:site_name" content="lv-liu" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-01-18T00:00:00+08:00" />
-<script type="application/ld+json">
-{"@type":"BlogPosting","headline":"基于Jekyll搭建个人博客","dateModified":"2019-01-18T00:00:00+08:00","datePublished":"2019-01-18T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"},"url":"http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/","description":"引言","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
+<meta charset="UTF-8">
+<title>2019-01-18-基于Jekyll搭建个人博客.md</title>
 
-  
-  
-  <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1"
-/>
-<meta
-  http-equiv="content-type"
-  content="text/html; charset=utf-8"
-/>
-<link
-  rel="alternate"
-  href="/feed.xml"
-  title="RSS"
-  type="application/rss+xml"
-/>
+<!-- official styles start -->
+<!-- markdown.css -->
+<link rel="stylesheet" type="text/css" href="data:text/css;base64,LyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KICogIENvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLgogKiAgTGljZW5zZWQgdW5kZXIgdGhlIE1JVCBMaWNlbnNlLiBTZWUgTGljZW5zZS50eHQgaW4gdGhlIHByb2plY3Qgcm9vdCBmb3IgbGljZW5zZSBpbmZvcm1hdGlvbi4KICotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSovCgpodG1sLCBib2R5IHsKCWZvbnQtZmFtaWx5OiB2YXIoLS12c2NvZGUtbWFya2Rvd24tZm9udC1mYW1pbHksIC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFdQQyIsICJTZWdvZSBVSSIsICJVYnVudHUiLCAiRHJvaWQgU2FucyIsIHNhbnMtc2VyaWYpOwoJZm9udC1zaXplOiB2YXIoLS12c2NvZGUtbWFya2Rvd24tZm9udC1zaXplLCAxNHB4KTsKCXBhZGRpbmc6IDAgMjZweDsKCWxpbmUtaGVpZ2h0OiB2YXIoLS12c2NvZGUtbWFya2Rvd24tbGluZS1oZWlnaHQsIDIycHgpOwoJd29yZC13cmFwOiBicmVhay13b3JkOwp9CgojY29kZS1jc3Atd2FybmluZyB7Cglwb3NpdGlvbjogZml4ZWQ7Cgl0b3A6IDA7CglyaWdodDogMDsKCWNvbG9yOiB3aGl0ZTsKCW1hcmdpbjogMTZweDsKCXRleHQtYWxpZ246IGNlbnRlcjsKCWZvbnQtc2l6ZTogMTJweDsKCWZvbnQtZmFtaWx5OiBzYW5zLXNlcmlmOwoJYmFja2dyb3VuZC1jb2xvcjojNDQ0NDQ0OwoJY3Vyc29yOiBwb2ludGVyOwoJcGFkZGluZzogNnB4OwoJYm94LXNoYWRvdzogMXB4IDFweCAxcHggcmdiYSgwLDAsMCwuMjUpOwp9CgojY29kZS1jc3Atd2FybmluZzpob3ZlciB7Cgl0ZXh0LWRlY29yYXRpb246IG5vbmU7CgliYWNrZ3JvdW5kLWNvbG9yOiMwMDdhY2M7Cglib3gtc2hhZG93OiAycHggMnB4IDJweCByZ2JhKDAsMCwwLC4yNSk7Cn0KCmJvZHkuc2Nyb2xsQmV5b25kTGFzdExpbmUgewoJbWFyZ2luLWJvdHRvbTogY2FsYygxMDB2aCAtIDIycHgpOwp9Cgpib2R5LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZSB7Cglwb3NpdGlvbjogcmVsYXRpdmU7Cn0KCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1hY3RpdmUtbGluZTpiZWZvcmUsCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cgljb250ZW50OiAiIjsKCWRpc3BsYXk6IGJsb2NrOwoJcG9zaXRpb246IGFic29sdXRlOwoJdG9wOiAwOwoJbGVmdDogLTEycHg7CgloZWlnaHQ6IDEwMCU7Cn0KCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiBsaS5jb2RlLWFjdGl2ZS1saW5lOmJlZm9yZSwKYm9keS5zaG93RWRpdG9yU2VsZWN0aW9uIGxpLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJbGVmdDogLTMwcHg7Cn0KCi52c2NvZGUtbGlnaHQuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1hY3RpdmUtbGluZTpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCByZ2JhKDAsIDAsIDAsIDAuMTUpOwp9CgoudnNjb2RlLWxpZ2h0LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCByZ2JhKDAsIDAsIDAsIDAuNDApOwp9CgoudnNjb2RlLWxpZ2h0LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZSAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cglib3JkZXItbGVmdDogbm9uZTsKfQoKLnZzY29kZS1kYXJrLnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtYWN0aXZlLWxpbmU6YmVmb3JlIHsKCWJvcmRlci1sZWZ0OiAzcHggc29saWQgcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjQpOwp9CgoudnNjb2RlLWRhcmsuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cglib3JkZXItbGVmdDogM3B4IHNvbGlkIHJnYmEoMjU1LCAyNTUsIDI1NSwgMC42MCk7Cn0KCi52c2NvZGUtZGFyay5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmUgLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IG5vbmU7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWFjdGl2ZS1saW5lOmJlZm9yZSB7Cglib3JkZXItbGVmdDogM3B4IHNvbGlkIHJnYmEoMjU1LCAxNjAsIDAsIDAuNyk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmU6aG92ZXI6YmVmb3JlIHsKCWJvcmRlci1sZWZ0OiAzcHggc29saWQgcmdiYSgyNTUsIDE2MCwgMCwgMSk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmUgLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IG5vbmU7Cn0KCmltZyB7CgltYXgtd2lkdGg6IDEwMCU7CgltYXgtaGVpZ2h0OiAxMDAlOwp9CgphIHsKCXRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKYTpob3ZlciB7Cgl0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTsKfQoKYTpmb2N1cywKaW5wdXQ6Zm9jdXMsCnNlbGVjdDpmb2N1cywKdGV4dGFyZWE6Zm9jdXMgewoJb3V0bGluZTogMXB4IHNvbGlkIC13ZWJraXQtZm9jdXMtcmluZy1jb2xvcjsKCW91dGxpbmUtb2Zmc2V0OiAtMXB4Owp9CgpociB7Cglib3JkZXI6IDA7CgloZWlnaHQ6IDJweDsKCWJvcmRlci1ib3R0b206IDJweCBzb2xpZDsKfQoKaDEgewoJcGFkZGluZy1ib3R0b206IDAuM2VtOwoJbGluZS1oZWlnaHQ6IDEuMjsKCWJvcmRlci1ib3R0b20td2lkdGg6IDFweDsKCWJvcmRlci1ib3R0b20tc3R5bGU6IHNvbGlkOwp9CgpoMSwgaDIsIGgzIHsKCWZvbnQtd2VpZ2h0OiBub3JtYWw7Cn0KCnRhYmxlIHsKCWJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7Cn0KCnRhYmxlID4gdGhlYWQgPiB0ciA+IHRoIHsKCXRleHQtYWxpZ246IGxlZnQ7Cglib3JkZXItYm90dG9tOiAxcHggc29saWQ7Cn0KCnRhYmxlID4gdGhlYWQgPiB0ciA+IHRoLAp0YWJsZSA+IHRoZWFkID4gdHIgPiB0ZCwKdGFibGUgPiB0Ym9keSA+IHRyID4gdGgsCnRhYmxlID4gdGJvZHkgPiB0ciA+IHRkIHsKCXBhZGRpbmc6IDVweCAxMHB4Owp9Cgp0YWJsZSA+IHRib2R5ID4gdHIgKyB0ciA+IHRkIHsKCWJvcmRlci10b3A6IDFweCBzb2xpZDsKfQoKYmxvY2txdW90ZSB7CgltYXJnaW46IDAgN3B4IDAgNXB4OwoJcGFkZGluZzogMCAxNnB4IDAgMTBweDsKCWJvcmRlci1sZWZ0LXdpZHRoOiA1cHg7Cglib3JkZXItbGVmdC1zdHlsZTogc29saWQ7Cn0KCmNvZGUgewoJZm9udC1mYW1pbHk6IE1lbmxvLCBNb25hY28sIENvbnNvbGFzLCAiRHJvaWQgU2FucyBNb25vIiwgIkNvdXJpZXIgTmV3IiwgbW9ub3NwYWNlLCAiRHJvaWQgU2FucyBGYWxsYmFjayI7Cglmb250LXNpemU6IDFlbTsKCWxpbmUtaGVpZ2h0OiAxLjM1N2VtOwp9Cgpib2R5LndvcmRXcmFwIHByZSB7Cgl3aGl0ZS1zcGFjZTogcHJlLXdyYXA7Cn0KCnByZTpub3QoLmhsanMpLApwcmUuaGxqcyBjb2RlID4gZGl2IHsKCXBhZGRpbmc6IDE2cHg7Cglib3JkZXItcmFkaXVzOiAzcHg7CglvdmVyZmxvdzogYXV0bzsKfQoKcHJlIGNvZGUgewoJY29sb3I6IHZhcigtLXZzY29kZS1lZGl0b3ItZm9yZWdyb3VuZCk7Cgl0YWItc2l6ZTogNDsKfQoKLyoqIFRoZW1pbmcgKi8KCi52c2NvZGUtbGlnaHQgcHJlIHsKCWJhY2tncm91bmQtY29sb3I6IHJnYmEoMjIwLCAyMjAsIDIyMCwgMC40KTsKfQoKLnZzY29kZS1kYXJrIHByZSB7CgliYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDEwLCAxMCwgMTAsIDAuNCk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdCBwcmUgewoJYmFja2dyb3VuZC1jb2xvcjogcmdiKDAsIDAsIDApOwp9CgoudnNjb2RlLWhpZ2gtY29udHJhc3QgaDEgewoJYm9yZGVyLWNvbG9yOiByZ2IoMCwgMCwgMCk7Cn0KCi52c2NvZGUtbGlnaHQgdGFibGUgPiB0aGVhZCA+IHRyID4gdGggewoJYm9yZGVyLWNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuNjkpOwp9CgoudnNjb2RlLWRhcmsgdGFibGUgPiB0aGVhZCA+IHRyID4gdGggewoJYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNjkpOwp9CgoudnNjb2RlLWxpZ2h0IGgxLAoudnNjb2RlLWxpZ2h0IGhyLAoudnNjb2RlLWxpZ2h0IHRhYmxlID4gdGJvZHkgPiB0ciArIHRyID4gdGQgewoJYm9yZGVyLWNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuMTgpOwp9CgoudnNjb2RlLWRhcmsgaDEsCi52c2NvZGUtZGFyayBociwKLnZzY29kZS1kYXJrIHRhYmxlID4gdGJvZHkgPiB0ciArIHRyID4gdGQgewoJYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMTgpOwp9Cg=="/>
+<!-- highlight.css -->
+<link rel="stylesheet" type="text/css" href="data:text/css;base64,LyoKaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2lzYWdhbGFldi9oaWdobGlnaHQuanMvbWFzdGVyL3NyYy9zdHlsZXMvdnMyMDE1LmNzcwoqLwovKgogKiBWaXN1YWwgU3R1ZGlvIDIwMTUgZGFyayBzdHlsZQogKiBBdXRob3I6IE5pY29sYXMgTExPQkVSQSA8bmxsb2JlcmFAZ21haWwuY29tPgogKi8KCgouaGxqcy1rZXl3b3JkLAouaGxqcy1saXRlcmFsLAouaGxqcy1zeW1ib2wsCi5obGpzLW5hbWUgewoJY29sb3I6ICM1NjlDRDY7Cn0KLmhsanMtbGluayB7Cgljb2xvcjogIzU2OUNENjsKCXRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lOwp9CgouaGxqcy1idWlsdF9pbiwKLmhsanMtdHlwZSB7Cgljb2xvcjogIzRFQzlCMDsKfQoKLmhsanMtbnVtYmVyLAouaGxqcy1jbGFzcyB7Cgljb2xvcjogI0I4RDdBMzsKfQoKLmhsanMtc3RyaW5nLAouaGxqcy1tZXRhLXN0cmluZyB7Cgljb2xvcjogI0Q2OUQ4NTsKfQoKLmhsanMtcmVnZXhwLAouaGxqcy10ZW1wbGF0ZS10YWcgewoJY29sb3I6ICM5QTUzMzQ7Cn0KCi5obGpzLXN1YnN0LAouaGxqcy1mdW5jdGlvbiwKLmhsanMtdGl0bGUsCi5obGpzLXBhcmFtcywKLmhsanMtZm9ybXVsYSB7Cgljb2xvcjogI0RDRENEQzsKfQoKLmhsanMtY29tbWVudCwKLmhsanMtcXVvdGUgewoJY29sb3I6ICM1N0E2NEE7Cglmb250LXN0eWxlOiBpdGFsaWM7Cn0KCi5obGpzLWRvY3RhZyB7Cgljb2xvcjogIzYwOEI0RTsKfQoKLmhsanMtbWV0YSwKLmhsanMtbWV0YS1rZXl3b3JkLAouaGxqcy10YWcgewoJY29sb3I6ICM5QjlCOUI7Cn0KCi5obGpzLXZhcmlhYmxlLAouaGxqcy10ZW1wbGF0ZS12YXJpYWJsZSB7Cgljb2xvcjogI0JENjNDNTsKfQoKLmhsanMtYXR0ciwKLmhsanMtYXR0cmlidXRlLAouaGxqcy1idWlsdGluLW5hbWUgewoJY29sb3I6ICM5Q0RDRkU7Cn0KCi5obGpzLXNlY3Rpb24gewoJY29sb3I6IGdvbGQ7Cn0KCi5obGpzLWVtcGhhc2lzIHsKCWZvbnQtc3R5bGU6IGl0YWxpYzsKfQoKLmhsanMtc3Ryb25nIHsKCWZvbnQtd2VpZ2h0OiBib2xkOwp9CgovKi5obGpzLWNvZGUgewoJZm9udC1mYW1pbHk6J01vbm9zcGFjZSc7Cn0qLwoKLmhsanMtYnVsbGV0LAouaGxqcy1zZWxlY3Rvci10YWcsCi5obGpzLXNlbGVjdG9yLWlkLAouaGxqcy1zZWxlY3Rvci1jbGFzcywKLmhsanMtc2VsZWN0b3ItYXR0ciwKLmhsanMtc2VsZWN0b3ItcHNldWRvIHsKCWNvbG9yOiAjRDdCQTdEOwp9CgouaGxqcy1hZGRpdGlvbiB7CgliYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS12c2NvZGUtZGlmZkVkaXRvci1pbnNlcnRlZFRleHRCYWNrZ3JvdW5kLCByZ2JhKDE1NSwgMTg1LCA4NSwgMC4yKSk7Cgljb2xvcjogcmdiKDE1NSwgMTg1LCA4NSk7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTAwJTsKfQoKLmhsanMtZGVsZXRpb24gewoJYmFja2dyb3VuZDogdmFyKC0tdnNjb2RlLWRpZmZFZGl0b3ItcmVtb3ZlZFRleHRCYWNrZ3JvdW5kLCByZ2JhKDI1NSwgMCwgMCwgMC4yKSk7Cgljb2xvcjogcmdiKDI1NSwgMCwgMCk7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTAwJTsKfQoKCi8qCkZyb20gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2lzYWdhbGFldi9oaWdobGlnaHQuanMvbWFzdGVyL3NyYy9zdHlsZXMvdnMuY3NzCiovCi8qCgpWaXN1YWwgU3R1ZGlvLWxpa2Ugc3R5bGUgYmFzZWQgb24gb3JpZ2luYWwgQyMgY29sb3JpbmcgYnkgSmFzb24gRGlhbW9uZCA8amFzb25AZGlhbW9uZC5uYW1lPgoKKi8KCi52c2NvZGUtbGlnaHQgLmhsanMtZnVuY3Rpb24sCi52c2NvZGUtbGlnaHQgLmhsanMtcGFyYW1zLAoudnNjb2RlLWxpZ2h0IC5obGpzLW51bWJlciwKLnZzY29kZS1saWdodCAuaGxqcy1jbGFzcyAgewoJY29sb3I6IGluaGVyaXQ7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMtY29tbWVudCwKLnZzY29kZS1saWdodCAuaGxqcy1xdW90ZSwKLnZzY29kZS1saWdodCAuaGxqcy1udW1iZXIsCi52c2NvZGUtbGlnaHQgLmhsanMtY2xhc3MsCi52c2NvZGUtbGlnaHQgLmhsanMtdmFyaWFibGUgewoJY29sb3I6ICMwMDgwMDA7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMta2V5d29yZCwKLnZzY29kZS1saWdodCAuaGxqcy1zZWxlY3Rvci10YWcsCi52c2NvZGUtbGlnaHQgLmhsanMtbmFtZSwKLnZzY29kZS1saWdodCAuaGxqcy10YWcgewoJY29sb3I6ICMwMGY7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMtYnVpbHRfaW4sCi52c2NvZGUtbGlnaHQgLmhsanMtYnVpbHRpbi1uYW1lIHsKCWNvbG9yOiAjMDA3YWNjOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN0cmluZywKLnZzY29kZS1saWdodCAuaGxqcy1zZWN0aW9uLAoudnNjb2RlLWxpZ2h0IC5obGpzLWF0dHJpYnV0ZSwKLnZzY29kZS1saWdodCAuaGxqcy1saXRlcmFsLAoudnNjb2RlLWxpZ2h0IC5obGpzLXRlbXBsYXRlLXRhZywKLnZzY29kZS1saWdodCAuaGxqcy10ZW1wbGF0ZS12YXJpYWJsZSwKLnZzY29kZS1saWdodCAuaGxqcy10eXBlIHsKCWNvbG9yOiAjYTMxNTE1Owp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXNlbGVjdG9yLWF0dHIsCi52c2NvZGUtbGlnaHQgLmhsanMtc2VsZWN0b3ItcHNldWRvLAoudnNjb2RlLWxpZ2h0IC5obGpzLW1ldGEsCi52c2NvZGUtbGlnaHQgLmhsanMtbWV0YS1rZXl3b3JkIHsKCWNvbG9yOiAjMmI5MWFmOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXRpdGxlLAoudnNjb2RlLWxpZ2h0IC5obGpzLWRvY3RhZyB7Cgljb2xvcjogIzgwODA4MDsKfQoKLnZzY29kZS1saWdodCAuaGxqcy1hdHRyIHsKCWNvbG9yOiAjZjAwOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN5bWJvbCwKLnZzY29kZS1saWdodCAuaGxqcy1idWxsZXQsCi52c2NvZGUtbGlnaHQgLmhsanMtbGluayB7Cgljb2xvcjogIzAwYjBlODsKfQoKCi52c2NvZGUtbGlnaHQgLmhsanMtZW1waGFzaXMgewoJZm9udC1zdHlsZTogaXRhbGljOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN0cm9uZyB7Cglmb250LXdlaWdodDogYm9sZDsKfQo="/>
+<!-- official styles end -->
 
-  
-  <link
-  rel="apple-touch-icon-precomposed"
-  href="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4"
-/>
-<link
-  rel="shortcut
-  icon"
-  href="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4"
-/>
+<!-- third party styles start -->
+<!-- markdown-it-admonition.css -->
+<link rel="stylesheet" type="text/css" href="data:text/css;base64,QGZvbnQtZmFjZSB7CiAgZm9udC1mYW1pbHk6ICJNYXRlcmlhbCBJY29ucyI7CiAgZm9udC1zdHlsZTogbm9ybWFsOwogIGZvbnQtd2VpZ2h0OiA0MDA7CiAgc3JjOiBsb2NhbCgiTWF0ZXJpYWwgSWNvbnMiKSwgbG9jYWwoIk1hdGVyaWFsSWNvbnMtUmVndWxhciIpLCB1cmwoImRhdGE6YXBwbGljYXRpb24veC1mb250LXdvZmY7Y2hhcnNldD11dGYtODtiYXNlNjQsZDA5R1JnQUJBQUFBQUFmSUFBc0FBQUFBRERBQUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUJIVTFWQ0FBQUJDQUFBQURNQUFBQkNzUDZ6N1U5VEx6SUFBQUU4QUFBQVJBQUFBRlpXN2tvc1kyMWhjQUFBQVlBQUFBRFRBQUFDanRQNnl0Qm5iSGxtQUFBQ1ZBQUFBeGdBQUFRNHpSdHZsR2hsWVdRQUFBVnNBQUFBTHdBQUFEWVJ3WnNuYUdobFlRQUFCWndBQUFBY0FBQUFKQWVLQXp4b2JYUjRBQUFGdUFBQUFCSUFBQUE4T0dRQUFHeHZZMkVBQUFYTUFBQUFJQUFBQUNBRzVBZndiV0Y0Y0FBQUJld0FBQUFmQUFBQUlBRWZBRVJ1WVcxbEFBQUdEQUFBQVZjQUFBS0ZrQWhvQzNCdmMzUUFBQWRrQUFBQVlnQUFBSzJ2ejd3a2VKeGpZR1JnWU9CaWtHUFFZV0IwY2ZNSlllQmdZR0dBQUpBTVkwNW1laUpRRE1vRHlyR0FhUTRnWm9PSUFnQ0tJd05QQUhpY1kyQmtQc1E0Z1lHVmdZT3BrK2tNQXdORFA0Um1mTTFneE1qQndNREV3TXJNZ0JVRXBMbW1NRGd3Vkx5NHhLenpYNGNoaHJtSzRRcFFtQkVrQndBWnlneXdlSnpGa3IwTndqQVFoWitURVA2Q1JVZkhCRXdSVVdhUVRJQ3lRYnBNd1JDc2tBNVJVSU9OeEcwUm5uTnBLQUlWNHF6UGt1LzhjMzUzQUNZQVlySWpDV0N1TUFoMnB0ZjAvaGlMM3AvZ3lQVVdhM29zcWx0MEwxenU5cjcxejhkR3JKUnlrRm9hdVhRZDkzMkxqNXZoRytNanhHZVlJOE1LRVRPYk1wc2xmNUV5UDh0Zyt2SHVuNXI1MzlQdmx2WHphVmhSRlZRRFRQRVdLVlFSOTBLaG5uQzVFazY3dlVLTjRWdUZhc00vbGRBUmo0M0NDa0NzRWpwSlNvVlZnUnlVMEdWU0s2d1VwRkZDeDhsRmdYMEJpWHBSUFFCNG5FMlRUV2pjUmhUSDN4dHRwRGh4Tjd1eFBscDN1L0ZLN21vUlBpeGFmUmlqTm9zeFN3L0xVc0l3TmNhRUhQWmdnby9GbUVLTUNLV1U0a05PT2Z0UVNsaEU4YWxuSDBJeDlCcVduSG9vUFJyVFEwK21udTJiWFR1MnBQZEdNOUxNLzZjM2Z3RUNUTTRnQkJNWVFOcXh6THJaQWpxWVNscXUyVEFIWlFBMC9EUUpINkZ0enFHRG52YnQ0R2d3dnp3L25MOEVmSDhrVzBmc3VScWhnV1hablk3TTFwaWNhVUw3RHU1QkhlRHpNSWw4M2RBdDAxNndIMXFtdnRTTW81UjZZUkpIVFIvL0ZYc2ZmL25qL3RjLzVLOVA1ZCtuUDIyK2ZGSzV1N3YzSzM5U1czeStPdERLTzNMODV2RDA5UEQ5ejVYMTdhMk4xZzR0cWswMVJscVg3Z3lvRW1uc1dRdFZyNHJ0Wk1tdWtFYUZCWnh6ZWZrQ24xMWN5S01MWmdzaFJ3Z1RZTm9MTlhDQnoyamE3SHZaRzdoRHBQU05mb281dnMwa25LLzloYityTnB1KzhrSFBnay9BbzRrSzN0V3RUcFNFdHZrQTljK3dFNlVhVWR3aWVOa2FIZzU1dEJFdFJpRVB3MXMwK0Z0cnRUY2M5dHdvMmxoTWtuVjdQWkYvY3M2K3VVRlRtcFRHYkV4N3NRQ1BTTE90dEhTM0dSbHRxcDdTTnpWU0t6bDZhV25aVC9DWDVrNi92OU4zSGg4ZkhCd2ZmSlZqaHJDNk9nSDVka0l0L3RQc3ErZC9QRDVRejdHN2VmenExVEhGamRaVlBlL042dWxRM0puRFdTRTVqdW5zRnNWSWlGd0wvaHRmMVM1Z0ozQmZPY1V4ZkhLTG56cXBGcHlmWjljWCsvNVdCNmErWTBwSHB6a05yWU5WRHdNc2lrSyt5N1d1TENSZy9vRkhrQThWVDNyRGc1Wm5VNmt0enpJTnltVjBtNzRYZDVwZklHWHlGZVZFUVNTaGt6cUc3VEJCYTJPeFZSS2l0TFh2N2gzdXVmdFhuWHE3bHoydFovV25XYTlkeDlkQ2pEaEh6bXVWUUFUbG1sanI5ZFpFclV5ZFNvMkhiaS9iMXZYdHJPZUdDazIvOHMzWmxPOCt1ZUpUOEJWbHc1cEd3Mm9ZY2NkU2lISHF4MFJsYWJIcWROUjlqQUVUbDZQcmVKY1BCbm5mcFRMbk9ROEMzT1Y4QW1RR3pvdVYxaVpkZWI1U1NJb1ZjOFc4L2tjRHRrc1VINUZyVTYvYXFCcU5XY01FenhHNERBUTE0cVJRaGk5bVdVMHJ6ZXBLZXpiamZnQ3dRS3hWWXE1YWpSZ3BScXk0NUNxd2tKeWRjRWtiVGt2Uno4UDUvMlpwRFRONG5HTmdaR0JnQU9LYjZ2Ky94dlBiZkdYZ1ptRUFnZXVCMmtrSSt2OGJGZ2JtS2lDWGc0RUpKQW9BUHlBS2hRQjRuR05nWkdCZzF2bXZ3eEREd2dBQ1FKS1JBUlh3QXdBelpRSFFlSnhqWVFDQ0ZBWUdGZ2JTTVFBY1dBQ2RBQUFBQUFBQUFBd0FMZ0JnQUlRQW1BRFNBUWdCSWdFOEFWQUJvQUhlQWZ3Q0hIaWNZMkJrWUdEZ1o3QmdZR01BQVNZZzVnSkNCb2IvWUQ0REFBL2hBV1FBZUp4bGtidHV3a0FVUk1jODhnQXBRb21VSm9xMFRkSVF6RU9wVURva0tDTlIwQnV6QmlPL3RGNlFTSmNQeUhmbEU5S2x5eWVrejJDdUc4Y3I3NTQ3TTNkOUpRTzR4amNjbko1N3ZpZDJjTUhxeERXYzQwRzRUdjFKdUVGK0ZtNmlqUmZoTStvejRSYTZlQlZ1NHdadnZNRnBYTElhNDBQWVFRZWZ3alZjNFV1NFR2MUh1RUgrRlc3aTFta0tuNkhqM0FtM3NIQzZ3bTA4T3U4dHBTWkdlMWF2MVBLZ2dqU3hQZDh6SnRTR1R1aW55VkdhNi9VdThreFpsdWRDbXp4TUV6VjBCNlUwMDRrMjVXMzVmajJ5TmxDQlNXTTFwYXVqS0ZXWlNiZmF0KzdHMm16Yzd3ZWl1MzRhY3p6Rk5ZR0JoZ2ZMZmNWNmlRUDNBQ2tTYWozNDlBeFhTTjlJVDBqMTZKZXBPYjAxZG9pS2JOV3Qxb3ZpcHB6NnNWWVl3c1hnWDJyR1ZGSWtxN1BsMlBOckk2cVc2ZU9zaGoweGFTcTltcE5FWklXczhMWlVmT291TmtWWHhwL2Q1d29xZWJlWUlmNEQySjF5d1FCNG5HM0xPdzZBSUJBRTBCMzg0QitQQWtnRWErUXdOblltSHQrRXBYU2FsNWxrU0JCbm9QOG9DRlNvMGFDRlJJY2VBMFpNbUxGQVlTVzg4cm12dE1VakczUmlROUh2cGZ1c002eldObXRjNUgvaVBld2hhNTB0T3Q1UFMvUUJ4MkllU3dBQSIpIGZvcm1hdCgid29mZiIpOwp9CgouYWRtb25pdGlvbiB7CiAgYm94LXNoYWRvdzogMCAycHggMnB4IDAgcmdiYSgwLCAwLCAwLCAuMTQpLCAwIDFweCA1cHggMCByZ2JhKDAsIDAsIDAsIC4xMiksIDAgM3B4IDFweCAtMnB4IHJnYmEoMCwgMCwgMCwgLjIpOwogIHBvc2l0aW9uOiByZWxhdGl2ZTsKICBtYXJnaW46IDEuNTYyNWVtIDA7CiAgcGFkZGluZzogMCAxLjJyZW07CiAgYm9yZGVyLWxlZnQ6IC40cmVtIHNvbGlkIHJnYmEoNjgsIDEzOCwgMjU1LCAuOCk7CiAgYm9yZGVyLXJhZGl1czogLjJyZW07CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KTsKICBvdmVyZmxvdzogYXV0bzsKfQoKLmFkbW9uaXRpb24+LmFkbW9uaXRpb24tdGl0bGUgewogIG1hcmdpbjogMCAtMS4ycmVtOwogIHBhZGRpbmc6IC44cmVtIDEuMnJlbSAuOHJlbSAzLjZyZW07CiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHJnYmEoNjgsIDEzOCwgMjU1LCAuMik7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSg2OCwgMTM4LCAyNTUsIC4xKTsKICBmb250LXdlaWdodDogNzAwOwp9CgouYWRtb25pdGlvbj4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICBsZWZ0OiAxLjJyZW07CiAgZm9udC1zaXplOiAxLjVyZW07CiAgY29sb3I6IHJnYmEoNjgsIDEzOCwgMjU1LCAuOCk7CiAgY29udGVudDogIlxFM0M5IjsKfQoKLmFkbW9uaXRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBmb250LWZhbWlseTogTWF0ZXJpYWwgSWNvbnM7CiAgZm9udC1zdHlsZTogbm9ybWFsOwogIGZvbnQtdmFyaWFudDogbm9ybWFsOwogIGZvbnQtd2VpZ2h0OiA0MDA7CiAgbGluZS1oZWlnaHQ6IDJyZW07CiAgdGV4dC10cmFuc2Zvcm06IG5vbmU7CiAgd2hpdGUtc3BhY2U6IG5vd3JhcDsKICBzcGVhazogbm9uZTsKICB3b3JkLXdyYXA6IG5vcm1hbDsKICBkaXJlY3Rpb246IGx0cjsKfQoKLmFkbW9uaXRpb24uc3VtbWFyeSwKLmFkbW9uaXRpb24uYWJzdHJhY3QsCi5hZG1vbml0aW9uLnRsZHIgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDE3NiwgMjU1LCAuOCk7Cn0KCi5hZG1vbml0aW9uLnN1bW1hcnk+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmFic3RyYWN0Pi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi50bGRyPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE3NiwgMjU1LCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxNzYsIDI1NSwgLjIpOwp9CgouYWRtb25pdGlvbi5zdW1tYXJ5Pi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uYWJzdHJhY3Q+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi50bGRyPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMCwgMTc2LCAyNTUsIDEpOwogIDsKICBjb250ZW50OiAiXEU4RDIiOwp9CgouYWRtb25pdGlvbi5oaW50LAouYWRtb25pdGlvbi50aXAgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDE5MSwgMTY1LCAuOCk7Cn0KCi5hZG1vbml0aW9uLmhpbnQ+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLnRpcD4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgwLCAxOTEsIDE2NSwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMCwgMTkxLCAxNjUsIC4yKTsKfQoKLmFkbW9uaXRpb24uaGludD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLnRpcD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE5MSwgMTY1LCAxKTsKICBjb250ZW50OiAiXEU4MEUiOwp9CgouYWRtb25pdGlvbi5pbmZvLAouYWRtb25pdGlvbi50b2RvIHsKICBib3JkZXItbGVmdC1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjgpOwp9CgouYWRtb25pdGlvbi5pbmZvPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi50b2RvPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjIpOwp9CgouYWRtb25pdGlvbi5pbmZvPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24udG9kbz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAxKTsKICA7CiAgY29udGVudDogIlxFODhFIjsKfQoKLmFkbW9uaXRpb24uc3VjY2VzcywKLmFkbW9uaXRpb24uY2hlY2ssCi5hZG1vbml0aW9uLmRvbmUgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDIwMCwgODMsIC44KTsKfQoKLmFkbW9uaXRpb24uc3VjY2Vzcz4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uY2hlY2s+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmRvbmU+LmFkbW9uaXRpb24tdGl0bGUgewogIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgLjIpOwp9CgouYWRtb25pdGlvbi5zdWNjZXNzPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uY2hlY2s+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi5kb25lPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgMSk7CiAgOwogIGNvbnRlbnQ6ICJcRTg3NiI7Cn0KCi5hZG1vbml0aW9uLnF1ZXN0aW9uLAouYWRtb25pdGlvbi5oZWxwLAouYWRtb25pdGlvbi5mYXEgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgLjgpOwp9CgouYWRtb25pdGlvbi5xdWVzdGlvbj4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uaGVscD4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZmFxPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMTAwLCAyMjEsIDIzLCAuMik7Cn0KCi5hZG1vbml0aW9uLnF1ZXN0aW9uPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uaGVscD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmZhcT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgMSk7CiAgOwogIGNvbnRlbnQ6ICJcRTg4NyI7Cn0KCi5hZG1vbml0aW9uLndhcm5pbmcsCi5hZG1vbml0aW9uLmF0dGVudGlvbiwKLmFkbW9uaXRpb24uY2F1dGlvbiB7CiAgYm9yZGVyLWxlZnQtY29sb3I6IHJnYmEoMjU1LCAxNDUsIDAsIC44KTsKfQoKLmFkbW9uaXRpb24ud2FybmluZz4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uYXR0ZW50aW9uPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi5jYXV0aW9uPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDI1NSwgMTQ1LCAwLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgLjIpOwp9CgouYWRtb25pdGlvbi5hdHRlbnRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgMSk7CiAgY29udGVudDogIlxFNDE3IjsKfQoKLmFkbW9uaXRpb24ud2FybmluZz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmNhdXRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgMSk7CiAgY29udGVudDogIlxFMDAyIjsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZSwKLmFkbW9uaXRpb24uZmFpbCwKLmFkbW9uaXRpb24ubWlzc2luZyB7CiAgYm9yZGVyLWxlZnQtY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIC44KTsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZT4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZmFpbD4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24ubWlzc2luZz4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDgyLCA4MiwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIC4yKTsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmZhaWw+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi5taXNzaW5nPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIDEpOwogIDsKICBjb250ZW50OiAiXEUxNEMiOwp9CgouYWRtb25pdGlvbi5kYW5nZXIsCi5hZG1vbml0aW9uLmVycm9yLAouYWRtb25pdGlvbi5idWcgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDI1NSwgMjMsIDY4LCAuOCk7Cn0KCi5hZG1vbml0aW9uLmRhbmdlcj4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZXJyb3I+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmJ1Zz4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDIzLCA2OCwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIC4yKTsKfQoKLmFkbW9uaXRpb24uZGFuZ2VyPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIDEpOwogIGNvbnRlbnQ6ICJcRTNFNyI7Cn0KCi5hZG1vbml0aW9uLmVycm9yPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIDEpOwogIGNvbnRlbnQ6ICJcRTE0QyI7Cn0KCi5hZG1vbml0aW9uLmJ1Zz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDI1NSwgMjMsIDY4LCAxKTsKICBjb250ZW50OiAiXEU4NjgiOwp9CgouYWRtb25pdGlvbi5leGFtcGxlLAouYWRtb25pdGlvbi5zbmlwcGV0IHsKICBib3JkZXItbGVmdC1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjgpOwp9CgouYWRtb25pdGlvbi5leGFtcGxlPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi5zbmlwcGV0Pi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjIpOwp9CgouYWRtb25pdGlvbi5leGFtcGxlPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uc25pcHBldD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAxKTsKICA7CiAgY29udGVudDogIlxFMjQyIjsKfQoKLmFkbW9uaXRpb24ucXVvdGUsCi5hZG1vbml0aW9uLmNpdGUgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDE1OCwgMTU4LCAxNTgsIC44KTsKfQoKLmFkbW9uaXRpb24ucXVvdGU+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmNpdGU+LmFkbW9uaXRpb24tdGl0bGUgewogIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMTU4LCAxNTgsIDE1OCwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMTU4LCAxNTgsIDE1OCwgLjIpOwp9CgouYWRtb25pdGlvbi5xdW90ZT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmNpdGU+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgxNTgsIDE1OCwgMTU4LCAxKTsKICA7CiAgY29udGVudDogIlxFMjQ0IjsKfQ=="/>
+<!-- markdown-it-kbd.css -->
+<link rel="stylesheet" type="text/css" href="data:text/css;base64,LnZzY29kZS1saWdodCBrYmQsCi52c2NvZGUtZGFyayBrYmQsCi52c2NvZGUtaGlnaC1jb250cmFzdCBrYmQgewogIGRpc3BsYXk6IGlubGluZS1ibG9jazsKICBwYWRkaW5nOiAzcHggNXB4OwogIGZvbnQ6IDExcHggIlNGTW9uby1SZWd1bGFyIiwgQ29uc29sYXMsICJMaWJlcmF0aW9uIE1vbm8iLCBNZW5sbywgQ291cmllciwgbW9ub3NwYWNlOwogIGxpbmUtaGVpZ2h0OiAxMHB4OwogIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7CiAgYm9yZGVyOiBzb2xpZCAxcHggI2QxZDVkYTsKICBib3JkZXItYm90dG9tLWNvbG9yOiAjYzZjYmQxOwogIGJvcmRlci1yYWRpdXM6IDNweDsKICBib3gtc2hhZG93OiBpbnNldCAwIC0xcHggMCAjYzZjYmQxOwp9CgoudnNjb2RlLWxpZ2h0IGtiZCB7CiAgY29sb3I6ICM0NDRkNTY7CiAgYmFja2dyb3VuZC1jb2xvcjogI2ZhZmJmYzsKfQ=="/>
+<!-- third party styles end -->
 
-  
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/combine/gh/poole/lanyon@v1.1.0/public/css/poole.min.css,gh/poole/lanyon@v1.1.0/public/css/lanyon.min.css"
-/>
-
-  
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
-/>
-
-  
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css"
-/>
-<script
-  async="async"
-  src="https://cdn.jsdelivr.net/combine/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js,gh/Dreamer-Paul/Pio@2.4/static/pio.min.js"
-  onload='
-      let pio_container = document.createElement("div");
-      pio_container.classList.add("pio-container");
-      pio_container.classList.add("right");
-      pio_container.style.bottom = "-2rem";
-      pio_container.style.zIndex = "1";
-      document.body.insertAdjacentElement("beforeend", pio_container);
-      let pio_action = document.createElement("div");
-      pio_action.classList.add("pio-action");
-      pio_container.insertAdjacentElement("beforeend", pio_action);
-      let pio_canvas = document.createElement("canvas");
-      pio_canvas.id = "pio";
-      pio_canvas.style.width = "14rem";
-      pio_canvas.width = "600";
-      pio_canvas.height = "800";
-      pio_container.insertAdjacentElement("beforeend", pio_canvas);
-      let pio = new Paul_Pio({
-        "mode": "fixed",
-        "hidden": true,
-        "night": "for(let i=7; i<16; ++i) if(document.body.classList.contains(`theme-base-0`+i.toString(16))) { document.body.classList.remove(`theme-base-0`+i.toString(16)); document.body.classList.add(`theme-base-0`+((i-6)%9+7).toString(16)); break; }",
-        "content": {
-          "link": ["https://jekyll-theme-WuK.wu-kan.cn"],
-          "skin": ["要换成我的朋友吗？", "让她放个假吧~"],
-          "hidden": true,
-          "custom": [{
-            "selector": "a",
-            "type": "link",
-          }, {
-            "selector": ".sidebar-toggle",
-            "text": "打开侧边栏叭~"
-          }, {
-            "selector": ".effect-info",
-            "text": "哇，你发现了什么！"
-          }, {
-            "selector": "#sidebar-search-input",
-            "text": "想搜索什么呢？很多干货哦！"
-          }, {
-            "selector": "#toc",
-            "text": "这是目录~"
-          }, {
-            "selector": ".page-title",
-            "text": "这是标题~"
-          }, {
-            "selector": ".v",
-            "text": "评论没有审核，要对自己的发言负责哦~"
-          }]
-        },
-        "model": [
-          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json",
-          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json",
-          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json",
-          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json",
-          "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json",
-          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json",
-          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json",
-          "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json"]
-      });'
-></script>
-
-  
-  <script
-  src='https://zz.bdstatic.com/linksubmit/push.js'
-  async="async"
-></script>
-
-  
-  <script
-  async="async"
-  src="https://www.googletagmanager.com/gtag/js?id=UA-163543967-1"
-  onload="
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-163543967-1');"
-></script>
-
-  
-  <style>
-  .wrap {
-    transition-property: width,background-size,transform;
-    transition-duration: .3s;
-    transition-timing-function: ease-in-out;
-    min-height: 100%;
-    display: inline-block;
-    background-size: 100% auto;
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/74559485_p1.webp);
-  }
-  @media (min-aspect-ratio: 2400/1850) {
-    .wrap {
-      background-image: url(https://Mizuno-Ai.wu-kan.cn/pixiv/71932901_p0.webp);
-    }
-  }
-  .sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
-    width: calc(100% - 14rem);
-    background-size: calc(100% - 14rem) auto;
-    transform: translateX(14rem);
-  }
-  .layout-reverse.sidebar-overlay #sidebar-checkbox:checked ~ .wrap {
-    transform: translateX(0);
-  }
-</style>
-
-  
-  <style>
-  body {
-      color: #141414;
-      background-color: #fff;
-      -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
-  }
-  h1, h2, h3, h4, h5, h6 {
-      margin-bottom: .5rem;
-      font-weight: bold;
-      line-height: 1.25;
-      color: #0e0e0e;
-      text-rendering: optimizeLegibility;
-  }
-  html,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  .sidebar {
-    font-family: PingFang SC, Menlo, Monaco, "Courier New", Microsoft JhengHei, monospace;
-  }
-</style>
-
-  
-  <style>
-  img {
-    display: inline-block;
-    margin: 0;
-  }
-</style>
-
-  
-  <style>
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-image: linear-gradient(45deg, Cyan 0%, Magenta 50%, Yellow 100%);
-  }
-</style>
-
-  
-  <style>
-  ::selection {
-    color: White;
-    background: Black;
-  }
-</style>
-
-  
 </head>
-
-<body
-  class="theme-base-08 layout-reverse sidebar-overlay">
-  
-  
-  
-  <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
-     styles, `#sidebar-checkbox` for behavior. -->
-  <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox"
-     />
-  <!-- Toggleable sidebar -->
-  <div class="sidebar" id="sidebar">
-    
-    <div class="sidebar-item">
-      <div class="effect effect-right_to_left">
-        <img class="effect-img" src="https://avatars3.githubusercontent.com/u/29201392?s=400&u=60a104b261d4b10ca076292c31a42af8a62861f4&v=4" alt="img" />
-        <div class="effect-info">
-          程序员的梦<br/>
-冬天的情绪<br/>
-一天的种种<br/>
-ASC<br/>
-<a href="mailto:v4liulv@outlook.com">
-  <i class="fas fa-envelope"></i>
-</a>
-<a href="https://github.com/v4liulv">
-  <i class="fab fa-github"></i>
-</a>
-<a href="https://codeforces.com/profile/v4liulv">
-  <i class="fas fa-chart-bar"></i>
-</a>
-<a href="https://vjudge.net/user/v4liulv">
-  <i class="fas fa-smile"></i>
-</a>
-<a href="https://www.zhihu.com/people/liu.lv/activities">
-  <i class="fab fa-zhihu"></i>
-</a>
-<iframe
-  src="https://music.163.com/outchain/player?type=2&id=421934273&auto=0&height=32"
-  width=100%
-  height=52
-  frameborder="no"
-  border="0"
-  marginwidth="0"
-  marginheight="0"
-></iframe>
-
-        </div>
-      </div>
-    </div>
-    
-    <nav class="sidebar-nav">
-      
-      <a class="sidebar-nav-item" href="/">
-        <i class="fas fa-home fa-fw"></i> 首页
-      </a>
-      
-      <a class="sidebar-nav-item" href="/comments/">
-        <i class="fas fa-comments fa-fw"></i> 留言
-      </a>
-      
-      <a class="sidebar-nav-item" href="/tags/">
-        <i class="fas fa-tags fa-fw"></i> 标签
-      </a>
-      
-      <a class="sidebar-nav-item" href="/archive/">
-        <i class="fas fa-archive fa-fw"></i> 归档
-      </a>
-      
-      <a class="sidebar-nav-item" href="/merger/">
-        <i class="fas fa-coffee fa-fw"></i> 打赏
-      </a>
-      
-    </nav>
-    <div class="sidebar-item">
-      
-      <div>
-        <style>
-  #sidebar-search-input {
-    background: none;
-    border: none;
-    color: White;
-    width: 100%;
-  }
-  #sidebar-search-results-container {
-    overflow: auto auto;
-    max-height: 50vh;
-  }
-</style>
-<input
-  id="sidebar-search-input"
-  placeholder="搜索博文"
-/>
-<ol
-  id="sidebar-search-results-container"
-></ol>
-<script
-  src='https://cdn.jsdelivr.net/npm/simple-jekyll-search/dest/simple-jekyll-search.min.js'
-  async='async'
-  onload='
-    SimpleJekyllSearch({
-      json: "/assets/simple-jekyll-search/search.json",
-      searchInput: document.getElementById("sidebar-search-input"),
-      resultsContainer: document.getElementById("sidebar-search-results-container"),
-      searchResultTemplate: `<li><a href="{url}">{title}</a></li>`,
-      limit: 999,
-      fuzzy: true
-    })'
-></script>
-
-      </div>
-      
-      
-      <style>
-  .sidebar-checkbox {
-    display: none;
-  }
-  .sidebar-toggle {
-    position: fixed;
-  }
-</style>
-
-      
-      <style>
-  .effect {
-    margin: 1rem;
-    perspective: 900px;
-  }
-  .effect-info {
-    text-align: center;
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    transform-style: preserve-3d;
-  }
-  .effect-img {
-    z-index: 11;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transition: all 0.5s ease-in-out;
-  }
-  .effect-img:before {
-    position: absolute;
-    display: block;
-  }
-  .effect-right_to_left .effect-img {
-    transform-origin: 0% 50%;
-  }
-  .effect-right_to_left:hover .effect-img {
-    transform: rotate3d(0, 1, 0, -180deg);
-  }
-</style>
-
-      
-      <style>
-  #toc {
-    overflow: auto auto;
-    max-height: 50vh;
-  }
-</style>
-<aside id="toc">
-</aside>
-<script
-  defer='defer'
-  src='https://cdn.jsdelivr.net/npm/html-contents/html-contents.min.js'
-  onload="htmlContents('#toc', {listType: 'o', filter: function(arr) {return !arr.matches('.masthead-title')}})"
-></script>
-
-      
-      <div>
-  <i class="fas fa-cog fa-spin fa-fw"></i>
-  <span id="run_time_day">
-    <i class="fas fa-spinner fa-pulse"></i>
-  </span>天
-  <span id="run_time_hour">
-    <i class="fas fa-spinner fa-pulse"></i>
-  </span>时
-  <span id="run_time_minute">
-    <i class="fas fa-spinner fa-pulse"></i>
-  </span>分
-  <span id="run_time_second">
-    <i class="fas fa-spinner fa-pulse"></i>
-  </span>秒
-  <script>
-    setInterval(function (d,h,m,s,b) {
-      function setzero(i) {
-        return i < 10 ? "0" + i : i;
-      }
-      let BirthDay = new Date(b);
-      let today = new Date();
-      let timeold = (today.getTime() - BirthDay.getTime());
-      let sectimeold = timeold / 1000;
-      let secondsold = Math.floor(sectimeold);
-      let msPerDay = 24 * 60 * 60 * 1000;
-      let e_daysold = timeold / msPerDay;
-      let daysold = Math.floor(e_daysold);
-      let e_hrsold = (e_daysold - daysold) * 24;
-      let hrsold = Math.floor(e_hrsold);
-      let e_minsold = (e_hrsold - hrsold) * 60;
-      let minsold = Math.floor((e_hrsold - hrsold) * 60);
-      let seconds = Math.floor((e_minsold - minsold) * 60);
-      d.textContent = daysold;
-      h.textContent = setzero(hrsold);
-      m.textContent = setzero(minsold);
-      s.textContent = setzero(seconds);
-    },
-    1000,
-    document.getElementById("run_time_day"),
-    document.getElementById("run_time_hour"),
-    document.getElementById("run_time_minute"),
-    document.getElementById("run_time_second"),
-    "10/04/2017 11:03:56")// 这是我第一篇CSDN博客的时间
-  </script>
-</div>
-
-      
-      <div>
-  <div>
-    <i class="fas fa-eye fa-fw"></i>
-    <span id="busuanzi_value_page_pv">
-      <i class="fas fa-spinner fa-pulse"></i>
-    </span>次
-  </div>
-  <div>
-    <i class="fas fa-paw fa-fw"></i>
-    <span id="busuanzi_value_site_pv">
-      <i class="fas fa-spinner fa-pulse"></i>
-    </span>枚
-  </div>
-  <div>
-    <i class="fas fa-user-friends fa-fw"></i>
-    <span id="busuanzi_value_site_uv">
-      <i class="fas fa-spinner fa-pulse"></i>
-    </span>人
-  </div>
-  <script
-    src='https://cdn.jsdelivr.net/npm/busuanzi'
-    async='async'
-  ></script>
-</div>
-
-      
-      <div>
-  <i class="fas fa-thumbs-up fa-fw"></i>
-  <a href="https://jekyll-theme-WuK.wu-kan.cn">
-    jekyll-theme-WuK
-  </a>
-</div>
-
-      
-      <div>
-  <i class="fas fa-copyright fa-fw"></i>
-  2017-2020 WuK
-</div>
-
-      
-      
-    </div>
-  </div>
-  <!-- Wrap is the content to shift when toggling the sidebar. We wrap the content to avoid any CSS collisions with our real content. -->
-  
-  <div class="wrap">
-    
-<style>
-  pre {
-    max-height: 50vh;
-    overflow: auto;
-  }
-</style>
-
-
-<style>
-  @media (min-width: 56em) {
-    .container {
-      max-width: 66.6%;
-    }
-  }
-</style>
-
-
-<style>
-  .masthead,
-  .container.content {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    box-shadow: 0 0 .75rem rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.95);
-    animation-duration: 2s;
-    animation-name: fadeIn;
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-</style>
-
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/combine/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css,npm/prismjs/plugins/toolbar/prism-toolbar.min.css,gh/PrismJS/prism-themes@1955cfef6953b3a59e66016e8a1e016b45d6cc79/themes/prism-nord.min.css"
-/>
-<script
-  src="https://cdn.jsdelivr.net/combine/npm/prismjs/components/prism-core.min.js,npm/prismjs/plugins/autoloader/prism-autoloader.min.js,npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js,npm/prismjs/plugins/toolbar/prism-toolbar.min.js"
-  defer="defer"
-  onload='
-    Prism.plugins.autoloader.languages_path = "https:\/\/cdn.jsdelivr.net/npm/prismjs/components/";
-    for(let x of document.getElementsByTagName("pre"))
-      x.classList.add("line-numbers");
-    Prism.plugins.toolbar.registerButton("select-code", function (env) {
-      let button = document.createElement("button");
-      button.textContent = "select this " + env.language;
-      button.addEventListener("click", function () {
-        if (document.body.createTextRange) {
-          let range = document.body.createTextRange();
-          range.moveToElementText(env.element);
-          range.select();
-        } else if (window.getSelection) {
-          let selection = window.getSelection();
-          let range = document.createRange();
-          range.selectNodeContents(env.element);
-          selection.removeAllRanges();
-            selection.addRange(range);
-        }
-      });
-      return button;
-    })'
-></script>
-
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
-/>
-<script
-  src="https://cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/mathtex-script-type.min.js,npm/katex/dist/contrib/auto-render.min.js"
-  defer="defer"
-  onload='renderMathInElement(document.body, { delimiters: [{ left: "$", right: "$", display: false }] })'
-></script>
-
-
-<style>
-  pre.language-mermaid,
-  code.language-mermaid {
-    display: none;
-  }
-</style>
-<script
-  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
-  defer="defer"
-  onload='
-    for(let x of document.getElementsByClassName("language-mermaid"))
-      if(x.nodeName=="CODE")
-      {
-        let m = document.createElement("div");
-        m.classList.add("mermaid");
-        m.textContent = x.textContent;
-        x.parentNode.insertAdjacentElement("beforebegin", m);
-      }'
-></script>
-
-
-
-<div class="masthead">
-  <h3 class="container masthead-title">
-    
-    基于Jekyll搭建个人博客
-    <a href="http://localhost:4000/" title="Home">
-      <small>
-        lv-liu
-      </small>
-    </a>
-    
-  </h3>
-</div>
-
-<div class="container content">
-  <div class="post">
-  <span class="post-date">
-    
-    <i class="fas fa-calendar-day fa-fw"></i>
-    18 Jan 2019
-    
-    
-    <i class="fas fa-file-word fa-fw"></i>
-    8379字
-    
-    
-    <i class="fas fa-clock fa-fw"></i>
-    28分
-    
-    
-    
-    <i class="fas fa-tag fa-fw"></i>
-    博客搭建
-    
-    <br/>
-<i class="fas fa-coffee fa-fw"></i>
-<a href="/merger/">如果这篇博客帮助到你，可以请我喝一杯咖啡~</a>
-<br/>
-<i class="fab fa-creative-commons-by fa-fw"></i>
-<a
-  href="https://creativecommons.org/licenses/by/4.0/deed.zh"
-  rel="license">
-  CC BY 4.0
-</a>
-（除特别声明或转载文章外）
-
-    
-  </span>
-  <h2 id="引言">引言</h2>
-
-<p>最开始我是在<a href="https://blog.csdn.net/w_weilan">CSDN</a>上写博客的。博客写了一年多，访问量勉强破万，感觉其中至少有三成是自己贡献的。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用。</p>
-
-<p>十一月份，在青岛的 ICPC 区域赛失利之后，想要重新开始，和过去告别。也从此转移自己写博客的阵地。考虑过转投暂时还比较干净而且可以部分定义页面的<a href="https://www.cnblogs.com/wu-kan/">博客园</a>，但是最终还是决定在<a href="https://pages.github.com/">Github Pages</a>上搭建属于自己的博客。</p>
-
-<p>然后，翻了一些网上的教程，用<a href="https://hexo.io/zh-cn/">Hexo</a>框架和<a href="https://github.com/theme-next/hexo-theme-next">NexT</a>主题搭了一个比较素雅的符合个人审美的博客。然而，Hexo 搭建的博客需要先在本地生成博客页面然后再上传到服务器上，每次发博客都需要在电脑重新生成页面并上传，感觉没有那么方便。在不同电脑上想要发博客更是十分困难，感觉如果胡乱操作后本地部署的文件发生了一定的错乱，恢复起来会十分麻烦。</p>
-
-<p>后来发现，Github Pages 原生支持<a href="https://www.jekyll.com.cn/">Jekyll</a>，因此如果只需要推送文章可以直接在 github 的仓库里做。于是决定在期末考试后用 Jekyll 重新搭建个人博客。原来的博客不再维护。</p>
-
-<h2 id="构思">构思</h2>
-
-<p>目前博客的 demo 如下：</p>
-
-<p><img src="https://jekyll-theme-WuK.wu-kan.cn/screenshot.png" alt="demo" /></p>
-
-<p>想搭建一个足够干净、页面几乎不要有多余元素的博客，同时博客的功能还要足够丰富，满足我以下的需求：</p>
-
-<ul class="task-list">
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />用 Markdown 写博客</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />支持 Latex 公式</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />支持 mermaid 等插件</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />个性化 Live2D</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />分享一些我在其他网站的个人账号</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />移动端适配</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />足够快的加载速度</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />访问量统计，评论互动</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />需求是会逐渐增长的！</li>
-</ul>
-
-<p>其中，Live2D 是我某次访问别人的博客初次见到的，感觉非常吸引人。最终的目标是去掉网页上所有多余的元素，只剩下博文和 Live2D 看板娘，看板娘本身还可以作为博客访问的导航，感觉会十分有新意。</p>
-
-<h2 id="搭建过程不定期更新">搭建过程（不定期更新）</h2>
-
-<p>我目前读的专业是计科超算方向，所以软件工程专业相关方面的基础几乎为 0😌，大部分的内容都是参考网上教程慢慢摸索的，假如对某些过程有意见和建议欢迎向我提出！</p>
-
-<h3 id="开发环境">开发环境</h3>
-
-<blockquote>
-  <p>我的博客使用 bundle 作为版本管理！如果你的环境里已经有 bundle 了，可以跳过此步！</p>
-</blockquote>
-
-<p>这个学期选了一门 Linux 相关的公选课，感觉还不错，因此直接把开发环境是搭建在 Windows Subsystem for Linux（简称 WSL）上了，Windows 下也可以直接访问其中的环境，详见<a href="https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/">这篇博客</a>。</p>
-
-<pre><code class="language-bash">sudo apt install -y ruby ruby-dev zlib1g.dev make gcc g++
-# gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
-sudo gem install bundler
-# bundle config mirror.https://rubygems.org https://gems.ruby-china.com
-</code></pre>
-
-<p>jekyll 博客是基于 ruby 语言开发的，要先将 ruby 装进来。此外，国内访问一些资源可能会很慢，推荐去掉上面的注释，使用国内镜像。</p>
-
-<h3 id="在本地运行博客">在本地运行博客</h3>
-
-<p>依次执行下述指令，可以自动下载并部署我博客的所有依赖。</p>
-
-<pre><code class="language-bash">git clone https://github.com/wu-kan/wu-kan.github.io
-cd wu-kan.github.io
-bundle install
-</code></pre>
-
-<p>如果不想下载我的博文和图片，可以根据这个<a href="https://github.com/wu-kan/wu-kan.github.io/issues/7">issue</a>，使用 svn 代替 git，从而快速下载必要的文件。</p>
-
-<pre><code class="language-bash">svn checkout https://github.com/wu-kan/wu-kan.github.io/trunk/ --depth=files
-</code></pre>
-
-<p>github 上的 jekyll 和普通的 jekyll 是有一点点区别的，比如说只支持特定的插件。我希望与 github 保持兼容，因此配置的依赖是直接引入了 github 版本的 jekyll，安装时间略久。</p>
-
-<p>我在一个全新的 Linux 中安装了一遍，需要的依赖已经在上面的“开发环境中列出来的”。如果<code>bundle install</code>在你的机器上还是报错，要看报错信息，缺啥装啥。</p>
-
-<p>运行下述指令，检验（我自己做的时候遇到了一个很奇怪的问题<code>jekyll 3.8.5 | Error: Operation not permitted @ apply2files</code>，重开 WSL 终端就好了）：</p>
-
-<pre><code class="language-bash">bundle exec jekyll s
-</code></pre>
-
-<p>由于我的博客已经达到了三百篇以上，在本地生成网页的速度有些慢，在我的机器上要跑三分钟（关掉配置项中的侧边栏总字数统计就快了，可达 25s）。</p>
-
-<pre><code class="language-bash">    Server address: http://127.0.0.1:4000/
-  Server running... press ctrl-c to stop.
-</code></pre>
-
-<p>看到如上内容时就成功了，本地访问<a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a>即可查看效果。</p>
-
-<h3 id="定制">定制</h3>
-
-<p>我把博客实现的的插件基本上都封装起来了，可以直接在浏览器按 F12 查看我是怎么引入的。如果你想增加新的渲染规则，可以新建<code>_layouts</code>目录，将你自己的渲染规则放进去，见<a href="http://jekyllcn.com/docs/structure/">目录结构 -Jekyll</a>。</p>
-
-<h4 id="加入-live2d-看板娘">加入 Live2D 看板娘</h4>
-
-<p>参考了：</p>
-
+<body class="markdown-body vscode-body vscode-light">
+<div class="content">
+    <p data-line="1" class="code-line">[TOC]</p>
+<a for="toc-anchor" id="%E5%BC%95%E8%A8%80"></a><h2 id="%E5%BC%95%E8%A8%80" data-line="3" class="code-line">引言</h2>
+<p data-line="5" class="code-line">最开始我是在<a href="https://blog.csdn.net/u010077555" data-href="https://blog.csdn.net/u010077555">CSDN</a>上写博客的由于工作比较忙偶尔会写点博客。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用，后面决定在<a href="https://pages.github.com/" data-href="https://pages.github.com/">Github Pages</a>上搭建属于自己的博客。</p>
+<p data-line="7" class="code-line">然后，翻了一些网上的教程，用<a href="https://hexo.io/zh-cn/" data-href="https://hexo.io/zh-cn/">Hexo</a>框架和<a href="https://github.com/theme-next/hexo-theme-next" data-href="https://github.com/theme-next/hexo-theme-next">NexT</a>主题搭了一个比较素雅的符合个人审美的博客。然而，Hexo 搭建的博客需要先在本地生成博客页面然后再上传到服务器上，每次发博客都需要在电脑重新生成页面并上传，感觉没有那么方便。在不同电脑上想要发博客更是十分困难，感觉如果胡乱操作后本地部署的文件发生了一定的错乱，恢复起来会十分麻烦。</p>
+<p data-line="9" class="code-line">后来发现，Github Pages 原生支持<a href="https://www.jekyll.com.cn/" data-href="https://www.jekyll.com.cn/">Jekyll</a>，因此如果只需要推送文章可以直接在 github 的仓库里做。于是决定在期末考试后用 Jekyll 重新搭建个人博客。原来的博客不再维护。</p>
+<a for="toc-anchor" id="%E6%9E%84%E6%80%9D"></a><h2 id="%E6%9E%84%E6%80%9D" data-line="11" class="code-line">构思</h2>
+<p data-line="13" class="code-line">目前博客的 demo 如下：</p>
+<p data-line="15" class="code-line"><img src="https://jekyll-theme-WuK.wu-kan.cn/screenshot.png" alt="" class="loading" id="image-hash-7018da9eb92e600db54c866b471c66c1c0ce080e4b5f5b5ce30bd2cbe7faa968"></p>
+<p data-line="17" class="code-line">想搭建一个足够干净、页面几乎不要有多余元素的博客，同时博客的功能还要足够丰富，满足我以下的需求：</p>
 <ul>
-  <li><a href="https://www.fghrsh.net/post/123.html">网页添加 Live2D 看板娘</a>。</li>
-  <li><a href="https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98">在网页中添加 Live2D 看板娘</a></li>
-  <li><a href="https://paugram.com/coding/add-poster-girl-with-plugin.html">给你的博客增加动态看板娘</a></li>
+<li data-line="19" class="code-line"><input type="checkbox" id="checkbox45" checked="true"><label for="checkbox45">用 Markdown 写博客</label></li>
+<li data-line="20" class="code-line"><input type="checkbox" id="checkbox46" checked="true"><label for="checkbox46">支持 Latex 公式</label></li>
+<li data-line="21" class="code-line"><input type="checkbox" id="checkbox47" checked="true"><label for="checkbox47">支持 mermaid 等插件</label></li>
+<li data-line="22" class="code-line"><input type="checkbox" id="checkbox48" checked="true"><label for="checkbox48">个性化 Live2D</label></li>
+<li data-line="23" class="code-line"><input type="checkbox" id="checkbox49" checked="true"><label for="checkbox49">分享一些我在其他网站的个人账号</label></li>
+<li data-line="24" class="code-line"><input type="checkbox" id="checkbox50" checked="true"><label for="checkbox50">移动端适配</label></li>
+<li data-line="25" class="code-line"><input type="checkbox" id="checkbox51" checked="true"><label for="checkbox51">足够快的加载速度</label></li>
+<li data-line="26" class="code-line"><input type="checkbox" id="checkbox52" checked="true"><label for="checkbox52">访问量统计，评论互动</label></li>
+<li data-line="27" class="code-line"><input type="checkbox" id="checkbox53"><label for="checkbox53">需求是会逐渐增长的！</label></li>
 </ul>
-
-<p>由于 live2d 的协议是 GPL，这里我不把它的源码拷贝到自己的博客项目了，直接用链接引入。在 html 的任意位置，或是我博客对应的<code>append</code>选项下插入下述 html 代码：</p>
-
-<pre><code class="language-html">&lt;link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css"
-/&gt;
-&lt;script
-  defer="defer"
-  src="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js"
-&gt;&lt;/script&gt;
-&lt;script
-  defer="defer"
-  src="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.js"
-  onload='
+<p data-line="29" class="code-line">其中，Live2D 是我某次访问别人的博客初次见到的，感觉非常吸引人。最终的目标是去掉网页上所有多余的元素，只剩下博文和 Live2D 看板娘，看板娘本身还可以作为博客访问的导航，感觉会十分有新意。</p>
+<a for="toc-anchor" id="%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89"></a><h2 id="%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0" data-line="31" class="code-line">搭建过程（不定期更新）</h2>
+<p data-line="33" class="code-line">我目前读的专业是计科超算方向，所以软件工程专业相关方面的基础几乎为 0😌，大部分的内容都是参考网上教程慢慢摸索的，假如对某些过程有意见和建议欢迎向我提出！</p>
+<a for="toc-anchor" id="%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"></a><h3 id="%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83" data-line="35" class="code-line">开发环境</h3>
+<blockquote data-line="37" class="code-line">
+<p data-line="37" class="code-line">我的博客使用 bundle 作为版本管理！如果你的环境里已经有 bundle 了，可以跳过此步！</p>
+</blockquote>
+<p data-line="39" class="code-line">这个学期选了一门 Linux 相关的公选课，感觉还不错，因此直接把开发环境是搭建在 Windows Subsystem for Linux（简称 WSL）上了，Windows 下也可以直接访问其中的环境，详见<a href="https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/" data-href="https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/">这篇博客</a>。</p>
+<pre><code data-line="41" class="code-line language-bash"><div>sudo apt install -y ruby ruby-dev zlib1g.dev make gcc g++
+<span class="hljs-comment"># gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/</span>
+sudo gem install bundler
+<span class="hljs-comment"># bundle config mirror.https://rubygems.org https://gems.ruby-china.com</span>
+</div></code></pre>
+<p data-line="48" class="code-line">jekyll 博客是基于 ruby 语言开发的，要先将 ruby 装进来。此外，国内访问一些资源可能会很慢，推荐去掉上面的注释，使用国内镜像。</p>
+<a for="toc-anchor" id="%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%8D%9A%E5%AE%A2"></a><h3 id="%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%8D%9A%E5%AE%A2" data-line="50" class="code-line">在本地运行博客</h3>
+<p data-line="52" class="code-line">依次执行下述指令，可以自动下载并部署我博客的所有依赖。</p>
+<pre><code data-line="54" class="code-line language-bash"><div>git <span class="hljs-built_in">clone</span> https://github.com/wu-kan/wu-kan.github.io
+<span class="hljs-built_in">cd</span> wu-kan.github.io
+bundle install
+</div></code></pre>
+<p data-line="60" class="code-line">如果不想下载我的博文和图片，可以根据这个<a href="https://github.com/wu-kan/wu-kan.github.io/issues/7" data-href="https://github.com/wu-kan/wu-kan.github.io/issues/7">issue</a>，使用 svn 代替 git，从而快速下载必要的文件。</p>
+<pre><code data-line="62" class="code-line language-bash"><div>svn checkout https://github.com/wu-kan/wu-kan.github.io/trunk/ --depth=files
+</div></code></pre>
+<p data-line="66" class="code-line">github 上的 jekyll 和普通的 jekyll 是有一点点区别的，比如说只支持特定的插件。我希望与 github 保持兼容，因此配置的依赖是直接引入了 github 版本的 jekyll，安装时间略久。</p>
+<p data-line="68" class="code-line">我在一个全新的 Linux 中安装了一遍，需要的依赖已经在上面的“开发环境中列出来的”。如果<code>bundle install</code>在你的机器上还是报错，要看报错信息，缺啥装啥。</p>
+<p data-line="70" class="code-line">运行下述指令，检验（我自己做的时候遇到了一个很奇怪的问题<code>jekyll 3.8.5 | Error: Operation not permitted @ apply2files</code>，重开 WSL 终端就好了）：</p>
+<pre><code data-line="72" class="code-line language-bash"><div>bundle <span class="hljs-built_in">exec</span> jekyll s
+</div></code></pre>
+<p data-line="76" class="code-line">由于我的博客已经达到了三百篇以上，在本地生成网页的速度有些慢，在我的机器上要跑三分钟（关掉配置项中的侧边栏总字数统计就快了，可达 25s）。</p>
+<pre><code data-line="78" class="code-line language-bash"><div>    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+</div></code></pre>
+<p data-line="83" class="code-line">看到如上内容时就成功了，本地访问<a href="http://127.0.0.1:4000/" data-href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a>即可查看效果。</p>
+<a for="toc-anchor" id="%E5%AE%9A%E5%88%B6"></a><h3 id="%E5%AE%9A%E5%88%B6" data-line="85" class="code-line">定制</h3>
+<p data-line="87" class="code-line">我把博客实现的的插件基本上都封装起来了，可以直接在浏览器按 F12 查看我是怎么引入的。如果你想增加新的渲染规则，可以新建<code>_layouts</code>目录，将你自己的渲染规则放进去，见<a href="http://jekyllcn.com/docs/structure/" data-href="http://jekyllcn.com/docs/structure/">目录结构 -Jekyll</a>。</p>
+<a for="toc-anchor" id="%E5%8A%A0%E5%85%A5-live2d-%E7%9C%8B%E6%9D%BF%E5%A8%98"></a><h4 id="%E5%8A%A0%E5%85%A5-live2d-%E7%9C%8B%E6%9D%BF%E5%A8%98" data-line="89" class="code-line">加入 Live2D 看板娘</h4>
+<p data-line="91" class="code-line">参考了：</p>
+<ul>
+<li data-line="93" class="code-line"><a href="https://www.fghrsh.net/post/123.html" data-href="https://www.fghrsh.net/post/123.html">网页添加 Live2D 看板娘</a>。</li>
+<li data-line="94" class="code-line"><a href="https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98" data-href="https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98">在网页中添加 Live2D 看板娘</a></li>
+<li data-line="95" class="code-line"><a href="https://paugram.com/coding/add-poster-girl-with-plugin.html" data-href="https://paugram.com/coding/add-poster-girl-with-plugin.html">给你的博客增加动态看板娘</a></li>
+</ul>
+<p data-line="97" class="code-line">由于 live2d 的协议是 GPL，这里我不把它的源码拷贝到自己的博客项目了，直接用链接引入。在 html 的任意位置，或是我博客对应的<code>append</code>选项下插入下述 html 代码：</p>
+<pre><code data-line="99" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">link</span>
+  <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>
+  <span class="hljs-attr">href</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css"</span>
+/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.js"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'
     if (screen.width &gt; screen.height)
     {
       let pio_container = document.createElement("div");
@@ -806,59 +150,46 @@ bundle install
           "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json",
           "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json"]
       });
-    }'
-&gt;&lt;/script&gt;
-</code></pre>
-
-<p>自定义参数见<a href="https://github.com/Dreamer-Paul/Pio">Dreamer-Paul/Pio</a>，模型收集自<a href="https://github.com/imuncle/live2d">imuncle/live2d</a>和<a href="https://github.com/xiaoski/live2d_models_collection">xiaoski/live2d_models_collection</a>，。</p>
-
-<h4 id="katex">$\KaTeX$</h4>
-
-<p>参考：</p>
-
+    }'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<p data-line="170" class="code-line">自定义参数见<a href="https://github.com/Dreamer-Paul/Pio" data-href="https://github.com/Dreamer-Paul/Pio">Dreamer-Paul/Pio</a>，模型收集自<a href="https://github.com/imuncle/live2d" data-href="https://github.com/imuncle/live2d">imuncle/live2d</a>和<a href="https://github.com/xiaoski/live2d_models_collection" data-href="https://github.com/xiaoski/live2d_models_collection">xiaoski/live2d_models_collection</a>，。</p>
+<a for="toc-anchor" id="%24%5Ckatex%24"></a><h4 id="katex" data-line="172" class="code-line">$\KaTeX$</h4>
+<p data-line="174" class="code-line">参考：</p>
 <ul>
-  <li><a href="https://www.jianshu.com/p/f2b28954d902">使用 KaTeX 代替 MathJax 渲染公式</a>。</li>
-  <li><a href="https://katex.org/docs/autorender.html">Auto-render Extension · Katex</a></li>
+<li data-line="176" class="code-line"><a href="https://www.jianshu.com/p/f2b28954d902" data-href="https://www.jianshu.com/p/f2b28954d902">使用 KaTeX 代替 MathJax 渲染公式</a>。</li>
+<li data-line="177" class="code-line"><a href="https://katex.org/docs/autorender.html" data-href="https://katex.org/docs/autorender.html">Auto-render Extension · Katex</a></li>
 </ul>
-
-<pre><code class="language-html">&lt;link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css" /&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/katex/dist/katex.min.js"
-  defer="defer"
-&gt;&lt;/script&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js"
-  defer="defer"
-  onload='renderMathInElement(document.body, { delimiters: [{ left: "$", right: "$", display: false }] })'
-&gt;&lt;/script&gt;
-</code></pre>
-
-<p>不过这样仅能显示$E=mc^2$这样的行间公式，行内公式是没有办法显示的（<a href="https://github.com/wu-kan/wu-kan.github.io/issues/1">issue</a>）。</p>
-
-<pre><code class="language-tex">$$
+<pre><code data-line="179" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/katex/dist/katex.min.css"</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/katex/dist/katex.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'renderMathInElement(document.body, { delimiters: [{ left: "$", right: "$", display: false }] })'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<p data-line="192" class="code-line">不过这样仅能显示$E=mc^2$这样的行间公式，行内公式是没有办法显示的（<a href="https://github.com/wu-kan/wu-kan.github.io/issues/1" data-href="https://github.com/wu-kan/wu-kan.github.io/issues/1">issue</a>）。</p>
+<pre><code data-line="194" class="code-line language-tex"><div><span class="hljs-formula">$$
 E=mc^2
-$$
-</code></pre>
-
-<p>一种方法是引入 mathjax 进行渲染，但是这样做就失去了用 katex 的初心了。后来我发现 katex 有对应的插件可以解决这一问题。在上面代码后补充如下代码：</p>
-
-<pre><code class="language-html">&lt;script
-  src="//cdn.jsdelivr.net/npm/katex/dist/contrib/mathtex-script-type.min.js"
-  defer="defer"
-&gt;&lt;/script&gt;
-</code></pre>
-
-<p>效果如下。</p>
-
-<script type="math/tex; mode=display">E=mc^2</script>
-
-<p>可以在<a href="https://katex.org/docs/libs.html">这个页面</a>查看一些别的插件，比如化学方程式的插件等等，都是可以引入的。</p>
-
-<h4 id="mermaid-图">mermaid 图</h4>
-
-<p>我希望自己能按照 markdown 代码块扩展的规则来写 mermaid 流程图：</p>
-
-<pre><code class="language-markdown">```mermaid
+$$</span>
+</div></code></pre>
+<p data-line="200" class="code-line">一种方法是引入 mathjax 进行渲染，但是这样做就失去了用 katex 的初心了。后来我发现 katex 有对应的插件可以解决这一问题。在上面代码后补充如下代码：</p>
+<pre><code data-line="202" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/katex/dist/contrib/mathtex-script-type.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<p data-line="209" class="code-line">效果如下。</p>
+<p data-line="211" class="code-line">$$
+E=mc^2
+$$</p>
+<p data-line="215" class="code-line">可以在<a href="https://katex.org/docs/libs.html" data-href="https://katex.org/docs/libs.html">这个页面</a>查看一些别的插件，比如化学方程式的插件等等，都是可以引入的。</p>
+<a for="toc-anchor" id="mermaid-%E5%9B%BE"></a><h4 id="mermaid-%E5%9B%BE" data-line="217" class="code-line">mermaid 图</h4>
+<p data-line="219" class="code-line">我希望自己能按照 markdown 代码块扩展的规则来写 mermaid 流程图：</p>
+<pre><code data-line="221" class="code-line language-markdown"><div><span class="hljs-code">```mermaid
 sequenceDiagram
 Alice-&gt;&gt;John: Hello John, how are you?
 loop Healthcheck
@@ -868,12 +199,10 @@ Note right of John: Rational thoughts!
 John--&gt;&gt;Alice: Great!
 John-&gt;&gt;Bob: How about you?
 Bob--&gt;&gt;John: Jolly good!
-```
-</code></pre>
-
-<p>其效果如下。</p>
-
-<pre><code class="language-mermaid">sequenceDiagram
+```</span>
+</div></code></pre>
+<p data-line="235" class="code-line">其效果如下。</p>
+<pre><code data-line="237" class="code-line language-mermaid"><code><div>sequenceDiagram
 Alice-&gt;&gt;John: Hello John, how are you?
 loop Healthcheck
     John-&gt;&gt;John: Fight against hypochondria
@@ -882,20 +211,18 @@ Note right of John: Rational thoughts!
 John--&gt;&gt;Alice: Great!
 John-&gt;&gt;Bob: How about you?
 Bob--&gt;&gt;John: Jolly good!
-</code></pre>
-
-<p>因此需要插入如下内容（将代码块隐藏，并在原位置插入 mermaid 图）：</p>
-
-<pre><code class="language-html">&lt;style&gt;
-  pre.language-mermaid,
-  code.language-mermaid {
-    display: none;
+</div></code></code></pre>
+<p data-line="249" class="code-line">因此需要插入如下内容（将代码块隐藏，并在原位置插入 mermaid 图）：</p>
+<pre><code data-line="251" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+  <span class="hljs-selector-tag">pre</span><span class="hljs-selector-class">.language-mermaid</span>,
+  <span class="hljs-selector-tag">code</span><span class="hljs-selector-class">.language-mermaid</span> {
+    <span class="hljs-attribute">display</span>: none;
   }
-&lt;/style&gt;
-&lt;script
-  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
-  defer="defer"
-  onload='
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'
     for(let x of document.getElementsByClassName("language-mermaid"))
       if(x.nodeName=="CODE")
       {
@@ -903,48 +230,44 @@ Bob--&gt;&gt;John: Jolly good!
         m.classList.add("mermaid");
         m.textContent = x.textContent;
         x.parentNode.insertAdjacentElement("beforebegin", m);
-      }'
-&gt;&lt;/script&gt;
-</code></pre>
-
-<h4 id="prism-代码高亮">prism 代码高亮</h4>
-
-<p>默认的代码高亮器<code>rouge</code>渲染出来的效果一般，同时代码行号效果非常差。这里使用了 prismjs 来进行代码渲染。它的好处是模块化程度非常高，且支持自定义插件。</p>
-
-<p>这里我引入了三个插件（代码行号、动态代码高亮、工具栏，且自己写了一个选中全部代码的按钮）作为例子，也可以像我一样自己定制。</p>
-
-<pre><code class="language-html">&lt;link
-  rel="stylesheet"
-  href="//cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.min.css"
-/&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"
-  defer="defer"
-&gt;&lt;/script&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"
-  defer="defer"
-  onload='Prism.plugins.autoloader.languages_path = "https:\/\/cdn.jsdelivr.net/npm/prismjs/components/"'
-&gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css"
-/&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"
-  defer="defer"
-  onload='
+      }'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<a for="toc-anchor" id="prism-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE"></a><h4 id="prism-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE" data-line="273" class="code-line">prism 代码高亮</h4>
+<p data-line="275" class="code-line">默认的代码高亮器<code>rouge</code>渲染出来的效果一般，同时代码行号效果非常差。这里使用了 prismjs 来进行代码渲染。它的好处是模块化程度非常高，且支持自定义插件。</p>
+<p data-line="277" class="code-line">这里我引入了三个插件（代码行号、动态代码高亮、工具栏，且自己写了一个选中全部代码的按钮）作为例子，也可以像我一样自己定制。</p>
+<pre><code data-line="279" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">link</span>
+  <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>
+  <span class="hljs-attr">href</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.min.css"</span>
+/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'Prism.plugins.autoloader.languages_path = "https:\/\/cdn.jsdelivr.net/npm/prismjs/components/"'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">link</span>
+  <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>
+  <span class="hljs-attr">href</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css"</span>
+/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'
     for(let x of document.getElementsByTagName("pre"))
-      x.classList.add("line-numbers");'
-&gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.css"
-/&gt;
-&lt;script
-  src="//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"
-  defer="defer"
-  onload='
+      x.classList.add("line-numbers");'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">link</span>
+  <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>
+  <span class="hljs-attr">href</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.css"</span>
+/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'
     Prism.plugins.toolbar.registerButton("select-code", function (env) {
       let button = document.createElement("button");
       button.textContent = "select this " + env.language;
@@ -962,21 +285,18 @@ Bob--&gt;&gt;John: Jolly good!
         }
       });
       return button;
-    })'
-&gt;&lt;/script&gt;
-</code></pre>
-
-<h4 id="valine-评论">valine 评论</h4>
-
-<p>配置详见<a href="https://valine.js.org/">官方手册</a>，说得很清楚了。引入这个插件后，会在 html 页面中寻找<code>.v</code>的页面元素。其中 appId 和 appKey 都要自己去申请，我的 leanCloud 开了白名单，直接使用我的是不能用的。</p>
-
-<pre><code class="language-html">&lt;div class="v"&gt;
-  &lt;i class="fas fa-spinner fa-pulse"&gt;&lt;/i&gt;
-&lt;/div&gt;
-&lt;script
-  src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"
-  defer="defer"
-  onload='
+    })'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<a for="toc-anchor" id="valine-%E8%AF%84%E8%AE%BA"></a><h4 id="valine-%E8%AF%84%E8%AE%BA" data-line="333" class="code-line">valine 评论</h4>
+<p data-line="335" class="code-line">配置详见<a href="https://valine.js.org/" data-href="https://valine.js.org/">官方手册</a>，说得很清楚了。引入这个插件后，会在 html 页面中寻找<code>.v</code>的页面元素。其中 appId 和 appKey 都要自己去申请，我的 leanCloud 开了白名单，直接使用我的是不能用的。</p>
+<pre><code data-line="337" class="code-line language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"v"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"fas fa-spinner fa-pulse"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+  <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"</span>
+  <span class="hljs-attr">defer</span>=<span class="hljs-string">"defer"</span>
+  <span class="hljs-attr">onload</span>=<span class="hljs-string">'
     new Valine({
       "el": document.getElementsByClassName("v")[0],
       "appId": "9hABRddSuEkTgqLrt1VSK5B1-gzGzoHsz",
@@ -985,50 +305,20 @@ Bob--&gt;&gt;John: Jolly good!
       "requiredFields": ["nick","mail"],
       "visitor": true,
       "recordIP": true
-    })'
-&gt;&lt;/script&gt;
-</code></pre>
-
-<h2 id="下一步计划">下一步计划</h2>
-
-<p>详细的开发计划及建站内容详见<a href="https://jekyll-theme-WuK.wu-kan.cn/">主题详情页</a>。</p>
-
-<p>从<a href="https://magical-girl.site/">这个页面</a>得到的灵感，目标是博客上除了文章和作为导航的 Live2D 之外不出现其他的模块，尽量的干净、快速。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<p>大部分的参考链接已在原文给出，同时搭建本博客的过程中还参考了以下内容，感谢作者们：</p>
-
+    })'</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+<a for="toc-anchor" id="%E4%B8%8B%E4%B8%80%E6%AD%A5%E8%AE%A1%E5%88%92"></a><h2 id="%E4%B8%8B%E4%B8%80%E6%AD%A5%E8%AE%A1%E5%88%92" data-line="357" class="code-line">下一步计划</h2>
+<p data-line="359" class="code-line">详细的开发计划及建站内容详见<a href="https://jekyll-theme-WuK.wu-kan.cn/" data-href="https://jekyll-theme-WuK.wu-kan.cn/">主题详情页</a>。</p>
+<p data-line="361" class="code-line">从<a href="https://magical-girl.site/" data-href="https://magical-girl.site/">这个页面</a>得到的灵感，目标是博客上除了文章和作为导航的 Live2D 之外不出现其他的模块，尽量的干净、快速。</p>
+<a for="toc-anchor" id="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"></a><h2 id="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" data-line="363" class="code-line">参考资料</h2>
+<p data-line="365" class="code-line">大部分的参考链接已在原文给出，同时搭建本博客的过程中还参考了以下内容，感谢作者们：</p>
 <ul>
-  <li><a href="https://www.jianshu.com/p/9f198d5779e6">Jekyll + Github Pages 博客搭建入门</a></li>
-  <li><a href="https://blog.csdn.net/ds19991999/article/details/81516568">Jekyll 博客 Next 主题超深度配置</a></li>
-  <li><a href="https://www.jianshu.com/p/bb184f61c9ae">【应用软件】Jekyll 配置</a></li>
+<li data-line="367" class="code-line"><a href="https://www.jianshu.com/p/9f198d5779e6" data-href="https://www.jianshu.com/p/9f198d5779e6">Jekyll + Github Pages 博客搭建入门</a></li>
+<li data-line="368" class="code-line"><a href="https://blog.csdn.net/ds19991999/article/details/81516568" data-href="https://blog.csdn.net/ds19991999/article/details/81516568">Jekyll 博客 Next 主题超深度配置</a></li>
+<li data-line="369" class="code-line"><a href="https://www.jianshu.com/p/bb184f61c9ae" data-href="https://www.jianshu.com/p/bb184f61c9ae">【应用软件】Jekyll 配置</a></li>
 </ul>
+</div>
 
-</div>
-<div class="v">
-  <i class="fas fa-spinner fa-pulse"></i>
-</div>
-<script
-  src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'
-  defer='defer'
-  onload='
-    new Valine({
-      "el": document.getElementsByClassName("v")[0],
-      "appId": "67Vfc4knk9uWCDqHKfQpSpfp-gzGzoHsz",
-      "appKey": "hLV56LFJxCoIcJSv2AKMMgG8",
-      "placeholder": "在这里评论吧！填写邮箱可以获得 Gravatar 头像和回复通知哦",
-      "requiredFields": ["nick","mail"],
-      "visitor": true,
-      "recordIP": true
-    })'
-></script>
-
-</div>
-  </div>
-  
-  <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-  
 </body>
-
 </html>

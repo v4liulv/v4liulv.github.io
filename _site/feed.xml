@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-18T20:14:53+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-25T10:15:39+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">lv-liu</title><subtitle>程序员的梦&lt;br/&gt;
 冬天的情绪&lt;br/&gt;
 一天的种种&lt;br/&gt;
 ASC&lt;br/&gt;
@@ -26,20 +26,446 @@ ASC&lt;br/&gt;
   marginwidth=&quot;0&quot;
   marginheight=&quot;0&quot;
 &gt;&lt;/iframe&gt;
-</subtitle><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;工程说明&quot;&gt;工程说明&lt;/h2&gt;
+</subtitle><entry><title type="html">MapReduce工程Demo说明</title><link href="http://localhost:4000/_posts/2020-05-19-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="MapReduce工程Demo说明" /><published>2020-05-19T00:00:00+08:00</published><updated>2020-05-19T00:00:00+08:00</updated><id>http://localhost:4000/_posts/MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-19-MapReduce%E5%B7%A5%E7%A8%8BDemo%E8%AF%B4%E6%98%8E/">&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/logo/logo.png&quot; alt=&quot;奋斗&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;demo概述&quot;&gt;DEMO概述&lt;/h2&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
 
-&lt;h2 id=&quot;功能说明&quot;&gt;功能说明&lt;/h2&gt;
+&lt;h2 id=&quot;1-需求概述&quot;&gt;1. 需求概述&lt;/h2&gt;
 
-&lt;h2 id=&quot;代码详解&quot;&gt;代码详解&lt;/h2&gt;
+&lt;p&gt;示例需求主要是基于全球的气象数据进行数据挖掘，求出每年的最高的气温。&lt;/p&gt;
 
-&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;</content><author><name></name></author><category term="Hadoop" /><summary type="html">工程说明</summary></entry><entry><title type="html">工作流API工程DEMO新增调整说明</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="工作流API工程DEMO新增调整说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;h2 id=&quot;新增调整概述&quot;&gt;新增调整概述&lt;/h2&gt;
+&lt;h2 id=&quot;2-数据准备&quot;&gt;2. 数据准备&lt;/h2&gt;
+
+&lt;p&gt;有了需求了那么必须得有数据，需要下载气象数据。&lt;/p&gt;
+
+&lt;h3 id=&quot;21-数据下载&quot;&gt;2.1. 数据下载&lt;/h3&gt;
+
+&lt;p&gt;气象数据是通过全球各个气象站收集并上传到数据中心汇集的，气象数据是公开的数据。&lt;/p&gt;
+
+&lt;p&gt;可以直接NCDC点击&lt;a href=&quot;ftp://ftp.ncdc.noaa.gov/pub/data/gsod/&quot;&gt;下载地址&lt;/a&gt;进行下载。&lt;/p&gt;
+
+&lt;p&gt;这里是测试只加载几年的数据即可，下载1949-1963年数据到本地/home/hadoop/gsod/data目录下。&lt;/p&gt;
+
+&lt;h3 id=&quot;22-下载命令&quot;&gt;2.2. 下载命令&lt;/h3&gt;
+
+&lt;p&gt;下载命令在工程的shell/gsod/download_gsod.sh下，如下图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200520150613.png&quot; alt=&quot;20200520150613&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;下载命令如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/图片2.png&quot; alt=&quot;图片2&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-数据上传&quot;&gt;3. 数据上传&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;本地数据上传到HDFS文件系统，命令如下：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;# ncdc原始数据文件上传到hdfs
+hdfs dfs -put /home/hadoop/gsod/data/* /data/gsod
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;HDFS上查看数据情况&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/16.png&quot; alt=&quot;16&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数据压缩输入txt文件准备&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;每年的数据文件是每个气象站收集回传的，那么会生成很多小数据文件，每年的数据需要进行合并压缩成一个大文件，提供Hadoop计算效率。&lt;/p&gt;
+
+&lt;p&gt;需要合并先hdfs的每个压缩文件的目录作为输入，下面分别为生成输入文本文件的命令和最终文本文件内容。&lt;/p&gt;
+
+&lt;p&gt;输入文本文件命令&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/3.7.png&quot; alt=&quot;3.7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;文件文件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/8_3.png&quot; alt=&quot;8_3&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-程序准备&quot;&gt;4. 程序准备&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-打包&quot;&gt;4.1. 打包&lt;/h3&gt;
+
+&lt;p&gt;工程DEMO直接Maven打包，在target生成jar包&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/12_3.png&quot; alt=&quot;12_3&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;42-上传脚本和包&quot;&gt;4.2. 上传脚本和包&lt;/h3&gt;
+
+&lt;p&gt;准备：
+客户端服务器-&amp;gt;这里的大数据集群TBDS的客户端服务器&lt;/p&gt;
+
+&lt;p&gt;步骤：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;tep1: ssh连接客户端服务器。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tep2: 创建程序目录&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;mkdir -p /home/hadoop/gsod/jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tep3: xftp工具连上客户端环境&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tep4: 将工程下的shell脚本命令全部上传到/home/hadoop/gsod目录下&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tep5: 将打包生成的mapreduce.jar上传到/home/hadoop/gsod/jar目录下&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tep6: 修改shell脚本文件可执行权限&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;chmod +755 /home/hadoop/gsod/*.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;43-hosts配置&quot;&gt;4.3. hosts配置&lt;/h3&gt;
+
+&lt;p&gt;理论上客户端配置文件都已经配置了hosts文件，但是如果集群下有扩展节点情况下需要替换hosts配置。&lt;/p&gt;
+
+&lt;p&gt;客户端应用服务器或客户端服务器需要hosts文件配置Hadoop集群的ip和hostname映射。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;集群任何一台服务器下载/etc/hosts文件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在客户端服务器下替换其hosts配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;5-mapreduce流&quot;&gt;5. MapReduce流&lt;/h2&gt;
+
+&lt;h3 id=&quot;51-需求说明&quot;&gt;5.1. 需求说明&lt;/h3&gt;
+
+&lt;p&gt;下载的气象数据每年的数据文件是很多压缩文件组合，需要优化处理每年的数据合并为一个大文件。&lt;/p&gt;
+
+&lt;h3 id=&quot;52-技术选型&quot;&gt;5.2. 技术选型&lt;/h3&gt;
+
+&lt;p&gt;在HDFS上面不适合做压缩解压缩合并再压缩等操作，需要结合操作系统级别shell编程来实现，那么使用HadoopMR流处理进行本地Linux命令进行解压、打包、合并成一个大数据文件然后再压缩再上传到HDFS，需要进行进行shelll编程的进行Map计算，最后合并的数据合并到/data/gsod_all/目录下。&lt;/p&gt;
+
+&lt;h3 id=&quot;53-mr流计算&quot;&gt;5.3. MR流计算&lt;/h3&gt;
+
+&lt;h4 id=&quot;531-map代码&quot;&gt;5.3.1. Map代码&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/5.5.png&quot; alt=&quot;5.5&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;532-命令脚本&quot;&gt;5.3.2. 命令脚本&lt;/h4&gt;
+
+&lt;p&gt;执行命令脚本在工程的shell/merge_data_job.sh,具体命令如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;#!/bin/bash
+hadoop jar /opt/cloudera/parcels/CDH-5.15.0-1.cdh5.15.0.p0.21/lib/hadoop-mapreduce/hadoop-streaming.jar \
+-D mapreduce.job.reduces=0 \
+-D mapreduce.map.speculative=false \
+-D mapreduce.task.timeout=12000000 \
+-inputformat org.apache.hadoop.mapred.lib.NLineInputFormat \
+-input /data/ncdc_files.txt \
+-output /output/1 \
+-mapper load_ncdc_map.sh \
+-file load_ncdc_map.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;命令说明：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;jar 包使用开源包hadoop-streaming.jar&lt;/li&gt;
+  &lt;li&gt;reduces 数为0即为不进行reduces计算&lt;/li&gt;
+  &lt;li&gt;是否推导执行false即为关闭推导执行&lt;/li&gt;
+  &lt;li&gt;task超时时间：12000000，即为3.33小时&lt;/li&gt;
+  &lt;li&gt;输入格式为NLineInputFormat&lt;/li&gt;
+  &lt;li&gt;-input 输入为ncdc_files.txt&lt;/li&gt;
+  &lt;li&gt;-output 输出目录/output/1&lt;/li&gt;
+  &lt;li&gt;mapper计算为load_ncdc_map.sh&lt;/li&gt;
+  &lt;li&gt;文件为load_ncdc_map.sh&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;533-mr流执行&quot;&gt;5.3.3. MR流执行&lt;/h4&gt;
+
+&lt;p&gt;执行命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;# 合并气象数据
+sh /home/hadoop/gsod/merge_data_job.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行情况&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/21.png&quot; alt=&quot;21&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;检查输出结果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-powershell&quot;&gt;# 查看合并数据
+hdfs dfs -ls /output/1
+hdfs dfs -cat /ouput/1/part-00000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/22.png&quot; alt=&quot;22&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;查看HDFS数据合并后的数据文件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/23.png&quot; alt=&quot;23&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;6-mapreduce编程&quot;&gt;6. MapReduce编程&lt;/h2&gt;
+
+&lt;p&gt;基于全球气象合并后的数据求每年的最高气温，通过本示例了解MR基础编程实现、数据流程、配置作业、shuffle、排序、运行方式、yarn作业管理等。&lt;/p&gt;
+
+&lt;h3 id=&quot;61-示例需求&quot;&gt;6.1. 示例需求&lt;/h3&gt;
+
+&lt;p&gt;基于全球的气象数据进行数据挖掘，目标需要查询出每年的最高气温分别为多少。&lt;/p&gt;
+
+&lt;p&gt;需要求出最高去温那么得从文本数据根据数据结构解析到气温记录，得到每年的全部气温数据，然后进行数学计算求最大值得到最高气温。&lt;/p&gt;
+
+&lt;h3 id=&quot;62-mapreduce编程说明&quot;&gt;6.2. MapReduce编程说明&lt;/h3&gt;
+
+&lt;p&gt;MapRedcue编程有两个阶段为Mapper阶段和Reduce阶段，每个阶段都以Kay-Value方式作为输入和输出，其类型都由编程人员自己定但是要满足一定的规范，编程人员就是自己去需要编写实现Mapper和Reduce两个函数。编程人员还需要编写Driver去配置参数和创建Job并启动MapReduce Job。&lt;/p&gt;
+
+&lt;p&gt;在Reduce输入会根据Map输入的值进行合并，输入类型为[V, Itable[V]]也就是相同的Key会进行合并，那么这很适合获取每年的气温数据，也在Maper阶段就是Key作为年，气温作为V值输出，在Reduce过程就可以得到每年的全部气温数据，然后在迭代进行求最大值即可。&lt;/p&gt;
+
+&lt;h3 id=&quot;63-mapreduce数据流程分析&quot;&gt;6.3. MapReduce数据流程分析&lt;/h3&gt;
+
+&lt;p&gt;根据需求和源数据进行数据流程分析，mr的计算每个都是通过Key-Value进行输出，注意每个key-value都需要定义Hadoop系列化类型：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;input分片：hdfs文本文件作为输入时候，输出应该key为偏移量，value一行文本数据值&lt;/li&gt;
+  &lt;li&gt;map阶段：输出key为年份，value值为气温值&lt;/li&gt;
+  &lt;li&gt;suffle阶段： 输出为key年份，value为全部年份的气温的迭代器&lt;/li&gt;
+  &lt;li&gt;reduce阶段：计算每年的最高气温后，key为年份，value为最高气温&lt;/li&gt;
+  &lt;li&gt;output阶段：每年的气温和对应最高气温通过文本输出到hdfs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;数据流程图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/24.png&quot; alt=&quot;24&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;64-mapper编程&quot;&gt;6.4. Mapper编程&lt;/h3&gt;
+
+&lt;p&gt;类：com.tencent.bigdata.example.mapreduce.map.MaxTemperatureMapper&lt;/p&gt;
+
+&lt;p&gt;代码核心是继承org.apache.hadoop.mapreduce.Mapper确定输入输出、重写map方法，读取每一行的数据，每行的数据然后获取年份及对应的气温数据，作为输出，中间还进行一些数据过滤和异常数据判断等。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200520205014.png&quot; alt=&quot;20200520205014&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;65-reduce编程&quot;&gt;6.5. Reduce编程&lt;/h3&gt;
+
+&lt;p&gt;示例代码&lt;/p&gt;
+
+&lt;p&gt;类：com.tencent.bigdata.example.mapreduce.reduce.MaxTemperatureReduce&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200520205731.png&quot; alt=&quot;20200520205731&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;说明&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Reduce开发需要继承org.apache.hadoop.mapreduce.Reduce&lt;/li&gt;
+  &lt;li&gt;重写reduce方法，输入类型必须与Map类的输出需要完全一致&lt;/li&gt;
+  &lt;li&gt;Reduce获取输入数据为suffel阶段也就是mapper阶段向reduce传递数据过程&lt;/li&gt;
+  &lt;li&gt;输入值为同一年只一个key值，value为同一年的全部最高气温的迭代器&lt;/li&gt;
+  &lt;li&gt;通过Math.max函数读取最高气温&lt;/li&gt;
+  &lt;li&gt;输出值key为年份，输出value为计算后的最高气温&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;7-driver类开发&quot;&gt;7. Driver类开发&lt;/h2&gt;
+
+&lt;p&gt;实例代码：com.centent.bigdata.example.mapreduce.driver.MaxTemperatureDriver&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/7.png&quot; alt=&quot;7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;说明：配置和启动MapReduce作业&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;初始化 Job类并设置jar包，设置作业名和Jar包&lt;/li&gt;
+  &lt;li&gt;设置reduce阶段task数&lt;/li&gt;
+  &lt;li&gt;设置输入和输出格式&lt;/li&gt;
+  &lt;li&gt;设置设置输入和输出目录&lt;/li&gt;
+  &lt;li&gt;设置Mapper和Reduce类&lt;/li&gt;
+  &lt;li&gt;启动作业&lt;/li&gt;
+  &lt;li&gt;作业成功后通过计数器获取总数据量和异常数据量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;8-运行mapreduce&quot;&gt;8. 运行MapReduce&lt;/h2&gt;
+
+&lt;p&gt;运行提交作业最终是提交到Yarn上面执行，提交方式有本地提交和远程提交。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;远程提交也是就是开发环境IDEA直接进行提交作业&lt;/li&gt;
+    &lt;li&gt;本地提交直接基于客户端服务器进行提交作业&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;不管是本地提交还是远程提交都是一个Java进场都是相当于客户端运行程序。Yarn运行作业也就是服务端进行处理，如果不进行计数打印或者其他判断，基本客户端提交完作业使命就是算完成了。&lt;/p&gt;
+
+&lt;p&gt;我们知道Hadoop是基于Java开发的，既然都是客户端方式那么打成java Jar包是必不少的，MapReduce作业运行在Yarn上面不过是把本地包上传到集群而已，还有一些参数，最终根据提交的Jar包的指定方法调用HDFS临时的Jar包依赖进行计算处理。当然暂时这些过程不用太过关心。&lt;/p&gt;
+
+&lt;h3 id=&quot;81-maven打包&quot;&gt;8.1. Maven打包&lt;/h3&gt;
+
+&lt;p&gt;全面准备过程已经打包过了，但是程序有改动调整，那么需要重新打包上传。&lt;/p&gt;
+
+&lt;p&gt;直接通过Maven package进行打包即可，打包最终生成的Jar包在工程的target目录下，Jar包名为bigdata_example.jar。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/12.png&quot; alt=&quot;12&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这里示例演示是本地提交模式，直接上传客户端服务器下的/home/hadoop/gsod/jar目录下。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/18.png&quot; alt=&quot;18&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;82-提交运行作业&quot;&gt;8.2. 提交运行作业&lt;/h3&gt;
+
+&lt;p&gt;也就是通过Hadoop jar方式在客户端进行作业提交到Yarn上面执行，shell脚本在工程的shell/gsod/max_temp_job.sh&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200520213402.png&quot; alt=&quot;20200520213402&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/1589981681(1).png&quot; alt=&quot;1589981768(1)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注意：最后行参数根据实际进行调整。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;执行命令&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cd /home/hadoop/psod
+./max_temp_job.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;也可以通过sh命令方式执行&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sh /home/hadoop/psod/max_temp_job.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/6_2.png&quot; alt=&quot;6_2&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;执行过程&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/19.png&quot; alt=&quot;19&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;83-运行结果&quot;&gt;8.3. 运行结果&lt;/h3&gt;
+
+&lt;p&gt;运行作业情况可以在Yarn上面进行查看，如果maper或reduce过程进行了日志打印，那么也必须在Yarn 的Map或Reduce Task运行日志中查看。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/3_4.png&quot; alt=&quot;3_4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;输出数据在程序中我们自己写入到hdfs输出/output/2目录下，直接hdfs命令去查看计算结果。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/26.png&quot; alt=&quot;26&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;9-mapreduce机制和性能&quot;&gt;9. MapReduce机制和性能&lt;/h2&gt;
+
+&lt;p&gt;基于MR运行机制并在上面示例进行性能优化处理，包含压缩、task数调整，分片split设置、Combiner、task内存，reduce延迟加载、suffle参数。&lt;/p&gt;
+
+&lt;h3 id=&quot;91-mapreduce工作流程&quot;&gt;9.1. MapReduce工作流程&lt;/h3&gt;
+
+&lt;p&gt;工作流程图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/MapRedue工作流程.png&quot; alt=&quot;MapRedue工作流程&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;流程说明&lt;/p&gt;
+
+&lt;p&gt;1).客户端通过submit()或waitForCompletion()方法提交作业&lt;/p&gt;
+
+&lt;p&gt;2).从资源管理器获取作业ID,并检查作业检查本次作业是否可执行&lt;/p&gt;
+
+&lt;p&gt;3).可执行情况将作业运行所需要的jar包、配置文件、分片信息等上传到HDFS&lt;/p&gt;
+
+&lt;p&gt;4).调用submitApplication()方法提交作业&lt;/p&gt;
+
+&lt;p&gt;5).请求传递给调度器，调度器分配容器，资源管理器在节点管理器管理的容器中启动应用程序进程&lt;/p&gt;
+
+&lt;p&gt;6). MRAppMaster对作业进行初始化，监控任务的进度和完成情况。&lt;/p&gt;
+
+&lt;p&gt;7). MRAppMaster接受来自hdfs在客户端计算的输入分片&lt;/p&gt;
+
+&lt;p&gt;8). 每一个分片启动一个map task，reduce task根据配置（mapreduc.job.reduce），全部任务向资源管理器申请容器，并分配内存，默认情况每个任务分配1024M&lt;/p&gt;
+
+&lt;p&gt;9). application master 通过节点管理器通讯启动容器。&lt;/p&gt;
+
+&lt;p&gt;10). 运行前资源本地化，从HDFS获取作业配置、Jar包、缓存文件等。&lt;/p&gt;
+
+&lt;p&gt;11). 运行Map任务和Reduce任务&lt;/p&gt;
+
+&lt;h3 id=&quot;92-性能优化思路&quot;&gt;9.2. 性能优化思路&lt;/h3&gt;
+
+&lt;p&gt;MapReduce的机制最重要就是其实就进行数据Split创建Map并非数以及读取读取后的程序效率，以及Maper输出到Reduce过程的也就是Shuffle过程，Reduce程序计算逻辑，以及整个数据传输过程的优化处理。&lt;/p&gt;
+
+&lt;p&gt;优化路线&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Mapper并非数
+决定因素为文件数以及文件大小、分片大小，可设置分片大小，合并文件分片&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;集群硬件、配置优化&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Reduce并非数
+通过Job的setNumReduceTasks设置&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;中间值压缩
+中间值压缩也是map输出启动压缩&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;自定义Hadoop系列
+使用自定义的Writable，则必须实现RawComparator&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;combiner
+充分应用combiner来减少shuffle传输的数据量&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;调整shuffle
+配置调整shuffle过程的参数，提升性能&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;程序调优&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="Hadoop" /><summary type="html"></summary></entry><entry><title type="html">工作流 API 工程 DEMO 新增调整说明</title><link href="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/" rel="alternate" type="text/html" title="工作流 API 工程 DEMO 新增调整说明" /><published>2020-05-18T00:00:00+08:00</published><updated>2020-05-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-18-%E5%B7%A5%E4%BD%9C%E6%B5%81API%E5%B7%A5%E7%A8%8B%E6%96%B0%E5%A2%9E%E8%B0%83%E6%95%B4%E8%AF%B4%E6%98%8E/">&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/logo/logo.png&quot; alt=&quot;奋斗&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;[TOC]&lt;/p&gt;
+
+&lt;h2 id=&quot;1-新增调整概述&quot;&gt;1. 新增调整概述&lt;/h2&gt;
 
 &lt;p&gt;主要针对新增的工作流和现场环境进行调整，以下满足现状的情况，并开发对应测试类，主要有以下调整来满足现状：&lt;/p&gt;
 
 &lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;内网Maven缺包问题&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;内网 Maven 缺包问题&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例列表接口&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例日志列表接口&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;新增获取工作流任务实例日志详情接口&lt;/li&gt;
@@ -48,57 +474,57 @@ ASC&lt;br/&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;需求是会逐渐增长的！&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;调整内容&quot;&gt;调整内容&lt;/h3&gt;
+&lt;h3 id=&quot;11-调整内容&quot;&gt;1.1. 调整内容&lt;/h3&gt;
 
 &lt;p&gt;调整内容主要包含以下内容：&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;ul&gt;
-    &lt;li&gt;测试全部分离到test下&lt;/li&gt;
-    &lt;li&gt;DEMO类独立作为API借口实现&lt;/li&gt;
-    &lt;li&gt;Maven支持外网环境打包把依赖包全部打包到lib目录下&lt;/li&gt;
-    &lt;li&gt;内网环境可注释到Maven依赖，通过导入本地包方式导入lib目录下依赖包&lt;/li&gt;
+    &lt;li&gt;测试全部分离到 test 下&lt;/li&gt;
+    &lt;li&gt;DEMO 类独立作为 API 借口实现&lt;/li&gt;
+    &lt;li&gt;Maven 支持外网环境打包把依赖包全部打包到 lib 目录下&lt;/li&gt;
+    &lt;li&gt;内网环境可注释到 Maven 依赖，通过导入本地包方式导入 lib 目录下依赖包&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;新增内容&quot;&gt;新增内容&lt;/h3&gt;
+&lt;h3 id=&quot;12-新增内容&quot;&gt;1.2. 新增内容&lt;/h3&gt;
 
 &lt;p&gt;新增内容主要包含以下内容：&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;ul&gt;
-    &lt;li&gt;DEMO类新增查看任务实例运行情况taskInstanceList方法&lt;/li&gt;
-    &lt;li&gt;DEMO类新增获取任务ID方法getTaskID&lt;/li&gt;
-    &lt;li&gt;DEMO类新增任务实例日志列表方法&lt;/li&gt;
-    &lt;li&gt;DEMO串联通过工作流ID和任务ID获取某一具体任务实例的日志信息&lt;/li&gt;
-    &lt;li&gt;测试新增获取任务实例列表测试方法taskInstanceTest&lt;/li&gt;
-    &lt;li&gt;测试新增获取任务实例日志详情测试方法taskInstanceLog&lt;/li&gt;
+    &lt;li&gt;DEMO 类新增查看任务实例运行情况 taskInstanceList 方法&lt;/li&gt;
+    &lt;li&gt;DEMO 类新增获取任务 ID 方法 getTaskID&lt;/li&gt;
+    &lt;li&gt;DEMO 类新增任务实例日志列表方法&lt;/li&gt;
+    &lt;li&gt;DEMO 串联通过工作流 ID 和任务 ID 获取某一具体任务实例的日志信息&lt;/li&gt;
+    &lt;li&gt;测试新增获取任务实例列表测试方法 taskInstanceTest&lt;/li&gt;
+    &lt;li&gt;测试新增获取任务实例日志详情测试方法 taskInstanceLog&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;版本信息&quot;&gt;版本信息&lt;/h2&gt;
+&lt;h2 id=&quot;2-版本信息&quot;&gt;2. 版本信息&lt;/h2&gt;
 
-&lt;p&gt;当前版本为1.0.1&lt;/p&gt;
+&lt;p&gt;当前版本为 1.0.1&lt;/p&gt;
 
-&lt;p&gt;历史版本为1.0.0&lt;/p&gt;
+&lt;p&gt;历史版本为 1.0.0&lt;/p&gt;
 
-&lt;h2 id=&quot;调整详情&quot;&gt;调整详情&lt;/h2&gt;
+&lt;h2 id=&quot;3-调整详情&quot;&gt;3. 调整详情&lt;/h2&gt;
 
-&lt;h3 id=&quot;测试代码调整&quot;&gt;测试代码调整&lt;/h3&gt;
+&lt;h3 id=&quot;31-测试代码调整&quot;&gt;3.1. 测试代码调整&lt;/h3&gt;
 
-&lt;p&gt;之前代码测试代码和DEMO业务实现代码内，现在测试代码必须放到test下。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;junit依赖scope设置为test，如下&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;之前代码测试代码和 DEMO 业务实现代码内，现在测试代码必须放到 test 下。&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;新增测试类WorkFlowTest，并且迁移测试代码块到该类下&lt;/li&gt;
+  &lt;li&gt;junit 依赖 scope 设置为 test，如下&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_1.png&quot; alt=&quot;scop test&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;新增测试类 WorkFlowTest，并且迁移测试代码块到该类下&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_2.png&quot; alt=&quot;workFlowTest&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;迁移的测试方法包含：&lt;/p&gt;
 
@@ -111,117 +537,85 @@ ASC&lt;br/&gt;
   &lt;li&gt;重跑工作流任务实例 triggerTaskTest&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;测试resources调整&quot;&gt;测试resources调整&lt;/h3&gt;
+&lt;h3 id=&quot;32-测试-resources-调整&quot;&gt;3.2. 测试 resources 调整&lt;/h3&gt;
 
-&lt;p&gt;之前版本直接mian进行测试，那么配置main的resources即可，但是现在测试全部调整到test下，那么需要复制一份main下resource到测试的resources下。&lt;/p&gt;
+&lt;p&gt;之前版本直接 mian 进行测试，那么配置 main 的 resources 即可，但是现在测试全部调整到 test 下，那么需要复制一份 main 下 resource 到测试的 resources 下。&lt;/p&gt;
 
-&lt;p&gt;main下resources&lt;/p&gt;
+&lt;p&gt;main 下 resources&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_3.png&quot; alt=&quot;main-resources&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;复制到test的resources后&lt;/p&gt;
+&lt;p&gt;复制到 test 的 resources 后&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_4.png&quot; alt=&quot;test-resources&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;maven打包调整&quot;&gt;maven打包调整&lt;/h3&gt;
+&lt;h3 id=&quot;33-maven-打包调整&quot;&gt;3.3. maven 打包调整&lt;/h3&gt;
 
-&lt;p&gt;中行现场都是内网开发，内网私库还不完善，每次折腾这个包消耗大量时间。基于这个问题maven打包进行了调整可以在外面把全部的依赖包下载到工程的lib下，这样内网即可直接注释掉maven依赖部分，直接使用lib下依赖包即可。&lt;/p&gt;
+&lt;p&gt;中行现场都是内网开发，内网私库还不完善，每次折腾这个包消耗大量时间。基于这个问题 maven 打包进行了调整可以在外面把全部的依赖包下载到工程的 lib 下，这样内网即可直接注释掉 maven 依赖部分，直接使用 lib 下依赖包即可。&lt;/p&gt;
 
 &lt;p&gt;要实现这功能需要调整的部分有：&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;maven新增打包依赖包下载到lib目录下&lt;/li&gt;
+  &lt;li&gt;maven 新增打包依赖包下载到 lib 目录下&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_5.png&quot; alt=&quot;新增package-lib&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;外网环境进行编译打包(可不执行)，因提供包的时候已经打好依赖包到lib下&lt;/li&gt;
+  &lt;li&gt;外网环境进行编译打包（可不执行），因提供包的时候已经打好依赖包到 lib 下&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_6.png&quot; alt=&quot;检查编译&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_8.png&quot; alt=&quot;lib&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;内网环境注释掉maven全部依赖配置&lt;/li&gt;
+  &lt;li&gt;内网环境注释掉 maven 全部依赖配置&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_9.png&quot; alt=&quot;注释依赖1&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Project Structure 的 Libraries添加Java配置lib目录，并且选择Model&lt;/li&gt;
+  &lt;li&gt;Project Structure 的 Libraries 添加 Java 配置 lib 目录，并且选择 Model&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_10.png&quot; alt=&quot;注释依赖2&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;查看包并检查是否已经可编译&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_11.png&quot; alt=&quot;编译&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;新增详情&quot;&gt;新增详情&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_13.png&quot; alt=&quot;日志列表测试&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-新增详情&quot;&gt;4. 新增详情&lt;/h2&gt;
 
 &lt;p&gt;新增的内容主要是基于上传版本没有，现在比较确定的需求接口，比如任务实例列表、任务实例日志列表、任务实例日志详情等。&lt;/p&gt;
 
-&lt;p&gt;相关新增工作流API接口说明可参考&lt;strong&gt;工作流API任务实例和日志接口说明.doc&lt;/strong&gt;相关文档。&lt;/p&gt;
+&lt;p&gt;相关新增工作流 API 接口说明可参考 &lt;strong&gt;工作流 API 任务实例和日志接口说明。doc&lt;/strong&gt; 相关文档。&lt;/p&gt;
 
-&lt;h3 id=&quot;获取任务id方法&quot;&gt;获取任务ID方法&lt;/h3&gt;
+&lt;h3 id=&quot;41-获取任务-id-方法&quot;&gt;4.1. 获取任务 ID 方法&lt;/h3&gt;
 
-&lt;p&gt;获取任务ID方法的方法名为getTaskID，实现功能是通过工作流名和任务名称获取对应的任务ID。&lt;/p&gt;
+&lt;p&gt;获取任务 ID 方法的方法名为 getTaskID，实现功能是通过工作流名和任务名称获取对应的任务 ID。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;方法说明&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;方法说明
+|  所属类   | 方法名  |  参数说明   | 返回值  |
+|  —-  | —-  |  —-  | —-  |
+| WorkflowDemo  | getTaskID | 参数有两个工作流名和任务名  | 任务 ID |&lt;/p&gt;
 
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;所属类&lt;/th&gt;
-      &lt;th&gt;方法名&lt;/th&gt;
-      &lt;th&gt;参数说明&lt;/th&gt;
-      &lt;th&gt;返回值&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;WorkflowDemo&lt;/td&gt;
-      &lt;td&gt;getTaskID&lt;/td&gt;
-      &lt;td&gt;参数有两个工作流名和任务名&lt;/td&gt;
-      &lt;td&gt;任务ID&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;strong&gt;参数说明&lt;/strong&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;参数名&lt;/th&gt;
-      &lt;th&gt;参数类型&lt;/th&gt;
-      &lt;th&gt;参数说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;workflowName&lt;/td&gt;
-      &lt;td&gt;String&lt;/td&gt;
-      &lt;td&gt;工作流名称&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;taskName&lt;/td&gt;
-      &lt;td&gt;String&lt;/td&gt;
-      &lt;td&gt;任务名称&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;参数说明
+|  参数名   | 参数类型  |  参数说明   |
+|  —-  | —-  |  —-  |
+| workflowName  | String | 工作流名称  |
+| taskName  | String | 任务名称  |&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;功能实现：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;通过工作流名调用获取任务列表方法，解析结果报文获取到任务列表数组。&lt;/li&gt;
   &lt;li&gt;循环任务列表数组获取到任务名是否跟输入值任务名是否相同。&lt;/li&gt;
-  &lt;li&gt;匹配上的解析报文中获取到任务ID。&lt;/li&gt;
+  &lt;li&gt;匹配上的解析报文中获取到任务 ID。&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;strong&gt;代码实现：&lt;/strong&gt;&lt;/p&gt;
@@ -252,13 +646,13 @@ ASC&lt;br/&gt;
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;任务实例列表方法和测试方法&quot;&gt;任务实例列表方法和测试方法&lt;/h3&gt;
+&lt;h3 id=&quot;42-任务实例列表方法和测试方法&quot;&gt;4.2. 任务实例列表方法和测试方法&lt;/h3&gt;
 
 &lt;p&gt;任务实例列表方法通过工作流名和任务名获取的全部的任务实例列表情况。&lt;/p&gt;
 
-&lt;h4 id=&quot;任务实例列表方法&quot;&gt;任务实例列表方法&lt;/h4&gt;
+&lt;h4 id=&quot;421-任务实例列表方法&quot;&gt;4.2.1. 任务实例列表方法&lt;/h4&gt;
 
-&lt;p&gt;&lt;strong&gt;方法说明&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;方法说明&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -279,7 +673,7 @@ ASC&lt;br/&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;&lt;strong&gt;参数说明&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;参数说明&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -306,8 +700,8 @@ ASC&lt;br/&gt;
 &lt;p&gt;&lt;strong&gt;功能实现：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;先通过获取任务ID方法获取任务ID。&lt;/li&gt;
-  &lt;li&gt;通过任务ID获取和其他请求参数查询获取任务实例列表API接口。&lt;/li&gt;
+  &lt;li&gt;先通过获取任务 ID 方法获取任务 ID。&lt;/li&gt;
+  &lt;li&gt;通过任务 ID 获取和其他请求参数查询获取任务实例列表 API 接口。&lt;/li&gt;
   &lt;li&gt;返回结果任务实例列表结果报文。&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -332,9 +726,9 @@ ASC&lt;br/&gt;
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;特别注意：接口的URL地址、请求参数、结果报文说明请查阅&lt;strong&gt;工作流API任务实例和日志接口说明.doc&lt;/strong&gt;文档。&lt;/p&gt;
+&lt;p&gt;特别注意：接口的 URL 地址、请求参数、结果报文说明请查阅&lt;strong&gt;工作流 API 任务实例和日志接口说明。doc&lt;/strong&gt;文档。&lt;/p&gt;
 
-&lt;h4 id=&quot;任务实例列表测试方法&quot;&gt;任务实例列表测试方法&lt;/h4&gt;
+&lt;h4 id=&quot;422-任务实例列表测试方法&quot;&gt;4.2.2. 任务实例列表测试方法&lt;/h4&gt;
 
 &lt;p&gt;是进行任务列表方法的测试验证的测试方法，测试方法中工作流名和任务名称请根据实际情况调整。&lt;/p&gt;
 
@@ -349,23 +743,26 @@ ASC&lt;br/&gt;
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;特别注意：&lt;/strong&gt; 测试方法后续都在test目录下，并且测试类统一都一样为WorkFlowTest，后续不作说明。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特别注意：&lt;/strong&gt; 测试方法后续都在 test 目录下，并且测试类统一都一样为 WorkFlowTest，后续不作说明。&lt;/p&gt;
 
-&lt;h3 id=&quot;任务实例日志列表方法和测试方法&quot;&gt;任务实例日志列表方法和测试方法&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;测试情况如下图：&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;任务实例日志列表方法&quot;&gt;任务实例日志列表方法&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_14.png&quot; alt=&quot;日志列表测试&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;43-任务实例日志列表方法和测试方法&quot;&gt;4.3. 任务实例日志列表方法和测试方法&lt;/h3&gt;
+
+&lt;h4 id=&quot;431-任务实例日志列表方法&quot;&gt;4.3.1. 任务实例日志列表方法&lt;/h4&gt;
 
 &lt;p&gt;任务实例下可能存在多个日志情况，可能是人工重跑或异常重跑，如正常情况是一个任务实例是只有一个日志情况。&lt;/p&gt;
 
-&lt;p&gt;如需要获取某个任务实例的日志详情首先得需要获取对应的任务实例的对应的日志列表，按需求获取某个或全部的日志详情信息。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;功能实现&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如需要获取某个任务实例的日志详情首先得需要获取对应的任务实例的对应的日志列表，按需求获取某个或全部的日志详情信息。
+&lt;strong&gt;功能实现&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;通过工作流名和任务名获取任务ID&lt;/li&gt;
-  &lt;li&gt;根据任务ID获取对应的任务实例列表&lt;/li&gt;
+  &lt;li&gt;通过工作流名和任务名获取任务 ID&lt;/li&gt;
+  &lt;li&gt;根据任务 ID 获取对应的任务实例列表&lt;/li&gt;
   &lt;li&gt;如获取第一个任务实例的获取数据时间&lt;/li&gt;
-  &lt;li&gt;根据1中taskID和3的数据时间获取到对应任务实例全部的日志类别&lt;/li&gt;
+  &lt;li&gt;根据 1 中 taskID 和 3 的数据时间获取到对应任务实例全部的日志类别&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;代码实现&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -395,7 +792,7 @@ ASC&lt;br/&gt;
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&quot;任务实例日志列表测试方法&quot;&gt;任务实例日志列表测试方法&lt;/h4&gt;
+&lt;h4 id=&quot;432-任务实例日志列表测试方法&quot;&gt;4.3.2. 任务实例日志列表测试方法&lt;/h4&gt;
 
 &lt;p&gt;测试任务实例日志类别，其中的参数工作流名和任务名称根据实际情况调整。&lt;/p&gt;
 
@@ -410,22 +807,26 @@ ASC&lt;br/&gt;
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;任务实例日志详情方法和测试方法&quot;&gt;任务实例日志详情方法和测试方法&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;测试情况如下图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_15.png&quot; alt=&quot;日志列表测试&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;44-任务实例日志详情方法和测试方法&quot;&gt;4.4. 任务实例日志详情方法和测试方法&lt;/h3&gt;
 
 &lt;p&gt;需要获取根据工作流名和任务名获取任务实例的某个或多个日志详情。&lt;/p&gt;
 
-&lt;h4 id=&quot;任务实例日志详情方法&quot;&gt;任务实例日志详情方法&lt;/h4&gt;
+&lt;h4 id=&quot;441-任务实例日志详情方法&quot;&gt;4.4.1. 任务实例日志详情方法&lt;/h4&gt;
 
-&lt;p&gt;&lt;strong&gt;功能实现&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;功能实现&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;根据任务实例日志列表方法获取到任务实例&lt;/li&gt;
-  &lt;li&gt;通过任务ID和数据时间获取任务实例日志列表&lt;/li&gt;
-  &lt;li&gt;根据日志列表获取某个日志列表的IP和尝试次数值&lt;/li&gt;
-  &lt;li&gt;根据任务ID、数据时间、IP、尝试次数值获取详细日志&lt;/li&gt;
+  &lt;li&gt;通过任务 ID 和数据时间获取任务实例日志列表&lt;/li&gt;
+  &lt;li&gt;根据日志列表获取某个日志列表的 IP 和尝试次数值&lt;/li&gt;
+  &lt;li&gt;根据任务 ID、数据时间、IP、尝试次数值获取详细日志&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;strong&gt;代码实现&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;代码实现&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; String taskID = getTaskID(workflowName, taskName);
         String method = &quot;GET&quot;;
@@ -475,11 +876,11 @@ ASC&lt;br/&gt;
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&quot;任务实例日志详情测试方法&quot;&gt;任务实例日志详情测试方法&lt;/h4&gt;
+&lt;h4 id=&quot;442-任务实例日志详情测试方法&quot;&gt;4.4.2. 任务实例日志详情测试方法&lt;/h4&gt;
 
 &lt;p&gt;测试方法主要测试获取到的某个任务实例的某个日志的日志详情。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;测试代码&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试代码&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt;    @Test
     public void taskInstanceLog() throws Exception {
@@ -487,7 +888,11 @@ ASC&lt;br/&gt;
         String taskName = &quot;compress-doc&quot;;
         WorkflowDemo.taskInstanceLogInfo(workflowName, taskName);
     }
-&lt;/code&gt;&lt;/pre&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html">新增调整概述</summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;测试情况如下图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/20200518_16.png&quot; alt=&quot;日志详情测试&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="TBDS" /><summary type="html"></summary></entry><entry><title type="html">Oracle常用SQL</title><link href="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/" rel="alternate" type="text/html" title="Oracle常用SQL" /><published>2020-05-15T00:00:00+08:00</published><updated>2020-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Oracle%E5%B8%B8%E7%94%A8SQL</id><content type="html" xml:base="http://localhost:4000/_posts/2020-05-15-Oracle%E5%B8%B8%E7%94%A8SQL/">&lt;h2 id=&quot;oracle-创建用流程&quot;&gt;Oracle 创建用流程&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp
          TEMPFILE 'd:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf'
          SIZE 32m
@@ -818,11 +1223,11 @@ BEGIN
     –复制来源的表值可以使用 :new.字段名称
     (:new.PKEY_NAME, :new.PKEY_NAME, :new.PKEY_LABEL, :new.PKEY_TYPE, :new.PKEY_INDEX_UNIQ);
 END;
-``&lt;/p&gt;</content><author><name></name></author><category term="数据库" /><summary type="html">Oracle 创建用流程 ```sql CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp TEMPFILE ‘d:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf’ SIZE 32m AUTOEXTEND ON NEXT 32m EXTENT MANAGEMENT LOCAL; CREATE TABLESPACE PCS_JKPT_DATA LOGGING DATAFILE ‘D:\Oracle\app\oradata\gz\PCS_JKPT_DATA.dbf’ SIZE 32M AUTOEXTEND ON NEXT 32M MAXSIZE UNLIMITED EXTENT MANAGEMENT LOCAL;</summary></entry><entry><title type="html">基于Jekyll搭建个人博客</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="基于Jekyll搭建个人博客" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;h2 id=&quot;引言&quot;&gt;引言&lt;/h2&gt;
+``&lt;/p&gt;</content><author><name></name></author><category term="数据库" /><summary type="html">Oracle 创建用流程 ```sql CREATE TEMPORARY TABLESPACE PCS_JCGLPT_tmp TEMPFILE ‘d:\oracle\app\oradata\gz\PCS_JCGLPT_tmp.dbf’ SIZE 32m AUTOEXTEND ON NEXT 32m EXTENT MANAGEMENT LOCAL; CREATE TABLESPACE PCS_JKPT_DATA LOGGING DATAFILE ‘D:\Oracle\app\oradata\gz\PCS_JKPT_DATA.dbf’ SIZE 32M AUTOEXTEND ON NEXT 32M MAXSIZE UNLIMITED EXTENT MANAGEMENT LOCAL;</summary></entry><entry><title type="html">Hello World</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="Hello World" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;p&gt;[TOC]&lt;/p&gt;
 
-&lt;p&gt;最开始我是在&lt;a href=&quot;https://blog.csdn.net/w_weilan&quot;&gt;CSDN&lt;/a&gt;上写博客的。博客写了一年多，访问量勉强破万，感觉其中至少有三成是自己贡献的。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用。&lt;/p&gt;
+&lt;h2 id=&quot;引言&quot;&gt;引言&lt;/h2&gt;
 
-&lt;p&gt;十一月份，在青岛的 ICPC 区域赛失利之后，想要重新开始，和过去告别。也从此转移自己写博客的阵地。考虑过转投暂时还比较干净而且可以部分定义页面的&lt;a href=&quot;https://www.cnblogs.com/wu-kan/&quot;&gt;博客园&lt;/a&gt;，但是最终还是决定在&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;上搭建属于自己的博客。&lt;/p&gt;
+&lt;p&gt;最开始我是在&lt;a href=&quot;https://blog.csdn.net/u010077555&quot;&gt;CSDN&lt;/a&gt;上写博客的由于工作比较忙偶尔会写点博客。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用，后面决定在&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;上搭建属于自己的博客。&lt;/p&gt;
 
 &lt;p&gt;然后，翻了一些网上的教程，用&lt;a href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt;框架和&lt;a href=&quot;https://github.com/theme-next/hexo-theme-next&quot;&gt;NexT&lt;/a&gt;主题搭了一个比较素雅的符合个人审美的博客。然而，Hexo 搭建的博客需要先在本地生成博客页面然后再上传到服务器上，每次发博客都需要在电脑重新生成页面并上传，感觉没有那么方便。在不同电脑上想要发博客更是十分困难，感觉如果胡乱操作后本地部署的文件发生了一定的错乱，恢复起来会十分麻烦。&lt;/p&gt;
 
@@ -1180,7 +1585,330 @@ Bob--&amp;gt;&amp;gt;John: Jolly good!
   &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/9f198d5779e6&quot;&gt;Jekyll + Github Pages 博客搭建入门&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/ds19991999/article/details/81516568&quot;&gt;Jekyll 博客 Next 主题超深度配置&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/bb184f61c9ae&quot;&gt;【应用软件】Jekyll 配置&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="博客搭建" /><summary type="html">引言</summary></entry><entry><title type="html">Neo4j数据数据入库方案（OLD）</title><link href="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/" rel="alternate" type="text/html" title="Neo4j数据数据入库方案（OLD）" /><published>2018-08-15T00:00:00+08:00</published><updated>2018-08-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)</id><content type="html" xml:base="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/">&lt;h2 id=&quot;第一章-neo4j数据入库方式&quot;&gt;第一章 Neo4j数据入库方式&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">[TOC]</summary></entry><entry><title type="html">基于jekyll搭建个人博客</title><link href="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="基于jekyll搭建个人博客" /><published>2019-01-18T00:00:00+08:00</published><updated>2019-01-18T00:00:00+08:00</updated><id>http://localhost:4000/_posts/%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/_posts/2019-01-18-%E5%9F%BA%E4%BA%8EJekyll%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;2019-01-18-基于Jekyll搭建个人博客.md&lt;/title&gt;
+
+&lt;!-- official styles start --&gt;
+&lt;!-- markdown.css --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;data:text/css;base64,LyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KICogIENvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLgogKiAgTGljZW5zZWQgdW5kZXIgdGhlIE1JVCBMaWNlbnNlLiBTZWUgTGljZW5zZS50eHQgaW4gdGhlIHByb2plY3Qgcm9vdCBmb3IgbGljZW5zZSBpbmZvcm1hdGlvbi4KICotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSovCgpodG1sLCBib2R5IHsKCWZvbnQtZmFtaWx5OiB2YXIoLS12c2NvZGUtbWFya2Rvd24tZm9udC1mYW1pbHksIC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgIlNlZ29lIFdQQyIsICJTZWdvZSBVSSIsICJVYnVudHUiLCAiRHJvaWQgU2FucyIsIHNhbnMtc2VyaWYpOwoJZm9udC1zaXplOiB2YXIoLS12c2NvZGUtbWFya2Rvd24tZm9udC1zaXplLCAxNHB4KTsKCXBhZGRpbmc6IDAgMjZweDsKCWxpbmUtaGVpZ2h0OiB2YXIoLS12c2NvZGUtbWFya2Rvd24tbGluZS1oZWlnaHQsIDIycHgpOwoJd29yZC13cmFwOiBicmVhay13b3JkOwp9CgojY29kZS1jc3Atd2FybmluZyB7Cglwb3NpdGlvbjogZml4ZWQ7Cgl0b3A6IDA7CglyaWdodDogMDsKCWNvbG9yOiB3aGl0ZTsKCW1hcmdpbjogMTZweDsKCXRleHQtYWxpZ246IGNlbnRlcjsKCWZvbnQtc2l6ZTogMTJweDsKCWZvbnQtZmFtaWx5OiBzYW5zLXNlcmlmOwoJYmFja2dyb3VuZC1jb2xvcjojNDQ0NDQ0OwoJY3Vyc29yOiBwb2ludGVyOwoJcGFkZGluZzogNnB4OwoJYm94LXNoYWRvdzogMXB4IDFweCAxcHggcmdiYSgwLDAsMCwuMjUpOwp9CgojY29kZS1jc3Atd2FybmluZzpob3ZlciB7Cgl0ZXh0LWRlY29yYXRpb246IG5vbmU7CgliYWNrZ3JvdW5kLWNvbG9yOiMwMDdhY2M7Cglib3gtc2hhZG93OiAycHggMnB4IDJweCByZ2JhKDAsMCwwLC4yNSk7Cn0KCmJvZHkuc2Nyb2xsQmV5b25kTGFzdExpbmUgewoJbWFyZ2luLWJvdHRvbTogY2FsYygxMDB2aCAtIDIycHgpOwp9Cgpib2R5LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZSB7Cglwb3NpdGlvbjogcmVsYXRpdmU7Cn0KCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1hY3RpdmUtbGluZTpiZWZvcmUsCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cgljb250ZW50OiAiIjsKCWRpc3BsYXk6IGJsb2NrOwoJcG9zaXRpb246IGFic29sdXRlOwoJdG9wOiAwOwoJbGVmdDogLTEycHg7CgloZWlnaHQ6IDEwMCU7Cn0KCmJvZHkuc2hvd0VkaXRvclNlbGVjdGlvbiBsaS5jb2RlLWFjdGl2ZS1saW5lOmJlZm9yZSwKYm9keS5zaG93RWRpdG9yU2VsZWN0aW9uIGxpLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJbGVmdDogLTMwcHg7Cn0KCi52c2NvZGUtbGlnaHQuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1hY3RpdmUtbGluZTpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCByZ2JhKDAsIDAsIDAsIDAuMTUpOwp9CgoudnNjb2RlLWxpZ2h0LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCByZ2JhKDAsIDAsIDAsIDAuNDApOwp9CgoudnNjb2RlLWxpZ2h0LnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtbGluZSAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cglib3JkZXItbGVmdDogbm9uZTsKfQoKLnZzY29kZS1kYXJrLnNob3dFZGl0b3JTZWxlY3Rpb24gLmNvZGUtYWN0aXZlLWxpbmU6YmVmb3JlIHsKCWJvcmRlci1sZWZ0OiAzcHggc29saWQgcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjQpOwp9CgoudnNjb2RlLWRhcmsuc2hvd0VkaXRvclNlbGVjdGlvbiAuY29kZS1saW5lOmhvdmVyOmJlZm9yZSB7Cglib3JkZXItbGVmdDogM3B4IHNvbGlkIHJnYmEoMjU1LCAyNTUsIDI1NSwgMC42MCk7Cn0KCi52c2NvZGUtZGFyay5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmUgLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IG5vbmU7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWFjdGl2ZS1saW5lOmJlZm9yZSB7Cglib3JkZXItbGVmdDogM3B4IHNvbGlkIHJnYmEoMjU1LCAxNjAsIDAsIDAuNyk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmU6aG92ZXI6YmVmb3JlIHsKCWJvcmRlci1sZWZ0OiAzcHggc29saWQgcmdiYSgyNTUsIDE2MCwgMCwgMSk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdC5zaG93RWRpdG9yU2VsZWN0aW9uIC5jb2RlLWxpbmUgLmNvZGUtbGluZTpob3ZlcjpiZWZvcmUgewoJYm9yZGVyLWxlZnQ6IG5vbmU7Cn0KCmltZyB7CgltYXgtd2lkdGg6IDEwMCU7CgltYXgtaGVpZ2h0OiAxMDAlOwp9CgphIHsKCXRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKYTpob3ZlciB7Cgl0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTsKfQoKYTpmb2N1cywKaW5wdXQ6Zm9jdXMsCnNlbGVjdDpmb2N1cywKdGV4dGFyZWE6Zm9jdXMgewoJb3V0bGluZTogMXB4IHNvbGlkIC13ZWJraXQtZm9jdXMtcmluZy1jb2xvcjsKCW91dGxpbmUtb2Zmc2V0OiAtMXB4Owp9CgpociB7Cglib3JkZXI6IDA7CgloZWlnaHQ6IDJweDsKCWJvcmRlci1ib3R0b206IDJweCBzb2xpZDsKfQoKaDEgewoJcGFkZGluZy1ib3R0b206IDAuM2VtOwoJbGluZS1oZWlnaHQ6IDEuMjsKCWJvcmRlci1ib3R0b20td2lkdGg6IDFweDsKCWJvcmRlci1ib3R0b20tc3R5bGU6IHNvbGlkOwp9CgpoMSwgaDIsIGgzIHsKCWZvbnQtd2VpZ2h0OiBub3JtYWw7Cn0KCnRhYmxlIHsKCWJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7Cn0KCnRhYmxlID4gdGhlYWQgPiB0ciA+IHRoIHsKCXRleHQtYWxpZ246IGxlZnQ7Cglib3JkZXItYm90dG9tOiAxcHggc29saWQ7Cn0KCnRhYmxlID4gdGhlYWQgPiB0ciA+IHRoLAp0YWJsZSA+IHRoZWFkID4gdHIgPiB0ZCwKdGFibGUgPiB0Ym9keSA+IHRyID4gdGgsCnRhYmxlID4gdGJvZHkgPiB0ciA+IHRkIHsKCXBhZGRpbmc6IDVweCAxMHB4Owp9Cgp0YWJsZSA+IHRib2R5ID4gdHIgKyB0ciA+IHRkIHsKCWJvcmRlci10b3A6IDFweCBzb2xpZDsKfQoKYmxvY2txdW90ZSB7CgltYXJnaW46IDAgN3B4IDAgNXB4OwoJcGFkZGluZzogMCAxNnB4IDAgMTBweDsKCWJvcmRlci1sZWZ0LXdpZHRoOiA1cHg7Cglib3JkZXItbGVmdC1zdHlsZTogc29saWQ7Cn0KCmNvZGUgewoJZm9udC1mYW1pbHk6IE1lbmxvLCBNb25hY28sIENvbnNvbGFzLCAiRHJvaWQgU2FucyBNb25vIiwgIkNvdXJpZXIgTmV3IiwgbW9ub3NwYWNlLCAiRHJvaWQgU2FucyBGYWxsYmFjayI7Cglmb250LXNpemU6IDFlbTsKCWxpbmUtaGVpZ2h0OiAxLjM1N2VtOwp9Cgpib2R5LndvcmRXcmFwIHByZSB7Cgl3aGl0ZS1zcGFjZTogcHJlLXdyYXA7Cn0KCnByZTpub3QoLmhsanMpLApwcmUuaGxqcyBjb2RlID4gZGl2IHsKCXBhZGRpbmc6IDE2cHg7Cglib3JkZXItcmFkaXVzOiAzcHg7CglvdmVyZmxvdzogYXV0bzsKfQoKcHJlIGNvZGUgewoJY29sb3I6IHZhcigtLXZzY29kZS1lZGl0b3ItZm9yZWdyb3VuZCk7Cgl0YWItc2l6ZTogNDsKfQoKLyoqIFRoZW1pbmcgKi8KCi52c2NvZGUtbGlnaHQgcHJlIHsKCWJhY2tncm91bmQtY29sb3I6IHJnYmEoMjIwLCAyMjAsIDIyMCwgMC40KTsKfQoKLnZzY29kZS1kYXJrIHByZSB7CgliYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDEwLCAxMCwgMTAsIDAuNCk7Cn0KCi52c2NvZGUtaGlnaC1jb250cmFzdCBwcmUgewoJYmFja2dyb3VuZC1jb2xvcjogcmdiKDAsIDAsIDApOwp9CgoudnNjb2RlLWhpZ2gtY29udHJhc3QgaDEgewoJYm9yZGVyLWNvbG9yOiByZ2IoMCwgMCwgMCk7Cn0KCi52c2NvZGUtbGlnaHQgdGFibGUgPiB0aGVhZCA+IHRyID4gdGggewoJYm9yZGVyLWNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuNjkpOwp9CgoudnNjb2RlLWRhcmsgdGFibGUgPiB0aGVhZCA+IHRyID4gdGggewoJYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNjkpOwp9CgoudnNjb2RlLWxpZ2h0IGgxLAoudnNjb2RlLWxpZ2h0IGhyLAoudnNjb2RlLWxpZ2h0IHRhYmxlID4gdGJvZHkgPiB0ciArIHRyID4gdGQgewoJYm9yZGVyLWNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuMTgpOwp9CgoudnNjb2RlLWRhcmsgaDEsCi52c2NvZGUtZGFyayBociwKLnZzY29kZS1kYXJrIHRhYmxlID4gdGJvZHkgPiB0ciArIHRyID4gdGQgewoJYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMTgpOwp9Cg==&quot;/&gt;
+&lt;!-- highlight.css --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;data:text/css;base64,LyoKaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2lzYWdhbGFldi9oaWdobGlnaHQuanMvbWFzdGVyL3NyYy9zdHlsZXMvdnMyMDE1LmNzcwoqLwovKgogKiBWaXN1YWwgU3R1ZGlvIDIwMTUgZGFyayBzdHlsZQogKiBBdXRob3I6IE5pY29sYXMgTExPQkVSQSA8bmxsb2JlcmFAZ21haWwuY29tPgogKi8KCgouaGxqcy1rZXl3b3JkLAouaGxqcy1saXRlcmFsLAouaGxqcy1zeW1ib2wsCi5obGpzLW5hbWUgewoJY29sb3I6ICM1NjlDRDY7Cn0KLmhsanMtbGluayB7Cgljb2xvcjogIzU2OUNENjsKCXRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lOwp9CgouaGxqcy1idWlsdF9pbiwKLmhsanMtdHlwZSB7Cgljb2xvcjogIzRFQzlCMDsKfQoKLmhsanMtbnVtYmVyLAouaGxqcy1jbGFzcyB7Cgljb2xvcjogI0I4RDdBMzsKfQoKLmhsanMtc3RyaW5nLAouaGxqcy1tZXRhLXN0cmluZyB7Cgljb2xvcjogI0Q2OUQ4NTsKfQoKLmhsanMtcmVnZXhwLAouaGxqcy10ZW1wbGF0ZS10YWcgewoJY29sb3I6ICM5QTUzMzQ7Cn0KCi5obGpzLXN1YnN0LAouaGxqcy1mdW5jdGlvbiwKLmhsanMtdGl0bGUsCi5obGpzLXBhcmFtcywKLmhsanMtZm9ybXVsYSB7Cgljb2xvcjogI0RDRENEQzsKfQoKLmhsanMtY29tbWVudCwKLmhsanMtcXVvdGUgewoJY29sb3I6ICM1N0E2NEE7Cglmb250LXN0eWxlOiBpdGFsaWM7Cn0KCi5obGpzLWRvY3RhZyB7Cgljb2xvcjogIzYwOEI0RTsKfQoKLmhsanMtbWV0YSwKLmhsanMtbWV0YS1rZXl3b3JkLAouaGxqcy10YWcgewoJY29sb3I6ICM5QjlCOUI7Cn0KCi5obGpzLXZhcmlhYmxlLAouaGxqcy10ZW1wbGF0ZS12YXJpYWJsZSB7Cgljb2xvcjogI0JENjNDNTsKfQoKLmhsanMtYXR0ciwKLmhsanMtYXR0cmlidXRlLAouaGxqcy1idWlsdGluLW5hbWUgewoJY29sb3I6ICM5Q0RDRkU7Cn0KCi5obGpzLXNlY3Rpb24gewoJY29sb3I6IGdvbGQ7Cn0KCi5obGpzLWVtcGhhc2lzIHsKCWZvbnQtc3R5bGU6IGl0YWxpYzsKfQoKLmhsanMtc3Ryb25nIHsKCWZvbnQtd2VpZ2h0OiBib2xkOwp9CgovKi5obGpzLWNvZGUgewoJZm9udC1mYW1pbHk6J01vbm9zcGFjZSc7Cn0qLwoKLmhsanMtYnVsbGV0LAouaGxqcy1zZWxlY3Rvci10YWcsCi5obGpzLXNlbGVjdG9yLWlkLAouaGxqcy1zZWxlY3Rvci1jbGFzcywKLmhsanMtc2VsZWN0b3ItYXR0ciwKLmhsanMtc2VsZWN0b3ItcHNldWRvIHsKCWNvbG9yOiAjRDdCQTdEOwp9CgouaGxqcy1hZGRpdGlvbiB7CgliYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS12c2NvZGUtZGlmZkVkaXRvci1pbnNlcnRlZFRleHRCYWNrZ3JvdW5kLCByZ2JhKDE1NSwgMTg1LCA4NSwgMC4yKSk7Cgljb2xvcjogcmdiKDE1NSwgMTg1LCA4NSk7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTAwJTsKfQoKLmhsanMtZGVsZXRpb24gewoJYmFja2dyb3VuZDogdmFyKC0tdnNjb2RlLWRpZmZFZGl0b3ItcmVtb3ZlZFRleHRCYWNrZ3JvdW5kLCByZ2JhKDI1NSwgMCwgMCwgMC4yKSk7Cgljb2xvcjogcmdiKDI1NSwgMCwgMCk7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTAwJTsKfQoKCi8qCkZyb20gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2lzYWdhbGFldi9oaWdobGlnaHQuanMvbWFzdGVyL3NyYy9zdHlsZXMvdnMuY3NzCiovCi8qCgpWaXN1YWwgU3R1ZGlvLWxpa2Ugc3R5bGUgYmFzZWQgb24gb3JpZ2luYWwgQyMgY29sb3JpbmcgYnkgSmFzb24gRGlhbW9uZCA8amFzb25AZGlhbW9uZC5uYW1lPgoKKi8KCi52c2NvZGUtbGlnaHQgLmhsanMtZnVuY3Rpb24sCi52c2NvZGUtbGlnaHQgLmhsanMtcGFyYW1zLAoudnNjb2RlLWxpZ2h0IC5obGpzLW51bWJlciwKLnZzY29kZS1saWdodCAuaGxqcy1jbGFzcyAgewoJY29sb3I6IGluaGVyaXQ7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMtY29tbWVudCwKLnZzY29kZS1saWdodCAuaGxqcy1xdW90ZSwKLnZzY29kZS1saWdodCAuaGxqcy1udW1iZXIsCi52c2NvZGUtbGlnaHQgLmhsanMtY2xhc3MsCi52c2NvZGUtbGlnaHQgLmhsanMtdmFyaWFibGUgewoJY29sb3I6ICMwMDgwMDA7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMta2V5d29yZCwKLnZzY29kZS1saWdodCAuaGxqcy1zZWxlY3Rvci10YWcsCi52c2NvZGUtbGlnaHQgLmhsanMtbmFtZSwKLnZzY29kZS1saWdodCAuaGxqcy10YWcgewoJY29sb3I6ICMwMGY7Cn0KCi52c2NvZGUtbGlnaHQgLmhsanMtYnVpbHRfaW4sCi52c2NvZGUtbGlnaHQgLmhsanMtYnVpbHRpbi1uYW1lIHsKCWNvbG9yOiAjMDA3YWNjOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN0cmluZywKLnZzY29kZS1saWdodCAuaGxqcy1zZWN0aW9uLAoudnNjb2RlLWxpZ2h0IC5obGpzLWF0dHJpYnV0ZSwKLnZzY29kZS1saWdodCAuaGxqcy1saXRlcmFsLAoudnNjb2RlLWxpZ2h0IC5obGpzLXRlbXBsYXRlLXRhZywKLnZzY29kZS1saWdodCAuaGxqcy10ZW1wbGF0ZS12YXJpYWJsZSwKLnZzY29kZS1saWdodCAuaGxqcy10eXBlIHsKCWNvbG9yOiAjYTMxNTE1Owp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXNlbGVjdG9yLWF0dHIsCi52c2NvZGUtbGlnaHQgLmhsanMtc2VsZWN0b3ItcHNldWRvLAoudnNjb2RlLWxpZ2h0IC5obGpzLW1ldGEsCi52c2NvZGUtbGlnaHQgLmhsanMtbWV0YS1rZXl3b3JkIHsKCWNvbG9yOiAjMmI5MWFmOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXRpdGxlLAoudnNjb2RlLWxpZ2h0IC5obGpzLWRvY3RhZyB7Cgljb2xvcjogIzgwODA4MDsKfQoKLnZzY29kZS1saWdodCAuaGxqcy1hdHRyIHsKCWNvbG9yOiAjZjAwOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN5bWJvbCwKLnZzY29kZS1saWdodCAuaGxqcy1idWxsZXQsCi52c2NvZGUtbGlnaHQgLmhsanMtbGluayB7Cgljb2xvcjogIzAwYjBlODsKfQoKCi52c2NvZGUtbGlnaHQgLmhsanMtZW1waGFzaXMgewoJZm9udC1zdHlsZTogaXRhbGljOwp9CgoudnNjb2RlLWxpZ2h0IC5obGpzLXN0cm9uZyB7Cglmb250LXdlaWdodDogYm9sZDsKfQo=&quot;/&gt;
+&lt;!-- official styles end --&gt;
+
+&lt;!-- third party styles start --&gt;
+&lt;!-- markdown-it-admonition.css --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;data:text/css;base64,QGZvbnQtZmFjZSB7CiAgZm9udC1mYW1pbHk6ICJNYXRlcmlhbCBJY29ucyI7CiAgZm9udC1zdHlsZTogbm9ybWFsOwogIGZvbnQtd2VpZ2h0OiA0MDA7CiAgc3JjOiBsb2NhbCgiTWF0ZXJpYWwgSWNvbnMiKSwgbG9jYWwoIk1hdGVyaWFsSWNvbnMtUmVndWxhciIpLCB1cmwoImRhdGE6YXBwbGljYXRpb24veC1mb250LXdvZmY7Y2hhcnNldD11dGYtODtiYXNlNjQsZDA5R1JnQUJBQUFBQUFmSUFBc0FBQUFBRERBQUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUJIVTFWQ0FBQUJDQUFBQURNQUFBQkNzUDZ6N1U5VEx6SUFBQUU4QUFBQVJBQUFBRlpXN2tvc1kyMWhjQUFBQVlBQUFBRFRBQUFDanRQNnl0Qm5iSGxtQUFBQ1ZBQUFBeGdBQUFRNHpSdHZsR2hsWVdRQUFBVnNBQUFBTHdBQUFEWVJ3WnNuYUdobFlRQUFCWndBQUFBY0FBQUFKQWVLQXp4b2JYUjRBQUFGdUFBQUFCSUFBQUE4T0dRQUFHeHZZMkVBQUFYTUFBQUFJQUFBQUNBRzVBZndiV0Y0Y0FBQUJld0FBQUFmQUFBQUlBRWZBRVJ1WVcxbEFBQUdEQUFBQVZjQUFBS0ZrQWhvQzNCdmMzUUFBQWRrQUFBQVlnQUFBSzJ2ejd3a2VKeGpZR1JnWU9CaWtHUFFZV0IwY2ZNSlllQmdZR0dBQUpBTVkwNW1laUpRRE1vRHlyR0FhUTRnWm9PSUFnQ0tJd05QQUhpY1kyQmtQc1E0Z1lHVmdZT3BrK2tNQXdORFA0Um1mTTFneE1qQndNREV3TXJNZ0JVRXBMbW1NRGd3Vkx5NHhLenpYNGNoaHJtSzRRcFFtQkVrQndBWnlneXdlSnpGa3IwTndqQVFoWitURVA2Q1JVZkhCRXdSVVdhUVRJQ3lRYnBNd1JDc2tBNVJVSU9OeEcwUm5uTnBLQUlWNHF6UGt1LzhjMzUzQUNZQVlySWpDV0N1TUFoMnB0ZjAvaGlMM3AvZ3lQVVdhM29zcWx0MEwxenU5cjcxejhkR3JKUnlrRm9hdVhRZDkzMkxqNXZoRytNanhHZVlJOE1LRVRPYk1wc2xmNUV5UDh0Zyt2SHVuNXI1MzlQdmx2WHphVmhSRlZRRFRQRVdLVlFSOTBLaG5uQzVFazY3dlVLTjRWdUZhc00vbGRBUmo0M0NDa0NzRWpwSlNvVlZnUnlVMEdWU0s2d1VwRkZDeDhsRmdYMEJpWHBSUFFCNG5FMlRUV2pjUmhUSDN4dHRwRGh4Tjd1eFBscDN1L0ZLN21vUlBpeGFmUmlqTm9zeFN3L0xVc0l3TmNhRUhQWmdnby9GbUVLTUNLV1U0a05PT2Z0UVNsaEU4YWxuSDBJeDlCcVduSG9vUFJyVFEwK21udTJiWFR1MnBQZEdNOUxNLzZjM2Z3RUNUTTRnQkJNWVFOcXh6THJaQWpxWVNscXUyVEFIWlFBMC9EUUpINkZ0enFHRG52YnQ0R2d3dnp3L25MOEVmSDhrVzBmc3VScWhnV1hablk3TTFwaWNhVUw3RHU1QkhlRHpNSWw4M2RBdDAxNndIMXFtdnRTTW81UjZZUkpIVFIvL0ZYc2ZmL25qL3RjLzVLOVA1ZCtuUDIyK2ZGSzV1N3YzSzM5U1czeStPdERLTzNMODV2RDA5UEQ5ejVYMTdhMk4xZzR0cWswMVJscVg3Z3lvRW1uc1dRdFZyNHJ0Wk1tdWtFYUZCWnh6ZWZrQ24xMWN5S01MWmdzaFJ3Z1RZTm9MTlhDQnoyamE3SHZaRzdoRHBQU05mb281dnMwa25LLzloYityTnB1KzhrSFBnay9BbzRrSzN0V3RUcFNFdHZrQTljK3dFNlVhVWR3aWVOa2FIZzU1dEJFdFJpRVB3MXMwK0Z0cnRUY2M5dHdvMmxoTWtuVjdQWkYvY3M2K3VVRlRtcFRHYkV4N3NRQ1BTTE90dEhTM0dSbHRxcDdTTnpWU0t6bDZhV25aVC9DWDVrNi92OU4zSGg4ZkhCd2ZmSlZqaHJDNk9nSDVka0l0L3RQc3ErZC9QRDVRejdHN2VmenExVEhGamRaVlBlL042dWxRM0puRFdTRTVqdW5zRnNWSWlGd0wvaHRmMVM1Z0ozQmZPY1V4ZkhLTG56cXBGcHlmWjljWCsvNVdCNmErWTBwSHB6a05yWU5WRHdNc2lrSyt5N1d1TENSZy9vRkhrQThWVDNyRGc1Wm5VNmt0enpJTnltVjBtNzRYZDVwZklHWHlGZVZFUVNTaGt6cUc3VEJCYTJPeFZSS2l0TFh2N2gzdXVmdFhuWHE3bHoydFovV25XYTlkeDlkQ2pEaEh6bXVWUUFUbG1sanI5ZFpFclV5ZFNvMkhiaS9iMXZYdHJPZUdDazIvOHMzWmxPOCt1ZUpUOEJWbHc1cEd3Mm9ZY2NkU2lISHF4MFJsYWJIcWROUjlqQUVUbDZQcmVKY1BCbm5mcFRMbk9ROEMzT1Y4QW1RR3pvdVYxaVpkZWI1U1NJb1ZjOFc4L2tjRHRrc1VINUZyVTYvYXFCcU5XY01FenhHNERBUTE0cVJRaGk5bVdVMHJ6ZXBLZXpiamZnQ3dRS3hWWXE1YWpSZ3BScXk0NUNxd2tKeWRjRWtiVGt2Uno4UDUvMlpwRFRONG5HTmdaR0JnQU9LYjZ2Ky94dlBiZkdYZ1ptRUFnZXVCMmtrSSt2OGJGZ2JtS2lDWGc0RUpKQW9BUHlBS2hRQjRuR05nWkdCZzF2bXZ3eEREd2dBQ1FKS1JBUlh3QXdBelpRSFFlSnhqWVFDQ0ZBWUdGZ2JTTVFBY1dBQ2RBQUFBQUFBQUFBd0FMZ0JnQUlRQW1BRFNBUWdCSWdFOEFWQUJvQUhlQWZ3Q0hIaWNZMkJrWUdEZ1o3QmdZR01BQVNZZzVnSkNCb2IvWUQ0REFBL2hBV1FBZUp4bGtidHV3a0FVUk1jODhnQXBRb21VSm9xMFRkSVF6RU9wVURva0tDTlIwQnV6QmlPL3RGNlFTSmNQeUhmbEU5S2x5eWVrejJDdUc4Y3I3NTQ3TTNkOUpRTzR4amNjbko1N3ZpZDJjTUhxeERXYzQwRzRUdjFKdUVGK0ZtNmlqUmZoTStvejRSYTZlQlZ1NHdadnZNRnBYTElhNDBQWVFRZWZ3alZjNFV1NFR2MUh1RUgrRlc3aTFta0tuNkhqM0FtM3NIQzZ3bTA4T3U4dHBTWkdlMWF2MVBLZ2dqU3hQZDh6SnRTR1R1aW55VkdhNi9VdThreFpsdWRDbXp4TUV6VjBCNlUwMDRrMjVXMzVmajJ5TmxDQlNXTTFwYXVqS0ZXWlNiZmF0KzdHMm16Yzd3ZWl1MzRhY3p6Rk5ZR0JoZ2ZMZmNWNmlRUDNBQ2tTYWozNDlBeFhTTjlJVDBqMTZKZXBPYjAxZG9pS2JOV3Qxb3ZpcHB6NnNWWVl3c1hnWDJyR1ZGSWtxN1BsMlBOckk2cVc2ZU9zaGoweGFTcTltcE5FWklXczhMWlVmT291TmtWWHhwL2Q1d29xZWJlWUlmNEQySjF5d1FCNG5HM0xPdzZBSUJBRTBCMzg0QitQQWtnRWErUXdOblltSHQrRXBYU2FsNWxrU0JCbm9QOG9DRlNvMGFDRlJJY2VBMFpNbUxGQVlTVzg4cm12dE1VakczUmlROUh2cGZ1c002eldObXRjNUgvaVBld2hhNTB0T3Q1UFMvUUJ4MkllU3dBQSIpIGZvcm1hdCgid29mZiIpOwp9CgouYWRtb25pdGlvbiB7CiAgYm94LXNoYWRvdzogMCAycHggMnB4IDAgcmdiYSgwLCAwLCAwLCAuMTQpLCAwIDFweCA1cHggMCByZ2JhKDAsIDAsIDAsIC4xMiksIDAgM3B4IDFweCAtMnB4IHJnYmEoMCwgMCwgMCwgLjIpOwogIHBvc2l0aW9uOiByZWxhdGl2ZTsKICBtYXJnaW46IDEuNTYyNWVtIDA7CiAgcGFkZGluZzogMCAxLjJyZW07CiAgYm9yZGVyLWxlZnQ6IC40cmVtIHNvbGlkIHJnYmEoNjgsIDEzOCwgMjU1LCAuOCk7CiAgYm9yZGVyLXJhZGl1czogLjJyZW07CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KTsKICBvdmVyZmxvdzogYXV0bzsKfQoKLmFkbW9uaXRpb24+LmFkbW9uaXRpb24tdGl0bGUgewogIG1hcmdpbjogMCAtMS4ycmVtOwogIHBhZGRpbmc6IC44cmVtIDEuMnJlbSAuOHJlbSAzLjZyZW07CiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHJnYmEoNjgsIDEzOCwgMjU1LCAuMik7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSg2OCwgMTM4LCAyNTUsIC4xKTsKICBmb250LXdlaWdodDogNzAwOwp9CgouYWRtb25pdGlvbj4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICBsZWZ0OiAxLjJyZW07CiAgZm9udC1zaXplOiAxLjVyZW07CiAgY29sb3I6IHJnYmEoNjgsIDEzOCwgMjU1LCAuOCk7CiAgY29udGVudDogIlxFM0M5IjsKfQoKLmFkbW9uaXRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBmb250LWZhbWlseTogTWF0ZXJpYWwgSWNvbnM7CiAgZm9udC1zdHlsZTogbm9ybWFsOwogIGZvbnQtdmFyaWFudDogbm9ybWFsOwogIGZvbnQtd2VpZ2h0OiA0MDA7CiAgbGluZS1oZWlnaHQ6IDJyZW07CiAgdGV4dC10cmFuc2Zvcm06IG5vbmU7CiAgd2hpdGUtc3BhY2U6IG5vd3JhcDsKICBzcGVhazogbm9uZTsKICB3b3JkLXdyYXA6IG5vcm1hbDsKICBkaXJlY3Rpb246IGx0cjsKfQoKLmFkbW9uaXRpb24uc3VtbWFyeSwKLmFkbW9uaXRpb24uYWJzdHJhY3QsCi5hZG1vbml0aW9uLnRsZHIgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDE3NiwgMjU1LCAuOCk7Cn0KCi5hZG1vbml0aW9uLnN1bW1hcnk+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmFic3RyYWN0Pi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi50bGRyPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE3NiwgMjU1LCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxNzYsIDI1NSwgLjIpOwp9CgouYWRtb25pdGlvbi5zdW1tYXJ5Pi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uYWJzdHJhY3Q+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi50bGRyPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMCwgMTc2LCAyNTUsIDEpOwogIDsKICBjb250ZW50OiAiXEU4RDIiOwp9CgouYWRtb25pdGlvbi5oaW50LAouYWRtb25pdGlvbi50aXAgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDE5MSwgMTY1LCAuOCk7Cn0KCi5hZG1vbml0aW9uLmhpbnQ+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLnRpcD4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgwLCAxOTEsIDE2NSwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMCwgMTkxLCAxNjUsIC4yKTsKfQoKLmFkbW9uaXRpb24uaGludD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLnRpcD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE5MSwgMTY1LCAxKTsKICBjb250ZW50OiAiXEU4MEUiOwp9CgouYWRtb25pdGlvbi5pbmZvLAouYWRtb25pdGlvbi50b2RvIHsKICBib3JkZXItbGVmdC1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjgpOwp9CgouYWRtb25pdGlvbi5pbmZvPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi50b2RvPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjIpOwp9CgouYWRtb25pdGlvbi5pbmZvPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24udG9kbz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAxKTsKICA7CiAgY29udGVudDogIlxFODhFIjsKfQoKLmFkbW9uaXRpb24uc3VjY2VzcywKLmFkbW9uaXRpb24uY2hlY2ssCi5hZG1vbml0aW9uLmRvbmUgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDAsIDIwMCwgODMsIC44KTsKfQoKLmFkbW9uaXRpb24uc3VjY2Vzcz4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uY2hlY2s+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmRvbmU+LmFkbW9uaXRpb24tdGl0bGUgewogIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgLjIpOwp9CgouYWRtb25pdGlvbi5zdWNjZXNzPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uY2hlY2s+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi5kb25lPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMCwgMjAwLCA4MywgMSk7CiAgOwogIGNvbnRlbnQ6ICJcRTg3NiI7Cn0KCi5hZG1vbml0aW9uLnF1ZXN0aW9uLAouYWRtb25pdGlvbi5oZWxwLAouYWRtb25pdGlvbi5mYXEgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgLjgpOwp9CgouYWRtb25pdGlvbi5xdWVzdGlvbj4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uaGVscD4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZmFxPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMTAwLCAyMjEsIDIzLCAuMik7Cn0KCi5hZG1vbml0aW9uLnF1ZXN0aW9uPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uaGVscD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmZhcT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDEwMCwgMjIxLCAyMywgMSk7CiAgOwogIGNvbnRlbnQ6ICJcRTg4NyI7Cn0KCi5hZG1vbml0aW9uLndhcm5pbmcsCi5hZG1vbml0aW9uLmF0dGVudGlvbiwKLmFkbW9uaXRpb24uY2F1dGlvbiB7CiAgYm9yZGVyLWxlZnQtY29sb3I6IHJnYmEoMjU1LCAxNDUsIDAsIC44KTsKfQoKLmFkbW9uaXRpb24ud2FybmluZz4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uYXR0ZW50aW9uPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi5jYXV0aW9uPi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDI1NSwgMTQ1LCAwLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgLjIpOwp9CgouYWRtb25pdGlvbi5hdHRlbnRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgMSk7CiAgY29udGVudDogIlxFNDE3IjsKfQoKLmFkbW9uaXRpb24ud2FybmluZz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmNhdXRpb24+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgyNTUsIDE0NSwgMCwgMSk7CiAgY29udGVudDogIlxFMDAyIjsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZSwKLmFkbW9uaXRpb24uZmFpbCwKLmFkbW9uaXRpb24ubWlzc2luZyB7CiAgYm9yZGVyLWxlZnQtY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIC44KTsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZT4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZmFpbD4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24ubWlzc2luZz4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDgyLCA4MiwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIC4yKTsKfQoKLmFkbW9uaXRpb24uZmFpbHVyZT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmZhaWw+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlLAouYWRtb25pdGlvbi5taXNzaW5nPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCA4MiwgODIsIDEpOwogIDsKICBjb250ZW50OiAiXEUxNEMiOwp9CgouYWRtb25pdGlvbi5kYW5nZXIsCi5hZG1vbml0aW9uLmVycm9yLAouYWRtb25pdGlvbi5idWcgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDI1NSwgMjMsIDY4LCAuOCk7Cn0KCi5hZG1vbml0aW9uLmRhbmdlcj4uYWRtb25pdGlvbi10aXRsZSwKLmFkbW9uaXRpb24uZXJyb3I+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmJ1Zz4uYWRtb25pdGlvbi10aXRsZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNTUsIDIzLCA2OCwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIC4yKTsKfQoKLmFkbW9uaXRpb24uZGFuZ2VyPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIDEpOwogIGNvbnRlbnQ6ICJcRTNFNyI7Cn0KCi5hZG1vbml0aW9uLmVycm9yPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSB7CiAgY29sb3I6IHJnYmEoMjU1LCAyMywgNjgsIDEpOwogIGNvbnRlbnQ6ICJcRTE0QyI7Cn0KCi5hZG1vbml0aW9uLmJ1Zz4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDI1NSwgMjMsIDY4LCAxKTsKICBjb250ZW50OiAiXEU4NjgiOwp9CgouYWRtb25pdGlvbi5leGFtcGxlLAouYWRtb25pdGlvbi5zbmlwcGV0IHsKICBib3JkZXItbGVmdC1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjgpOwp9CgouYWRtb25pdGlvbi5leGFtcGxlPi5hZG1vbml0aW9uLXRpdGxlLAouYWRtb25pdGlvbi5zbmlwcGV0Pi5hZG1vbml0aW9uLXRpdGxlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAuMSk7CiAgYm9yZGVyLWJvdHRvbS1jb2xvcjogcmdiYSgwLCAxODQsIDIxMiwgLjIpOwp9CgouYWRtb25pdGlvbi5leGFtcGxlPi5hZG1vbml0aW9uLXRpdGxlOmJlZm9yZSwKLmFkbW9uaXRpb24uc25pcHBldD4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUgewogIGNvbG9yOiByZ2JhKDAsIDE4NCwgMjEyLCAxKTsKICA7CiAgY29udGVudDogIlxFMjQyIjsKfQoKLmFkbW9uaXRpb24ucXVvdGUsCi5hZG1vbml0aW9uLmNpdGUgewogIGJvcmRlci1sZWZ0LWNvbG9yOiByZ2JhKDE1OCwgMTU4LCAxNTgsIC44KTsKfQoKLmFkbW9uaXRpb24ucXVvdGU+LmFkbW9uaXRpb24tdGl0bGUsCi5hZG1vbml0aW9uLmNpdGU+LmFkbW9uaXRpb24tdGl0bGUgewogIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMTU4LCAxNTgsIDE1OCwgLjEpOwogIGJvcmRlci1ib3R0b20tY29sb3I6IHJnYmEoMTU4LCAxNTgsIDE1OCwgLjIpOwp9CgouYWRtb25pdGlvbi5xdW90ZT4uYWRtb25pdGlvbi10aXRsZTpiZWZvcmUsCi5hZG1vbml0aW9uLmNpdGU+LmFkbW9uaXRpb24tdGl0bGU6YmVmb3JlIHsKICBjb2xvcjogcmdiYSgxNTgsIDE1OCwgMTU4LCAxKTsKICA7CiAgY29udGVudDogIlxFMjQ0IjsKfQ==&quot;/&gt;
+&lt;!-- markdown-it-kbd.css --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;data:text/css;base64,LnZzY29kZS1saWdodCBrYmQsCi52c2NvZGUtZGFyayBrYmQsCi52c2NvZGUtaGlnaC1jb250cmFzdCBrYmQgewogIGRpc3BsYXk6IGlubGluZS1ibG9jazsKICBwYWRkaW5nOiAzcHggNXB4OwogIGZvbnQ6IDExcHggIlNGTW9uby1SZWd1bGFyIiwgQ29uc29sYXMsICJMaWJlcmF0aW9uIE1vbm8iLCBNZW5sbywgQ291cmllciwgbW9ub3NwYWNlOwogIGxpbmUtaGVpZ2h0OiAxMHB4OwogIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7CiAgYm9yZGVyOiBzb2xpZCAxcHggI2QxZDVkYTsKICBib3JkZXItYm90dG9tLWNvbG9yOiAjYzZjYmQxOwogIGJvcmRlci1yYWRpdXM6IDNweDsKICBib3gtc2hhZG93OiBpbnNldCAwIC0xcHggMCAjYzZjYmQxOwp9CgoudnNjb2RlLWxpZ2h0IGtiZCB7CiAgY29sb3I6ICM0NDRkNTY7CiAgYmFja2dyb3VuZC1jb2xvcjogI2ZhZmJmYzsKfQ==&quot;/&gt;
+&lt;!-- third party styles end --&gt;
+
+&lt;/head&gt;
+&lt;body class=&quot;markdown-body vscode-body vscode-light&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+    &lt;p data-line=&quot;1&quot; class=&quot;code-line&quot;&gt;[TOC]&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%BC%95%E8%A8%80&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;%E5%BC%95%E8%A8%80&quot; data-line=&quot;3&quot; class=&quot;code-line&quot;&gt;引言&lt;/h2&gt;
+&lt;p data-line=&quot;5&quot; class=&quot;code-line&quot;&gt;最开始我是在&lt;a href=&quot;https://blog.csdn.net/u010077555&quot; data-href=&quot;https://blog.csdn.net/u010077555&quot;&gt;CSDN&lt;/a&gt;上写博客的由于工作比较忙偶尔会写点博客。而且 CSDN 上的广告是越来越多，网页编辑器也是越来越不好用，后面决定在&lt;a href=&quot;https://pages.github.com/&quot; data-href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;上搭建属于自己的博客。&lt;/p&gt;
+&lt;p data-line=&quot;7&quot; class=&quot;code-line&quot;&gt;然后，翻了一些网上的教程，用&lt;a href=&quot;https://hexo.io/zh-cn/&quot; data-href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt;框架和&lt;a href=&quot;https://github.com/theme-next/hexo-theme-next&quot; data-href=&quot;https://github.com/theme-next/hexo-theme-next&quot;&gt;NexT&lt;/a&gt;主题搭了一个比较素雅的符合个人审美的博客。然而，Hexo 搭建的博客需要先在本地生成博客页面然后再上传到服务器上，每次发博客都需要在电脑重新生成页面并上传，感觉没有那么方便。在不同电脑上想要发博客更是十分困难，感觉如果胡乱操作后本地部署的文件发生了一定的错乱，恢复起来会十分麻烦。&lt;/p&gt;
+&lt;p data-line=&quot;9&quot; class=&quot;code-line&quot;&gt;后来发现，Github Pages 原生支持&lt;a href=&quot;https://www.jekyll.com.cn/&quot; data-href=&quot;https://www.jekyll.com.cn/&quot;&gt;Jekyll&lt;/a&gt;，因此如果只需要推送文章可以直接在 github 的仓库里做。于是决定在期末考试后用 Jekyll 重新搭建个人博客。原来的博客不再维护。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E6%9E%84%E6%80%9D&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;%E6%9E%84%E6%80%9D&quot; data-line=&quot;11&quot; class=&quot;code-line&quot;&gt;构思&lt;/h2&gt;
+&lt;p data-line=&quot;13&quot; class=&quot;code-line&quot;&gt;目前博客的 demo 如下：&lt;/p&gt;
+&lt;p data-line=&quot;15&quot; class=&quot;code-line&quot;&gt;&lt;img src=&quot;https://jekyll-theme-WuK.wu-kan.cn/screenshot.png&quot; alt=&quot;&quot; class=&quot;loading&quot; id=&quot;image-hash-7018da9eb92e600db54c866b471c66c1c0ce080e4b5f5b5ce30bd2cbe7faa968&quot;&gt;&lt;/p&gt;
+&lt;p data-line=&quot;17&quot; class=&quot;code-line&quot;&gt;想搭建一个足够干净、页面几乎不要有多余元素的博客，同时博客的功能还要足够丰富，满足我以下的需求：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li data-line=&quot;19&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox45&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox45&quot;&gt;用 Markdown 写博客&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;20&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox46&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox46&quot;&gt;支持 Latex 公式&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;21&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox47&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox47&quot;&gt;支持 mermaid 等插件&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;22&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox48&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox48&quot;&gt;个性化 Live2D&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;23&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox49&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox49&quot;&gt;分享一些我在其他网站的个人账号&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;24&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox50&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox50&quot;&gt;移动端适配&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;25&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox51&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox51&quot;&gt;足够快的加载速度&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;26&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox52&quot; checked=&quot;true&quot;&gt;&lt;label for=&quot;checkbox52&quot;&gt;访问量统计，评论互动&lt;/label&gt;&lt;/li&gt;
+&lt;li data-line=&quot;27&quot; class=&quot;code-line&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;checkbox53&quot;&gt;&lt;label for=&quot;checkbox53&quot;&gt;需求是会逐渐增长的！&lt;/label&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p data-line=&quot;29&quot; class=&quot;code-line&quot;&gt;其中，Live2D 是我某次访问别人的博客初次见到的，感觉非常吸引人。最终的目标是去掉网页上所有多余的元素，只剩下博文和 Live2D 看板娘，看板娘本身还可以作为博客访问的导航，感觉会十分有新意。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0&quot; data-line=&quot;31&quot; class=&quot;code-line&quot;&gt;搭建过程（不定期更新）&lt;/h2&gt;
+&lt;p data-line=&quot;33&quot; class=&quot;code-line&quot;&gt;我目前读的专业是计科超算方向，所以软件工程专业相关方面的基础几乎为 0😌，大部分的内容都是参考网上教程慢慢摸索的，假如对某些过程有意见和建议欢迎向我提出！&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83&quot;&gt;&lt;/a&gt;&lt;h3 id=&quot;%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83&quot; data-line=&quot;35&quot; class=&quot;code-line&quot;&gt;开发环境&lt;/h3&gt;
+&lt;blockquote data-line=&quot;37&quot; class=&quot;code-line&quot;&gt;
+&lt;p data-line=&quot;37&quot; class=&quot;code-line&quot;&gt;我的博客使用 bundle 作为版本管理！如果你的环境里已经有 bundle 了，可以跳过此步！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p data-line=&quot;39&quot; class=&quot;code-line&quot;&gt;这个学期选了一门 Linux 相关的公选课，感觉还不错，因此直接把开发环境是搭建在 Windows Subsystem for Linux（简称 WSL）上了，Windows 下也可以直接访问其中的环境，详见&lt;a href=&quot;https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/&quot; data-href=&quot;https://wu-kan.cn/_posts/2018-12-14-Windows-Subsystem-for-Linux/&quot;&gt;这篇博客&lt;/a&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;41&quot; class=&quot;code-line language-bash&quot;&gt;&lt;div&gt;sudo apt install -y ruby ruby-dev zlib1g.dev make gcc g++
+&lt;span class=&quot;hljs-comment&quot;&gt;# gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/&lt;/span&gt;
+sudo gem install bundler
+&lt;span class=&quot;hljs-comment&quot;&gt;# bundle config mirror.https://rubygems.org https://gems.ruby-china.com&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;48&quot; class=&quot;code-line&quot;&gt;jekyll 博客是基于 ruby 语言开发的，要先将 ruby 装进来。此外，国内访问一些资源可能会很慢，推荐去掉上面的注释，使用国内镜像。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%8D%9A%E5%AE%A2&quot;&gt;&lt;/a&gt;&lt;h3 id=&quot;%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%8D%9A%E5%AE%A2&quot; data-line=&quot;50&quot; class=&quot;code-line&quot;&gt;在本地运行博客&lt;/h3&gt;
+&lt;p data-line=&quot;52&quot; class=&quot;code-line&quot;&gt;依次执行下述指令，可以自动下载并部署我博客的所有依赖。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;54&quot; class=&quot;code-line language-bash&quot;&gt;&lt;div&gt;git &lt;span class=&quot;hljs-built_in&quot;&gt;clone&lt;/span&gt; https://github.com/wu-kan/wu-kan.github.io
+&lt;span class=&quot;hljs-built_in&quot;&gt;cd&lt;/span&gt; wu-kan.github.io
+bundle install
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;60&quot; class=&quot;code-line&quot;&gt;如果不想下载我的博文和图片，可以根据这个&lt;a href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/7&quot; data-href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/7&quot;&gt;issue&lt;/a&gt;，使用 svn 代替 git，从而快速下载必要的文件。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;62&quot; class=&quot;code-line language-bash&quot;&gt;&lt;div&gt;svn checkout https://github.com/wu-kan/wu-kan.github.io/trunk/ --depth=files
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;66&quot; class=&quot;code-line&quot;&gt;github 上的 jekyll 和普通的 jekyll 是有一点点区别的，比如说只支持特定的插件。我希望与 github 保持兼容，因此配置的依赖是直接引入了 github 版本的 jekyll，安装时间略久。&lt;/p&gt;
+&lt;p data-line=&quot;68&quot; class=&quot;code-line&quot;&gt;我在一个全新的 Linux 中安装了一遍，需要的依赖已经在上面的“开发环境中列出来的”。如果&lt;code&gt;bundle install&lt;/code&gt;在你的机器上还是报错，要看报错信息，缺啥装啥。&lt;/p&gt;
+&lt;p data-line=&quot;70&quot; class=&quot;code-line&quot;&gt;运行下述指令，检验（我自己做的时候遇到了一个很奇怪的问题&lt;code&gt;jekyll 3.8.5 | Error: Operation not permitted @ apply2files&lt;/code&gt;，重开 WSL 终端就好了）：&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;72&quot; class=&quot;code-line language-bash&quot;&gt;&lt;div&gt;bundle &lt;span class=&quot;hljs-built_in&quot;&gt;exec&lt;/span&gt; jekyll s
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;76&quot; class=&quot;code-line&quot;&gt;由于我的博客已经达到了三百篇以上，在本地生成网页的速度有些慢，在我的机器上要跑三分钟（关掉配置项中的侧边栏总字数统计就快了，可达 25s）。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;78&quot; class=&quot;code-line language-bash&quot;&gt;&lt;div&gt;    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;83&quot; class=&quot;code-line&quot;&gt;看到如上内容时就成功了，本地访问&lt;a href=&quot;http://127.0.0.1:4000/&quot; data-href=&quot;http://127.0.0.1:4000/&quot;&gt;http://127.0.0.1:4000/&lt;/a&gt;即可查看效果。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%AE%9A%E5%88%B6&quot;&gt;&lt;/a&gt;&lt;h3 id=&quot;%E5%AE%9A%E5%88%B6&quot; data-line=&quot;85&quot; class=&quot;code-line&quot;&gt;定制&lt;/h3&gt;
+&lt;p data-line=&quot;87&quot; class=&quot;code-line&quot;&gt;我把博客实现的的插件基本上都封装起来了，可以直接在浏览器按 F12 查看我是怎么引入的。如果你想增加新的渲染规则，可以新建&lt;code&gt;_layouts&lt;/code&gt;目录，将你自己的渲染规则放进去，见&lt;a href=&quot;http://jekyllcn.com/docs/structure/&quot; data-href=&quot;http://jekyllcn.com/docs/structure/&quot;&gt;目录结构 -Jekyll&lt;/a&gt;。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%8A%A0%E5%85%A5-live2d-%E7%9C%8B%E6%9D%BF%E5%A8%98&quot;&gt;&lt;/a&gt;&lt;h4 id=&quot;%E5%8A%A0%E5%85%A5-live2d-%E7%9C%8B%E6%9D%BF%E5%A8%98&quot; data-line=&quot;89&quot; class=&quot;code-line&quot;&gt;加入 Live2D 看板娘&lt;/h4&gt;
+&lt;p data-line=&quot;91&quot; class=&quot;code-line&quot;&gt;参考了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li data-line=&quot;93&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://www.fghrsh.net/post/123.html&quot; data-href=&quot;https://www.fghrsh.net/post/123.html&quot;&gt;网页添加 Live2D 看板娘&lt;/a&gt;。&lt;/li&gt;
+&lt;li data-line=&quot;94&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98&quot; data-href=&quot;https://zhangshuqiao.org/2018-07/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%B7%BB%E5%8A%A0Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98&quot;&gt;在网页中添加 Live2D 看板娘&lt;/a&gt;&lt;/li&gt;
+&lt;li data-line=&quot;95&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://paugram.com/coding/add-poster-girl-with-plugin.html&quot; data-href=&quot;https://paugram.com/coding/add-poster-girl-with-plugin.html&quot;&gt;给你的博客增加动态看板娘&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p data-line=&quot;97&quot; class=&quot;code-line&quot;&gt;由于 live2d 的协议是 GPL，这里我不把它的源码拷贝到自己的博客项目了，直接用链接引入。在 html 的任意位置，或是我博客对应的&lt;code&gt;append&lt;/code&gt;选项下插入下述 html 代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;99&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;link&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css&quot;&lt;/span&gt;
+/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js&quot;&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'
+    if (screen.width &amp;gt; screen.height)
+    {
+      let pio_container = document.createElement(&quot;div&quot;);
+      pio_container.classList.add(&quot;pio-container&quot;);
+      pio_container.classList.add(&quot;right&quot;);
+      document.body.insertAdjacentElement(&quot;beforeend&quot;, pio_container);
+      let pio_action = document.createElement(&quot;div&quot;);
+      pio_action.classList.add(&quot;pio-action&quot;);
+      pio_container.insertAdjacentElement(&quot;beforeend&quot;, pio_action);
+      let pio_canvas = document.createElement(&quot;canvas&quot;);
+      pio_canvas.id = &quot;pio&quot;;
+      pio_canvas.style.width = &quot;14rem&quot;;
+      pio_canvas.width = &quot;600&quot;;
+      pio_canvas.height = &quot;800&quot;;
+      pio_container.insertAdjacentElement(&quot;beforeend&quot;, pio_canvas);
+      let pio = new Paul_Pio({
+        &quot;mode&quot;: &quot;draggable&quot;,
+        &quot;hidden&quot;: true,
+        &quot;content&quot;: {
+          &quot;skin&quot;: [&quot;要换成我的朋友吗？&quot;, &quot;让她放个假吧~&quot;],
+          &quot;custom&quot;: [{
+            &quot;selector&quot;: &quot;a&quot;,
+            &quot;type&quot;: &quot;link&quot;,
+          }, {
+            &quot;selector&quot;: &quot;.sidebar-toggle&quot;,
+            &quot;text&quot;: &quot;打开侧边栏叭~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.effect-info&quot;,
+            &quot;text&quot;: &quot;哇，你发现了什么！&quot;
+          }, {
+            &quot;selector&quot;: &quot;#sidebar-search-input&quot;,
+            &quot;text&quot;: &quot;想搜索什么呢？很多干货哦！&quot;
+          }, {
+            &quot;selector&quot;: &quot;#toc&quot;,
+            &quot;text&quot;: &quot;这是目录~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.page-title&quot;,
+            &quot;text&quot;: &quot;这是标题~&quot;
+          }, {
+            &quot;selector&quot;: &quot;.v&quot;,
+            &quot;text&quot;: &quot;评论没有审核，要对自己的发言负责哦~&quot;
+          }]
+        },
+        &quot;model&quot;: [
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/seele/model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json&quot;,
+          &quot;https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json&quot;]
+      });
+    }'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;170&quot; class=&quot;code-line&quot;&gt;自定义参数见&lt;a href=&quot;https://github.com/Dreamer-Paul/Pio&quot; data-href=&quot;https://github.com/Dreamer-Paul/Pio&quot;&gt;Dreamer-Paul/Pio&lt;/a&gt;，模型收集自&lt;a href=&quot;https://github.com/imuncle/live2d&quot; data-href=&quot;https://github.com/imuncle/live2d&quot;&gt;imuncle/live2d&lt;/a&gt;和&lt;a href=&quot;https://github.com/xiaoski/live2d_models_collection&quot; data-href=&quot;https://github.com/xiaoski/live2d_models_collection&quot;&gt;xiaoski/live2d_models_collection&lt;/a&gt;，。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%24%5Ckatex%24&quot;&gt;&lt;/a&gt;&lt;h4 id=&quot;katex&quot; data-line=&quot;172&quot; class=&quot;code-line&quot;&gt;$\KaTeX$&lt;/h4&gt;
+&lt;p data-line=&quot;174&quot; class=&quot;code-line&quot;&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li data-line=&quot;176&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://www.jianshu.com/p/f2b28954d902&quot; data-href=&quot;https://www.jianshu.com/p/f2b28954d902&quot;&gt;使用 KaTeX 代替 MathJax 渲染公式&lt;/a&gt;。&lt;/li&gt;
+&lt;li data-line=&quot;177&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://katex.org/docs/autorender.html&quot; data-href=&quot;https://katex.org/docs/autorender.html&quot;&gt;Auto-render Extension · Katex&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code data-line=&quot;179&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/katex/dist/katex.min.css&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/katex/dist/katex.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'renderMathInElement(document.body, { delimiters: [{ left: &quot;$&quot;, right: &quot;$&quot;, display: false }] })'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;192&quot; class=&quot;code-line&quot;&gt;不过这样仅能显示$E=mc^2$这样的行间公式，行内公式是没有办法显示的（&lt;a href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/1&quot; data-href=&quot;https://github.com/wu-kan/wu-kan.github.io/issues/1&quot;&gt;issue&lt;/a&gt;）。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;194&quot; class=&quot;code-line language-tex&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-formula&quot;&gt;$$
+E=mc^2
+$$&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;200&quot; class=&quot;code-line&quot;&gt;一种方法是引入 mathjax 进行渲染，但是这样做就失去了用 katex 的初心了。后来我发现 katex 有对应的插件可以解决这一问题。在上面代码后补充如下代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;202&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/katex/dist/contrib/mathtex-script-type.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;209&quot; class=&quot;code-line&quot;&gt;效果如下。&lt;/p&gt;
+&lt;p data-line=&quot;211&quot; class=&quot;code-line&quot;&gt;$$
+E=mc^2
+$$&lt;/p&gt;
+&lt;p data-line=&quot;215&quot; class=&quot;code-line&quot;&gt;可以在&lt;a href=&quot;https://katex.org/docs/libs.html&quot; data-href=&quot;https://katex.org/docs/libs.html&quot;&gt;这个页面&lt;/a&gt;查看一些别的插件，比如化学方程式的插件等等，都是可以引入的。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;mermaid-%E5%9B%BE&quot;&gt;&lt;/a&gt;&lt;h4 id=&quot;mermaid-%E5%9B%BE&quot; data-line=&quot;217&quot; class=&quot;code-line&quot;&gt;mermaid 图&lt;/h4&gt;
+&lt;p data-line=&quot;219&quot; class=&quot;code-line&quot;&gt;我希望自己能按照 markdown 代码块扩展的规则来写 mermaid 流程图：&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;221&quot; class=&quot;code-line language-markdown&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-code&quot;&gt;```mermaid
+sequenceDiagram
+Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
+loop Healthcheck
+    John-&amp;gt;&amp;gt;John: Fight against hypochondria
+end
+Note right of John: Rational thoughts!
+John--&amp;gt;&amp;gt;Alice: Great!
+John-&amp;gt;&amp;gt;Bob: How about you?
+Bob--&amp;gt;&amp;gt;John: Jolly good!
+```&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;235&quot; class=&quot;code-line&quot;&gt;其效果如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;237&quot; class=&quot;code-line language-mermaid&quot;&gt;&lt;code&gt;&lt;div&gt;sequenceDiagram
+Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
+loop Healthcheck
+    John-&amp;gt;&amp;gt;John: Fight against hypochondria
+end
+Note right of John: Rational thoughts!
+John--&amp;gt;&amp;gt;Alice: Great!
+John-&amp;gt;&amp;gt;Bob: How about you?
+Bob--&amp;gt;&amp;gt;John: Jolly good!
+&lt;/div&gt;&lt;/code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p data-line=&quot;249&quot; class=&quot;code-line&quot;&gt;因此需要插入如下内容（将代码块隐藏，并在原位置插入 mermaid 图）：&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;251&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;css&quot;&gt;
+  &lt;span class=&quot;hljs-selector-tag&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;hljs-selector-class&quot;&gt;.language-mermaid&lt;/span&gt;,
+  &lt;span class=&quot;hljs-selector-tag&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;hljs-selector-class&quot;&gt;.language-mermaid&lt;/span&gt; {
+    &lt;span class=&quot;hljs-attribute&quot;&gt;display&lt;/span&gt;: none;
+  }
+&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'
+    for(let x of document.getElementsByClassName(&quot;language-mermaid&quot;))
+      if(x.nodeName==&quot;CODE&quot;)
+      {
+        let m = document.createElement(&quot;div&quot;);
+        m.classList.add(&quot;mermaid&quot;);
+        m.textContent = x.textContent;
+        x.parentNode.insertAdjacentElement(&quot;beforebegin&quot;, m);
+      }'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;prism-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE&quot;&gt;&lt;/a&gt;&lt;h4 id=&quot;prism-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE&quot; data-line=&quot;273&quot; class=&quot;code-line&quot;&gt;prism 代码高亮&lt;/h4&gt;
+&lt;p data-line=&quot;275&quot; class=&quot;code-line&quot;&gt;默认的代码高亮器&lt;code&gt;rouge&lt;/code&gt;渲染出来的效果一般，同时代码行号效果非常差。这里使用了 prismjs 来进行代码渲染。它的好处是模块化程度非常高，且支持自定义插件。&lt;/p&gt;
+&lt;p data-line=&quot;277&quot; class=&quot;code-line&quot;&gt;这里我引入了三个插件（代码行号、动态代码高亮、工具栏，且自己写了一个选中全部代码的按钮）作为例子，也可以像我一样自己定制。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;279&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;link&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/themes/prism-coy.min.css&quot;&lt;/span&gt;
+/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'Prism.plugins.autoloader.languages_path = &quot;https:\/\/cdn.jsdelivr.net/npm/prismjs/components/&quot;'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;link&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css&quot;&lt;/span&gt;
+/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'
+    for(let x of document.getElementsByTagName(&quot;pre&quot;))
+      x.classList.add(&quot;line-numbers&quot;);'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;link&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;rel&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.css&quot;&lt;/span&gt;
+/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;//cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'
+    Prism.plugins.toolbar.registerButton(&quot;select-code&quot;, function (env) {
+      let button = document.createElement(&quot;button&quot;);
+      button.textContent = &quot;select this &quot; + env.language;
+      button.addEventListener(&quot;click&quot;, function () {
+        if (document.body.createTextRange) {
+          let range = document.body.createTextRange();
+          range.moveToElementText(env.element);
+          range.select();
+        } else if (window.getSelection) {
+          let selection = window.getSelection();
+          let range = document.createRange();
+          range.selectNodeContents(env.element);
+          selection.removeAllRanges();
+            selection.addRange(range);
+        }
+      });
+      return button;
+    })'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;valine-%E8%AF%84%E8%AE%BA&quot;&gt;&lt;/a&gt;&lt;h4 id=&quot;valine-%E8%AF%84%E8%AE%BA&quot; data-line=&quot;333&quot; class=&quot;code-line&quot;&gt;valine 评论&lt;/h4&gt;
+&lt;p data-line=&quot;335&quot; class=&quot;code-line&quot;&gt;配置详见&lt;a href=&quot;https://valine.js.org/&quot; data-href=&quot;https://valine.js.org/&quot;&gt;官方手册&lt;/a&gt;，说得很清楚了。引入这个插件后，会在 html 页面中寻找&lt;code&gt;.v&lt;/code&gt;的页面元素。其中 appId 和 appKey 都要自己去申请，我的 leanCloud 开了白名单，直接使用我的是不能用的。&lt;/p&gt;
+&lt;pre&gt;&lt;code data-line=&quot;337&quot; class=&quot;code-line language-html&quot;&gt;&lt;div&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;v&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;fas fa-spinner fa-pulse&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;i&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;defer&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;defer&quot;&lt;/span&gt;
+  &lt;span class=&quot;hljs-attr&quot;&gt;onload&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;'
+    new Valine({
+      &quot;el&quot;: document.getElementsByClassName(&quot;v&quot;)[0],
+      &quot;appId&quot;: &quot;9hABRddSuEkTgqLrt1VSK5B1-gzGzoHsz&quot;,
+      &quot;appKey&quot;: &quot;NJ7RwmgrxsF7KDzlqU7YewlL&quot;,
+      &quot;placeholder&quot;: &quot;在这里评论吧！填写邮箱可以获得 Gravatar 头像和回复通知哦&quot;,
+      &quot;requiredFields&quot;: [&quot;nick&quot;,&quot;mail&quot;],
+      &quot;visitor&quot;: true,
+      &quot;recordIP&quot;: true
+    })'&lt;/span&gt;
+&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E4%B8%8B%E4%B8%80%E6%AD%A5%E8%AE%A1%E5%88%92&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;%E4%B8%8B%E4%B8%80%E6%AD%A5%E8%AE%A1%E5%88%92&quot; data-line=&quot;357&quot; class=&quot;code-line&quot;&gt;下一步计划&lt;/h2&gt;
+&lt;p data-line=&quot;359&quot; class=&quot;code-line&quot;&gt;详细的开发计划及建站内容详见&lt;a href=&quot;https://jekyll-theme-WuK.wu-kan.cn/&quot; data-href=&quot;https://jekyll-theme-WuK.wu-kan.cn/&quot;&gt;主题详情页&lt;/a&gt;。&lt;/p&gt;
+&lt;p data-line=&quot;361&quot; class=&quot;code-line&quot;&gt;从&lt;a href=&quot;https://magical-girl.site/&quot; data-href=&quot;https://magical-girl.site/&quot;&gt;这个页面&lt;/a&gt;得到的灵感，目标是博客上除了文章和作为导航的 Live2D 之外不出现其他的模块，尽量的干净、快速。&lt;/p&gt;
+&lt;a for=&quot;toc-anchor&quot; id=&quot;%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99&quot; data-line=&quot;363&quot; class=&quot;code-line&quot;&gt;参考资料&lt;/h2&gt;
+&lt;p data-line=&quot;365&quot; class=&quot;code-line&quot;&gt;大部分的参考链接已在原文给出，同时搭建本博客的过程中还参考了以下内容，感谢作者们：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li data-line=&quot;367&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://www.jianshu.com/p/9f198d5779e6&quot; data-href=&quot;https://www.jianshu.com/p/9f198d5779e6&quot;&gt;Jekyll + Github Pages 博客搭建入门&lt;/a&gt;&lt;/li&gt;
+&lt;li data-line=&quot;368&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://blog.csdn.net/ds19991999/article/details/81516568&quot; data-href=&quot;https://blog.csdn.net/ds19991999/article/details/81516568&quot;&gt;Jekyll 博客 Next 主题超深度配置&lt;/a&gt;&lt;/li&gt;
+&lt;li data-line=&quot;369&quot; class=&quot;code-line&quot;&gt;&lt;a href=&quot;https://www.jianshu.com/p/bb184f61c9ae&quot; data-href=&quot;https://www.jianshu.com/p/bb184f61c9ae&quot;&gt;【应用软件】Jekyll 配置&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</content><author><name></name></author><summary type="html">2019-01-18-基于Jekyll搭建个人博客.md</summary></entry><entry><title type="html">Neo4j数据数据入库方案（OLD）</title><link href="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/" rel="alternate" type="text/html" title="Neo4j数据数据入库方案（OLD）" /><published>2018-08-15T00:00:00+08:00</published><updated>2018-08-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)</id><content type="html" xml:base="http://localhost:4000/_posts/2018-08-15-Neo4j%E5%9B%BE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E6%96%B9%E6%A1%88(OLD)/">&lt;h2 id=&quot;第一章-neo4j数据入库方式&quot;&gt;第一章 Neo4j数据入库方式&lt;/h2&gt;
 &lt;p&gt;Neo4j支持多种方式的数据入库的方式包含Neo4j Import、&lt;a href=&quot;&amp;quot;&amp;quot;&quot; title=&quot;Batch Import&quot;&gt;Batch Import&lt;/a&gt;、Load CSV、Cypher。&lt;/p&gt;
 
 &lt;p&gt;下面按照数据量级别进行划分：&lt;/p&gt;
@@ -3542,9 +4270,41 @@ echo '/usr/share/dse-graph-loader/graphloader oracle_model_czhc.groovy -graph te
 
 &lt;p&gt;&lt;img src=&quot;https://v4liulv.github.io/assets/image/1529338757622_48.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;END!&lt;/p&gt;</content><author><name></name></author><category term="图库" /><summary type="html">安装GraphLoader</summary></entry><entry><title type="html">测试</title><link href="http://localhost:4000/_posts/2018-05-15-test/" rel="alternate" type="text/html" title="测试" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/test</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-test/">&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;
+&lt;p&gt;END!&lt;/p&gt;</content><author><name></name></author><category term="图库" /><summary type="html">安装GraphLoader</summary></entry><entry><title type="html">Test</title><link href="http://localhost:4000/_posts/2018-05-15-test/" rel="alternate" type="text/html" title="Test" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/test</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-test/">&lt;h2 id=&quot;123&quot;&gt;123&lt;/h2&gt;
 
-&lt;h3 id=&quot;测试1&quot;&gt;测试1&lt;/h3&gt;</content><author><name></name></author><category term="测试" /><summary type="html">测试</summary></entry><entry><title type="html">Neo4j图库建模手册</title><link href="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="Neo4j图库建模手册" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;模型分析&quot;&gt;模型分析&lt;/h2&gt;
+&lt;p&gt;测试&lt;/p&gt;
+
+&lt;h3 id=&quot;123111&quot;&gt;123111&lt;/h3&gt;
+
+&lt;p&gt;upquote
+microtype
+parskip
+etoolbox
+xcolor
+url
+pdftexcmds
+iftex
+l3kernel
+kvoptions
+ltxcmds
+kvsetkeys
+infwarerr
+kvdefinekeys
+pdfescape
+hycolor
+letltxmacro
+auxhook
+intcalc
+etexcmds
+bitset
+bigintcalc
+atbegshi
+atveryend
+rerunfilecheck
+uniquecounter
+mptopdf
+refcount
+gettitlestring&lt;/p&gt;</content><author><name></name></author><summary type="html">123</summary></entry><entry><title type="html">Neo4j图库建模手册</title><link href="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/" rel="alternate" type="text/html" title="Neo4j图库建模手册" /><published>2018-05-15T00:00:00+08:00</published><updated>2018-05-15T00:00:00+08:00</updated><id>http://localhost:4000/_posts/Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C</id><content type="html" xml:base="http://localhost:4000/_posts/2018-05-15-Neo4j%E5%9B%BE%E5%BA%93%E5%BB%BA%E6%A8%A1%E6%89%8B%E5%86%8C/">&lt;h2 id=&quot;模型分析&quot;&gt;模型分析&lt;/h2&gt;
 
 &lt;p&gt;典型人员轨迹分析：旅馆同住、同火车、同航班…&lt;/p&gt;
 
