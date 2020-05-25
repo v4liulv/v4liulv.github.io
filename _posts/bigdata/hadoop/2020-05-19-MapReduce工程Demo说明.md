@@ -4,8 +4,6 @@ tags: Hadoop
 output:
 ---
 
-![奋斗](https://v4liulv.github.io/assets/logo/logo.png)
-
 [TOC]
 
 ## 1. 需求概述
