@@ -1,4 +1,4 @@
-I"0a<blockquote>
+I"3a<blockquote>
   <p>Read at medium.com: <a href="https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509">Upgrading Ele.me to Progressive Web Apps</a></p>
 </blockquote>
 
@@ -40,7 +40,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/PRECACHE-future-routes.jpg" alt="" /></p>
 
-<p>We already used <a href="https://webpack.github.io/">Webpack</a> in the build process to do <code class="highlighter-rouge">.vue</code> compilation and asset versioning, so we create a webpack plugin to help us collecting dependencies into a “precache manifest” and generating a new Service Worker file after each build. This is pretty much like <a href="https://medium.com/@Huxpro/how-does-sw-precache-works-2d99c3d3c725">how SW-Precache works</a>.</p>
+<p>We already used <a href="https://webpack.github.io/">Webpack</a> in the build process to do <code class="highlighter-rouge">.vue</code> compilation and asset versioning, so we create a webpack plugin to help us collecting dependencies into a “precache manifest” and generating a new Service Worker file after each build. This is pretty much like <a href="https://medium.com/@v4liulv/how-does-sw-precache-works-2d99c3d3c725">how SW-Precache works</a>.</p>
 
 <p><strong>In fact, we only collect dependencies of routes we flagged as “Critical Route”.</strong> You can think of them as <a href="https://developers.google.com/web/updates/2015/11/app-shell">“App Shell”</a> or the “Installation Package” of our app. Once they are cached/installed successfully, our web app can boot up directly from cache and available offline. Routes that “not critical” would be incrementally cached at runtime during the first visit. Thanks to the LRU cache policies and TTL invalidation mechanisms provided by <a href="https://googlechrome.github.io/sw-toolbox/">SW-Toolbox</a>, we have no worries of hitting the quota in a long run.</p>
 
@@ -134,7 +134,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/nextTick-&amp;-Load.png" alt="" /></p>
 
-<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/Huxpro/mmpwa">Github</a> and the demo is live on <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a>. Here is also a video for loungers.</p>
+<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/v4liulv/mmpwa">Github</a> and the demo is live on <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a>. Here is also a video for loungers.</p>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3Ws7XBHrPD8" frameborder="0" allowfullscreen=""></iframe>
 
@@ -150,7 +150,7 @@
 
 <p>But wait, why is there still a bunch of guiltily parser-blocking scripts? Are them all <code class="highlighter-rouge">async</code>? OK, ok. For historical reasons, we do keep some parser-blocking scripts, like <a href="https://github.com/amfe/lib-flexible">lib-flexible</a>, we couldn’t get rid of it without a huge refactoring. But most of these blocking scripts are in fact <code class="highlighter-rouge">defer</code>. We expected that they can be executed after parsing and in order, however the profile kinda slap on my face. :(</p>
 
-<p>Remember I said I would talk about one issue of <code class="highlighter-rouge">defer</code> previously? Yes, that’s it. I have had a <a href="https://twitter.com/Huxpro/status/859842124849827841">conversation</a> with <a href="https://twitter.com/jaffathecake">Jake Archibald</a> and it turns out it might be a bug of Chrome when the deferred scripts are fully cached. <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">Vote it at crbug</a>!</p>
+<p>Remember I said I would talk about one issue of <code class="highlighter-rouge">defer</code> previously? Yes, that’s it. I have had a <a href="https://twitter.com/v4liulv/status/859842124849827841">conversation</a> with <a href="https://twitter.com/jaffathecake">Jake Archibald</a> and it turns out it might be a bug of Chrome when the deferred scripts are fully cached. <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">Vote it at crbug</a>!</p>
 
 <p>Similar improvements can be seen from Lighthouse (Under same server and network environment). A Pro Tip is you should always use lighthouse in a variable controlling approach.</p>
 

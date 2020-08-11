@@ -1,14 +1,14 @@
 {
     "name": "hux-blog",
     "title": "Hux Blog",
-    "author": "Hux <huxpro@gmail.com>",
+    "author": "Hux <v4liulv@gmail.com>",
     "version": "1.8.2",
-    "homepage": "http://huxpro.github.io",
+    "homepage": "http://v4liulv.github.io",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Huxpro/huxpro.github.io"
+        "url": "https://github.com/v4liulv/v4liulv.github.io"
     },
-    "bugs": "https://github.com/Huxpro/huxpro.github.io/issues",
+    "bugs": "https://github.com/v4liulv/v4liulv.github.io/issues",
     "devDependencies": {
         "grunt": "^1.1.0",
         "grunt-banner": "~0.2.3",

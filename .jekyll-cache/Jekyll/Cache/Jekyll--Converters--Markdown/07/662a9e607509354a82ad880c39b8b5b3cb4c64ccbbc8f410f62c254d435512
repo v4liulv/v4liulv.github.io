@@ -1,4 +1,4 @@
-I"��<!-- Chinese Version -->
+I"��<!-- Chinese Version -->
 <div class="zh post-container">
     
     
@@ -43,7 +43,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/PRECACHE-future-routes.jpg" alt="" /></p>
 
-<p>我们已经使用 <a href="https://webpack.github.io/">Webpack</a> 在构建过程中进行 <code class="highlighter-rouge">.vue</code> 编译、文件名哈希等工作，于是我们编写了一个 webpack 插件来帮助我们收集需要缓存的依赖到一个“预缓存清单”中，并使用这个清单在每次构建时生成新的 Service Worker 文件。在新的 Service Worker 被激活时，清单里的资源就会被请求与缓存，这其实与 <a href="https://medium.com/@Huxpro/how-does-sw-precache-works-2d99c3d3c725">SW-Precache 这个库的运行机制</a>非常接近。</p>
+<p>我们已经使用 <a href="https://webpack.github.io/">Webpack</a> 在构建过程中进行 <code class="highlighter-rouge">.vue</code> 编译、文件名哈希等工作，于是我们编写了一个 webpack 插件来帮助我们收集需要缓存的依赖到一个“预缓存清单”中，并使用这个清单在每次构建时生成新的 Service Worker 文件。在新的 Service Worker 被激活时，清单里的资源就会被请求与缓存，这其实与 <a href="https://medium.com/@v4liulv/how-does-sw-precache-works-2d99c3d3c725">SW-Precache 这个库的运行机制</a>非常接近。</p>
 
 <p><strong>实际上，我们只对我们标记为“关键路由”的路由进行依赖收集。</strong>你可以将这些“关键路由”的依赖理解为我们整个应用的 <a href="https://developers.google.com/web/updates/2015/11/app-shell">“App Shell”</a> 或者说“安装包”。一旦它们都被缓存，或者说成功安装，无论用户是在线离线，我们的 web 应用都可以从缓存中直接启动。对于那些并不那么重要的路由，我们则采取在运行时增量缓存的方式。我们使用的 <a href="https://googlechrome.github.io/sw-toolbox/">SW-Toolbox</a> 提供了 LRU 替换策略与 TTL 失效机制，可以保证我们的应用不会超过浏览器的缓存配额。</p>
 
@@ -131,7 +131,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/nextTick-&amp;-Load.png" alt="" /></p>
 
-<p>当当！首次渲染瞬间就被提前了。如果你熟悉浏览器的<strong>事件循环模型（event loop）</strong>的话，这招 Hack 其实是通过 setTimeout 的回调把 DOM 操作放到了事件循环的任务队列中以避免它在当前循环执行，这样浏览器就得以在主线程空闲时喘息一下（更新一下渲染）了。如果你想亲手试试 MMPWA 的话，你可以访问 <a href="https://github.com/Huxpro/mmpwa">github.com/Huxpro/mmpwa</a> 或 <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a> 访问代码与 Demo。我把 UI 设计为了 A/B Test 的形式并改为渲染 5000 个列表项来让效果更夸张一些。</p>
+<p>当当！首次渲染瞬间就被提前了。如果你熟悉浏览器的<strong>事件循环模型（event loop）</strong>的话，这招 Hack 其实是通过 setTimeout 的回调把 DOM 操作放到了事件循环的任务队列中以避免它在当前循环执行，这样浏览器就得以在主线程空闲时喘息一下（更新一下渲染）了。如果你想亲手试试 MMPWA 的话，你可以访问 <a href="https://github.com/v4liulv/mmpwa">github.com/v4liulv/mmpwa</a> 或 <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a> 访问代码与 Demo。我把 UI 设计为了 A/B Test 的形式并改为渲染 5000 个列表项来让效果更夸张一些。</p>
 
 <p>回到饿了么 PWA 上，我们同样试着把 <code class="highlighter-rouge">new Vue()</code> 放到了 <code class="highlighter-rouge">setTimeout</code> 中。果然，黑魔法再次显灵，骨架屏在每次跳转后都能立刻被渲染。这时的 Profile 看起来是这样的：</p>
 
@@ -143,7 +143,7 @@
 
 <p>不知道你发现没有，在上图的 Profile 中，我们仍然有不少脚本是阻塞了 HTML 解析的。好吧让我解释一下，由于历史原因，我们确实保留了一部分的阻塞脚本，比如侵入性很强的 <a href="https://github.com/amfe/lib-flexible">lib-flexible</a>，我们没法轻易去除它。不过，profile 里的大部分阻塞脚本实际上都设置了 <code class="highlighter-rouge">defer</code>，我们本以为他们应该在 HTML 解析完成之后才被执行，结果被 profile 打了一脸。</p>
 
-<p>我和 <a href="https://twitter.com/jaffathecake">Jake Archibald</a> <a href="https://twitter.com/Huxpro/status/859842124849827841">聊了一下</a>，果然这是 Chrome 的 Bug：<code class="highlighter-rouge">defer</code> 的脚本被完全缓存时，并没有遵守规范等待解析结束，反而阻塞了解析与渲染。Jake 已经提交在 <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">crbug</a> 上了，一起给它投票吧~</p>
+<p>我和 <a href="https://twitter.com/jaffathecake">Jake Archibald</a> <a href="https://twitter.com/v4liulv/status/859842124849827841">聊了一下</a>，果然这是 Chrome 的 Bug：<code class="highlighter-rouge">defer</code> 的脚本被完全缓存时，并没有遵守规范等待解析结束，反而阻塞了解析与渲染。Jake 已经提交在 <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">crbug</a> 上了，一起给它投票吧~</p>
 
 <p>最后，是优化后的 Lighthouse 跑分结果，同样可以看到明显的性能提升。需要说明的是，能影响 Lighthouse 跑分的因素有很多，所以我建议你以控制变量（跑分用的设备、跑分时的网络环境等）的方式来进行对照实验。</p>
 
@@ -221,7 +221,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/PRECACHE-future-routes.jpg" alt="" /></p>
 
-<p>We already used <a href="https://webpack.github.io/">Webpack</a> in the build process to do <code class="highlighter-rouge">.vue</code> compilation and asset versioning, so we create a webpack plugin to help us collecting dependencies into a “precache manifest” and generating a new Service Worker file after each build. This is pretty much like <a href="https://medium.com/@Huxpro/how-does-sw-precache-works-2d99c3d3c725">how SW-Precache works</a>.</p>
+<p>We already used <a href="https://webpack.github.io/">Webpack</a> in the build process to do <code class="highlighter-rouge">.vue</code> compilation and asset versioning, so we create a webpack plugin to help us collecting dependencies into a “precache manifest” and generating a new Service Worker file after each build. This is pretty much like <a href="https://medium.com/@v4liulv/how-does-sw-precache-works-2d99c3d3c725">how SW-Precache works</a>.</p>
 
 <p><strong>In fact, we only collect dependencies of routes we flagged as “Critical Route”.</strong> You can think of them as <a href="https://developers.google.com/web/updates/2015/11/app-shell">“App Shell”</a> or the “Installation Package” of our app. Once they are cached/installed successfully, our web app can boot up directly from cache and available offline. Routes that “not critical” would be incrementally cached at runtime during the first visit. Thanks to the LRU cache policies and TTL invalidation mechanisms provided by <a href="https://googlechrome.github.io/sw-toolbox/">SW-Toolbox</a>, we have no worries of hitting the quota in a long run.</p>
 
@@ -315,7 +315,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/nextTick-&amp;-Load.png" alt="" /></p>
 
-<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/Huxpro/mmpwa">Github</a> and the demo is live on <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a>. Here is also a video for loungers.</p>
+<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/v4liulv/mmpwa">Github</a> and the demo is live on <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a>. Here is also a video for loungers.</p>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3Ws7XBHrPD8" frameborder="0" allowfullscreen=""></iframe>
 
@@ -331,7 +331,7 @@
 
 <p>But wait, why is there still a bunch of guiltily parser-blocking scripts? Are them all <code class="highlighter-rouge">async</code>? OK, ok. For historical reasons, we do keep some parser-blocking scripts, like <a href="https://github.com/amfe/lib-flexible">lib-flexible</a>, we couldn’t get rid of it without a huge refactoring. But most of these blocking scripts are in fact <code class="highlighter-rouge">defer</code>. We expected that they can be executed after parsing and in order, however the profile kinda slap on my face. :(</p>
 
-<p>Remember I said I would talk about one issue of <code class="highlighter-rouge">defer</code> previously? Yes, that’s it. I have had a <a href="https://twitter.com/Huxpro/status/859842124849827841">conversation</a> with <a href="https://twitter.com/jaffathecake">Jake Archibald</a> and it turns out it might be a bug of Chrome when the deferred scripts are fully cached. <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">Vote it at crbug</a>!</p>
+<p>Remember I said I would talk about one issue of <code class="highlighter-rouge">defer</code> previously? Yes, that’s it. I have had a <a href="https://twitter.com/v4liulv/status/859842124849827841">conversation</a> with <a href="https://twitter.com/jaffathecake">Jake Archibald</a> and it turns out it might be a bug of Chrome when the deferred scripts are fully cached. <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=717979">Vote it at crbug</a>!</p>
 
 <p>Similar improvements can be seen from Lighthouse (Under same server and network environment). A Pro Tip is you should always use lighthouse in a variable controlling approach.</p>
 

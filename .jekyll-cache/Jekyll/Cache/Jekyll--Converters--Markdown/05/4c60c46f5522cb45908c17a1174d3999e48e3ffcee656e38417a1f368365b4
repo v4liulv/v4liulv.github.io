@@ -1,4 +1,4 @@
-I"]�<blockquote>
+I"^�<blockquote>
   <p>今年 9 月份的时候，《程序员》杂志社就邀请我写一篇关于 PWA 的文章。后来花式拖稿，拖过了 10 月的 QCon，11 月的 GDG DevFest，终于在 12 月把这篇长文熬了出来。几次分享的不成熟，这次的结构算是比较满意了。「 可能是目前中文世界里对 PWA 最全面详细的长文了」，希望你能喜欢。<br /><br />
 本文首发于 <a href="http://geek.csdn.net/news/detail/135595">CSDN</a> 与《程序员》2017 年 2 月刊，同步发布于 <a href="https://liulv.work">Hux Blog</a>、<a href="https://zhuanlan.zhihu.com/FrontendMagazine">前端外刊评论 - 知乎专栏</a>，转载请保留链接 ;)</p>
 </blockquote>
@@ -286,7 +286,7 @@ main.js
 <span class="p">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>可以看出，Service Worker 被设计为一个相对底层（low-level）、高度可编程、子概念众多，也因此异常灵活且强大的 API，故本文只能展示它的冰山一角。出于安全考虑，注册 Service Worker 要求你的 web 应用部署于 HTTPS 协议下，以免利用 Service Worker 的中间人攻击。笔者在今年 GDG 北京的 DevFest 上分享了 <a href="https://liulv.work/2016/11/20/sw-101-gdgdf/">Service Worker 101</a>，涵盖了 Service Worker 譬如「网络优先」、「缓存优先」、「网络与缓存比赛」这些更复杂的缓存策略、学习资料、以及<a href="https://github.com/Huxpro/sw-101-gdgdf">示例代码</a>，可以供大家参考。</p>
+<p>可以看出，Service Worker 被设计为一个相对底层（low-level）、高度可编程、子概念众多，也因此异常灵活且强大的 API，故本文只能展示它的冰山一角。出于安全考虑，注册 Service Worker 要求你的 web 应用部署于 HTTPS 协议下，以免利用 Service Worker 的中间人攻击。笔者在今年 GDG 北京的 DevFest 上分享了 <a href="https://liulv.work/2016/11/20/sw-101-gdgdf/">Service Worker 101</a>，涵盖了 Service Worker 譬如「网络优先」、「缓存优先」、「网络与缓存比赛」这些更复杂的缓存策略、学习资料、以及<a href="https://github.com/v4liulv/sw-101-gdgdf">示例代码</a>，可以供大家参考。</p>
 
 <p><img src="/img/in-post/post-nextgen-web-pwa/sw-race.png" alt="" />
 <em>Service Worker 的一种缓存策略：让网络请求与读取缓存比赛</em></p>

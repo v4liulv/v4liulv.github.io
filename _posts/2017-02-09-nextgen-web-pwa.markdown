@@ -425,7 +425,7 @@ PWA 作为一个涵盖性术语，与过往的这些或多或少通过私有平�
 
 [28]: https://infrequently.org/2015/06/progressive-apps-escaping-tabs-without-losing-our-soul/ "Progressive Web Apps: Escaping Tabs Without Losing Our Soul"
 
-[29]: https://github.com/Huxpro/sw-101-gdgdf
+[29]: https://github.com/v4liulv/sw-101-gdgdf
 
 [30]: developers.google.com/web/updates/2015/12/background-sync "Background Sync - Google Developers"
 

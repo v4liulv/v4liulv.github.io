@@ -1,7 +1,7 @@
-I"µn<p><a href="https://github.com/GoogleChrome/sw-precache"><em>SW-Precache</em></a> <em>is a great Service Worker tool from Google. It is a node module designed to be</em> <em>integrated</em> <em>into your build process and to generate a service worker for you.</em> <em>Though</em> <em>you can use sw-precache out of the box, you might still wonder what happens under the hood. There you go, this article is written for you!</em></p>
+I"¶n<p><a href="https://github.com/GoogleChrome/sw-precache"><em>SW-Precache</em></a> <em>is a great Service Worker tool from Google. It is a node module designed to be</em> <em>integrated</em> <em>into your build process and to generate a service worker for you.</em> <em>Though</em> <em>you can use sw-precache out of the box, you might still wonder what happens under the hood. There you go, this article is written for you!</em></p>
 
 <blockquote>
-  <p>This post was first published at <a href="https://medium.com/@Huxpro/how-does-sw-precache-works-2d99c3d3c725">Medium</a></p>
+  <p>This post was first published at <a href="https://medium.com/@v4liulv/how-does-sw-precache-works-2d99c3d3c725">Medium</a></p>
 </blockquote>
 
 <h2 id="overview">Overview</h2>

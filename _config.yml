@@ -2,9 +2,9 @@
 title: LiuL Blog
 SEOTitle: 刘律的博客 | LiuL Blog
 header-img: img/home-bg.jpg
-email: huxpro@gmail.com
+email: v4liulv@gmail.com
 description: "关于程序与设计、黑客与画家 | 刘律，Web & Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。"
-keyword: "刘律, Hux刘律, Hux, 鬼栈, huxpro, @huxpro, 刘律的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
+keyword: "刘律, Hux刘律, Hux, 鬼栈, v4liulv, @v4liulv, 刘律的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
 url: "https://work.liulv"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -13,11 +13,11 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username:     huxpro
-zhihu_username:     huxpro
-github_username:    huxpro
-twitter_username:   huxpro
-#facebook_username:  huxpro
+weibo_username:     v4liulv
+zhihu_username:     v4liulv
+github_username:    v4liulv
+twitter_username:   v4liulv
+#facebook_username:  v4liulv
 #linkedin_username:  firstname-lastname-idxxxx
 
 
