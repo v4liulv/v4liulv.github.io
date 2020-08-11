@@ -3,7 +3,7 @@
 
 > I never expected this becomes popular.
 
-![](http://huangxuan.me/img/blog-desktop.jpg)
+![](https://liulv.work/img/blog-desktop.jpg)
 
 
 [User Manual 👉](_doc/Manual.md)
