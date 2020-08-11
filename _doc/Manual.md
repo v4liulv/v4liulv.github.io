@@ -74,7 +74,7 @@ Most of them are very descriptive so feel brave to dive into code directly as we
 Posts are simply just Markdown files in the `_posts/`. 
 Metadata of posts are listed in a YAML style _front-matter_.
 
-For instance, [Hello 2015])(https://huangxuan.me/2015/01/29/hello-2015/) has the front-matter of this:
+For instance, [Hello 2015])(https://liulv.work/2015/01/29/hello-2015/) has the front-matter of this:
 
 ```yml
 ---
@@ -103,7 +103,7 @@ This command will automatially generate a sample post similar as above under the
 
 There are a bunch of _advanced_ configs:
 
-1. a _text style_ header like [this](https://huangxuan.me/2019/09/08/spacemacs-workflow/) with
+1. a _text style_ header like [this](https://liulv.work/2019/09/08/spacemacs-workflow/) with
 
 ```yml
 header-style: text 
@@ -231,7 +231,7 @@ ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
 
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+ga_domain: liulv.work
 ```
 
 Just checkout the code offered by Google/Baidu, and copy paste here, all the rest is already done for you.
@@ -273,7 +273,7 @@ Releases
 
 #### V1.8
 
-- Brand new [Archive](https://huangxuan.me/archive/) page! It combines previous Archive and Tag page and it's backward-cmpatible.
+- Brand new [Archive](https://liulv.work/archive/) page! It combines previous Archive and Tag page and it's backward-cmpatible.
 Shout out to [@kitian616/jekyll-TeXt-theme](https://github.com/kitian616/jekyll-TeXt-theme) of bringing this idea. 
 - Improve engineering by extracting duplicated liquid templates into reuseable includes. This was proposed in #74 by @Kaijun but postponed for entirely 2.5 years! I wasn't able to merge his PR directly because of long-time divegence but the credit is belonging to @Kaijun.
 - Improved code block. Long-wanted line number are supported out of the box (thanks for @SmilingParadise's help from Sina Weibo), the default theme is updated to Atom One Dark as well (checkout FQA for how to change to your farovite theme)

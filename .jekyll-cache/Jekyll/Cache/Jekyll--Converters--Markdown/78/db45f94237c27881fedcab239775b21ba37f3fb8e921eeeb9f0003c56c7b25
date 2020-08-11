@@ -1,4 +1,4 @@
-I"4a<blockquote>
+I"0a<blockquote>
   <p>Read at medium.com: <a href="https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509">Upgrading Ele.me to Progressive Web Apps</a></p>
 </blockquote>
 
@@ -134,7 +134,7 @@
 
 <p><img src="/img/in-post/post-eleme-pwa/nextTick-&amp;-Load.png" alt="" /></p>
 
-<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/Huxpro/mmpwa">Github</a> and the demo is live on <a href="https://huangxuan.me/mmpwa">huangxuan.me/mmpwa/</a>. Here is also a video for loungers.</p>
+<p>I think you may curious about how this change performs in the wild, so I have refined MMPWA by rendering 5000 list items rather 1000 to make the differences more obvious, and by designing it in an A/B testing manner. The code is on <a href="https://github.com/Huxpro/mmpwa">Github</a> and the demo is live on <a href="https://liulv.work/mmpwa">liulv.work/mmpwa/</a>. Here is also a video for loungers.</p>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3Ws7XBHrPD8" frameborder="0" allowfullscreen=""></iframe>
 

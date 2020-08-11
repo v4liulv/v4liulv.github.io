@@ -1,4 +1,4 @@
-[Hux Blog](https://huangxuan.me)
+[Hux Blog](https://liulv.work)
 ================================
 
 > I never expected this becomes popular.

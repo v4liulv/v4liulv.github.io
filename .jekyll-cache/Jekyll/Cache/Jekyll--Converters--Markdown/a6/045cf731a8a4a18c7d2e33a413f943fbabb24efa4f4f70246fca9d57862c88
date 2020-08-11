@@ -1,4 +1,4 @@
-I"��<p>2015 年 9 月，Apple 重磅发布了全新的 iPhone 6s/6s Plus、iPad Pro 与全新的操作系统 watchOS 2 与 tvOS 9（是的，这货居然是第 9 版），加上已经发布的 iOS 9，它们都为前端世界带来了哪些变化呢？作为一个 web 开发者，是时候站在我们的角度来说一说了！</p>
+I"�<p>2015 年 9 月，Apple 重磅发布了全新的 iPhone 6s/6s Plus、iPad Pro 与全新的操作系统 watchOS 2 与 tvOS 9（是的，这货居然是第 9 版），加上已经发布的 iOS 9，它们都为前端世界带来了哪些变化呢？作为一个 web 开发者，是时候站在我们的角度来说一说了！</p>
 
 <blockquote>
   <p><strong>注！</strong> 该译文存在大量英文术语，笔者将默认读者知晓 ES6、viewport、native app、webview 等常用前端术语，并不对这些已知术语进行汉语翻译
@@ -79,7 +79,7 @@
 
 <p><a href="https://twitter.com/fr3ino">@Marcel Freinbichler</a> 第一个在 Twitter 上晒出了自己的 <a href="http://freinbichler.me/apps/3dtouch">Demo</a>。在 6s 或 new Macbook 的 Safari（目前仅 Safari 支持）上访问就可以看到圆圈会随着压力放大。墙内的小伙伴可以直接试试下面这个圆圈，体验下 3D/Force Touch 带来的的奇妙体验。</p>
 
-<iframe src="//huangxuan.me/forcify/" style="
+<iframe src="//liulv.work/forcify/" style="
     width:100%;
     height:500px;
     border: 0;

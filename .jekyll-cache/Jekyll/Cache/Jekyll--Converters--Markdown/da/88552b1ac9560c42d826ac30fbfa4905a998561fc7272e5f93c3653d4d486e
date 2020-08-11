@@ -1,6 +1,6 @@
-I"q�<blockquote>
+I"]�<blockquote>
   <p>今年 9 月份的时候，《程序员》杂志社就邀请我写一篇关于 PWA 的文章。后来花式拖稿，拖过了 10 月的 QCon，11 月的 GDG DevFest，终于在 12 月把这篇长文熬了出来。几次分享的不成熟，这次的结构算是比较满意了。「 可能是目前中文世界里对 PWA 最全面详细的长文了」，希望你能喜欢。<br /><br />
-本文首发于 <a href="http://geek.csdn.net/news/detail/135595">CSDN</a> 与《程序员》2017 年 2 月刊，同步发布于 <a href="https://huangxuan.me">Hux Blog</a>、<a href="https://zhuanlan.zhihu.com/FrontendMagazine">前端外刊评论 - 知乎专栏</a>，转载请保留链接 ;)</p>
+本文首发于 <a href="http://geek.csdn.net/news/detail/135595">CSDN</a> 与《程序员》2017 年 2 月刊，同步发布于 <a href="https://liulv.work">Hux Blog</a>、<a href="https://zhuanlan.zhihu.com/FrontendMagazine">前端外刊评论 - 知乎专栏</a>，转载请保留链接 ;)</p>
 </blockquote>
 
 <h2 id="下一代-web-应用">下一代 Web 应用？</h2>
@@ -47,7 +47,7 @@
 
 <p>Web App Manifest，即通过一个清单文件向浏览器暴露 web 应用的元数据，包括名字、icon 的 URL 等，以备浏览器使用，比如在添加至主屏或推送通知时暴露给操作系统，从而增强 web 应用与操作系统的集成能力。</p>
 
-<p>让 web 应用在移动设备上的体验更接近原生应用的尝试其实早在 2008 年的 <a href="https://huangxuan.me/pwa-qcon2016/#/37" title="PWA@QCon2016 #37">iOS 1.1.3 与 iOS 2.1.0 </a>时就开始了，它们分别为 web 应用增加了对自定义 icon 和全屏打开的支持。</p>
+<p>让 web 应用在移动设备上的体验更接近原生应用的尝试其实早在 2008 年的 <a href="https://liulv.work/pwa-qcon2016/#/37" title="PWA@QCon2016 #37">iOS 1.1.3 与 iOS 2.1.0 </a>时就开始了，它们分别为 web 应用增加了对自定义 icon 和全屏打开的支持。</p>
 
 <p><img src="/img/in-post/post-nextgen-web-pwa/ios2-a2hs.gif" alt="" />
 <em>图片来源: <a href="http://appleinsider.com/articles/08/10/03/latest_iphone_software_supports_full_screen_web_apps.html">appleinsider.com</a></em></p>
@@ -149,7 +149,7 @@
 
 <ul>
   <li><code class="highlighter-rouge">scope</code>：定义了 web 应用的浏览作用域，比如作用域外的 URL 就会打开浏览器而不会在当前 PWA 里继续浏览。</li>
-  <li><code class="highlighter-rouge">start_url</code>：定义了一个 PWA 的入口页面。比如说你添加 <a href="https://huangxuan.me" title="Hux Blog">Hux Blog</a> 的任何一个文章到主屏，从主屏打开时都会访问 <a href="https://huangxuan.me" title="Hux Blog">Hux Blog</a> 的主页。</li>
+  <li><code class="highlighter-rouge">start_url</code>：定义了一个 PWA 的入口页面。比如说你添加 <a href="https://liulv.work" title="Hux Blog">Hux Blog</a> 的任何一个文章到主屏，从主屏打开时都会访问 <a href="https://liulv.work" title="Hux Blog">Hux Blog</a> 的主页。</li>
   <li><code class="highlighter-rouge">orientation</code>：终于，我们可以锁定屏幕旋转了（喜极而泣…）</li>
   <li><code class="highlighter-rouge">theme_color</code>/<code class="highlighter-rouge">background_color</code>：主题色与背景色，用于配置一些可定制的操作系统 UI 以提高用户体验，比如 Android 的状态栏、任务栏等。</li>
 </ul>
@@ -214,7 +214,7 @@ main.js
 
 <p>HTML5 App Cache 作为第二波「让 web 应用离线执行」的尝试，确实也服务了比如 Google Doc、尤雨溪早年作品 HTML5 Clear、以及一直用 web 应用作为自己 iOS 应用的 FT.com（Financial Times）等不少 web 应用。那么，还有 Service Worker 什么事呢？</p>
 
-<p>是啊，如果 App Cache 没有被设计得<a href="https://huangxuan.me/sw-101-gdgdf/#/12" title="SW-101@DevFest #12">烂到完全不可编程、无法清理缓存、几乎没有路由机制、出了 Bug 一点救都没有</a>，可能就真没 Service Worker 什么事了。<a href="https://huangxuan.me/sw-101-gdgdf/#/13" title="SW-101@DevFest #13">App Cache 已经在前不久定稿的 HTML5.1 中被拿掉了，W3C 为了挽救 web 世界真是不惜把自己的脸都打肿了……</a></p>
+<p>是啊，如果 App Cache 没有被设计得<a href="https://liulv.work/sw-101-gdgdf/#/12" title="SW-101@DevFest #12">烂到完全不可编程、无法清理缓存、几乎没有路由机制、出了 Bug 一点救都没有</a>，可能就真没 Service Worker 什么事了。<a href="https://liulv.work/sw-101-gdgdf/#/13" title="SW-101@DevFest #13">App Cache 已经在前不久定稿的 HTML5.1 中被拿掉了，W3C 为了挽救 web 世界真是不惜把自己的脸都打肿了……</a></p>
 
 <p>时至今日，我们终于迎来了 Service Worker 的曙光。简单来说，Service Worker 是一个可编程的 Web Worker，它就像一个位于浏览器与网络之间的客户端代理，可以拦截、处理、响应流经的 HTTP 请求；配合随之引入 Cache Storage API，你可以自由管理 HTTP 请求文件粒度的缓存，这使得 Service Worker 可以从缓存中向 web 应用提供资源，即使是在离线的环境下。</p>
 
@@ -286,12 +286,12 @@ main.js
 <span class="p">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>可以看出，Service Worker 被设计为一个相对底层（low-level）、高度可编程、子概念众多，也因此异常灵活且强大的 API，故本文只能展示它的冰山一角。出于安全考虑，注册 Service Worker 要求你的 web 应用部署于 HTTPS 协议下，以免利用 Service Worker 的中间人攻击。笔者在今年 GDG 北京的 DevFest 上分享了 <a href="https://huangxuan.me/2016/11/20/sw-101-gdgdf/">Service Worker 101</a>，涵盖了 Service Worker 譬如「网络优先」、「缓存优先」、「网络与缓存比赛」这些更复杂的缓存策略、学习资料、以及<a href="https://github.com/Huxpro/sw-101-gdgdf">示例代码</a>，可以供大家参考。</p>
+<p>可以看出，Service Worker 被设计为一个相对底层（low-level）、高度可编程、子概念众多，也因此异常灵活且强大的 API，故本文只能展示它的冰山一角。出于安全考虑，注册 Service Worker 要求你的 web 应用部署于 HTTPS 协议下，以免利用 Service Worker 的中间人攻击。笔者在今年 GDG 北京的 DevFest 上分享了 <a href="https://liulv.work/2016/11/20/sw-101-gdgdf/">Service Worker 101</a>，涵盖了 Service Worker 譬如「网络优先」、「缓存优先」、「网络与缓存比赛」这些更复杂的缓存策略、学习资料、以及<a href="https://github.com/Huxpro/sw-101-gdgdf">示例代码</a>，可以供大家参考。</p>
 
 <p><img src="/img/in-post/post-nextgen-web-pwa/sw-race.png" alt="" />
 <em>Service Worker 的一种缓存策略：让网络请求与读取缓存比赛</em></p>
 
-<p>你也可以尝试在支持 PWA 的浏览器中访问笔者的博客 <a href="https://huangxuan.me" title="Hux Blog">Hux Blog</a>，感受 Service Worker 的实际效果：所有访问过的页面都会被缓存并允许在离线环境下继续访问，所有未访问过的页面则会在离线环境下展示一个自定义的离线页面。</p>
+<p>你也可以尝试在支持 PWA 的浏览器中访问笔者的博客 <a href="https://liulv.work" title="Hux Blog">Hux Blog</a>，感受 Service Worker 的实际效果：所有访问过的页面都会被缓存并允许在离线环境下继续访问，所有未访问过的页面则会在离线环境下展示一个自定义的离线页面。</p>
 
 <p>在笔者看来，<strong>Service Worker 对 PWA 的重要性相当于 <code class="highlighter-rouge">XMLHTTPRequest</code> 之于 Ajax，媒体查询（Media Query）之于响应式设计，是支撑 PWA 作为「下一代 web 应用模型」的最核心技术。</strong>由于 Service Worker 可以与包括 Indexed DB、Streams 在内的大部分 DOM 无关 API 进行交互，它的潜力简直无可限量。笔者几乎可以断言，Service Worker 将在未来十年里成为 web 客户端技术工程化的兵家必争之地，带来「离线优先（Offline-first）」的架构革命。</p>
 
@@ -345,7 +345,7 @@ main.js
 
 <h2 id="从-hybrid-到-pwa从封闭到开放">从 Hybrid 到 PWA，从封闭到开放</h2>
 
-<p>2008 年，当移动时代来临，<a href="https://huangxuan.me/pwa-qcon2016/#/17" title="PWA@QCon2016 #17">唱衰移动 Web 的声音</a>开始出现，而浏览器的进化并不能跟上时，来自 Nitobi 的 Brian Leroux 等人创造了 <a href="https://cordova.apache.org/" title="Apache Cordova">Phonegap</a>，希望它能以 Polyfill 的形式、弥补目前浏览器与移动设备间的「鸿沟」，从此开启了<a href="https://en.wikipedia.org/wiki/Progressive_web_app#Hybrid_Apps">混合应用（Hybrid Apps）</a>的时代。</p>
+<p>2008 年，当移动时代来临，<a href="https://liulv.work/pwa-qcon2016/#/17" title="PWA@QCon2016 #17">唱衰移动 Web 的声音</a>开始出现，而浏览器的进化并不能跟上时，来自 Nitobi 的 Brian Leroux 等人创造了 <a href="https://cordova.apache.org/" title="Apache Cordova">Phonegap</a>，希望它能以 Polyfill 的形式、弥补目前浏览器与移动设备间的「鸿沟」，从此开启了<a href="https://en.wikipedia.org/wiki/Progressive_web_app#Hybrid_Apps">混合应用（Hybrid Apps）</a>的时代。</p>
 
 <p>几年间，<a href="http://www.adobe.com/products/air.html" title="Adobe AIR Application">Adobe AIR</a>、<a href="https://msdn.microsoft.com/en-us/library/windows/apps/br211385.aspx" title="Windows Runtime JS API">Windows Runtime Apps</a>、<a href="https://developer.chrome.com/extensions/apps" title="Chrome Packaged Apps">Chrome Apps</a>、<a href="https://developer.mozilla.org/en-US/docs/Archive/Firefox_OS/Firefox_OS_apps/Building_apps_for_Firefox_OS" title="Firefox OS Packaged Apps">Firefox OS</a>、<a href="http://www.openwebosproject.org/" title="Open webOS">WebOS</a>、<a href="https://cordova.apache.org/" title="Apache Cordova">Cordova/Phonegap</a>、<a href="http://electron.atom.io/" title="Electron">Electron</a> 以及国内比如微信、淘宝，无数的 Hybrid 方案拔地而起，让 web 开发者可以在继续使用 web 客户端技术的同时，做到一些只有原生应用才能做到的事情，包括访问一些设备与操作系统 API，给用户带来更加 「Appy」 的体验，以及进入 App Store 等等。</p>
 
@@ -423,7 +423,7 @@ main.js
 
 <h2 id="结语">结语</h2>
 
-<p>「<a href="https://huangxuan.me/pwa-qcon2016/#/99" title="PWA@QCon2016 #97">我们信仰 Web，不仅仅在于软件、软件平台与单纯的技术</a>，还在于<a href="http://phonegap.com/blog/2012/05/09/phonegap-beliefs-goals-and-philosophy/" title="PhoneGap Beliefs, Goals, and Philosophy">『任何人，在任何时间任何地点，都可以在万维网上发布任何信息，并被世界上的任何一个人所访问到。』而这才是 web 的最为革命之处，堪称我们人类，作为一个物种的一次进化。</a>」</p>
+<p>「<a href="https://liulv.work/pwa-qcon2016/#/99" title="PWA@QCon2016 #97">我们信仰 Web，不仅仅在于软件、软件平台与单纯的技术</a>，还在于<a href="http://phonegap.com/blog/2012/05/09/phonegap-beliefs-goals-and-philosophy/" title="PhoneGap Beliefs, Goals, and Philosophy">『任何人，在任何时间任何地点，都可以在万维网上发布任何信息，并被世界上的任何一个人所访问到。』而这才是 web 的最为革命之处，堪称我们人类，作为一个物种的一次进化。</a>」</p>
 
 <p>请不要让 web 再<a href="https://zhuanlan.zhihu.com/p/22561084" title="Web 在继续离我们远去">继续离我们远去</a>，浏览器厂商们已经重新走到了一起，而下一棒将是交到我们 web 应用开发者的手上。<a href="youtu.be/y1B2c3ZD9fk?t=1h14m48s" title="WWDC 2017">乔布斯曾相信 web 应用才移动应用的未来</a>，那就让我们用代码证明给这个世界看吧。</p>
 
