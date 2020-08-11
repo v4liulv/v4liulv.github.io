@@ -3,7 +3,7 @@ layout:     post
 title:      "「知乎」设计师如何学习前端？"
 subtitle:   "How designers learn front-end development?"
 date:       2015-10-28 12:00:00
-author:     "Hux"
+author:     "LiuL"
 header-img: "img/home-bg-o.jpg"
 tags:
     - 知乎
@@ -139,7 +139,7 @@ $('.className').click(function(){
 </ul>
 <br>如果你能顺利得渡过了这个阶段，我想你已经能做出很多令你自豪的网站了！试着向身边的工程师朋友询问如何购买域名、配置简单的静态服务器，或者搜搜“Github Pages”，然后把你的作品挂在网络上让大家欣赏吧！
 <br>
-<br>你还可以试着用 JavaScript 写写小游戏，这不但能锻炼你的编程水平还非常有趣～比如这是我刚学 JS 不久后 hack 一晚的产物 —— 用 DOM 实现的打飞机：<a href="//link.zhihu.com/?target=http%3A//liulv.work/aircraft" class=" wrap external" target="_blank" rel="nofollow noreferrer">Hux - Aircraft<i class="icon-external"></i></a> （不支持手机）
+<br>你还可以试着用 JavaScript 写写小游戏，这不但能锻炼你的编程水平还非常有趣～比如这是我刚学 JS 不久后 hack 一晚的产物 —— 用 DOM 实现的打飞机：<a href="//link.zhihu.com/?target=http%3A//liulv.work/aircraft" class=" wrap external" target="_blank" rel="nofollow noreferrer">LiuL - Aircraft<i class="icon-external"></i></a> （不支持手机）
 <br>
 <br>
 <br>

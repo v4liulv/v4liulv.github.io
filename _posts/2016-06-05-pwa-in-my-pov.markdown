@@ -5,7 +5,7 @@ subtitle:   "🎞  Slides:Progressive Web App, in my points of view"
 iframe:     "//liulv.work/pwa-in-my-pov/"
 nav-style:  "invert"
 date:       2016-06-05
-author:     "Hux"
+author:     "LiuL"
 tags:
     - Slides
     - Web

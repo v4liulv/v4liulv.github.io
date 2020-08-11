@@ -2,7 +2,7 @@
 title: "「SF-PLF」19 PE"
 subtitle: "Programming Language Foundations - Partial Evaluation"
 layout: post
-author: "Hux"
+author: "LiuL"
 header-style: text
 hidden: true
 tags:

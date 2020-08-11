@@ -1,4 +1,4 @@
-[Hux Blog](https://liulv.work)
+[LiuL Blog](https://liulv.work)
 ================================
 
 > I never expected this becomes popular.
@@ -59,5 +59,5 @@ License
 Apache License 2.0.
 Copyright (c) 2015-present v4liulv
 
-Hux Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
+LiuL Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
 Copyright (c) 2013-2016 Blackrock Digital LLC.

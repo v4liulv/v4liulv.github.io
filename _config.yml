@@ -4,7 +4,7 @@ SEOTitle: 刘律的博客 | LiuL Blog
 header-img: img/home-bg.jpg
 email: v4liulv@gmail.com
 description: "关于程序与设计、黑客与画家 | 刘律，Web & Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。"
-keyword: "刘律, Hux刘律, Hux, 鬼栈, v4liulv, @v4liulv, 刘律的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
+keyword: "刘律, Hux刘律, LiuL, 鬼栈, v4liulv, @v4liulv, 刘律的博客, LiuL Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
 url: "https://work.liulv"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -59,7 +59,7 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: hux
+disqus_username: LiuL
 
 # Netease settings
 netease_comment: false
@@ -79,7 +79,7 @@ ga_domain: liulv.work
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "For the next quantum leap<br>离开世界之前，一切都是过程"
-sidebar-avatar: /img/avatar-hux-ny.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar-LiuL-ny.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
