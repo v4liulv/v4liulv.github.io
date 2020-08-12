@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Peter John Landin",
+      "subtitle" : "「计算机科学偶像」- 彼得·约翰·兰丁",
+      "tags"     : "CS Idols",
+      "url"      : "/2020/08/11/peter-john-landin/",
+      "date"     : "2020-08-11 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Data Representation - Integer",
       "subtitle" : "「数据表示」整数",
       "tags"     : "笔记, 基础, C, C++",
