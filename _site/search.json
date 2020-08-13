@@ -1,9 +1,17 @@
 [
   
     {
-      "title"    : "Peter John Landin",
-      "subtitle" : "「计算机科学偶像」- 彼得·约翰·兰丁",
-      "tags"     : "CS Idols",
+      "title"    : "DataX-Job配置说明",
+      "subtitle" : "DataX使用",
+      "tags"     : "数字贵阳, DataX",
+      "url"      : "/2020/08/13/DataX-Job%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/",
+      "date"     : "2020-08-13 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "PowerJob容器开发集成DataX及任务配置",
+      "subtitle" : "「PowerJob容器」- DataX",
+      "tags"     : "数字贵阳, PowerJob, DataX",
       "url"      : "/2020/08/11/peter-john-landin/",
       "date"     : "2020-08-11 00:00:00 +0800"
     } ,
@@ -14,54 +22,6 @@
       "tags"     : "Akka",
       "url"      : "/2020/08/11/doc-translation/",
       "date"     : "2020-08-11 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "Data Representation - Integer",
-      "subtitle" : "「数据表示」整数",
-      "tags"     : "笔记, 基础, C, C++",
-      "url"      : "/2020/06/19/data-rep-int/",
-      "date"     : "2020-06-19 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "My Programming Languages Spectrum",
-      "subtitle" : "我的编程语言光谱",
-      "tags"     : "",
-      "url"      : "/2020/05/05/pl-chart/",
-      "date"     : "2020-05-05 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "Peter John Landin",
-      "subtitle" : "「计算机科学偶像」- 彼得·约翰·兰丁",
-      "tags"     : "CS Idols",
-      "url"      : "/2019/09/13/peter-john-landin/",
-      "date"     : "2019-09-13 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "「SF-QC」2 TypeClasses",
-      "subtitle" : "Quickcheck - A Tutorial on Typeclasses in Coq",
-      "tags"     : "SF (软件基础), QC (Quickcheck), Coq, 笔记",
-      "url"      : "/2019/09/02/sf-qc-02-typeclasses/",
-      "date"     : "2019-09-02 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "「SF-PLF」1 Equiv",
-      "subtitle" : "Programming Language Foundations - Program Equivalence (程序的等价关系)",
-      "tags"     : "SF (软件基础), PLF (编程语言基础), Coq, 笔记",
-      "url"      : "/2019/03/01/sf-plf-01-equiv/",
-      "date"     : "2019-03-01 00:00:00 +0800"
-    } ,
-  
-    {
-      "title"    : "「SF-LC」1 Basics",
-      "subtitle" : "Logical Foundations - Functional Programming in Coq",
-      "tags"     : "LF (逻辑基础), SF (软件基础), Coq, 笔记",
-      "url"      : "/2019/01/01/sf-lf-01-basics/",
-      "date"     : "2019-01-01 00:00:00 +0800"
     } 
   
 ]
