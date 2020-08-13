@@ -10,7 +10,7 @@ Hi，我是刘律，前端娱乐圈 NPC，编程语言/编译器初心者，[Fac
 这个图表可视化了我对于各种编程语言的使用经历、兴趣，还附带了一些评语和解释等等。 啊我知道对比编程语言是一件很有争议的事情……自娱自乐一下！不要太较真哦 ;)
 
 
-##### 演讲与分享
+##### 技术分享
 
 - [Upgrading to Progressive Web Apps][9] · [JSConf CN 上海 2017](http://2017.jsconf.cn/)
 - Building Progressive Web Apps · [CSDI 广州 2017](http://www.csdisummit.com/)
