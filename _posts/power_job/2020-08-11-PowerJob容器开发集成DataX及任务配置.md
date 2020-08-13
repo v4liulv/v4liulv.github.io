@@ -1,6 +1,6 @@
 ---
 title: "PowerJob容器开发集成DataX及任务配置"
-subtitle: "「PowerJob容器」- DataX"
+subtitle: "「PowerJob容器V1.0.1」- DataX3"
 layout: post
 author: "LiuL"
 header-style: text
