@@ -12,18 +12,18 @@ tags:
 
 # 1. DataX开发说明
 
-DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PorwerJob调度平台集成DataX开发。
+DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。
 
 DataX插件扩展开发相关内容请参考[DataX二次开发指南]()和[DataX集成支持TBDS腾讯大数据套件插件开发]()。
 
-本文档主要是介绍PorwerJob调度平台集成DataX开发及如何在PorwerJob调度平台配置DataX JOB。
+本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。
 
 # 2. Java容器集成DataX实现
 
 Java集成DataX开发主要包含：
 
 1. 本地编译打包部署DataX的Maven本地私服
-2. PorwerJob集成DataX开发
+2. PowerJob集成DataX开发
 
 ## 2.1. 本地编译打包部署DataX的Maven本地私服
 
@@ -49,9 +49,9 @@ git clone https://gitlab.tcfuture.tech/szgy/caelum-datax.git
 
 ![20200813181302](https://liulv.work/images/img/20200813181302.png)
 
-## 2.2. PorwerJob集成DataX开发
+## 2.2. PowerJob集成DataX开发
 
-### 2.2.1. PorwerJob容器模块添加DataX依赖
+### 2.2.1. PowerJob容器模块添加DataX依赖
 
 Java集成Data需要根据上一章节[Java集成前提条件](#Java集成前提条件)的本地Maven库添加datax-core模块依赖，如下：
 
@@ -614,11 +614,11 @@ public class ContainerDataXProcessor implements BasicProcessor {
 }
 ```
 
-保持json文件文件`mysql2mysql.json`文件，并上传到PorwerJob服务器的`/data/datax/datax/job`目录下， 如下图：
+保持json文件文件`mysql2mysql.json`文件，并上传到PowerJob服务器的`/data/datax/datax/job`目录下， 如下图：
 
 ![20200813231619](https://liulv.work/images/img/20200813231619.png)
 
-**特别注意：**后续不会使用json文件方式，需要在PorwerJob端开发前端可配置方式作为参数传递Java容器执行方式。
+**特别注意：**后续不会使用json文件方式，需要在PowerJob端开发前端可配置方式作为参数传递Java容器执行方式。
 
 ## 4.2. 任务管理-新建任务
 

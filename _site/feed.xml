@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 14 Aug 2020 00:36:12 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Aug 2020 00:36:12 +0800</lastBuildDate>
+    <pubDate>Fri, 14 Aug 2020 00:38:18 +0800</pubDate>
+    <lastBuildDate>Fri, 14 Aug 2020 00:38:18 +0800</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
     
       <item>
@@ -28,11 +28,11 @@
         <title>PowerJob容器开发集成DataX及任务配置</title>
         <description>&lt;h1 id=&quot;1-datax开发说明&quot;&gt;1. DataX开发说明&lt;/h1&gt;
 
-&lt;p&gt;DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PorwerJob调度平台集成DataX开发。&lt;/p&gt;
+&lt;p&gt;DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。&lt;/p&gt;
 
 &lt;p&gt;DataX插件扩展开发相关内容请参考&lt;a href=&quot;&quot;&gt;DataX二次开发指南&lt;/a&gt;和&lt;a href=&quot;&quot;&gt;DataX集成支持TBDS腾讯大数据套件插件开发&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;本文档主要是介绍PorwerJob调度平台集成DataX开发及如何在PorwerJob调度平台配置DataX JOB。&lt;/p&gt;
+&lt;p&gt;本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。&lt;/p&gt;
 
 &lt;h1 id=&quot;2-java容器集成datax实现&quot;&gt;2. Java容器集成DataX实现&lt;/h1&gt;
 
@@ -40,7 +40,7 @@
 
 &lt;ol&gt;
   &lt;li&gt;本地编译打包部署DataX的Maven本地私服&lt;/li&gt;
-  &lt;li&gt;PorwerJob集成DataX开发&lt;/li&gt;
+  &lt;li&gt;PowerJob集成DataX开发&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;21-本地编译打包部署datax的maven本地私服&quot;&gt;2.1. 本地编译打包部署DataX的Maven本地私服&lt;/h2&gt;
@@ -80,9 +80,9 @@
 
 &lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200813181302.png&quot; alt=&quot;20200813181302&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;22-porwerjob集成datax开发&quot;&gt;2.2. PorwerJob集成DataX开发&lt;/h2&gt;
+&lt;h2 id=&quot;22-powerjob集成datax开发&quot;&gt;2.2. PowerJob集成DataX开发&lt;/h2&gt;
 
-&lt;h3 id=&quot;221-porwerjob容器模块添加datax依赖&quot;&gt;2.2.1. PorwerJob容器模块添加DataX依赖&lt;/h3&gt;
+&lt;h3 id=&quot;221-powerjob容器模块添加datax依赖&quot;&gt;2.2.1. PowerJob容器模块添加DataX依赖&lt;/h3&gt;
 
 &lt;p&gt;Java集成Data需要根据上一章节&lt;a href=&quot;#Java集成前提条件&quot;&gt;Java集成前提条件&lt;/a&gt;的本地Maven库添加datax-core模块依赖，如下：&lt;/p&gt;
 
@@ -1086,11 +1086,11 @@
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;保持json文件文件&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql2mysql.json&lt;/code&gt;文件，并上传到PorwerJob服务器的&lt;code class=&quot;highlighter-rouge&quot;&gt;/data/datax/datax/job&lt;/code&gt;目录下， 如下图：&lt;/p&gt;
+&lt;p&gt;保持json文件文件&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql2mysql.json&lt;/code&gt;文件，并上传到PowerJob服务器的&lt;code class=&quot;highlighter-rouge&quot;&gt;/data/datax/datax/job&lt;/code&gt;目录下， 如下图：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200813231619.png&quot; alt=&quot;20200813231619&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;特别注意：&lt;/strong&gt;后续不会使用json文件方式，需要在PorwerJob端开发前端可配置方式作为参数传递Java容器执行方式。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特别注意：&lt;/strong&gt;后续不会使用json文件方式，需要在PowerJob端开发前端可配置方式作为参数传递Java容器执行方式。&lt;/p&gt;
 
 &lt;h2 id=&quot;42-任务管理-新建任务&quot;&gt;4.2. 任务管理-新建任务&lt;/h2&gt;
 
