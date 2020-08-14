@@ -5,9 +5,9 @@ layout: post
 author: "LiuL"
 header-style: text
 tags:
-  - 数字贵阳
   - PowerJob
   - DataX
+  - 数字贵阳
 ---
 
 # 1. DataX开发说明

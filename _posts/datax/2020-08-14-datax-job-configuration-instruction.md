@@ -5,8 +5,8 @@ layout: post
 author: "LiuL"
 header-style: text
 tags:
-  - 数字贵阳
   - DataX
+  - 数字贵阳
 ---
 
 # 配置1

@@ -5,17 +5,17 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 14 Aug 2020 00:52:34 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Aug 2020 00:52:34 +0800</lastBuildDate>
+    <pubDate>Fri, 14 Aug 2020 13:33:04 +0800</pubDate>
+    <lastBuildDate>Fri, 14 Aug 2020 13:33:04 +0800</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
     
       <item>
         <title>DataX-Job配置说明</title>
         <description>&lt;h1 id=&quot;配置1&quot;&gt;配置1&lt;/h1&gt;
 </description>
-        <pubDate>Thu, 13 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2020/08/13/DataX-Job%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/</link>
-        <guid isPermaLink="true">http://localhost:4000/2020/08/13/DataX-Job%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/</guid>
+        <pubDate>Fri, 14 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/14/datax-job-configuration-instruction/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/14/datax-job-configuration-instruction/</guid>
         
         <category>数字贵阳</category>
         
@@ -1136,15 +1136,15 @@
 &lt;p&gt;END !!!&lt;/p&gt;
 
 </description>
-        <pubDate>Tue, 11 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2020/08/11/PowerJob%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E9%9B%86%E6%88%90DataX%E5%8F%8A%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE/</link>
-        <guid isPermaLink="true">http://localhost:4000/2020/08/11/PowerJob%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E9%9B%86%E6%88%90DataX%E5%8F%8A%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE/</guid>
-        
-        <category>数字贵阳</category>
+        <pubDate>Thu, 13 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/13/powerjob-container-datax/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/13/powerjob-container-datax/</guid>
         
         <category>PowerJob</category>
         
         <category>DataX</category>
+        
+        <category>数字贵阳</category>
         
         
       </item>
