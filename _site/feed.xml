@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 14 Aug 2020 13:33:04 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Aug 2020 13:33:04 +0800</lastBuildDate>
+    <pubDate>Fri, 14 Aug 2020 14:17:45 +0800</pubDate>
+    <lastBuildDate>Fri, 14 Aug 2020 14:17:45 +0800</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
     
       <item>
@@ -17,9 +17,20 @@
         <link>http://localhost:4000/2020/08/14/datax-job-configuration-instruction/</link>
         <guid isPermaLink="true">http://localhost:4000/2020/08/14/datax-job-configuration-instruction/</guid>
         
+        <category>DataX</category>
+        
         <category>数字贵阳</category>
         
-        <category>DataX</category>
+        
+      </item>
+    
+      <item>
+        <title>Datax Bigdata Tbds</title>
+        <description>
+</description>
+        <pubDate>Fri, 14 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/14/datax-bigdata-tbds/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/14/datax-bigdata-tbds/</guid>
         
         
       </item>
@@ -30,7 +41,7 @@
 
 &lt;p&gt;DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。&lt;/p&gt;
 
-&lt;p&gt;DataX插件扩展开发相关内容请参考&lt;a href=&quot;&quot;&gt;DataX二次开发指南&lt;/a&gt;和&lt;a href=&quot;&quot;&gt;DataX集成支持TBDS腾讯大数据套件插件开发&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;DataX插件扩展开发相关内容请参考&lt;a href=&quot;https://github.com/alibaba/DataX/blob/master/dataxPluginDev.md&quot;&gt;DataX插件开发宝典&lt;/a&gt;和&lt;a href=&quot;https://liulv.work/2020/08/14/datax-bigdata-tbds/&quot;&gt;DataX集成支持TBDS腾讯大数据套件插件开发&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。&lt;/p&gt;
 
@@ -84,7 +95,7 @@
 
 &lt;h3 id=&quot;221-powerjob容器模块添加datax依赖&quot;&gt;2.2.1. PowerJob容器模块添加DataX依赖&lt;/h3&gt;
 
-&lt;p&gt;Java集成Data需要根据上一章节&lt;a href=&quot;#Java集成前提条件&quot;&gt;Java集成前提条件&lt;/a&gt;的本地Maven库添加datax-core模块依赖，如下：&lt;/p&gt;
+&lt;p&gt;Java集成Data需要根据上一章节&lt;a href=&quot;#21-本地编译打包部署datax的maven本地私服&quot;&gt;Java集成前提条件&lt;/a&gt;的本地Maven库添加datax-core模块依赖，如下：&lt;/p&gt;
 
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
@@ -992,7 +1003,7 @@
 
 &lt;h2 id=&quot;41-配置dataxjob的json文件&quot;&gt;4.1. 配置DataXJob的JSON文件&lt;/h2&gt;
 
-&lt;p&gt;配置DataX作业Job，详细更多Job配置可参考&lt;a href=&quot;&quot;&gt;DataX Job配置说明&lt;/a&gt;，这里示例配置从数据源mysql同步到mysql，Job json如下:&lt;/p&gt;
+&lt;p&gt;配置DataX作业Job，详细更多Job配置可参考&lt;a href=&quot;https://liulv.work/2020/08/14/datax-job-configuration-instruction/&quot;&gt;DataX Job配置说明&lt;/a&gt;，这里示例配置从数据源mysql同步到mysql，Job json如下:&lt;/p&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2

@@ -3,8 +3,16 @@
     {
       "title"    : "DataX-Job配置说明",
       "subtitle" : "DataX使用",
-      "tags"     : "数字贵阳, DataX",
+      "tags"     : "DataX, 数字贵阳",
       "url"      : "/2020/08/14/datax-job-configuration-instruction/",
+      "date"     : "2020-08-14 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "Datax Bigdata Tbds",
+      "subtitle" : "",
+      "tags"     : "",
+      "url"      : "/2020/08/14/datax-bigdata-tbds/",
       "date"     : "2020-08-14 00:00:00 +0800"
     } ,
   

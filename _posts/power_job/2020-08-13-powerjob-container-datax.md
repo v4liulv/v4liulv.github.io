@@ -14,7 +14,7 @@ tags:
 
 DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。
 
-DataX插件扩展开发相关内容请参考[DataX二次开发指南]()和[DataX集成支持TBDS腾讯大数据套件插件开发]()。
+DataX插件扩展开发相关内容请参考[DataX插件开发宝典](https://github.com/alibaba/DataX/blob/master/dataxPluginDev.md)和[DataX集成支持TBDS腾讯大数据套件插件开发](https://liulv.work/2020/08/14/datax-bigdata-tbds/)。
 
 本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。
 
@@ -53,7 +53,7 @@ git clone https://gitlab.tcfuture.tech/szgy/caelum-datax.git
 
 ### 2.2.1. PowerJob容器模块添加DataX依赖
 
-Java集成Data需要根据上一章节[Java集成前提条件](#Java集成前提条件)的本地Maven库添加datax-core模块依赖，如下：
+Java集成Data需要根据上一章节[Java集成前提条件](#21-本地编译打包部署datax的maven本地私服)的本地Maven库添加datax-core模块依赖，如下：
 
 ```xml
 <dependency>
@@ -564,7 +564,7 @@ public class ContainerDataXProcessor implements BasicProcessor {
 
 ## 4.1. 配置DataXJob的JSON文件
 
-配置DataX作业Job，详细更多Job配置可参考[DataX Job配置说明]()，这里示例配置从数据源mysql同步到mysql，Job json如下:
+配置DataX作业Job，详细更多Job配置可参考[DataX Job配置说明](https://liulv.work/2020/08/14/datax-job-configuration-instruction/)，这里示例配置从数据源mysql同步到mysql，Job json如下:
 
 ```json
 {
