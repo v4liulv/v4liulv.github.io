@@ -1,4 +1,4 @@
-I"m?<h1 id="1-datax开发说明">1. DataX开发说明</h1>
+I"�@<h1 id="1-datax开发说明">1. DataX开发说明</h1>
 
 <p>DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。</p>
 
@@ -43,11 +43,14 @@
     <p><strong>step4:</strong> 执行编译打包</p>
   </li>
   <li>
-    <p><strong>step5:</strong> 通过命令<code class="highlighter-rouge">Maven package</code>打包发布到本地Maven库</p>
+    <p><strong>step5:</strong> 通过命令<code class="language-plaintext highlighter-rouge">Maven install</code>打包发布到本地Maven库</p>
   </li>
-  <li>
-    <p><strong>step6:</strong>检查本地Maven库是否存在DataX依赖<code class="highlighter-rouge">com\alibaba\datax</code>, 如下图证明已经编译打包到本地Maven库</p>
-  </li>
+</ul>
+
+<p><img src="https://liulv.work/images/img/20200817143125.png" alt="20200817143125" /></p>
+
+<ul>
+  <li><strong>step6:</strong>检查本地Maven库是否存在DataX依赖<code class="language-plaintext highlighter-rouge">com\alibaba\datax</code>, 如下图证明已经编译打包到本地Maven库</li>
 </ul>
 
 <p><img src="https://liulv.work/images/img/20200813181302.png" alt="20200813181302" /></p>
@@ -72,7 +75,7 @@
 
 <h3 id="222-datax二次开发改造">2.2.2. DataX二次开发改造</h3>
 
-<p>DataX执行都是运行结果都是后台打印，需要改造执行后可获取DataX执行JOB后结果信息。DataX集成调用主要是通过DataX的入口类<code class="highlighter-rouge">com.alibaba.datax.core.Engine</code>的<code class="highlighter-rouge">entry</code>方法调用，可在Engine类改造获取执行结果信息。</p>
+<p>DataX执行都是运行结果都是后台打印，需要改造执行后可获取DataX执行JOB后结果信息。DataX集成调用主要是通过DataX的入口类<code class="language-plaintext highlighter-rouge">com.alibaba.datax.core.Engine</code>的<code class="language-plaintext highlighter-rouge">entry</code>方法调用，可在Engine类改造获取执行结果信息。</p>
 
 <p>Engine添加静态的Communication变量</p>
 
@@ -110,7 +113,7 @@
 <span class="n">result</span> <span class="o">=</span> <span class="n">getReportCommunication</span><span class="o">(</span><span class="n">endCommunication</span><span class="o">,</span> <span class="n">startCommunication</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>Engine的<code class="highlighter-rouge">entry</code>方法中暂定解析job目录文件方式</p>
+<p>Engine的<code class="language-plaintext highlighter-rouge">entry</code>方法中暂定解析job目录文件方式</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre><span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="nc">ConfigParser</span><span class="o">.</span><span class="na">parseFile</span><span class="o">(</span><span class="n">jobPath</span><span class="o">);</span>
@@ -921,13 +924,13 @@
 <p>配置ProwerJob支持DataX需要下面步骤</p>
 
 <ul>
-  <li><strong>step 1:</strong> 编译打包后目录在DataX工程下<code class="highlighter-rouge">target/datax/datax</code>，将此目录压缩上传到ProwerJob的Worker服务器下，如上传到<code class="highlighter-rouge">/data/datax/datax</code>目录下，如下图</li>
+  <li><strong>step 1:</strong> 编译打包后目录在DataX工程下<code class="language-plaintext highlighter-rouge">target/datax/datax</code>，将此目录压缩上传到ProwerJob的Worker服务器下，如上传到<code class="language-plaintext highlighter-rouge">/data/datax/datax</code>目录下，如下图</li>
 </ul>
 
 <p><img src="https://liulv.work/images/img/20200814000027.png" alt="20200814000027" /></p>
 
 <ul>
-  <li><strong>step 2:</strong> 根据step 1的datax目录，修改ProwerJob容器模块配置DATAX_HOME配置<code class="highlighter-rouge">/data/datax/datax</code></li>
+  <li><strong>step 2:</strong> 根据step 1的datax目录，修改ProwerJob容器模块配置DATAX_HOME配置<code class="language-plaintext highlighter-rouge">/data/datax/datax</code></li>
 </ul>
 
 <p><img src="https://liulv.work/images/img/20200814000352.png" alt="20200814000352" /></p>
@@ -1058,7 +1061,7 @@
 </span><span class="p">}</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>保持json文件文件<code class="highlighter-rouge">mysql2mysql.json</code>文件，并上传到PowerJob服务器的<code class="highlighter-rouge">/data/datax/datax/job</code>目录下， 如下图：</p>
+<p>保持json文件文件<code class="language-plaintext highlighter-rouge">mysql2mysql.json</code>文件，并上传到PowerJob服务器的<code class="language-plaintext highlighter-rouge">/data/datax/datax/job</code>目录下， 如下图：</p>
 
 <p><img src="https://liulv.work/images/img/20200813231619.png" alt="20200813231619" /></p>
 
@@ -1076,7 +1079,7 @@
 
 <ol>
   <li>
-    <p>任务参数：<code class="highlighter-rouge">/data/datax/datax/job/mysql2mysql.json</code>，配置为上一步服务器上的<a href="#配置DataXJob的JSON文件">配置DataXJob的JSON文件</a>中的上传服务器的json文件目录。</p>
+    <p>任务参数：<code class="language-plaintext highlighter-rouge">/data/datax/datax/job/mysql2mysql.json</code>，配置为上一步服务器上的<a href="#配置DataXJob的JSON文件">配置DataXJob的JSON文件</a>中的上传服务器的json文件目录。</p>
   </li>
   <li>
     <p>执行配置：单机运行 Java容器 1#com.tcfuture.kfcfans.containers.ContainerDataXProcessor</p>

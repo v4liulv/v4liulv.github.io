@@ -1,4 +1,4 @@
-I"��<h1 id="1-akka简介">1. Akka简介</h1>
+I"o�<h1 id="1-akka简介">1. Akka简介</h1>
 
 <ul>
   <li>为什么要用Akka/好处</li>
@@ -655,7 +655,7 @@ akka-actor 没有外部依赖 (除了scala-library.jar JAR包).</p>
 
 <h4 id="2312-先决条件">2.3.1.2. 先决条件</h4>
 
-<p>您应该已经下载<a href="https://gitlab.tcfuture.tech/akka/akka-hello">Hello Word Akka示例</a>程序中Actor模块的<code class="highlighter-rouge">java/com/tcfuture/akka/actor/hello</code>包，并参考本文档<a href="#33-HelloWordAkka">HelloWordAkka示例介绍</a>。您将使用它作为一个种子项目，并添加本教程中描述的功能。</p>
+<p>您应该已经下载<a href="https://gitlab.tcfuture.tech/akka/akka-hello">Hello Word Akka示例</a>程序中Actor模块的<code class="language-plaintext highlighter-rouge">java/com/tcfuture/akka/actor/hello</code>包，并参考本文档<a href="#33-HelloWordAkka">HelloWordAkka示例介绍</a>。您将使用它作为一个种子项目，并添加本教程中描述的功能。</p>
 
 <blockquote>
   <p><strong>请注意</strong><br />
@@ -730,7 +730,7 @@ Akka模块的Java和Scala dsl都捆绑在同一个JAR中。为了获得平稳的
 
 <p>在Akka中Actor永远属于父Actor。您可以通过调用ActorContext.spawn()来创建一个actor。创建者Actor成为新创建的子Actor的父Actor。您可能会问，您创建的第一个actor的父元素是谁?</p>
 
-<p>如下所示，所有Actors都有一个共同的父Actor，即用户监护人，它是在启动ActorSystem时定义和创建的。正如我们在《快速入门指南》中提到的，actor的创建将返回一个引用，该引用是一个有效的URL。例如，如果我们从用户guardian中使用<code class="highlighter-rouge">context.spawn(someBehavior, "someActor")</code>创建一个名为someActor的actor，其引用将包括路径<code class="highlighter-rouge">/user/someActor</code>。</p>
+<p>如下所示，所有Actors都有一个共同的父Actor，即用户监护人，它是在启动ActorSystem时定义和创建的。正如我们在《快速入门指南》中提到的，actor的创建将返回一个引用，该引用是一个有效的URL。例如，如果我们从用户guardian中使用<code class="language-plaintext highlighter-rouge">context.spawn(someBehavior, "someActor")</code>创建一个名为someActor的actor，其引用将包括路径<code class="language-plaintext highlighter-rouge">/user/someActor</code>。</p>
 
 <p><img src="https://liulv.work/images/img/20200802224604.png" alt="20200802224604" /></p>
 
@@ -750,7 +750,7 @@ Akka模块的Java和Scala dsl都捆绑在同一个JAR中。为了获得平稳的
 
 <p>查看actor层次结构的最简单方法是打印ActorRef实例。在这个小实验中，我们创建一个actor，打印它的引用，创建这个actor的子元素，然后打印子元素的引用。我们从Hello World项目开始，如果您还没有下载它，请从Lightbend技术中心下载Quickstart项目。</p>
 
-<p>在Hello World项目中，导航到<code class="highlighter-rouge">com.tcfuture.akka.actor.architecture</code>示例包，并为下面代码片段中的每个类创建一个Java文件，并复制各自的内容。保存文件并运行<code class="highlighter-rouge">com.tcfuture.akka.actor.hello.PrintMyActorRefActor.ActorHierarchyExperiments</code>从构建工具或IDE中观察输出。</p>
+<p>在Hello World项目中，导航到<code class="language-plaintext highlighter-rouge">com.tcfuture.akka.actor.architecture</code>示例包，并为下面代码片段中的每个类创建一个Java文件，并复制各自的内容。保存文件并运行<code class="language-plaintext highlighter-rouge">com.tcfuture.akka.actor.hello.PrintMyActorRefActor.ActorHierarchyExperiments</code>从构建工具或IDE中观察输出。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -874,7 +874,7 @@ Akka模块的Java和Scala dsl都捆绑在同一个JAR中。为了获得平稳的
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>请注意消息要求第一个actor执行其工作的方式。我们使用父节点的引用发送消息:<code class="highlighter-rouge">firstRef.tell("printit", ActorRef.noSender())</code>。当代码执行时，输出包括对第一个actor的引用以及它作为printit大小写的一部分创建的子元素。您的输出应该类似于以下内容:</p>
+<p>请注意消息要求第一个actor执行其工作的方式。我们使用父节点的引用发送消息:<code class="language-plaintext highlighter-rouge">firstRef.tell("printit", ActorRef.noSender())</code>。当代码执行时，输出包括对第一个actor的引用以及它作为printit大小写的一部分创建的子元素。您的输出应该类似于以下内容:</p>
 
 <pre><code class="language-log">First: Actor[akka://testSystem/user/first-actor#1053618476]
 Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
@@ -888,13 +888,13 @@ Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
 
 <ul>
   <li>
-    <p>两个路径都从<code class="highlighter-rouge">akka://testSystem/</code>开始。因为所有的actor引用都是有效的url，所以akka://是协议字段的值。</p>
+    <p>两个路径都从<code class="language-plaintext highlighter-rouge">akka://testSystem/</code>开始。因为所有的actor引用都是有效的url，所以akka://是协议字段的值。</p>
   </li>
   <li>
     <p>接下来，就像在万维网上一样，URL标识系统。在本例中，系统被命名为testSystem，但它可以是任何其他名称。如果启用了多个系统之间的远程通信，URL的这一部分将包含主机名，以便其他系统可以在网络上找到它。</p>
   </li>
   <li>
-    <p>因为第二个Actor的引用包含路径<code class="highlighter-rouge">/first-actor/</code>，所以它将其标识为第一个Actor的子元素。</p>
+    <p>因为第二个Actor的引用包含路径<code class="language-plaintext highlighter-rouge">/first-actor/</code>，所以它将其标识为第一个Actor的子元素。</p>
   </li>
   <li>
     <p>actor引用的最后一部分#1053618476或#-1544706041是一个在大多数情况下可以忽略的惟一标识符。</p>
@@ -1023,7 +1023,7 @@ Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
 
 <p>运行结果如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -1181,7 +1181,7 @@ first stopped
 
 <p>您应该会看到类似如下的输出:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -4452,7 +4452,7 @@ supervised actor started
 
 <h4 id="2375-总结">2.3.7.5. 总结</h4>
 
-<p>在物联网（<code class="highlighter-rouge">IoT</code>）系统的背景下，本指南介绍了以下概念。如有必要，你可以通过以下链接进行查看：</p>
+<p>在物联网（<code class="language-plaintext highlighter-rouge">IoT</code>）系统的背景下，本指南介绍了以下概念。如有必要，你可以通过以下链接进行查看：</p>
 
 <ul>
   <li><a href="https://github.com/guobinhit/akka-guide/blob/master/articles/getting-started-guide/tutorial_1.md">Actor 的层级结构及其生命周期</a></li>
@@ -4471,7 +4471,7 @@ supervised actor started
 <p>要从本指南获得完整的应用程序，你可能需要提供 UI 或 API。为此，我们建议你查看以下技术，看看哪些适合你：</p>
 
 <ul>
-  <li>「<a href="https://doc.akka.io/docs/akka/current/additional/books.html">Akka HTTP</a>」是一个 HTTP 服务和客户端的库，使发布和使用 HTTP 端点（<code class="highlighter-rouge">endpoints</code>）成为可能。</li>
+  <li>「<a href="https://doc.akka.io/docs/akka/current/additional/books.html">Akka HTTP</a>」是一个 HTTP 服务和客户端的库，使发布和使用 HTTP 端点（<code class="language-plaintext highlighter-rouge">endpoints</code>）成为可能。</li>
   <li>「<a href="https://doc.akka.io/docs/akka/current/additional/books.html">Play Framework</a>」是一个成熟的 Web 框架，它构建在 Akka HTTP 之上，它能与 Akka 很好地集成，可用于创建一个完整的现代 Web 用户界面。</li>
   <li>「<a href="https://doc.akka.io/docs/akka/current/additional/books.html">Lagom</a>」是一个基于 Akka 的独立的微服务框架，它编码了 Akka 和 Play 的许多最佳实践。</li>
 </ul>
@@ -4528,10 +4528,10 @@ supervised actor started
 <p>乐观并发控制（OCC）方法通常是无障碍的。OCC 方法是，每个 Actor 都试图在共享对象上执行其操作，但如果 Actor 检测到来自其他对象的冲突，则会回滚修改，并根据某些计划重试。如果有一个时间点，其中一个 Actor 是唯一的尝试者，那么操作将成功</p>
 
 <h2 id="32-actor系统">3.2. Actor系统</h2>
-<p>Actor 是封装状态和行为的对象，它们通过交换放在收件人邮箱中的消息进行专门的通信。从某种意义上说，Actor 是面向对象编程最严格的形式，但最好将其视为“人”：当与 Actor 一起建模解决方案时，设想一组人员并为其分配子任务，将其功能安排到组织结构中，并考虑如何升级失败（所有这些都得益于非实际地与人打交道，这意味着我们不需要关心他们的情感状态或道德问题）。结果可以作为构建软件实现的一个心理脚手架（<code class="highlighter-rouge">mental scaffolding</code>）。</p>
+<p>Actor 是封装状态和行为的对象，它们通过交换放在收件人邮箱中的消息进行专门的通信。从某种意义上说，Actor 是面向对象编程最严格的形式，但最好将其视为“人”：当与 Actor 一起建模解决方案时，设想一组人员并为其分配子任务，将其功能安排到组织结构中，并考虑如何升级失败（所有这些都得益于非实际地与人打交道，这意味着我们不需要关心他们的情感状态或道德问题）。结果可以作为构建软件实现的一个心理脚手架（<code class="language-plaintext highlighter-rouge">mental scaffolding</code>）。</p>
 
 <ul>
-  <li><strong>注释</strong>：<code class="highlighter-rouge">ActorSystem</code>是一个重量级架构，它将分配<code class="highlighter-rouge">1 … N</code>个线程，因此为每个逻辑应用程序都创建一个线程。</li>
+  <li><strong>注释</strong>：<code class="language-plaintext highlighter-rouge">ActorSystem</code>是一个重量级架构，它将分配<code class="language-plaintext highlighter-rouge">1 … N</code>个线程，因此为每个逻辑应用程序都创建一个线程。</li>
 </ul>
 
 <h3 id="321-层次结构">3.2.1. 层次结构</h3>
@@ -4539,7 +4539,7 @@ supervised actor started
 
 <p>Actor 系统的典型特征是，任务被拆分和委托，直到它们变得足够小，可以一块处理。这样做，不仅任务本身结构清晰，而且结果 Actor 可以根据他们应该处理哪些消息、应该如何正常反应以及应该如何处理失败来进行推理。如果一个 Actor 没有处理特定情况的方法，它会向其监督 Actor 发送相应的失败消息，请求帮助。然后，递归结构允许在正确的级别处理故障。</p>
 
-<p>将其与易于转入防御编程（<code class="highlighter-rouge">defensive programming</code>）的分层软件设计进行比较，目的是不泄漏任何故障：如果问题传达给了正确的人，那么可以找到比试图将所有事情“隐藏”在“地毯下”更好的解决方案。</p>
+<p>将其与易于转入防御编程（<code class="language-plaintext highlighter-rouge">defensive programming</code>）的分层软件设计进行比较，目的是不泄漏任何故障：如果问题传达给了正确的人，那么可以找到比试图将所有事情“隐藏”在“地毯下”更好的解决方案。</p>
 
 <p>现在，设计这样一个系统的困难在于如何决定谁应该监督什么。没有单一的最佳解决方案，但有一些指导方针可能会有所帮助：</p>
 
@@ -4565,13 +4565,13 @@ supervised actor started
 </ol>
 
 <h3 id="324-你不应该关心的事">3.2.4. 你不应该关心的事</h3>
-<p>Actor 系统管理配置使用的资源，以便运行其包含的 Actor。在一个这样的系统中，可能有数百万的 Actor，毕竟所有的赞歌（<code class="highlighter-rouge">mantra</code>）都是将他们视为丰富的，并且他们在每个实例的开销只有大约 300 字节。当然，在大型系统中处理消息的确切顺序不受应用程序作者的控制，但这也是无意的。</p>
+<p>Actor 系统管理配置使用的资源，以便运行其包含的 Actor。在一个这样的系统中，可能有数百万的 Actor，毕竟所有的赞歌（<code class="language-plaintext highlighter-rouge">mantra</code>）都是将他们视为丰富的，并且他们在每个实例的开销只有大约 300 字节。当然，在大型系统中处理消息的确切顺序不受应用程序作者的控制，但这也是无意的。</p>
 
 <h3 id="325-终止-actorsystem">3.2.5. 终止 ActorSystem</h3>
 
-<p>当你知道应用程序的所有操作都已完成时，可以调<code class="highlighter-rouge">ActorSystem</code>的<code class="highlighter-rouge">terminate</code>方法。这将停止守护者 Actor，而守护者 Actor 又将递归地停止其所有子 Actor，即系统守护者。</p>
+<p>当你知道应用程序的所有操作都已完成时，可以调<code class="language-plaintext highlighter-rouge">ActorSystem</code>的<code class="language-plaintext highlighter-rouge">terminate</code>方法。这将停止守护者 Actor，而守护者 Actor 又将递归地停止其所有子 Actor，即系统守护者。</p>
 
-<p>如果要在终止<code class="highlighter-rouge">ActorSystem</code>时执行某些操作，请查看「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/actors.md#%E5%8D%8F%E8%B0%83%E5%85%B3%E9%97%AD">协调关闭</a>」。</p>
+<p>如果要在终止<code class="language-plaintext highlighter-rouge">ActorSystem</code>时执行某些操作，请查看「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/actors.md#%E5%8D%8F%E8%B0%83%E5%85%B3%E9%97%AD">协调关闭</a>」。</p>
 
 <hr />
 
@@ -4582,7 +4582,7 @@ supervised actor started
 <h2 id="33-什么是-actor">3.3. 什么是 Actor？</h2>
 <p>在「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/actor-systems.md">Actor 系统</a>」这一节中，我们介绍了 Actor 是如何形成层次结构的，以及其是构建应用程序的最小单元。本节将单独地研究 Actor，解释在实现它时遇到的概念。有关所有细节的更深入探讨，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/actors.md">Actors</a>」。</p>
 
-<p>Actor 是状态、行为、邮箱、子 Actor 和监督者策略（<code class="highlighter-rouge">Supervisor Strategy</code>）的容器。所有这些都封装在一个 Actor 的引用之后。一个值得注意的方面是，Actor 有一个明确的生命周期，当不再被引用时它们不会被自动销毁；在创建了一个生命周期之后，你有责任确保它最终会被终止，这也让你能够控制当 Actor 终止时如何释放资源。</p>
+<p>Actor 是状态、行为、邮箱、子 Actor 和监督者策略（<code class="language-plaintext highlighter-rouge">Supervisor Strategy</code>）的容器。所有这些都封装在一个 Actor 的引用之后。一个值得注意的方面是，Actor 有一个明确的生命周期，当不再被引用时它们不会被自动销毁；在创建了一个生命周期之后，你有责任确保它最终会被终止，这也让你能够控制当 Actor 终止时如何释放资源。</p>
 
 <h3 id="331-actor-引用">3.3.1. Actor 引用</h3>
 <p>如下面详细介绍的，为了从 Actor 模型中获益，需要将 Actor 对象从外部屏蔽。因此，使用 Actor 引用将 Actor 表示为外部对象，这些引用是可以自由地传递且不受限制的对象。这种分为内部对象和外部对象的方法可以实现所有所需操作的透明性：在不需要更新其他地方引用的情况下重新启动 Actor，将实际的 Actor 对象放在远程主机上，在完全不同的应用程序中向 Actor 发送消息。但最重要的一点是，除非 Actor 不明智地发布了这些信息，否则不可能从外部观察 Actor 的内部并掌握其状态。</p>
@@ -4597,17 +4597,17 @@ supervised actor started
 <p>或者，可以通过持久化接收到的消息并在重新启动后重播（请参见「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/persistence.md">持久化</a>」），将 Actor 的状态自动恢复到重新启动前的状态。</p>
 
 <h3 id="333-行为">3.3.3. 行为</h3>
-<p>每次处理消息时，它都与 Actor 的当前行为相匹配。行为（<code class="highlighter-rouge">Behavior</code>）指的是一个函数，它定义了在该时间点对消息做出反应时要采取的操作，例如，如果客户端被授权，就转发一个请求，否则就拒绝它。这种行为可能会随着时间的推移而改变，例如，由于不同的客户端随着时间的推移而获得授权，或者因为 Actor 可能会进入“停止服务”模式，然后返回。这些更改是通过从行为逻辑中读取的状态变量中对它们进行编码来实现的，或者函数本身可以在运行时交换出来，请参阅<code class="highlighter-rouge">become</code>和<code class="highlighter-rouge">unbecome</code>操作。但是，在构造 Actor 对象期间定义的初始行为是特殊的，因为重新启动 Actor 会将其行为重置为初始行为。</p>
+<p>每次处理消息时，它都与 Actor 的当前行为相匹配。行为（<code class="language-plaintext highlighter-rouge">Behavior</code>）指的是一个函数，它定义了在该时间点对消息做出反应时要采取的操作，例如，如果客户端被授权，就转发一个请求，否则就拒绝它。这种行为可能会随着时间的推移而改变，例如，由于不同的客户端随着时间的推移而获得授权，或者因为 Actor 可能会进入“停止服务”模式，然后返回。这些更改是通过从行为逻辑中读取的状态变量中对它们进行编码来实现的，或者函数本身可以在运行时交换出来，请参阅<code class="language-plaintext highlighter-rouge">become</code>和<code class="language-plaintext highlighter-rouge">unbecome</code>操作。但是，在构造 Actor 对象期间定义的初始行为是特殊的，因为重新启动 Actor 会将其行为重置为初始行为。</p>
 
 <h3 id="334-邮箱">3.3.4. 邮箱</h3>
 <p>Actor 的目的是处理消息，这些消息是从其他 Actor（或从 Actor 系统外部）发送给 Actor 的。连接发送方和接收方的部分是 Actor 的邮箱：每个 Actor 只有一个邮箱，所有发送方都将其����息排队。排队是按发送操作的时间顺序发生的，这意味着由于在线程间分发 Actor 的明显随机性，不同 Actor 发送的消息在运行时可能没有定义顺序。另一方面，从同一个 Actor 向同一个目标发送多条消息将以相同的顺序将它们排队。</p>
 
-<p>有不同的邮箱实现可供选择，默认为<code class="highlighter-rouge">FIFO</code>：Actor 处理的消息的顺序与它们排队的顺序匹配。这通常是一个很好的默认值，但是应用程序可能需要将某些消息优先于其他消息。在这种情况下，优先级邮箱将不总是在末尾排队，而是在消息优先级指定的位置排队，甚至可能在前面。当使用这样的队列时，处理的消息的顺序将自然地由队列的算法定义，通常不是<code class="highlighter-rouge">FIFO</code>。</p>
+<p>有不同的邮箱实现可供选择，默认为<code class="language-plaintext highlighter-rouge">FIFO</code>：Actor 处理的消息的顺序与它们排队的顺序匹配。这通常是一个很好的默认值，但是应用程序可能需要将某些消息优先于其他消息。在这种情况下，优先级邮箱将不总是在末尾排队，而是在消息优先级指定的位置排队，甚至可能在前面。当使用这样的队列时，处理的消息的顺序将自然地由队列的算法定义，通常不是<code class="language-plaintext highlighter-rouge">FIFO</code>。</p>
 
 <p>Akka 与其他一些 Actor 模型实现不同的一个重要特性是，当前行为必须始终处理下一条出列的消息，没有扫描邮箱以查找下一条匹配的消息。除非重写此行为，否则处理消息失败通常被视为失败。</p>
 
 <h3 id="335-子-actor">3.3.5. 子 Actor</h3>
-<p>每个 Actor 都可能是一个监督者：如果它为分配子任务创建子 Actor，它将自动对它们进行监督。子列表在 Actor 的上下文中维护，并且 Actor 可以访问它。对列表的修改是通过创建<code class="highlighter-rouge">(context.actorOf(...))</code>或停止<code class="highlighter-rouge">(context.stop(child))</code>子项来完成的，这些操作会立即反映出来。实际的创建和终止操作以异步方式在后台发生，因此它们不会“阻塞”其监督者。</p>
+<p>每个 Actor 都可能是一个监督者：如果它为分配子任务创建子 Actor，它将自动对它们进行监督。子列表在 Actor 的上下文中维护，并且 Actor 可以访问它。对列表的修改是通过创建<code class="language-plaintext highlighter-rouge">(context.actorOf(...))</code>或停止<code class="language-plaintext highlighter-rouge">(context.stop(child))</code>子项来完成的，这些操作会立即反映出来。实际的创建和终止操作以异步方式在后台发生，因此它们不会“阻塞”其监督者。</p>
 
 <h3 id="336-监督者策略">3.3.6. 监督者策略</h3>
 <p>Actor 的最后一个部分是其处理子 Actor 错误的策略。对于「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/supervision.md">监督和监控</a>」中描述的每一个传入策略，Akka 将透明地进行故障处理。由于该策略是如何构建 Actor 系统的基础，因此一旦创建了 Actor，就不能更改它。</p>
@@ -4615,22 +4615,22 @@ supervised actor started
 <p>考虑到每个 Actor 只有一个这样的策略，这意味着如果不同的策略应用于一个 Actor 的不同子代，那么这些子代应该按照匹配的策略分组到中级监督者之下，然后根据任务拆分为子任务，再一次组织 Actor 系统。</p>
 
 <h3 id="337-当-actor-终止">3.3.7. 当 Actor 终止</h3>
-<p>一旦一个 Actor 终止，即以一种不被重启处理的方式失败、自行停止或被其监督者停止，它将释放其资源，将其邮箱中的所有剩余邮件排入系统的“死信邮箱”，该邮箱将它们作为死信（<code class="highlighter-rouge">DeadLetters</code>）转发到事件流（<code class="highlighter-rouge">EventStream</code>）。然后在 Actor 引用中用系统邮箱替换原 Actor 的邮箱，将所有新消息作为死信重定向到事件流。但是，这是在尽最大努力的基础上完成的，因此不要依赖它来构建“有保证的消息传递”。</p>
+<p>一旦一个 Actor 终止，即以一种不被重启处理的方式失败、自行停止或被其监督者停止，它将释放其资源，将其邮箱中的所有剩余邮件排入系统的“死信邮箱”，该邮箱将它们作为死信（<code class="language-plaintext highlighter-rouge">DeadLetters</code>）转发到事件流（<code class="language-plaintext highlighter-rouge">EventStream</code>）。然后在 Actor 引用中用系统邮箱替换原 Actor 的邮箱，将所有新消息作为死信重定向到事件流。但是，这是在尽最大努力的基础上完成的，因此不要依赖它来构建“有保证的消息传递”。</p>
 
-<p>我们的测试启发了我们不只是静默地转储消息的原因：我们在发送死信的事件总线上注册<code class="highlighter-rouge">TestEventListener</code>，它将记录收到的每个死信的警告，这对于更快地破译测试失败非常有帮助。可以想象，此功能也可以用于其他目的。</p>
+<p>我们的测试启发了我们不只是静默地转储消息的原因：我们在发送死信的事件总线上注册<code class="language-plaintext highlighter-rouge">TestEventListener</code>，它将记录收到的每个死信的警告，这对于更快地破译测试失败非常有帮助。可以想象，此功能也可以用于其他目的。</p>
 
 <hr />
 
 <p><strong>英文原文链接</strong>：<a href="https://doc.akka.io/docs/akka/current/general/actors.html">What is an Actor?</a>.</p>
 
 <h2 id="34-监督和监控">3.4. 监督和监控</h2>
-<p>本章概述了监督（<code class="highlighter-rouge">supervision</code>）背后的概念、提供的原语及其语义。有关如何转换为真实代码的详细信息，请参阅 Scala 和 Java API 的相应章节。</p>
+<p>本章概述了监督（<code class="language-plaintext highlighter-rouge">supervision</code>）背后的概念、提供的原语及其语义。有关如何转换为真实代码的详细信息，请参阅 Scala 和 Java API 的相应章节。</p>
 
 <h3 id="341-示例项目">3.4.1. 示例项目</h3>
 <p>你可以查看「<a href="https://developer.lightbend.com/start/?group=akka&amp;project=akka-samples-supervision-java">监督示例项目</a>」，以了解实际使用的情况。</p>
 
 <h3 id="342-监督意味着什么">3.4.2. 监督意味着什么？</h3>
-<p>正如「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/actor-systems.md">Actor 系统</a>」中监督所描述的，Actor 之间的依赖关系是：<code class="highlighter-rouge">supervisor</code>将任务委托给子级，因此必须对其失败作出响应。当子级检测到故障（即抛出异常）时，它会挂起自身及其所有下级，并向其监督者发送一条消息，也就是故障信号。根据监督工作的性质和失败的性质，监督者有以下四种选择：</p>
+<p>正如「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/actor-systems.md">Actor 系统</a>」中监督所描述的，Actor 之间的依赖关系是：<code class="language-plaintext highlighter-rouge">supervisor</code>将任务委托给子级，因此必须对其失败作出响应。当子级检测到故障（即抛出异常）时，它会挂起自身及其所有下级，并向其监督者发送一条消息，也就是故障信号。根据监督工作的性质和失败的性质，监督者有以下四种选择：</p>
 
 <ul>
   <li>恢复子级，保持其累积的内部状态</li>
@@ -4639,14 +4639,14 @@ supervised actor started
   <li>使失败升级，从而使自己失败（<em>译者说，即继续向上一级监督者发送失败消息</em>）</li>
 </ul>
 
-<p>始终将一个 Actor 视为监管层级的一部分是很重要的，这解释了第四个选择的存在（作为一个监督者也从属于上一级的另一个监督者），并对前三个有影响：恢复一个 Actor 恢复其所有子级，重新启动一个 Actor 需要重新启动其所有子级（如需更多详细信息，请参见下文），同样，终止 Actor 也将终止其所有子级。需要注意的是，<code class="highlighter-rouge">Actor</code>类的<code class="highlighter-rouge">preRestart</code>钩子的默认行为是在重新启动之前终止它的所有子级，但是这个钩子可以被重写；递归重新启动应用于执行这个钩子之后剩下的所有子级。</p>
+<p>始终将一个 Actor 视为监管层级的一部分是很重要的，这解释了第四个选择的存在（作为一个监督者也从属于上一级的另一个监督者），并对前三个有影响：恢复一个 Actor 恢复其所有子级，重新启动一个 Actor 需要重新启动其所有子级（如需更多详细信息，请参见下文），同样，终止 Actor 也将终止其所有子级。需要注意的是，<code class="language-plaintext highlighter-rouge">Actor</code>类的<code class="language-plaintext highlighter-rouge">preRestart</code>钩子的默认行为是在重新启动之前终止它的所有子级，但是这个钩子可以被重写；递归重新启动应用于执行这个钩子之后剩下的所有子级。</p>
 
-<p>每个监督者都配置了一个函数，将所有可能的故障原因（即异常）转换为上面给出的四个选项之一；值得注意的是，该函数不将故障 Actor 的身份（<code class="highlighter-rouge">identity</code>）作为输入。这样的结构似乎不够灵活，很容易找到类似的例子，例如希望将不同的策略应用于不同的子级。在这一点上，重要的是要理解监督是关于形成一个递归的故障处理结构。如果你试图在一个层面上做的太多，就很难解释了，因此在这种情况下，建议的方法是增加一个层面（<code class="highlighter-rouge">level</code>）的监督。</p>
+<p>每个监督者都配置了一个函数，将所有可能的故障原因（即异常）转换为上面给出的四个选项之一；值得注意的是，该函数不将故障 Actor 的身份（<code class="language-plaintext highlighter-rouge">identity</code>）作为输入。这样的结构似乎不够灵活，很容易找到类似的例子，例如希望将不同的策略应用于不同的子级。在这一点上，重要的是要理解监督是关于形成一个递归的故障处理结构。如果你试图在一个层面上做的太多，就很难解释了，因此在这种情况下，建议的方法是增加一个层面（<code class="language-plaintext highlighter-rouge">level</code>）的监督。</p>
 
-<p>Akka 实现了一种称为“父母监督（<code class="highlighter-rouge">parental supervision</code>）”的特殊形式。Actor 只能由其他 Actor 创建，其中顶级 Actor 由库提供，每个创建的 Actor 都由其父 Actor 监督。这种限制使得 Actor 监督层次的形成变得含蓄，并鼓励做出合理的设计决策。应当指出的是，这也保证了 Actor 不能成为孤儿，也不能从外部依附于监管者，否则他们可能会不知不觉地被抓起来（<code class="highlighter-rouge">which might otherwise catch them unawares</code>）。此外，这也为 Actor 应用程序（子树，<code class="highlighter-rouge">sub-trees of</code>）生成了一个自然、干净的关闭过程。</p>
+<p>Akka 实现了一种称为“父母监督（<code class="language-plaintext highlighter-rouge">parental supervision</code>）”的特殊形式。Actor 只能由其他 Actor 创建，其中顶级 Actor 由库提供，每个创建的 Actor 都由其父 Actor 监督。这种限制使得 Actor 监督层次的形成变得含蓄，并鼓励做出合理的设计决策。应当指出的是，这也保证了 Actor 不能成为孤儿，也不能从外部依附于监管者，否则他们可能会不知不觉地被抓起来（<code class="language-plaintext highlighter-rouge">which might otherwise catch them unawares</code>）。此外，这也为 Actor 应用程序（子树，<code class="language-plaintext highlighter-rouge">sub-trees of</code>）生成了一个自然、干净的关闭过程。</p>
 
 <ul>
-  <li><strong>警告</strong>：与监督（<code class="highlighter-rouge">supervision</code>）相关的父子通信通过特殊的系统消息进行，这些消息的邮箱与用户消息分开。这意味着与监督相关的事件并不是相对于普通消息确定的顺序。一般来说，用户不能影响正常消息和故障通知的顺序。有关详细信息和示例，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/message-delivery-reliability.md#%E8%AE%A8%E8%AE%BA%E6%B6%88%E6%81%AF%E6%8E%92%E5%BA%8F">讨论：消息排序</a>」部分。</li>
+  <li><strong>警告</strong>：与监督（<code class="language-plaintext highlighter-rouge">supervision</code>）相关的父子通信通过特殊的系统消息进行，这些消息的邮箱与用户消息分开。这意味着与监督相关的事件并不是相对于普通消息确定的顺序。一般来说，用户不能影响正常消息和故障通知的顺序。有关详细信息和示例，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/message-delivery-reliability.md#%E8%AE%A8%E8%AE%BA%E6%B6%88%E6%81%AF%E6%8E%92%E5%BA%8F">讨论：消息排序</a>」部分。</li>
 </ul>
 
 <h3 id="343-顶级监督者">3.4.3. 顶级监督者</h3>
@@ -4655,9 +4655,9 @@ supervised actor started
 <p>一个 Actor 系统在创建过程中至少会启动三个 Actor，如上图所示。有关 Actor 路径的详细信息，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/addressing.md#actor-%E8%B7%AF%E5%BE%84%E7%9A%84%E9%A1%B6%E7%BA%A7%E8%8C%83%E5%9B%B4">Actor 路径的顶级范围</a>」。</p>
 
 <ul>
-  <li><code class="highlighter-rouge">/user</code>: The Guardian Actor，最可能与之交互的 Actor 是所有用户创建的 Actor 的父级，守护者名为<code class="highlighter-rouge">/user</code>。使用<code class="highlighter-rouge">system.actorOf()</code>创建的 Actor 是此 Actor 的子级。这意味着当这个守护者终止时，系统中的所有正常 Actor 也将关闭。这也意味着守护者的监管策略决定了顶级正常 Actor 的监督方式。自 Akka 2.1 开始，可以使用<code class="highlighter-rouge">akka.actor.guardian-supervisor-strategy</code>来配置它，该设置采用了一个<code class="highlighter-rouge">SupervisorStrategyConfigurator</code>的完全限定类名。当守护者升级失败时，根守护者的响应将会终止守护者，这实际上将关闭整个 Actor 系统。</li>
-  <li><code class="highlighter-rouge">/system</code>: The System Guardian，为了实现有序的关闭顺序，引入了这个特殊的守护者，当所有正常的 Actor 都终止，日志记录也保持活动状态，即使日志记录本身也是使用 Actor 实现的。这是通过让系统守护者监视（<code class="highlighter-rouge">watch</code>）用户守护者并在接收到<code class="highlighter-rouge">Terminated</code>消息时启动自己的关闭来实现的。顶层系统 Actor 使用一种策略进行监督，该策略将在所有类型的<code class="highlighter-rouge">Exception</code>（其中，<code class="highlighter-rouge">ActorInitializationException</code>和<code class="highlighter-rouge">ActorKilledException</code>除外）上无限期重新启动，这将终止相关的子级。所有其他可抛的异常事件都会升级，这将关闭整个 Actor 系统。</li>
-  <li><code class="highlighter-rouge">/</code>: The Root Guardian，根守护者是所有所谓的“顶级” Actor 的祖父（<code class="highlighter-rouge">grand-parent</code>）级，并使用<code class="highlighter-rouge">SupervisorStrategy.stoppingStrategy</code>监督「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/addressing.md#actor-%E8%B7%AF%E5%BE%84%E7%9A%84%E9%A1%B6%E7%BA%A7%E8%8C%83%E5%9B%B4">Actor 路径的顶级范围</a>」中提到的所有特殊 Actor，其目的是在任何类型的<code class="highlighter-rouge">Exception</code>情况下终止子 Actor。所有其他可抛的异常都会升级……但是给谁？因为每个真正的 Actor 都有一个监督者，所以根守护者的监督者不能是真正的 Actor。因为这意味着它是在“气泡的外面”，所以它被称为“气泡行者（<code class="highlighter-rouge">bubble-walker</code>）”。这是一个虚构的<code class="highlighter-rouge">ActorRef</code>，它在出现问题的第一个征兆时停止其子系统，并在根守护程序完全终止（所有子系统递归停止）后将 Actor 系统的<code class="highlighter-rouge">isTerminated</code>状态设置为<code class="highlighter-rouge">true</code>。</li>
+  <li><code class="language-plaintext highlighter-rouge">/user</code>: The Guardian Actor，最可能与之交互的 Actor 是所有用户创建的 Actor 的父级，守护者名为<code class="language-plaintext highlighter-rouge">/user</code>。使用<code class="language-plaintext highlighter-rouge">system.actorOf()</code>创建的 Actor 是此 Actor 的子级。这意味着当这个守护者终止时，系统中的所有正常 Actor 也将关闭。这也意味着守护者的监管策略决定了顶级正常 Actor 的监督方式。自 Akka 2.1 开始，可以使用<code class="language-plaintext highlighter-rouge">akka.actor.guardian-supervisor-strategy</code>来配置它，该设置采用了一个<code class="language-plaintext highlighter-rouge">SupervisorStrategyConfigurator</code>的完全限定类名。当守护者升级失败时，根守护者的响应将会终止守护者，这实际上将关闭整个 Actor 系统。</li>
+  <li><code class="language-plaintext highlighter-rouge">/system</code>: The System Guardian，为了实现有序的关闭顺序，引入了这个特殊的守护者，当所有正常的 Actor 都终止，日志记录也保持活动状态，即使日志记录本身也是使用 Actor 实现的。这是通过让系统守护者监视（<code class="language-plaintext highlighter-rouge">watch</code>）用户守护者并在接收到<code class="language-plaintext highlighter-rouge">Terminated</code>消息时启动自己的关闭来实现的。顶层系统 Actor 使用一种策略进行监督，该策略将在所有类型的<code class="language-plaintext highlighter-rouge">Exception</code>（其中，<code class="language-plaintext highlighter-rouge">ActorInitializationException</code>和<code class="language-plaintext highlighter-rouge">ActorKilledException</code>除外）上无限期重新启动，这将终止相关的子级。所有其他可抛的异常事件都会升级，这将关闭整个 Actor 系统。</li>
+  <li><code class="language-plaintext highlighter-rouge">/</code>: The Root Guardian，根守护者是所有所谓的“顶级” Actor 的祖父（<code class="language-plaintext highlighter-rouge">grand-parent</code>）级，并使用<code class="language-plaintext highlighter-rouge">SupervisorStrategy.stoppingStrategy</code>监督「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/addressing.md#actor-%E8%B7%AF%E5%BE%84%E7%9A%84%E9%A1%B6%E7%BA%A7%E8%8C%83%E5%9B%B4">Actor 路径的顶级范围</a>」中提到的所有特殊 Actor，其目的是在任何类型的<code class="language-plaintext highlighter-rouge">Exception</code>情况下终止子 Actor。所有其他可抛的异常都会升级……但是给谁？因为每个真正的 Actor 都有一个监督者，所以根守护者的监督者不能是真正的 Actor。因为这意味着它是在“气泡的外面”，所以它被称为“气泡行者（<code class="language-plaintext highlighter-rouge">bubble-walker</code>）”。这是一个虚构的<code class="language-plaintext highlighter-rouge">ActorRef</code>，它在出现问题的第一个征兆时停止其子系统，并在根守护程序完全终止（所有子系统递归停止）后将 Actor 系统的<code class="language-plaintext highlighter-rouge">isTerminated</code>状态设置为<code class="language-plaintext highlighter-rouge">true</code>。</li>
 </ul>
 
 <h3 id="344-重启意味着什么">3.4.4. 重启意味着什么？</h3>
@@ -4669,35 +4669,35 @@ supervised actor started
   <li>Actor 的内部状态已损坏</li>
 </ul>
 
-<p>除非能明确识别故障，否则不能排除第三种原因，这就导致了内部状态需要清除的结论。如果监督者决定其其他子级或本身不受损坏的影响，例如，由于有意识地应用了错误内核模式，因此最好重新启动子级。这是通过创建底层<code class="highlighter-rouge">Actor</code>类的新实例并将失败的实例替换为子<code class="highlighter-rouge">ActorRef</code>中的新实例来实现的；这样做的能力是将 Actor 封装在特殊引用中的原因之一。然后，新的 Actor 将继续处理其邮箱，这意味着重新启动在 Actor 除本身之外是不可见的，但有一个明显的例外，即发生故障的消息不会被重新处理。</p>
+<p>除非能明确识别故障，否则不能排除第三种原因，这就导致了内部状态需要清除的结论。如果监督者决定其其他子级或本身不受损坏的影响，例如，由于有意识地应用了错误内核模式，因此最好重新启动子级。这是通过创建底层<code class="language-plaintext highlighter-rouge">Actor</code>类的新实例并将失败的实例替换为子<code class="language-plaintext highlighter-rouge">ActorRef</code>中的新实例来实现的；这样做的能力是将 Actor 封装在特殊引用中的原因之一。然后，新的 Actor 将继续处理其邮箱，这意味着重新启动在 Actor 除本身之外是不可见的，但有一个明显的例外，即发生故障的消息不会被重新处理。</p>
 
 <p>重新启动期间事件的精确顺序如下：</p>
 
 <ol>
   <li>挂起 Actor（这意味着在恢复之前它不会处理正常消息），并递归挂起所有子级</li>
-  <li>调用旧实例的<code class="highlighter-rouge">preRestart</code>钩子（默认为向所有子实例发送终止请求并调用<code class="highlighter-rouge">postStop</code>）</li>
-  <li>等待在<code class="highlighter-rouge">preRestart</code>期间被请求终止（使用<code class="highlighter-rouge">context.stop()</code>）的所有子级实际终止；就像所有 Actor 操作都是非阻塞的一样，最后一个被杀死的子级的终止通知将影响到下一步的进展。</li>
+  <li>调用旧实例的<code class="language-plaintext highlighter-rouge">preRestart</code>钩子（默认为向所有子实例发送终止请求并调用<code class="language-plaintext highlighter-rouge">postStop</code>）</li>
+  <li>等待在<code class="language-plaintext highlighter-rouge">preRestart</code>期间被请求终止（使用<code class="language-plaintext highlighter-rouge">context.stop()</code>）的所有子级实际终止；就像所有 Actor 操作都是非阻塞的一样，最后一个被杀死的子级的终止通知将影响到下一步的进展。</li>
   <li>通过再次调用最初提供的工厂来创建新的 Actor 实例</li>
-  <li>在新实例上调用<code class="highlighter-rouge">postRestart</code>（默认情况下，该实例还调用<code class="highlighter-rouge">preStart</code>）</li>
+  <li>在新实例上调用<code class="language-plaintext highlighter-rouge">postRestart</code>（默认情况下，该实例还调用<code class="language-plaintext highlighter-rouge">preStart</code>）</li>
   <li>向步骤 3 中未杀死的所有子级发送重新启动请求；从步骤 2 开始，重新启动的子级将递归地执行相同的过程。</li>
   <li>恢复 Actor</li>
 </ol>
 
 <h3 id="345-生命周期监控意味着什么">3.4.5. 生命周期监控意味着什么？</h3>
 <ul>
-  <li><strong>注释</strong>：Akka 中的生命周期监控通常被称为<code class="highlighter-rouge">DeathWatch</code>。</li>
+  <li><strong>注释</strong>：Akka 中的生命周期监控通常被称为<code class="language-plaintext highlighter-rouge">DeathWatch</code>。</li>
 </ul>
 
-<p>与上面描述的父母和子女之间的特殊关系不同，每个 Actor 可以监视（<code class="highlighter-rouge">monitor</code>）任何其他 Actor。由于 Actor 从完全活跃地创造中出现，并且在受影响的监督者之外无法看到重新启动，因此可用于监控的唯一状态更改是从活跃到死亡的过渡。因此，监控（<code class="highlighter-rouge">Monitoring</code>）被用来将一个 Actor 与另一个 Actor 联系起来，这样它就可以对另一个 Actor 的终止做出反应，而不是对失败做出反应的监督。</p>
+<p>与上面描述的父母和子女之间的特殊关系不同，每个 Actor 可以监视（<code class="language-plaintext highlighter-rouge">monitor</code>）任何其他 Actor。由于 Actor 从完全活跃地创造中出现，并且在受影响的监督者之外无法看到重新启动，因此可用于监控的唯一状态更改是从活跃到死亡的过渡。因此，监控（<code class="language-plaintext highlighter-rouge">Monitoring</code>）被用来将一个 Actor 与另一个 Actor 联系起来，这样它就可以对另一个 Actor 的终止做出反应，而不是对失败做出反应的监督。</p>
 
-<p>生命周期监控是使用监控 Actor 要接收的<code class="highlighter-rouge">Terminated</code>消息来实现的，在该消息中，默认行为是如果不进行其他处理，则抛出一个特殊的<code class="highlighter-rouge">DeathPactException</code>。为了开始监听<code class="highlighter-rouge">Terminated</code>消息，需要调用<code class="highlighter-rouge">ActorContext.watch(targetActorRef)</code>。若要停止监听，则需要调用<code class="highlighter-rouge">ActorContext.unwatch(targetActorRef)</code>。一个重要的属性是，不管监控请求和目标终止的顺序如何，消息都将被传递，即使在注册时目标已经死了，你仍然会收到消息。</p>
+<p>生命周期监控是使用监控 Actor 要接收的<code class="language-plaintext highlighter-rouge">Terminated</code>消息来实现的，在该消息中，默认行为是如果不进行其他处理，则抛出一个特殊的<code class="language-plaintext highlighter-rouge">DeathPactException</code>。为了开始监听<code class="language-plaintext highlighter-rouge">Terminated</code>消息，需要调用<code class="language-plaintext highlighter-rouge">ActorContext.watch(targetActorRef)</code>。若要停止监听，则需要调用<code class="language-plaintext highlighter-rouge">ActorContext.unwatch(targetActorRef)</code>。一个重要的属性是，不管监控请求和目标终止的顺序如何，消息都将被传递，即使在注册时目标已经死了，你仍然会收到消息。</p>
 
 <p>如果监督者无法重新启动其子级，并且必须终止它们（例如，在 Actor 初始化期间发生错误时），则监控特别有用。在这种情况下，它应该监控这些子级并重新创建它们，或者计划自己在稍后重试。</p>
 
-<p>另一个常见的用例是，Actor 需要在缺少外部资源的情况下失败，外部资源也可能是其自己的子资源之一。如果第三方通过<code class="highlighter-rouge">system.stop(child)</code>方法或发送<code class="highlighter-rouge">PoisonPill</code>终止子级，则监督者可能会受到影响。</p>
+<p>另一个常见的用例是，Actor 需要在缺少外部资源的情况下失败，外部资源也可能是其自己的子资源之一。如果第三方通过<code class="language-plaintext highlighter-rouge">system.stop(child)</code>方法或发送<code class="language-plaintext highlighter-rouge">PoisonPill</code>终止子级，则监督者可能会受到影响。</p>
 
 <h4 id="3451-使用-backoffsupervisor-模式延迟重新启动">3.4.5.1. 使用 BackoffSupervisor 模式延迟重新启动</h4>
-<p>作为内置模式提供的<code class="highlighter-rouge">akka.pattern.BackoffSupervisor</code>实现了所谓的指数退避监督策略，在失败时再次启动子 Actor，并且每次重新启动之间的时间延迟越来越大。</p>
+<p>作为内置模式提供的<code class="language-plaintext highlighter-rouge">akka.pattern.BackoffSupervisor</code>实现了所谓的指数退避监督策略，在失败时再次启动子 Actor，并且每次重新启动之间的时间延迟越来越大。</p>
 
 <p>当启动的 Actor 失败（故障可以用两种不同的方式来表示，通过一个 Actor 停止或崩溃）时，此模式非常有用，因为某些外部资源不可用，我们需要给它一些时间重新启动。一个主要示例是当「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/persistence.md">PersistentActor</a>」因持久性失败而失败（通过停止）时，这表明数据库可能已关闭或过载，在这种情况下，在启动持久性 Actor 之前给它一点时间来恢复是很有意义的。</p>
 
@@ -4759,9 +4759,9 @@ supervised actor started
 
 <span class="n">system</span><span class="o">.</span><span class="na">actorOf</span><span class="o">(</span><span class="n">supervisorProps</span><span class="o">,</span> <span class="s">"echoSupervisor"</span><span class="o">);</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p>为了避免多个 Actor 在完全相同的时间点重新启动，例如，由于共享资源（如数据库在相同配置的时间间隔后关闭和重新启动），因此强烈建议使用<code class="highlighter-rouge">randomFactor</code>为回退间隔添加一点额外的变化。通过在重新启动间隔中增加额外的随机性，Actor 将在稍微不同的时间点开始，从而避免大流量峰值冲击恢复共享数据库或他们所需的其他资源。</p>
+<p>为了避免多个 Actor 在完全相同的时间点重新启动，例如，由于共享资源（如数据库在相同配置的时间间隔后关闭和重新启动），因此强烈建议使用<code class="language-plaintext highlighter-rouge">randomFactor</code>为回退间隔添加一点额外的变化。通过在重新启动间隔中增加额外的随机性，Actor 将在稍微不同的时间点开始，从而避免大流量峰值冲击恢复共享数据库或他们所需的其他资源。</p>
 
-<p>还可以将<code class="highlighter-rouge">akka.pattern.BackoffSupervisor</code> Actor 配置为在 Actor 崩溃且监控策略决定应重新启动时，在延迟之后重新启动 Actor。</p>
+<p>还可以将<code class="language-plaintext highlighter-rouge">akka.pattern.BackoffSupervisor</code> Actor 配置为在 Actor 崩溃且监控策略决定应重新启动时，在延迟之后重新启动 Actor。</p>
 
 <p>下面的 Scala 片段演示了如何创建一个退避监督者，在给定的 EchoActor 因某些异常而崩溃后，该监督者将以 3、6、12、24 和最后 30 秒的间隔启动：</p>
 
@@ -4821,7 +4821,7 @@ supervised actor started
 
 <span class="n">system</span><span class="o">.</span><span class="na">actorOf</span><span class="o">(</span><span class="n">supervisorProps</span><span class="o">,</span> <span class="s">"echoSupervisor"</span><span class="o">);</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p><code class="highlighter-rouge">akka.pattern.BackoffOptions</code>可用于自定义退避监督者 Actor 的行为，以下是一些示例：</p>
+<p><code class="language-plaintext highlighter-rouge">akka.pattern.BackoffOptions</code>可用于自定义退避监督者 Actor 的行为，以下是一些示例：</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -4846,7 +4846,7 @@ supervised actor started
     <span class="o">.</span><span class="py">withDefaultStoppingStrategy</span> <span class="c1">// Stop at any Exception thrown</span>
 <span class="o">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p>上面的代码设置了一个退避监督者，要求子 Actor 在成功处理消息时向其父级发送<code class="highlighter-rouge">akka.pattern.BackoffSupervisor.Reset</code>消息，从而重置后退。它还使用默认的停止策略，任何异常都会导致子 Actor 停止。</p>
+<p>上面的代码设置了一个退避监督者，要求子 Actor 在成功处理消息时向其父级发送<code class="language-plaintext highlighter-rouge">akka.pattern.BackoffSupervisor.Reset</code>消息，从而重置后退。它还使用默认的停止策略，任何异常都会导致子 Actor 停止。</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -4877,16 +4877,16 @@ supervised actor started
         <span class="k">case</span> <span class="k">_</span>              <span class="k">⇒</span> <span class="nv">SupervisorStrategy</span><span class="o">.</span><span class="py">Escalate</span>
       <span class="o">}))</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p>上面的代码设置了一个退避监督者，如果抛出<code class="highlighter-rouge">MyException</code>，在退避后重新启动子级，而任何其他异常都将被升级。如果子 Actor 在 10 秒内没有抛出任何错误，则会自动重置后退。</p>
+<p>上面的代码设置了一个退避监督者，如果抛出<code class="language-plaintext highlighter-rouge">MyException</code>，在退避后重新启动子级，而任何其他异常都将被升级。如果子 Actor 在 10 秒内没有抛出任何错误，则会自动重置后退。</p>
 
 <h3 id="346-one-for-one-策略-vs-all-for-one-策略">3.4.6. One-For-One 策略 vs. All-For-One 策略</h3>
-<p>Akka 提供了两种监管策略：一种是<code class="highlighter-rouge">OneForOneStrategy</code>，另一种是<code class="highlighter-rouge">AllForOneStrategy</code>。两者都配置了从异常类型到监督指令（见上文）的映射，并限制了在终止之前允许子级失败的频率。它们之间的区别在于前者只将获得的指令应用于失败的子级，而后者也将其应用于所有的子级。通常，你应该使用<code class="highlighter-rouge">OneForOneStrategy</code>，如果没有明确指定，它也是默认的。</p>
+<p>Akka 提供了两种监管策略：一种是<code class="language-plaintext highlighter-rouge">OneForOneStrategy</code>，另一种是<code class="language-plaintext highlighter-rouge">AllForOneStrategy</code>。两者都配置了从异常类型到监督指令（见上文）的映射，并限制了在终止之前允许子级失败的频率。它们之间的区别在于前者只将获得的指令应用于失败的子级，而后者也将其应用于所有的子级。通常，你应该使用<code class="language-plaintext highlighter-rouge">OneForOneStrategy</code>，如果没有明确指定，它也是默认的。</p>
 
-<p><code class="highlighter-rouge">AllForOneStrategy</code>适用于子级群体之间有很强的依赖性，以至于一个子 Actor 的失败会影响其他子 Actor 的功能，即他们之间的联系是不可分割的。由于重新启动无法清除邮箱，因此通常最好在失败时终止子级，并在监督者（通过监视子级的生命周期）中显式地重新创建它们；否则，你必须确保任何 Actor 都可以接受在重新启动之前排队但在重新启动之后处理消息。</p>
+<p><code class="language-plaintext highlighter-rouge">AllForOneStrategy</code>适用于子级群体之间有很强的依赖性，以至于一个子 Actor 的失败会影响其他子 Actor 的功能，即他们之间的联系是不可分割的。由于重新启动无法清除邮箱，因此通常最好在失败时终止子级，并在监督者（通过监视子级的生命周期）中显式地重新创建它们；否则，你必须确保任何 Actor 都可以接受在重新启动之前排队但在重新启动之后处理消息。</p>
 
-<p>在<code class="highlighter-rouge">All-For-One</code>策略中，通常停止一个子级将不会自动终止其他子级；通过监控他们的生命周期可以完成：如果监督者不处理<code class="highlighter-rouge">Terminated</code>消息，它将抛出<code class="highlighter-rouge">DeathPactException</code>（这取决于它的监督者），它将重新启动，默认的<code class="highlighter-rouge">preRestart</code>将终止其所有的子级。</p>
+<p>在<code class="language-plaintext highlighter-rouge">All-For-One</code>策略中，通常停止一个子级将不会自动终止其他子级；通过监控他们的生命周期可以完成：如果监督者不处理<code class="language-plaintext highlighter-rouge">Terminated</code>消息，它将抛出<code class="language-plaintext highlighter-rouge">DeathPactException</code>（这取决于它的监督者），它将重新启动，默认的<code class="language-plaintext highlighter-rouge">preRestart</code>将终止其所有的子级。</p>
 
-<p>请注意，创建的一次性 Actor 来自一个<code class="highlighter-rouge">all-for-one</code>监督者，通过临时 Actor 的失败升级影响所有其他的 Actor。如果不需要这样做，可以安装一个中间监督者；这可以通过为<code class="highlighter-rouge">worker</code>声明一个大小为 1 的路由器来实现，详见「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/routing.md">路由</a>」。</p>
+<p>请注意，创建的一次性 Actor 来自一个<code class="language-plaintext highlighter-rouge">all-for-one</code>监督者，通过临时 Actor 的失败升级影响所有其他的 Actor。如果不需要这样做，可以安装一个中间监督者；这可以通过为<code class="language-plaintext highlighter-rouge">worker</code>声明一个大小为 1 的路由器来实现，详见「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/routing.md">路由</a>」。</p>
 
 <hr />
 
@@ -4902,33 +4902,33 @@ supervised actor started
 
 <h3 id="351-什么是-actor-的引用">3.5.1. 什么是 Actor 的引用？</h3>
 
-<p>Actor 引用是<code class="highlighter-rouge">ActorRef</code>的一个子类型，其首要目的是支持将消息发送给它所代表的 Actor。每个 Actor 都可以通过<code class="highlighter-rouge">self</code>字段访问其规范（本地）引用；默认情况下，对于发送给其他 Actor 的所有消息，此引用也作为发送者引用包含在内。相应地，在消息处理期间，Actor 可以通过<code class="highlighter-rouge">sender()</code>方法访问表示当前消息发送者的引用。</p>
+<p>Actor 引用是<code class="language-plaintext highlighter-rouge">ActorRef</code>的一个子类型，其首要目的是支持将消息发送给它所代表的 Actor。每个 Actor 都可以通过<code class="language-plaintext highlighter-rouge">self</code>字段访问其规范（本地）引用；默认情况下，对于发送给其他 Actor 的所有消息，此引用也作为发送者引用包含在内。相应地，在消息处理期间，Actor 可以通过<code class="language-plaintext highlighter-rouge">sender()</code>方法访问表示当前消息发送者的引用。</p>
 
 <p>根据 Actor 系统的配置，支持几种不同类型的 Actor 引用：</p>
 
 <ul>
   <li>纯本地 Actor 引用由未配置为支持网络功能的 Actor 系统使用。如果通过网络连接发送到远程 JVM，这些 Actor 引用将不起作用。</li>
   <li>启用远程处理时，支持网络功能的 Actor 系统使用本地 Actor 引用，这些引用表示同一个 JVM 中的 Actor。为了在发送到其他网络节点时也可以访问，这些引用包括协议和远程寻址信息。</li>
-  <li>本地 Actor 引用的一个子类型用于路由器（即 Actor 混合在<code class="highlighter-rouge">Router</code>特性中）。它的逻辑结构与前面提到的本地引用相同，但是向它们发送消息会直接发送给它们的一个子级。</li>
+  <li>本地 Actor 引用的一个子类型用于路由器（即 Actor 混合在<code class="language-plaintext highlighter-rouge">Router</code>特性中）。它的逻辑结构与前面提到的本地引用相同，但是向它们发送消息会直接发送给它们的一个子级。</li>
   <li>远程 Actor 引用表示可以使用远程通信访问的 Actor，即向其发送消息将透明地序列化消息并将其发送到远程 JVM。</li>
   <li>有几种特殊类型的 Actor 引用，其行为类似于所有实际用途的本地 Actor 引用：
     <ul>
-      <li><code class="highlighter-rouge">PromiseActorRef</code>是一个<code class="highlighter-rouge">Promise</code>为了完成 Actor 响应的特殊表示。<code class="highlighter-rouge">akka.pattern.ask</code>创建这个 Actor 引用。</li>
-      <li><code class="highlighter-rouge">DeadLetterActorRef</code>是死信服务的默认实现，Akka 将其目的地关闭或不存在的所有消息路由到该服务。</li>
-      <li><code class="highlighter-rouge">EmptyLocalActorRef</code>是 Akka 在查找不存在的本地 Actor 路径时返回的：它相当于一个<code class="highlighter-rouge">DeadLetterActorRef</code>，但它保留了自己的路径，以便 Akka 可以通过网络发送它，并将其与该路径的其他现有 Actor 引用进行比较，其中一些引用可能是在 Actor 死亡之前获得的。</li>
+      <li><code class="language-plaintext highlighter-rouge">PromiseActorRef</code>是一个<code class="language-plaintext highlighter-rouge">Promise</code>为了完成 Actor 响应的特殊表示。<code class="language-plaintext highlighter-rouge">akka.pattern.ask</code>创建这个 Actor 引用。</li>
+      <li><code class="language-plaintext highlighter-rouge">DeadLetterActorRef</code>是死信服务的默认实现，Akka 将其目的地关闭或不存在的所有消息路由到该服务。</li>
+      <li><code class="language-plaintext highlighter-rouge">EmptyLocalActorRef</code>是 Akka 在查找不存在的本地 Actor 路径时返回的：它相当于一个<code class="language-plaintext highlighter-rouge">DeadLetterActorRef</code>，但它保留了自己的路径，以便 Akka 可以通过网络发送它，并将其与该路径的其他现有 Actor 引用进行比较，其中一些引用可能是在 Actor 死亡之前获得的。</li>
     </ul>
   </li>
-  <li>还有一些一次性（<code class="highlighter-rouge">one-off</code>）的内部实现，你应该永远都不会真正看到：
+  <li>还有一些一次性（<code class="language-plaintext highlighter-rouge">one-off</code>）的内部实现，你应该永远都不会真正看到：
     <ul>
-      <li>有一个 Actor 引用，它不代表一个 Actor，只作为根守护者的伪监督者（<code class="highlighter-rouge">pseudo-supervisor</code>），我们称之为“在时空的气泡中行走的人”。</li>
-      <li>在实际启动 Actor 创建工具之前启动的第一个日志记录服务是一个假 Actor 引用，它接受日志事件并将其直接打印到标准输出；它是<code class="highlighter-rouge">Logging.StandardOutLogger</code>。</li>
+      <li>有一个 Actor 引用，它不代表一个 Actor，只作为根守护者的伪监督者（<code class="language-plaintext highlighter-rouge">pseudo-supervisor</code>），我们称之为“在时空的气泡中行走的人”。</li>
+      <li>在实际启动 Actor 创建工具之前启动的第一个日志记录服务是一个假 Actor 引用，它接受日志事件并将其直接打印到标准输出；它是<code class="language-plaintext highlighter-rouge">Logging.StandardOutLogger</code>。</li>
     </ul>
   </li>
 </ul>
 
 <h3 id="352-什么是-actor-路径">3.5.2. 什么是 Actor 路径？</h3>
 
-<p>由于 Actor 是以严格的层次结构方式创建的，因此存在一个唯一的 Actor 名称序列，该序列通过递归地沿着子级和父级之间的监督链接向下到 Actor 系统的根来给出。这个序列可以看作是文件系统中的封闭文件夹，因此我们采用名称<code class="highlighter-rouge">path</code>来引用它，尽管 Actor 层次结构与文件系统层次结构有一些基本的区别。</p>
+<p>由于 Actor 是以严格的层次结构方式创建的，因此存在一个唯一的 Actor 名称序列，该序列通过递归地沿着子级和父级之间的监督链接向下到 Actor 系统的根来给出。这个序列可以看作是文件系统中的封闭文件夹，因此我们采用名称<code class="language-plaintext highlighter-rouge">path</code>来引用它，尽管 Actor 层次结构与文件系统层次结构有一些基本的区别。</p>
 
 <p>一个 Actor 路径由一个锚点组成，该锚点标识 Actor 系统，然后连接从根守护者到指定的 Actor 的路径元素；路径元素是被遍历的 Actor 的名称，由斜线分隔。</p>
 
@@ -4940,13 +4940,13 @@ supervised actor started
 <h4 id="3522-actor-路径锚点">3.5.2.2. Actor 路径锚点</h4>
 <p>每个 Actor 路径都有一个地址组件，描述了协议和位置，通过这些协议和位置可以访问相应的 Actor，路径中的元素是从根目录向上的层次结构中 Actor 的名称。例如：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 </pre></td><td class="rouge-code"><pre>"akka://my-sys/user/service-a/worker1"                   // purely local
 "akka.tcp://my-sys@host.example.com:5678/user/service-b" // remote
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>在这里，<code class="highlighter-rouge">akka.tcp</code>是 2.4 版本的默认远程传输；其他传输是可插拔的。主机和端口部分（如示例中的<code class="highlighter-rouge">host.example.com:5678</code>）的解释取决于所使用的传输机制，但必须遵守 URI 结构规则。</p>
+<p>在这里，<code class="language-plaintext highlighter-rouge">akka.tcp</code>是 2.4 版本的默认远程传输；其他传输是可插拔的。主机和端口部分（如示例中的<code class="language-plaintext highlighter-rouge">host.example.com:5678</code>）的解释取决于所使用的传输机制，但必须遵守 URI 结构规则。</p>
 
 <h4 id="3523-逻辑-actor-路径">3.5.2.3. 逻辑 Actor 路径</h4>
 <p>通过跟踪指向根守护者的父级监督链接获得的唯一路径称为逻辑 Actor 路径。此路径与 Actor 的创建祖先完全匹配，因此只要设置了 Actor 系统的远程处理配置（以及路径的地址组件），它就完全具有确定性。</p>
@@ -4964,23 +4964,23 @@ supervised actor started
 <p>对于如何获取 Actor 引用，有两个通用的类别：通过创建 Actor 或通过查找 Actor，后者的功能包括从具体的 Actor 路径创建 Actor 引用和查询逻辑的 Actor 层次结构。</p>
 
 <h4 id="3531-创建-actor">3.5.3.1. 创建 Actor</h4>
-<p>Actor 系统通常是通过使用<code class="highlighter-rouge">ActorSystem.actorOf</code>方法在守护 Actor 下创建 Actor，然后从创建的 Actor 中使用<code class="highlighter-rouge">ActorContext.actorOf</code>来生成 Actor 树来启动的。这些方法返回对新创建的 Actor 的引用。每个 Actor 都可以（通过其<code class="highlighter-rouge">ActorContext</code>）直接访问其父级、自身及其子级的引用。这些引用可以在消息中发送给其他 Actor，从而使这些 Actor 能够直接回复。</p>
+<p>Actor 系统通常是通过使用<code class="language-plaintext highlighter-rouge">ActorSystem.actorOf</code>方法在守护 Actor 下创建 Actor，然后从创建的 Actor 中使用<code class="language-plaintext highlighter-rouge">ActorContext.actorOf</code>来生成 Actor 树来启动的。这些方法返回对新创建的 Actor 的引用。每个 Actor 都可以（通过其<code class="language-plaintext highlighter-rouge">ActorContext</code>）直接访问其父级、自身及其子级的引用。这些引用可以在消息中发送给其他 Actor，从而使这些 Actor 能够直接回复。</p>
 
 <h4 id="3532-用具体的路径查找-actor">3.5.3.2. 用具体的路径查找 Actor</h4>
-<p>此外，可以使用<code class="highlighter-rouge">ActorSystem.actorSelection</code>方法查找 Actor 引用。选择（<code class="highlighter-rouge">selection</code>）可用于与所述 Actor 通信，并且在传递每条消息时查找所述选择对应的 Actor。</p>
+<p>此外，可以使用<code class="language-plaintext highlighter-rouge">ActorSystem.actorSelection</code>方法查找 Actor 引用。选择（<code class="language-plaintext highlighter-rouge">selection</code>）可用于与所述 Actor 通信，并且在传递每条消息时查找所述选择对应的 Actor。</p>
 
-<p>要获取绑定到特定 Actor 生命周期的<code class="highlighter-rouge">ActorRef</code>，你需要向 Actor 发送消息，例如内置标识消息，并使用来自 Actor 的答复的<code class="highlighter-rouge">sender()</code>引用。</p>
+<p>要获取绑定到特定 Actor 生命周期的<code class="language-plaintext highlighter-rouge">ActorRef</code>，你需要向 Actor 发送消息，例如内置标识消息，并使用来自 Actor 的答复的<code class="language-plaintext highlighter-rouge">sender()</code>引用。</p>
 
 <h4 id="3533-绝对路径-vs-相对路径">3.5.3.3. 绝对路径 vs. 相对路径</h4>
-<p>除了<code class="highlighter-rouge">ActorSystem.actorSelection</code>，还有<code class="highlighter-rouge">ActorContext.actorSelection</code>，在任何 Actor 中都可以作为<code class="highlighter-rouge">context.actorSelection</code>使用。这将生成一个 Actor 选择，与<code class="highlighter-rouge">ActorSystem</code>上的孪生兄弟非常相似，但它不是从 Actor 树的根开始查找路径，而是从当前 Actor 开始。由两个点（<code class="highlighter-rouge">".."</code>）组成的路径元素可用于访问父 Actor。例如，你可以向特定的兄弟姐妹 Actor 发送消息：</p>
+<p>除了<code class="language-plaintext highlighter-rouge">ActorSystem.actorSelection</code>，还有<code class="language-plaintext highlighter-rouge">ActorContext.actorSelection</code>，在任何 Actor 中都可以作为<code class="language-plaintext highlighter-rouge">context.actorSelection</code>使用。这将生成一个 Actor 选择，与<code class="language-plaintext highlighter-rouge">ActorSystem</code>上的孪生兄弟非常相似，但它不是从 Actor 树的根开始查找路径，而是从当前 Actor 开始。由两个点（<code class="language-plaintext highlighter-rouge">".."</code>）组成的路径元素可用于访问父 Actor。例如，你可以向特定的兄弟姐妹 Actor 发送消息：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>context.actorSelection("../brother") ! msg
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>绝对路径也可以用通常的方式在上下文中查找，即</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>context.actorSelection("/user/serviceA") ! msg
 </pre></td></tr></tbody></table></code></pre></div></div>
 
@@ -4988,40 +4988,40 @@ supervised actor started
 
 <h4 id="3534-查询逻辑-actor-层次结构">3.5.3.4. 查询逻辑 Actor 层次结构</h4>
 
-<p>由于 Actor 系统形成了类似于文件系统的层次结构，因此在路径上进行匹配的方式与 Unix shells 支持的方式相同：你可以用通配符(<code class="highlighter-rouge">*«*»*</code>和<code class="highlighter-rouge">«?»</code>）替换（部分）路径元素名制定一个可以匹配零个或更多实际 Actor 的选择。因为结果不是单个 Actor 引用，所以它具有不同的<code class="highlighter-rouge">ActorSelection</code>类型，并且不支持<code class="highlighter-rouge">ActorRef</code>执行的完整操作集。可以使用<code class="highlighter-rouge">ActorSystem.actorSelection</code>和<code class="highlighter-rouge">ActorContext.actorSelection</code>方法来制定选择，并且确实支持发送消息：</p>
+<p>由于 Actor 系统形成了类似于文件系统的层次结构，因此在路径上进行匹配的方式与 Unix shells 支持的方式相同：你可以用通配符(<code class="language-plaintext highlighter-rouge">*«*»*</code>和<code class="language-plaintext highlighter-rouge">«?»</code>）替换（部分）路径元素名制定一个可以匹配零个或更多实际 Actor 的选择。因为结果不是单个 Actor 引用，所以它具有不同的<code class="language-plaintext highlighter-rouge">ActorSelection</code>类型，并且不支持<code class="language-plaintext highlighter-rouge">ActorRef</code>执行的完整操作集。可以使用<code class="language-plaintext highlighter-rouge">ActorSystem.actorSelection</code>和<code class="language-plaintext highlighter-rouge">ActorContext.actorSelection</code>方法来制定选择，并且确实支持发送消息：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>context.actorSelection("../*") ! msg
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>将向包括当前 Actor 在内的所有兄弟姐妹 Actor 发送<code class="highlighter-rouge">msg</code>。对于使用<code class="highlighter-rouge">actorSelection</code>获取的引用，将遍历监督层次结构以执行消息发送。由于与选定内容匹配的 Actor 的确切集合可能会发生变化，即使消息正在传递给收件人，也不可能观看选定内容的实时变化。为了做到这一点，通过发送一个请求并收集所有答案，提取发送者引用，然后观察所有发现的具体 Actor 来解决不确定性。这种解决选择的方案可以在将来的版本中加以改进。</p>
+<p>将向包括当前 Actor 在内的所有兄弟姐妹 Actor 发送<code class="language-plaintext highlighter-rouge">msg</code>。对于使用<code class="language-plaintext highlighter-rouge">actorSelection</code>获取的引用，将遍历监督层次结构以执行消息发送。由于与选定内容匹配的 Actor 的确切集合可能会发生变化，即使消息正在传递给收件人，也不可能观看选定内容的实时变化。为了做到这一点，通过发送一个请求并收集所有答案，提取发送者引用，然后观察所有发现的具体 Actor 来解决不确定性。这种解决选择的方案可以在将来的版本中加以改进。</p>
 
-<p>总结：<code class="highlighter-rouge">actorOf</code> vs. <code class="highlighter-rouge">actorSelection</code></p>
+<p>总结：<code class="language-plaintext highlighter-rouge">actorOf</code> vs. <code class="language-plaintext highlighter-rouge">actorSelection</code></p>
 
 <ul>
   <li><strong>注释</strong>：以上部分的详细描述可以总结和记忆如下：
     <ul>
-      <li><code class="highlighter-rouge">actorOf</code>只创建了一个新的 Actor，它将其创建为调用此方法的上下文（可能是任何 Actor 或 Actor 系统）的直接子级。</li>
-      <li><code class="highlighter-rouge">actorSelection</code>仅在传递消息时查找现有的 Actor，即不创建 Actor，或在创建选择时验证 Actor 的存在。</li>
+      <li><code class="language-plaintext highlighter-rouge">actorOf</code>只创建了一个新的 Actor，它将其创建为调用此方法的上下文（可能是任何 Actor 或 Actor 系统）的直接子级。</li>
+      <li><code class="language-plaintext highlighter-rouge">actorSelection</code>仅在传递消息时查找现有的 Actor，即不创建 Actor，或在创建选择时验证 Actor 的存在。</li>
     </ul>
   </li>
 </ul>
 
 <h3 id="354-actor-引用和路径相等">3.5.4. Actor 引用和路径相等</h3>
-<p><code class="highlighter-rouge">ActorRef</code>的相等符合<code class="highlighter-rouge">ActorRef</code>对应于目标 Actor 化身的意图。当两个 Actor 引用具有相同的路径并指向相同的 Actor 化身时，它们将被比较为相等的。指向终止的 Actor 的引用与指向具有相同路径的其他（重新创建的）Actor 的引用不同。请注意，由失败引起的 Actor 重新启动仍然意味着它是同一个 Actor 的化身，即对于<code class="highlighter-rouge">ActorRef</code>的使用者来说，重新启动是不可见的。</p>
+<p><code class="language-plaintext highlighter-rouge">ActorRef</code>的相等符合<code class="language-plaintext highlighter-rouge">ActorRef</code>对应于目标 Actor 化身的意图。当两个 Actor 引用具有相同的路径并指向相同的 Actor 化身时，它们将被比较为相等的。指向终止的 Actor 的引用与指向具有相同路径的其他（重新创建的）Actor 的引用不同。请注意，由失败引起的 Actor 重新启动仍然意味着它是同一个 Actor 的化身，即对于<code class="language-plaintext highlighter-rouge">ActorRef</code>的使用者来说，重新启动是不可见的。</p>
 
-<p>如果需要跟踪集合中的 Actor 引用，而不关心具体的 Actor 化身，则可以使用<code class="highlighter-rouge">ActorPath</code>作为键，因为在比较 Actor 路径时不考虑目标 Actor 的标识符。</p>
+<p>如果需要跟踪集合中的 Actor 引用，而不关心具体的 Actor 化身，则可以使用<code class="language-plaintext highlighter-rouge">ActorPath</code>作为键，因为在比较 Actor 路径时不考虑目标 Actor 的标识符。</p>
 
 <h3 id="355-复用-actor-路径">3.5.5. 复用 Actor 路径</h3>
-<p>当一个 Actor 被终止时，它的引用将指向死信邮箱，<code class="highlighter-rouge">DeathWatch</code>将发布其最终的转换，一般情况下，它不会再次恢复生命（因为 Actor 的生命周期不允许这样做）。虽然可以在以后用相同的路径创建一个 Actor，因为如果不保留所有已创建的 Actor 集，就不可能执行相反的操作，但这不是一个好的实践：用<code class="highlighter-rouge">actorSelection</code>向一个“死亡”的 Actor 发送的消息会突然重新开始工作，但没有任何顺序保证。在这个转换和任何其他事件之间，该路径所代表的新 Actor 可能会接收到发往该路径所代表的前一个 Actor 的消息。</p>
+<p>当一个 Actor 被终止时，它的引用将指向死信邮箱，<code class="language-plaintext highlighter-rouge">DeathWatch</code>将发布其最终的转换，一般情况下，它不会再次恢复生命（因为 Actor 的生命周期不允许这样做）。虽然可以在以后用相同的路径创建一个 Actor，因为如果不保留所有已创建的 Actor 集，就不可能执行相反的操作，但这不是一个好的实践：用<code class="language-plaintext highlighter-rouge">actorSelection</code>向一个“死亡”的 Actor 发送的消息会突然重新开始工作，但没有任何顺序保证。在这个转换和任何其他事件之间，该路径所代表的新 Actor 可能会接收到发往该路径所代表的前一个 Actor 的消息。</p>
 
 <p>在非常特殊的情况下，这可能是正确的做法，但一定要将处理这一点严格限制在 Actor 的监督者身上，因为只有这样的 Actor 才能可靠地检测到名字的正确注销，在此之前，新子 Actor 的创建将失败。</p>
 
-<p>当测试对象依赖于在特定路径上实例时，也可能需要在测试期间使用它。在这种情况下，最好模拟其监督者，以便将<code class="highlighter-rouge">Terminated</code>消息转发到测试过程中的适当点，以便后者等待正确的名称注销。</p>
+<p>当测试对象依赖于在特定路径上实例时，也可能需要在测试期间使用它。在这种情况下，最好模拟其监督者，以便将<code class="language-plaintext highlighter-rouge">Terminated</code>消息转发到测试过程中的适当点，以便后者等待正确的名称注销。</p>
 
 <h3 id="356-远程部署的交互作用">3.5.6. 远程部署的交互作用</h3>
 
-<p>当 Actor 创建子节点时，Actor 系统的部署程序将决定新 Actor 是驻留在同一个 JVM 中，还是驻留在另一个节点上。在第二种情况下，Actor 的创建将通过网络连接触发，在不同的 JVM 中发生，从而在不同的 Actor 系统中发生。远程系统将把新 Actor 放在为此目的保留的特殊路径下，新 Actor 的监督者将是远程 Actor 引用（表示触发其创建的 Actor）。在这种情况下，<code class="highlighter-rouge">context.parent</code>（监督者引用）和<code class="highlighter-rouge">context.path.parent</code>（Actor 路径中的父节点）不表示同一个 Actor。但是，在监督者中查找子级的名称会在远程节点上找到它，保留逻辑结构，例如发送到未解析的 Actor 引用时。</p>
+<p>当 Actor 创建子节点时，Actor 系统的部署程序将决定新 Actor 是驻留在同一个 JVM 中，还是驻留在另一个节点上。在第二种情况下，Actor 的创建将通过网络连接触发，在不同的 JVM 中发生，从而在不同的 Actor 系统中发生。远程系统将把新 Actor 放在为此目的保留的特殊路径下，新 Actor 的监督者将是远程 Actor 引用（表示触发其创建的 Actor）。在这种情况下，<code class="language-plaintext highlighter-rouge">context.parent</code>（监督者引用）和<code class="language-plaintext highlighter-rouge">context.path.parent</code>（Actor 路径中的父节点）不表示同一个 Actor。但是，在监督者中查找子级的名称会在远程节点上找到它，保留逻辑结构，例如发送到未解析的 Actor 引用时。</p>
 
 <p><img src="https://github.com/guobinhit/akka-guide/blob/master/images/addressing/actor-path-in-system.png" alt="actor-path-in-system" /></p>
 
@@ -5029,36 +5029,36 @@ supervised actor started
 <p>当通过网络发送 Actor 引用时，它由其路径表示。因此，路径必须完全编码向底层 Actor 发送消息所需的所有信息。这是通过在路径字符串的地址部分编码协议、主机和端口来实现的。当 Actor 系统从远程节点接收到 Actor 路径时，它检查该路径的地址是否与该 Actor 系统的地址匹配，在这种情况下，它将解析为 Actor 的本地引用。否则，它将由远程 Actor 引用表示。</p>
 
 <h3 id="358-actor-路径的顶级范围">3.5.8. Actor 路径的顶级范围</h3>
-<p>在路径层次结构的根目录下，存在根目录守护者，在其上可以找到所有其他 Actor；其名称为<code class="highlighter-rouge">"/"</code>。下一级包括以下内容：</p>
+<p>在路径层次结构的根目录下，存在根目录守护者，在其上可以找到所有其他 Actor；其名称为<code class="language-plaintext highlighter-rouge">"/"</code>。下一级包括以下内容：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">"/user"</code>是所有用户创建的 Actor 的顶级守护者 Actor；使用<code class="highlighter-rouge">ActorSystem.actorOf</code>创建的 Actor 位于此 Actor 的下面。</li>
-  <li><code class="highlighter-rouge">"/system"</code>是所有系统创建的 Actor 的顶级守护者 Actor，例如在 Actor 系统开始时通过配置自动部署日志监听器。</li>
-  <li><code class="highlighter-rouge">"/deadletters"</code>是死信 Actor，即所有发送到已停止或不存在的 Actor 的消息都会重新路由（在尽最大努力的基础上：消息也可能会丢失，即使是在本地 JVM 中）。</li>
-  <li><code class="highlighter-rouge">"/temp"</code>是所有短期系统创建的 Actor 的守护者 Actor，例如在<code class="highlighter-rouge">ActorRef.ask</code>的实现中使用的 Actor。</li>
-  <li><code class="highlighter-rouge">"/remote"</code>是一个人工路径，其下面所有 Actor 的监督者都是远程 Actor 引用。</li>
+  <li><code class="language-plaintext highlighter-rouge">"/user"</code>是所有用户创建的 Actor 的顶级守护者 Actor；使用<code class="language-plaintext highlighter-rouge">ActorSystem.actorOf</code>创建的 Actor 位于此 Actor 的下面。</li>
+  <li><code class="language-plaintext highlighter-rouge">"/system"</code>是所有系统创建的 Actor 的顶级守护者 Actor，例如在 Actor 系统开始时通过配置自动部署日志监听器。</li>
+  <li><code class="language-plaintext highlighter-rouge">"/deadletters"</code>是死信 Actor，即所有发送到已停止或不存在的 Actor 的消息都会重新路由（在尽最大努力的基础上：消息也可能会丢失，即使是在本地 JVM 中）。</li>
+  <li><code class="language-plaintext highlighter-rouge">"/temp"</code>是所有短期系统创建的 Actor 的守护者 Actor，例如在<code class="language-plaintext highlighter-rouge">ActorRef.ask</code>的实现中使用的 Actor。</li>
+  <li><code class="language-plaintext highlighter-rouge">"/remote"</code>是一个人工路径，其下面所有 Actor 的监督者都是远程 Actor 引用。</li>
 </ul>
 
 <p>像这样为 Actor 构建名称空间的需要源于一个中心且非常简单的设计目标：层次结构中的所有内容都是一个 Actor，并且所有 Actor 都以相同的方式工作。因此，你不仅可以查找你创建的 Actor，还可以查找系统守护者并向其发送消息（在本例中，它将尽职尽责地丢弃该消息）。这一强有力的原则意味着不需要记住任何怪癖，它使整个系统更加统一和一致。</p>
 
-<p>如果你想更多地了解 Actor 的顶层（<code class="highlighter-rouge">top-level</code>）结构，可见「<a href="https://doc.akka.io/docs/akka/current/general/supervision.html#toplevel-supervisors">The Top-Level Supervisors</a>」。</p>
+<p>如果你想更多地了解 Actor 的顶层（<code class="language-plaintext highlighter-rouge">top-level</code>）结构，可见「<a href="https://doc.akka.io/docs/akka/current/general/supervision.html#toplevel-supervisors">The Top-Level Supervisors</a>」。</p>
 
 <h2 id="36-位置透明">3.6. 位置透明</h2>
-<p>上一节描述了如何使用 Actor 路径来启用位置透明（<code class="highlighter-rouge">location transparency</code>）。这个特殊的特性需要一些额外的解释，因为在编程语言、平台和技术的上下文中，相关术语“透明远程处理”的使用方式非常不同。</p>
+<p>上一节描述了如何使用 Actor 路径来启用位置透明（<code class="language-plaintext highlighter-rouge">location transparency</code>）。这个特殊的特性需要一些额外的解释，因为在编程语言、平台和技术的上下文中，相关术语“透明远程处理”的使用方式非常不同。</p>
 
 <h3 id="361-默认分布">3.6.1. 默认分布</h3>
 <p>Akka 中的所有内容都设计成在分布式环境中工作：Actor 的所有交互都使用纯消息传递，而所有内容都是异步的。这项工作的目的是确保在单个 JVM 中或在成百上千台机器的集群上运行时，所有功能都可以平等地使用。实现这一点的关键是通过优化从远程到本地，而不是通过泛化从本地到远程。有关第二种方法必然失败的原因的详细讨论，请参阅这篇「<a href="https://doc.akka.io/docs/misc/smli_tr-94-29.pdf">经典</a>」文章。</p>
 
 <h3 id="362-打破透明的方法">3.6.2. 打破透明的方法</h3>
-<p>Akka 的真实情况不必是使用它的应用程序的真实情况，因为分布式执行的设计对可能的情况有一些限制。最明显的一点是，通过线路发送的所有消息都必须是可序列化的。虽然不太明显，但如果要在远程节点上创建 Actor，则包含用作 Actor 工厂（即在<code class="highlighter-rouge">Props</code>中）的闭包。</p>
+<p>Akka 的真实情况不必是使用它的应用程序的真实情况，因为分布式执行的设计对可能的情况有一些限制。最明显的一点是，通过线路发送的所有消息都必须是可序列化的。虽然不太明显，但如果要在远程节点上创建 Actor，则包含用作 Actor 工厂（即在<code class="language-plaintext highlighter-rouge">Props</code>中）的闭包。</p>
 
 <p>另一个后果是，每件事都需要意识到所有的交互都是完全异步的，在计算机网络中，这可能意味着消息到达收件人可能需要几分钟时间（取决于配置）。这还意味着消息丢失的概率要比一个 JVM 中的高很多，在同一个 JVM 中，它接近于零，但仍然是：没有硬保证！</p>
 
 <h3 id="363-如何使用远程处理">3.6.3. 如何使用远程处理？</h3>
-<p>我们将透明的概念限制在几乎没有用于 Akka 远程处理层的 API：它纯粹是由配置驱动的。只需根据前面几节中概述的原则编写应用程序，然后在配置文件中指定 Actor 子树的远程部署。这样，你的应用程序就可以在不需要触摸代码的情况下进行扩展。API 中唯一允许对远程部署产生编程影响的部分是，<code class="highlighter-rouge">Props</code>包含一个可以设置为特定<code class="highlighter-rouge">Deploy</code>实例的字段；这与将等效部署放入配置文件（如果两者都给出，则配置文件获胜）的效果相同。</p>
+<p>我们将透明的概念限制在几乎没有用于 Akka 远程处理层的 API：它纯粹是由配置驱动的。只需根据前面几节中概述的原则编写应用程序，然后在配置文件中指定 Actor 子树的远程部署。这样，你的应用程序就可以在不需要触摸代码的情况下进行扩展。API 中唯一允许对远程部署产生编程影响的部分是，<code class="language-plaintext highlighter-rouge">Props</code>包含一个可以设置为特定<code class="language-plaintext highlighter-rouge">Deploy</code>实例的字段；这与将等效部署放入配置文件（如果两者都给出，则配置文件获胜）的效果相同。</p>
 
 <h3 id="364-peer-to-peer-vs-client-server">3.6.4. Peer-to-Peer vs. Client-Server</h3>
-<p>Akka 远程处理是一种以对等（<code class="highlighter-rouge">peer-to-peer</code>，或者称之为“点对点”）方式连接 Actor 系统的通信模块，是 Akka 集群的基础。远程处理的设计由两个（相关的）设计决策驱动：</p>
+<p>Akka 远程处理是一种以对等（<code class="language-plaintext highlighter-rouge">peer-to-peer</code>，或者称之为“点对点”）方式连接 Actor 系统的通信模块，是 Akka 集群的基础。远程处理的设计由两个（相关的）设计决策驱动：</p>
 
 <ol>
   <li>所涉及系统之间的通信是对称的：如果系统 A 可以连接到系统 B，那么系统 B 也必须能够独立地连接到系统 A。</li>
@@ -5073,7 +5073,7 @@ supervised actor started
 
 <h3 id="365-用路由器扩容标记点">3.6.5. 用路由器扩容标记点</h3>
 
-<p>除了能够在集群的不同节点上运行 Actor 系统的不同部分之外，还可以通过将支持并行化的 Actor 子树（例如，搜索引擎并行处理不同的查询）相乘，扩展到更多的核心。然后，克隆可以以不同的方式被路由到，例如循环。实现这一点的唯一必要的是，开发人员需要将某个 Actor 声明为<code class="highlighter-rouge">withRouter</code>，然后取而代之的是，将创建一个路由器 Actor，该 Actor 将生成所需类型的可配置子级，并以配置的方式路由到这些子级。一旦声明了这样的路由器，就可以从配置文件中自由地覆盖其配置，包括将其与（部分）子级的远程部署混合在一起。在「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/routing.md">路由</a>」中可以阅读更多关于此的信息。</p>
+<p>除了能够在集群的不同节点上运行 Actor 系统的不同部分之外，还可以通过将支持并行化的 Actor 子树（例如，搜索引擎并行处理不同的查询）相乘，扩展到更多的核心。然后，克隆可以以不同的方式被路由到，例如循环。实现这一点的唯一必要的是，开发人员需要将某个 Actor 声明为<code class="language-plaintext highlighter-rouge">withRouter</code>，然后取而代之的是，将创建一个路由器 Actor，该 Actor 将生成所需类型的可配置子级，并以配置的方式路由到这些子级。一旦声明了这样的路由器，就可以从配置文件中自由地覆盖其配置，包括将其与（部分）子级的远程部署混合在一起。在「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/routing.md">路由</a>」中可以阅读更多关于此的信息。</p>
 
 <hr />
 
@@ -5354,21 +5354,21 @@ supervised actor started
 
 <h2 id="38-消息传递可靠性">3.8. 消息传递可靠性</h2>
 
-<p>Akka 帮助你构建可靠的应用程序，这些应用程序可以在一台机器中使用多个处理器核心（<code class="highlighter-rouge">scaling up</code>，纵向扩展）或分布在计算机网络中（<code class="highlighter-rouge">scaling out</code>，横向扩展）。实现这一点的关键抽象是，代码单元 Actor 之间的所有交互都是通过消息传递进行的，这就是为什么 Actor 之间传递消息的精确语义应该有自己的章节。</p>
+<p>Akka 帮助你构建可靠的应用程序，这些应用程序可以在一台机器中使用多个处理器核心（<code class="language-plaintext highlighter-rouge">scaling up</code>，纵向扩展）或分布在计算机网络中（<code class="language-plaintext highlighter-rouge">scaling out</code>，横向扩展）。实现这一点的关键抽象是，代码单元 Actor 之间的所有交互都是通过消息传递进行的，这就是为什么 Actor 之间传递消息的精确语义应该有自己的章节。</p>
 
 <p>为了给下面的讨论提供一些上下文，请考虑跨多个网络主机的应用程序。无论是发送到本地 JVM 上的 Actor 还是发送到远程 Actor，通信的基本机制都是相同的，但是在传递延迟（可能还取决于网络链路的带宽和消息大小）和可靠性方面会有明显的差异。在远程消息发送的情况下，涉及到更多的步骤，这意味着更多的步骤可能出错。另一个方面是本地发送将在同一个 JVM 中传递对消息的引用，而对发送的底层对象没有任何限制，而远程传输将限制消息的大小。</p>
 
 <p>因此假设 Actor 之间的远程通信是安全的，这个一个悲观的赌注。它意味着只依赖于那些总是有保证的属性，这些属性将在下面详细讨论。这在 Actor 的实现中有一些开销。如果你愿意牺牲完整的位置透明性，例如在一组紧密合作的 Actor 的情况下，你可以将他们始终放在同一个 JVM 上，并在消息传递上享受更严格的保证。下文将进一步讨论这种权衡的细节。</p>
 
-<p>作为补充部分，我们对如何在内置的基础上构建更强的可靠性给出了一些建议。本章最后讨论了“死信办公室（<code class="highlighter-rouge">Dead Letter Office</code>）”的作用。</p>
+<p>作为补充部分，我们对如何在内置的基础上构建更强的可靠性给出了一些建议。本章最后讨论了“死信办公室（<code class="language-plaintext highlighter-rouge">Dead Letter Office</code>）”的作用。</p>
 
 <h3 id="381-一般规则">3.8.1. 一般规则</h3>
 
-<p>这些是发送消息的规则（即，<code class="highlighter-rouge">tell</code>或<code class="highlighter-rouge">!</code>方法，也是<code class="highlighter-rouge">ask</code>模式的基础）：</p>
+<p>这些是发送消息的规则（即，<code class="language-plaintext highlighter-rouge">tell</code>或<code class="language-plaintext highlighter-rouge">!</code>方法，也是<code class="language-plaintext highlighter-rouge">ask</code>模式的基础）：</p>
 
 <ul>
-  <li>至多一次传递（<code class="highlighter-rouge">at-most-once delivery</code>），即没有保证的传递</li>
-  <li>每个<code class="highlighter-rouge">sender–receiver</code>对（<code class="highlighter-rouge">pair</code>）的消息排序</li>
+  <li>至多一次传递（<code class="language-plaintext highlighter-rouge">at-most-once delivery</code>），即没有保证的传递</li>
+  <li>每个<code class="language-plaintext highlighter-rouge">sender–receiver</code>对（<code class="language-plaintext highlighter-rouge">pair</code>）的消息排序</li>
 </ul>
 
 <p>第一个规则通常也存在于其他 Actor 的实现中，而第二个规则则特定于 Akka。</p>
@@ -5378,12 +5378,12 @@ supervised actor started
 <p>在描述传递机制的语义时，有三个基本类别：</p>
 
 <ul>
-  <li>至多一次传递（<code class="highlighter-rouge">at-most-once delivery</code>）意味着对于传递给该机制的每个消息，该消息要么传递一次，要么根本不传递；更随意地说，它意味着消息可能会丢失。</li>
-  <li>至少一次传递（<code class="highlighter-rouge">at-least-once delivery</code>）意味着对于传递给该机制的每个消息，可能会多次尝试传递它，从而至少一次成功；同样，在更随意的情况下，这意味着消息可能重复，但不会丢失。</li>
-  <li>精确一次传递（<code class="highlighter-rouge">exactly-once delivery</code>）意味着对于传递给该机制的每个消息，只向接收者传递一次；消息既不能丢失也不能重复。</li>
+  <li>至多一次传递（<code class="language-plaintext highlighter-rouge">at-most-once delivery</code>）意味着对于传递给该机制的每个消息，该消息要么传递一次，要么根本不传递；更随意地说，它意味着消息可能会丢失。</li>
+  <li>至少一次传递（<code class="language-plaintext highlighter-rouge">at-least-once delivery</code>）意味着对于传递给该机制的每个消息，可能会多次尝试传递它，从而至少一次成功；同样，在更随意的情况下，这意味着消息可能重复，但不会丢失。</li>
+  <li>精确一次传递（<code class="language-plaintext highlighter-rouge">exactly-once delivery</code>）意味着对于传递给该机制的每个消息，只向接收者传递一次；消息既不能丢失也不能重复。</li>
 </ul>
 
-<p>第一种是最廉价和高效的，而且拥有最低的实现开销，因为它可以在发送端或传输机制中以不保持状态的情况下以“即发即弃（<code class="highlighter-rouge">fire-and-forget</code>）”的方式完成。第二种需要重试以应对传输损失，这意味着在发送端保持状态，在接收端具有确认机制。第三种是最昂贵的，因此性能最差，因为除了第二种之外，它还要求状态保持在接收端，以便过滤出重复的传递。</p>
+<p>第一种是最廉价和高效的，而且拥有最低的实现开销，因为它可以在发送端或传输机制中以不保持状态的情况下以“即发即弃（<code class="language-plaintext highlighter-rouge">fire-and-forget</code>）”的方式完成。第二种需要重试以应对传输损失，这意味着在发送端保持状态，在接收端具有确认机制。第三种是最昂贵的，因此性能最差，因为除了第二种之外，它还要求状态保持在接收端，以便过滤出重复的传递。</p>
 
 <h4 id="3812-讨论为什么不保证传递">3.8.1.2. 讨论：为什么不保证传递？</h4>
 
@@ -5407,41 +5407,41 @@ supervised actor started
 
 <h4 id="3813-讨论消息排序">3.8.1.3. 讨论：消息排序</h4>
 
-<p>更具体的规则是，对于给定的一对 Actor，直接从第一个 Actor 发送到第二个 Actor 的消息不会被无序接收。该词直接强调，该保证仅适用于与<code class="highlighter-rouge">tell</code>运算符一起发送到最终目的地时，而不适用于使用中介或其他消息分发功能时，除非另有说明。</p>
+<p>更具体的规则是，对于给定的一对 Actor，直接从第一个 Actor 发送到第二个 Actor 的消息不会被无序接收。该词直接强调，该保证仅适用于与<code class="language-plaintext highlighter-rouge">tell</code>运算符一起发送到最终目的地时，而不适用于使用中介或其他消息分发功能时，除非另有说明。</p>
 
 <p>保证说明如下：</p>
 
 <ul>
-  <li>Actor <code class="highlighter-rouge">A1</code>向<code class="highlighter-rouge">A2</code>发送消息<code class="highlighter-rouge">M1</code>、<code class="highlighter-rouge">M2</code>、<code class="highlighter-rouge">M3</code></li>
-  <li>Actor <code class="highlighter-rouge">A3</code>向<code class="highlighter-rouge">A2</code>发送消息<code class="highlighter-rouge">M4</code>、<code class="highlighter-rouge">M5</code>、<code class="highlighter-rouge">M6</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">A1</code>向<code class="language-plaintext highlighter-rouge">A2</code>发送消息<code class="language-plaintext highlighter-rouge">M1</code>、<code class="language-plaintext highlighter-rouge">M2</code>、<code class="language-plaintext highlighter-rouge">M3</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">A3</code>向<code class="language-plaintext highlighter-rouge">A2</code>发送消息<code class="language-plaintext highlighter-rouge">M4</code>、<code class="language-plaintext highlighter-rouge">M5</code>、<code class="language-plaintext highlighter-rouge">M6</code></li>
 </ul>
 
 <p>这意味着：</p>
 
 <ol>
-  <li>如果<code class="highlighter-rouge">M1</code>被接收，则必须在<code class="highlighter-rouge">M2</code>和<code class="highlighter-rouge">M3</code>之前接收。</li>
-  <li>如果<code class="highlighter-rouge">M2</code>被接收，必须在<code class="highlighter-rouge">M3</code>之前接收。</li>
-  <li>如果<code class="highlighter-rouge">M4</code>被接收，则必须在<code class="highlighter-rouge">M5</code>和<code class="highlighter-rouge">M6</code>之前接收。</li>
-  <li>如果<code class="highlighter-rouge">M5</code>被接收，则必须在<code class="highlighter-rouge">M6</code>之前接收。</li>
-  <li><code class="highlighter-rouge">A2</code>可以看到<code class="highlighter-rouge">A1</code>的消息与<code class="highlighter-rouge">A3</code>的消息交织在一起。</li>
-  <li>由于没有保证的传递，任何信息都可能被丢弃，即不能到达<code class="highlighter-rouge">A2</code>。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">M1</code>被接收，则必须在<code class="language-plaintext highlighter-rouge">M2</code>和<code class="language-plaintext highlighter-rouge">M3</code>之前接收。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">M2</code>被接收，必须在<code class="language-plaintext highlighter-rouge">M3</code>之前接收。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">M4</code>被接收，则必须在<code class="language-plaintext highlighter-rouge">M5</code>和<code class="language-plaintext highlighter-rouge">M6</code>之前接收。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">M5</code>被接收，则必须在<code class="language-plaintext highlighter-rouge">M6</code>之前接收。</li>
+  <li><code class="language-plaintext highlighter-rouge">A2</code>可以看到<code class="language-plaintext highlighter-rouge">A1</code>的消息与<code class="language-plaintext highlighter-rouge">A3</code>的消息交织在一起。</li>
+  <li>由于没有保证的传递，任何信息都可能被丢弃，即不能到达<code class="language-plaintext highlighter-rouge">A2</code>。</li>
 </ol>
 
-<p>在此，需要注意的是，Akka 的保证适用于邮件进入收件人邮箱的顺序。如果邮箱实现不遵循<code class="highlighter-rouge">FIFO</code>顺序（例如<code class="highlighter-rouge">PriorityMailbox</code>），那么 Actor 的处理顺序可能会偏离排队顺序。</p>
+<p>在此，需要注意的是，Akka 的保证适用于邮件进入收件人邮箱的顺序。如果邮箱实现不遵循<code class="language-plaintext highlighter-rouge">FIFO</code>顺序（例如<code class="language-plaintext highlighter-rouge">PriorityMailbox</code>），那么 Actor 的处理顺序可能会偏离排队顺序。</p>
 
 <p>请注意，此规则不可传递：</p>
 
 <ul>
-  <li>Actor <code class="highlighter-rouge">A</code>将消息<code class="highlighter-rouge">M1</code>发送给 Actor <code class="highlighter-rouge">C</code></li>
-  <li>Actor <code class="highlighter-rouge">A</code>将消息<code class="highlighter-rouge">M2</code>发送给 Actor <code class="highlighter-rouge">B</code></li>
-  <li>Actor <code class="highlighter-rouge">B</code>将消息<code class="highlighter-rouge">M2</code>转发给 Actor <code class="highlighter-rouge">C</code></li>
-  <li>Actor <code class="highlighter-rouge">C</code>可以接受任何顺序的<code class="highlighter-rouge">M1</code>和<code class="highlighter-rouge">M2</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">A</code>将消息<code class="language-plaintext highlighter-rouge">M1</code>发送给 Actor <code class="language-plaintext highlighter-rouge">C</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">A</code>将消息<code class="language-plaintext highlighter-rouge">M2</code>发送给 Actor <code class="language-plaintext highlighter-rouge">B</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">B</code>将消息<code class="language-plaintext highlighter-rouge">M2</code>转发给 Actor <code class="language-plaintext highlighter-rouge">C</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">C</code>可以接受任何顺序的<code class="language-plaintext highlighter-rouge">M1</code>和<code class="language-plaintext highlighter-rouge">M2</code></li>
 </ul>
 
-<p>因果传递排序（<code class="highlighter-rouge">Causal transitive ordering</code>）意味着<code class="highlighter-rouge">M2</code>在<code class="highlighter-rouge">M1</code>之前从未在 Actor <code class="highlighter-rouge">C</code>收到过，尽管其中任何一个都可能丢失。当<code class="highlighter-rouge">A</code>、<code class="highlighter-rouge">B</code>和<code class="highlighter-rouge">C</code>驻留在不同的网络主机上时，由于不同的消息传递延迟，可能会违反此顺序，具体请参阅下面的详细信息。</p>
+<p>因果传递排序（<code class="language-plaintext highlighter-rouge">Causal transitive ordering</code>）意味着<code class="language-plaintext highlighter-rouge">M2</code>在<code class="language-plaintext highlighter-rouge">M1</code>之前从未在 Actor <code class="language-plaintext highlighter-rouge">C</code>收到过，尽管其中任何一个都可能丢失。当<code class="language-plaintext highlighter-rouge">A</code>、<code class="language-plaintext highlighter-rouge">B</code>和<code class="language-plaintext highlighter-rouge">C</code>驻留在不同的网络主机上时，由于不同的消息传递延迟，可能会违反此顺序，具体请参阅下面的详细信息。</p>
 
 <ul>
-  <li><strong>注释</strong>：Actor 创建被视为从父级发送到子级的消息，其语义与上面讨论的消息相同。以这种初始创建消息重新排序的方式向 Actor 发送消息意味着消息可能不会到达，因为 Actor 还不存在。消息可能来得太早的一个例子是，创建一个远程部署的 Actor <code class="highlighter-rouge">R1</code>，将其引用发送到另一个远程 Actor <code class="highlighter-rouge">R2</code>，并让<code class="highlighter-rouge">R2</code>向<code class="highlighter-rouge">R1</code>发送消息。定义良好的排序示例是父级创建 Actor 并立即向其发送消息。</li>
+  <li><strong>注释</strong>：Actor 创建被视为从父级发送到子级的消息，其语义与上面讨论的消息相同。以这种初始创建消息重新排序的方式向 Actor 发送消息意味着消息可能不会到达，因为 Actor 还不存在。消息可能来得太早的一个例子是，创建一个远程部署的 Actor <code class="language-plaintext highlighter-rouge">R1</code>，将其引用发送到另一个远程 Actor <code class="language-plaintext highlighter-rouge">R2</code>，并让<code class="language-plaintext highlighter-rouge">R2</code>向<code class="language-plaintext highlighter-rouge">R1</code>发送消息。定义良好的排序示例是父级创建 Actor 并立即向其发送消息。</li>
 </ul>
 
 <h4 id="3814-通信故障">3.8.1.4. 通信故障</h4>
@@ -5449,9 +5449,9 @@ supervised actor started
 <p>请注意，上面讨论的排序保证仅适用于 Actor 之间的用户消息。Actor 的子级的失败是通过特定的系统消息进行通信的，这些消息不是相对于普通用户消息进行排序的。特别地：</p>
 
 <ul>
-  <li>子 Actor <code class="highlighter-rouge">C</code>将消息<code class="highlighter-rouge">M</code>发送到其父 Actor <code class="highlighter-rouge">P</code></li>
-  <li>子 Actor 因错误<code class="highlighter-rouge">F</code>导致失败</li>
-  <li>父 Actor <code class="highlighter-rouge">P</code>可能按<code class="highlighter-rouge">M</code>、<code class="highlighter-rouge">F</code>或<code class="highlighter-rouge">F</code>、<code class="highlighter-rouge">M</code>的顺序接收这两个事件</li>
+  <li>子 Actor <code class="language-plaintext highlighter-rouge">C</code>将消息<code class="language-plaintext highlighter-rouge">M</code>发送到其父 Actor <code class="language-plaintext highlighter-rouge">P</code></li>
+  <li>子 Actor 因错误<code class="language-plaintext highlighter-rouge">F</code>导致失败</li>
+  <li>父 Actor <code class="language-plaintext highlighter-rouge">P</code>可能按<code class="language-plaintext highlighter-rouge">M</code>、<code class="language-plaintext highlighter-rouge">F</code>或<code class="language-plaintext highlighter-rouge">F</code>、<code class="language-plaintext highlighter-rouge">M</code>的顺序接收这两个事件</li>
 </ul>
 
 <p>这样做的原因是内部系统消息有自己的邮箱，因此用户和系统消息的排队调用顺序不能保证其出列时间的顺序。</p>
@@ -5459,22 +5459,22 @@ supervised actor started
 <h3 id="382-在-jvm本地消息发送的规则">3.8.2. 在 JVM（本地）消息发送的规则</h3>
 <h4 id="3821-小心你对这部分的操作">3.8.2.1. 小心你对这部分的操作！</h4>
 
-<p>不建议依赖本节中更强的可靠性，因为它会将你的应用程序绑定到仅本地（<code class="highlighter-rouge">local-only</code>）部署：为了适合在计算机集群上运行，可能必须对应用程序进行不同的设计，而不是仅使用某些 Actor 本地的某些消息交换模式。我们的信条是“设计一次，以任何你想要的方式部署”，为了实现这一点，你应该只依赖于「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/message-delivery-reliability.md#%E4%B8%80%E8%88%AC%E8%A7%84%E5%88%99">一般规则</a>」。</p>
+<p>不建议依赖本节中更强的可靠性，因为它会将你的应用程序绑定到仅本地（<code class="language-plaintext highlighter-rouge">local-only</code>）部署：为了适合在计算机集群上运行，可能必须对应用程序进行不同的设计，而不是仅使用某些 Actor 本地的某些消息交换模式。我们的信条是“设计一次，以任何你想要的方式部署”，为了实现这一点，你应该只依赖于「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/message-delivery-reliability.md#%E4%B8%80%E8%88%AC%E8%A7%84%E5%88%99">一般规则</a>」。</p>
 
 <h4 id="3822-本地消息发送的可靠性">3.8.2.2. 本地消息发送的可靠性</h4>
 
-<p>Akka 测试套件依赖于在本地上下文中不丢失消息（对于非错误条件测试也适用于远程部署），这意味着我们确实尽了最大努力保持测试的稳定性。但是，本地<code class="highlighter-rouge">tell</code>操作可能会失败，原因与在 JVM 上进行常规方法调用相同：</p>
+<p>Akka 测试套件依赖于在本地上下文中不丢失消息（对于非错误条件测试也适用于远程部署），这意味着我们确实尽了最大努力保持测试的稳定性。但是，本地<code class="language-plaintext highlighter-rouge">tell</code>操作可能会失败，原因与在 JVM 上进行常规方法调用相同：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">StackOverflowError</code></li>
-  <li><code class="highlighter-rouge">OutOfMemoryError</code></li>
-  <li>其它<code class="highlighter-rouge">VirtualMachineError</code></li>
+  <li><code class="language-plaintext highlighter-rouge">StackOverflowError</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OutOfMemoryError</code></li>
+  <li>其它<code class="language-plaintext highlighter-rouge">VirtualMachineError</code></li>
 </ul>
 
 <p>此外，本地发送可能会以 Akka 特定的方式失败：</p>
 
 <ul>
-  <li>如果邮箱不接受邮件（例如，完全<code class="highlighter-rouge">BoundedMailbox</code>）</li>
+  <li>如果邮箱不接受邮件（例如，完全<code class="language-plaintext highlighter-rouge">BoundedMailbox</code>）</li>
   <li>如果接收 Actor 在处理消息时失败或已终止</li>
 </ul>
 
@@ -5482,11 +5482,11 @@ supervised actor started
 
 <h4 id="3823-本地消息发送顺序">3.8.2.3. 本地消息发送顺序</h4>
 
-<p>假设严格的<code class="highlighter-rouge">FIFO</code>邮箱，在某些条件下，消除了消息排序保证的非传递性（<code class="highlighter-rouge">non-transitivity</code>）的上述警告。正如你将要注意到的，这些都是非常微妙的，而且将来的性能优化甚至有可能使整个段落（<code class="highlighter-rouge">paragraph</code>）失效。可能的非详尽的指示清单是：</p>
+<p>假设严格的<code class="language-plaintext highlighter-rouge">FIFO</code>邮箱，在某些条件下，消除了消息排序保证的非传递性（<code class="language-plaintext highlighter-rouge">non-transitivity</code>）的上述警告。正如你将要注意到的，这些都是非常微妙的，而且将来的性能优化甚至有可能使整个段落（<code class="language-plaintext highlighter-rouge">paragraph</code>）失效。可能的非详尽的指示清单是：</p>
 
 <ul>
   <li>在接收到顶级 Actor 的第一个回复之前，存在一个保护内部临时队列的锁，而这个锁是不公平的；这意味着，根据低级线程调度，来自不同发送方的排队请求在 Actor 的构造过程中到达，可以重新排序。因为在 JVM 上不存在完全公平的锁，所以这是不可修复的。</li>
-  <li>同样的机制在<code class="highlighter-rouge">Router</code>的构建过程中使用，更精确地说是路由的<code class="highlighter-rouge">ActorRef</code>，因此对于部署了路由器的 Actor 来说，同样的问题也存在。</li>
+  <li>同样的机制在<code class="language-plaintext highlighter-rouge">Router</code>的构建过程中使用，更精确地说是路由的<code class="language-plaintext highlighter-rouge">ActorRef</code>，因此对于部署了路由器的 Actor 来说，同样的问题也存在。</li>
   <li>如上所述，在排队过程中涉及锁的任何地方都会出现问题，这也可能适用于自定义邮箱。</li>
 </ul>
 
@@ -5499,13 +5499,13 @@ supervised actor started
 <p>如前一节所述，本地消息在特定条件下发送服从传递因果排序。由于不同的邮件传递延迟，可能会违反此顺序。例如：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">node-1</code>上的 Actor <code class="highlighter-rouge">A</code>向<code class="highlighter-rouge">node-3</code>上的 Actor <code class="highlighter-rouge">C</code>发送消息<code class="highlighter-rouge">M1</code></li>
-  <li><code class="highlighter-rouge">node-1</code>上的 Actor <code class="highlighter-rouge">A</code>然后向<code class="highlighter-rouge">node-2</code>上的 Actor <code class="highlighter-rouge">B</code>发送消息<code class="highlighter-rouge">M2</code></li>
-  <li><code class="highlighter-rouge">node-2</code>上的 Actor <code class="highlighter-rouge">B</code>将消息<code class="highlighter-rouge">M2</code>转发给<code class="highlighter-rouge">node-3</code>上的 Actor <code class="highlighter-rouge">C</code></li>
-  <li>Actor <code class="highlighter-rouge">C</code>可以接受任何顺序的<code class="highlighter-rouge">M1</code>和<code class="highlighter-rouge">M2</code></li>
+  <li><code class="language-plaintext highlighter-rouge">node-1</code>上的 Actor <code class="language-plaintext highlighter-rouge">A</code>向<code class="language-plaintext highlighter-rouge">node-3</code>上的 Actor <code class="language-plaintext highlighter-rouge">C</code>发送消息<code class="language-plaintext highlighter-rouge">M1</code></li>
+  <li><code class="language-plaintext highlighter-rouge">node-1</code>上的 Actor <code class="language-plaintext highlighter-rouge">A</code>然后向<code class="language-plaintext highlighter-rouge">node-2</code>上的 Actor <code class="language-plaintext highlighter-rouge">B</code>发送消息<code class="language-plaintext highlighter-rouge">M2</code></li>
+  <li><code class="language-plaintext highlighter-rouge">node-2</code>上的 Actor <code class="language-plaintext highlighter-rouge">B</code>将消息<code class="language-plaintext highlighter-rouge">M2</code>转发给<code class="language-plaintext highlighter-rouge">node-3</code>上的 Actor <code class="language-plaintext highlighter-rouge">C</code></li>
+  <li>Actor <code class="language-plaintext highlighter-rouge">C</code>可以接受任何顺序的<code class="language-plaintext highlighter-rouge">M1</code>和<code class="language-plaintext highlighter-rouge">M2</code></li>
 </ul>
 
-<p><code class="highlighter-rouge">M1</code>到<code class="highlighter-rouge">node-3</code>的“传输”时间可能比<code class="highlighter-rouge">M2</code>通过<code class="highlighter-rouge">node-2</code>到<code class="highlighter-rouge">node-3</code>的“传输”时间要长。</p>
+<p><code class="language-plaintext highlighter-rouge">M1</code>到<code class="language-plaintext highlighter-rouge">node-3</code>的“传输”时间可能比<code class="language-plaintext highlighter-rouge">M2</code>通过<code class="language-plaintext highlighter-rouge">node-2</code>到<code class="language-plaintext highlighter-rouge">node-3</code>的“传输”时间要长。</p>
 
 <h3 id="383-高级抽象">3.8.3. 高级抽象</h3>
 
@@ -5513,7 +5513,7 @@ supervised actor started
 
 <h4 id="3831-消息模式">3.8.3.1. 消息模式</h4>
 
-<p>如上所述，对可靠传递需求的直接回答是一个明确的<code class="highlighter-rouge">ACK-RETRY</code>协议。以最简单的形式，这需要</p>
+<p>如上所述，对可靠传递需求的直接回答是一个明确的<code class="language-plaintext highlighter-rouge">ACK-RETRY</code>协议。以最简单的形式，这需要</p>
 
 <ul>
   <li>识别单个消息以将消息与确认关联的方法</li>
@@ -5521,11 +5521,11 @@ supervised actor started
   <li>接收者检测和丢弃重复数据的一种方法</li>
 </ul>
 
-<p>第三个是必要的，因为消息也不能保证到达。Akka 持久性模块的“至少一次传递”支持具有业务级确认的<code class="highlighter-rouge">ACK-RETRY</code>协议。通过跟踪通过”至少一次传递”发送的消息的标识符，可以检测到重复的消息。实现第三部分的另一种方法是使消息处理在业务逻辑级别上是等量的。</p>
+<p>第三个是必要的，因为消息也不能保证到达。Akka 持久性模块的“至少一次传递”支持具有业务级确认的<code class="language-plaintext highlighter-rouge">ACK-RETRY</code>协议。通过跟踪通过”至少一次传递”发送的消息的标识符，可以检测到重复的消息。实现第三部分的另一种方法是使消息处理在业务逻辑级别上是等量的。</p>
 
 <h4 id="3832-事件源">3.8.3.2. 事件源</h4>
 
-<p>事件源（和分片）是大型网站扩展到数十亿用户的原因，其思想非常简单：当一个组件（思考 Actor）处理一个命令时，它将生成一个表示命令效果的事件列表。除了应用于组件的状态之外，还存储这些事件。这个方案的好处在于，事件只会被附加到存储中，不会发生任何变化；这样可以完美地复制和扩展这个事件流（<code class="highlighter-rouge">event stream</code>）的使用者（即，其他组件可能会使用事件流作为在不同区域复制组件状态或对更改作出反应的手段）。如果组件的状态由于机器故障或被推出缓存而丢失，则可以通过重放事件流（通常使用快照来加快进程）来重建。Akka 持久化支持「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/persistence.md#%E4%BA%8B%E4%BB%B6%E6%BA%90">事件源</a>」。</p>
+<p>事件源（和分片）是大型网站扩展到数十亿用户的原因，其思想非常简单：当一个组件（思考 Actor）处理一个命令时，它将生成一个表示命令效果的事件列表。除了应用于组件的状态之外，还存储这些事件。这个方案的好处在于，事件只会被附加到存储中，不会发生任何变化；这样可以完美地复制和扩展这个事件流（<code class="language-plaintext highlighter-rouge">event stream</code>）的使用者（即，其他组件可能会使用事件流作为在不同区域复制组件状态或对更改作出反应的手段）。如果组件的状态由于机器故障或被推出缓存而丢失，则可以通过重放事件流（通常使用快照来加快进程）来重建。Akka 持久化支持「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/actors/persistence.md#%E4%BA%8B%E4%BB%B6%E6%BA%90">事件源</a>」。</p>
 
 <h4 id="3833-带明确确认的邮箱">3.8.3.3. 带明确确认的邮箱</h4>
 
@@ -5535,7 +5535,7 @@ supervised actor started
 
 <h3 id="384-死信">3.8.4. 死信</h3>
 
-<p>无法传递（并且可以确定）的消息将传递给称为<code class="highlighter-rouge">/deadLetters</code>的虚拟 Actor。这种传递是在尽最大努力的基础上进行的；它甚至可能在本地 JVM 中失败（例如，在 Actor 终止期间）。通过不可靠的网络传输发送的消息将丢失，而不会显示为死信。</p>
+<p>无法传递（并且可以确定）的消息将传递给称为<code class="language-plaintext highlighter-rouge">/deadLetters</code>的虚拟 Actor。这种传递是在尽最大努力的基础上进行的；它甚至可能在本地 JVM 中失败（例如，在 Actor 终止期间）。通过不可靠的网络传输发送的消息将丢失，而不会显示为死信。</p>
 
 <h4 id="3841-应该用死信做什么">3.8.4.1. 应该用死信做什么？</h4>
 
@@ -5545,11 +5545,11 @@ supervised actor started
 
 <h4 id="3842-如何收到死信">3.8.4.2. 如何收到死信？</h4>
 
-<p>Actor 可以订阅事件流上的类<code class="highlighter-rouge">akka.actor.DeadLetter</code>，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/index-utilities/event-bus.md#%E4%BA%8B%E4%BB%B6%E6%B5%81">事件流</a>」了解如何执行该操作。然后，订阅的 Actor 将收到（本地）系统中从那时起发布的所有死信。死信不会在网络上传播，如果要在一个位置收集死信，则必须为每个网络节点订阅一个 Actor，然后手动转发它们。还要考虑在该节点上生成死信，它可以确定发送操作失败，对于远程发送，死信可以是本地系统（如果无法建立网络连接）或远程系统（如果你要发送到的 Actor 在该时间点不存在）。</p>
+<p>Actor 可以订阅事件流上的类<code class="language-plaintext highlighter-rouge">akka.actor.DeadLetter</code>，请参阅「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/index-utilities/event-bus.md#%E4%BA%8B%E4%BB%B6%E6%B5%81">事件流</a>」了解如何执行该操作。然后，订阅的 Actor 将收到（本地）系统中从那时起发布的所有死信。死信不会在网络上传播，如果要在一个位置收集死信，则必须为每个网络节点订阅一个 Actor，然后手动转发它们。还要考虑在该节点上生成死信，它可以确定发送操作失败，对于远程发送，死信可以是本地系统（如果无法建立网络连接）或远程系统（如果你要发送到的 Actor 在该时间点不存在）。</p>
 
 <h4 id="3843-通常不令人担忧的死信">3.8.4.3. 通常不令人担忧的死信</h4>
 
-<p>每当一个 Actor 不因自己的决定而终止时，它发送给自己的一些消息就有可能丢失。在通常是良性的复杂关闭场景中，有一种情况很容易发生：看到<code class="highlighter-rouge">akka.dispatch.Terminate</code>消息丢失意味着给出了两个终止请求，但只有一个可以成功。同样，你可能会看到<code class="highlighter-rouge">akka.actor.Terminated</code>来自子 Actor 的消息，而如果父级 Actor 在父级终止时仍在监视子 Actor，则会阻止一系列以死信形式出现的 Actor。</p>
+<p>每当一个 Actor 不因自己的决定而终止时，它发送给自己的一些消息就有可能丢失。在通常是良性的复杂关闭场景中，有一种情况很容易发生：看到<code class="language-plaintext highlighter-rouge">akka.dispatch.Terminate</code>消息丢失意味着给出了两个终止请求，但只有一个可以成功。同样，你可能会看到<code class="language-plaintext highlighter-rouge">akka.actor.Terminated</code>来自子 Actor 的消息，而如果父级 Actor 在父级终止时仍在监视子 Actor，则会阻止一系列以死信形式出现的 Actor。</p>
 
 <hr />
 
@@ -5569,30 +5569,30 @@ supervised actor started
 <p>Akka 使用「<a href="https://github.com/lightbend/config">Typesafe Config Library</a>」，这对于配置你自己的应用程序或使用或不使用 Akka 构建的库也是一个不错的选择。这个库是用 Java 实现的，没有外部依赖关系；你应该看看它的文档，特别是关于「<a href="https://lightbend.github.io/config/latest/api/com/typesafe/config/ConfigFactory.html">ConfigFactory</a>」。</p>
 
 <ul>
-  <li><strong>警告</strong>：如果你使用来自<code class="highlighter-rouge">2.9.x</code>系列的 Scala REPL 的 Akka，并且没有向<code class="highlighter-rouge">ActorSystem</code>提供自己的<code class="highlighter-rouge">ClassLoader</code>，那么需要使用<code class="highlighter-rouge">-Yrepl-sync</code>启动 REPL，以解决 REPLs 提供的上下文类加载器中的缺陷。</li>
+  <li><strong>警告</strong>：如果你使用来自<code class="language-plaintext highlighter-rouge">2.9.x</code>系列的 Scala REPL 的 Akka，并且没有向<code class="language-plaintext highlighter-rouge">ActorSystem</code>提供自己的<code class="language-plaintext highlighter-rouge">ClassLoader</code>，那么需要使用<code class="language-plaintext highlighter-rouge">-Yrepl-sync</code>启动 REPL，以解决 REPLs 提供的上下文类加载器中的缺陷。</li>
 </ul>
 
 <h3 id="391-从哪里读取配置">3.9.1. 从哪里读取配置？</h3>
-<p>Akka 的所有配置（<code class="highlighter-rouge">configuration</code>）都保存在<code class="highlighter-rouge">ActorSystem</code>实例中，或者换句话说，从外部看，<code class="highlighter-rouge">ActorSystem</code>是配置信息的唯一使用者。在构造 Actor 系统时，可以传入<code class="highlighter-rouge">Config</code>对象，也可以不传入，其中第二种情况等同于传递<code class="highlighter-rouge">ConfigFactory.load()</code>，使用正确的类加载器。这大致意味着默认值是解析类路径根目录下的所有<code class="highlighter-rouge">application.conf</code>、<code class="highlighter-rouge">application.json</code>和<code class="highlighter-rouge">application.properties</code>文件。有关详细信息，请参阅上述文档。然后，Actor 系统合并在类路径根目录下找到的所有<code class="highlighter-rouge">reference.conf</code>资源，以形成最终的配置，以供内部使用。</p>
+<p>Akka 的所有配置（<code class="language-plaintext highlighter-rouge">configuration</code>）都保存在<code class="language-plaintext highlighter-rouge">ActorSystem</code>实例中，或者换句话说，从外部看，<code class="language-plaintext highlighter-rouge">ActorSystem</code>是配置信息的唯一使用者。在构造 Actor 系统时，可以传入<code class="language-plaintext highlighter-rouge">Config</code>对象，也可以不传入，其中第二种情况等同于传递<code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>，使用正确的类加载器。这大致意味着默认值是解析类路径根目录下的所有<code class="language-plaintext highlighter-rouge">application.conf</code>、<code class="language-plaintext highlighter-rouge">application.json</code>和<code class="language-plaintext highlighter-rouge">application.properties</code>文件。有关详细信息，请参阅上述文档。然后，Actor 系统合并在类路径根目录下找到的所有<code class="language-plaintext highlighter-rouge">reference.conf</code>资源，以形成最终的配置，以供内部使用。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre><span class="n">appConfig</span><span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">defaultReference</span><span class="o">(</span><span class="n">classLoader</span><span class="o">))</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p>其原理是代码从不包含默认值，而是依赖于它们在相关库提供的<code class="highlighter-rouge">reference.conf</code>中的存在。</p>
+<p>其原理是代码从不包含默认值，而是依赖于它们在相关库提供的<code class="language-plaintext highlighter-rouge">reference.conf</code>中的存在。</p>
 
-<p>作为系统属性给出的覆盖具有最高优先级，请参阅「<a href="https://github.com/lightbend/config/blob/master/HOCON.md">HOCON</a>」规范（靠近底部）。另外值得注意的是，默认为应用程序的应用程序配置可以使用<code class="highlighter-rouge">config.resource</code>属性覆盖，还有更多内容，请参阅「<a href="https://github.com/lightbend/config/blob/master/README.md">Config</a>」文档。</p>
+<p>作为系统属性给出的覆盖具有最高优先级，请参阅「<a href="https://github.com/lightbend/config/blob/master/HOCON.md">HOCON</a>」规范（靠近底部）。另外值得注意的是，默认为应用程序的应用程序配置可以使用<code class="language-plaintext highlighter-rouge">config.resource</code>属性覆盖，还有更多内容，请参阅「<a href="https://github.com/lightbend/config/blob/master/README.md">Config</a>」文档。</p>
 
 <ul>
-  <li><strong>注释</strong>：如果你正在编写 Akka 应用程序，请将你的配置保存在类路径根目录下的<code class="highlighter-rouge">application.conf</code>中。如果你正在编写基于 Akka 的库，请将其配置保存在 JAR 文件根目录下的<code class="highlighter-rouge">reference.conf</code>中。</li>
+  <li><strong>注释</strong>：如果你正在编写 Akka 应用程序，请将你的配置保存在类路径根目录下的<code class="language-plaintext highlighter-rouge">application.conf</code>中。如果你正在编写基于 Akka 的库，请将其配置保存在 JAR 文件根目录下的<code class="language-plaintext highlighter-rouge">reference.conf</code>中。</li>
 </ul>
 
 <h3 id="392-使用-jarjaronejarassembly-或任何--jar-bundler-时">3.9.2. 使用 JarJar、OneJar、Assembly 或任何  jar-bundler 时</h3>
 
 <ul>
-  <li><strong>警告</strong>：Akka 的配置方法很大程度上依赖于每个<code class="highlighter-rouge">module/jar</code>都有自己的<code class="highlighter-rouge">reference.conf</code>文件的概念，所有这些都将由配��发现并加载。不幸的是，这也意味着如果你将多个 Jar 放入或合并到同一个 Jar 中，那么你还需要合并所有<code class="highlighter-rouge">reference.conf</code>。否则，所有默认值将丢失，Akka ��不起作用。</li>
+  <li><strong>警告</strong>：Akka 的配置方法很大程度上依赖于每个<code class="language-plaintext highlighter-rouge">module/jar</code>都有自己的<code class="language-plaintext highlighter-rouge">reference.conf</code>文件的概念，所有这些都将由配��发现并加载。不幸的是，这也意味着如果你将多个 Jar 放入或合并到同一个 Jar 中，那么你还需要合并所有<code class="language-plaintext highlighter-rouge">reference.conf</code>。否则，所有默认值将丢失，Akka ��不起作用。</li>
 </ul>
 
-<p>如果使用 Maven 打包应用程序，还可以使用「<a href="http://maven.apache.org/plugins/maven-shade-plugin/">Apache Maven Shade Plugin</a>」的「<a href="http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html#AppendingTransformer">Resource Transformers</a>」，其支持将构建类路径上的所有<code class="highlighter-rouge">reference.conf</code>合并为一个。</p>
+<p>如果使用 Maven 打包应用程序，还可以使用「<a href="http://maven.apache.org/plugins/maven-shade-plugin/">Apache Maven Shade Plugin</a>」的「<a href="http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html#AppendingTransformer">Resource Transformers</a>」，其支持将构建类路径上的所有<code class="language-plaintext highlighter-rouge">reference.conf</code>合并为一个。</p>
 
 <p>插件配置可能如下所示：</p>
 
@@ -5666,9 +5666,9 @@ supervised actor started
 <span class="nt">&lt;/plugin&gt;</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <h3 id="393-自定义-applicationconf">3.9.3. 自定义 application.conf</h3>
-<p>一个自定义的<code class="highlighter-rouge">application.conf</code>配置可能如下所示：</p>
+<p>一个自定义的<code class="language-plaintext highlighter-rouge">application.conf</code>配置可能如下所示：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5744,15 +5744,15 @@ akka {
 }
 </pre></td></tr></tbody></table></code></pre></div></div>
 <h3 id="394-包含文件">3.9.4. 包含文件</h3>
-<p>有时，包含另一个配置文件可能很有用，例如，如果你有一个<code class="highlighter-rouge">application.conf</code>，具有所有与环境无关的设置，然后覆盖特定环境的某些设置。</p>
+<p>有时，包含另一个配置文件可能很有用，例如，如果你有一个<code class="language-plaintext highlighter-rouge">application.conf</code>，具有所有与环境无关的设置，然后覆盖特定环境的某些设置。</p>
 
-<p>使用<code class="highlighter-rouge">-Dconfig.resource=/dev.conf</code>指定系统属性将加载<code class="highlighter-rouge">dev.conf</code>文件，其中包括<code class="highlighter-rouge">application.conf</code></p>
+<p>使用<code class="language-plaintext highlighter-rouge">-Dconfig.resource=/dev.conf</code>指定系统属性将加载<code class="language-plaintext highlighter-rouge">dev.conf</code>文件，其中包括<code class="language-plaintext highlighter-rouge">application.conf</code></p>
 
 <ul>
   <li><strong>dev.conf</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5766,11 +5766,11 @@ akka {
 <p>在 HOCON 规范中解释了更高级的包含和替换机制。</p>
 
 <h3 id="395-配置日志记录">3.9.5. 配置日志记录</h3>
-<p>如果系统或配置属性<code class="highlighter-rouge">akka.log-config-on-start</code>设置为<code class="highlighter-rouge">on</code>，那么当 Actor 系统启动时，将在<code class="highlighter-rouge">INFO</code>级别记录完整配置。当你不确定使用了什么配置时，这很有用。</p>
+<p>如果系统或配置属性<code class="language-plaintext highlighter-rouge">akka.log-config-on-start</code>设置为<code class="language-plaintext highlighter-rouge">on</code>，那么当 Actor 系统启动时，将在<code class="language-plaintext highlighter-rouge">INFO</code>级别记录完整配置。当你不确定使用了什么配置时，这很有用。</p>
 
 <p>如果有疑问，你可以在使用配置对象构建 Actor 系统之前或之后检查它们：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5820,17 +5820,17 @@ res1: java.lang.String =
 <span class="c1">// this is a shortcut for system.settings().config().root().render()</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <h3 id="396-关于类加载器的一句话">3.9.6. 关于类加载器的一句话</h3>
-<p>在配置文件的几个地方，可以指定由 Akka 实例化的某个对象的完全限定类名。这是使用 Java 反射完成的，Java 反射又使用类加载器。在应用程序容器或 OSGi 包等具有挑战性的环境中获得正确的方法并不总是很简单的，Akka 的当前方法是，每个<code class="highlighter-rouge">ActorSystem</code>实现存储当前线程的上下文类加载器（如果可用，否则只存储其自己的加载器，如<code class="highlighter-rouge">this.getClass.getClassLoader</code>）并将其用于所有反射访问。这意味着将 Akka 放在引导类路径上会从奇怪的地方产生<code class="highlighter-rouge">NullPointerException</code>：这是不支持的。</p>
+<p>在配置文件的几个地方，可以指定由 Akka 实例化的某个对象的完全限定类名。这是使用 Java 反射完成的，Java 反射又使用类加载器。在应用程序容器或 OSGi 包等具有挑战性的环境中获得正确的方法并不总是很简单的，Akka 的当前方法是，每个<code class="language-plaintext highlighter-rouge">ActorSystem</code>实现存储当前线程的上下文类加载器（如果可用，否则只存储其自己的加载器，如<code class="language-plaintext highlighter-rouge">this.getClass.getClassLoader</code>）并将其用于所有反射访问。这意味着将 Akka 放在引导类路径上会从奇怪的地方产生<code class="language-plaintext highlighter-rouge">NullPointerException</code>：这是不支持的。</p>
 
 <h3 id="397-应用程序特定设置">3.9.7. 应用程序特定设置</h3>
 <p>配置也可用于特定于应用程序的设置。一个好的做法是将这些设置放在「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/index-utilities/extending-akka.md#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%89%B9%E5%AE%9A%E8%AE%BE%E7%BD%AE">扩展</a>」中。</p>
 
 <h4 id="3971-配置多个-actorsystem">3.9.7.1. 配置多个 ActorSystem</h4>
-<p>如果你有多个<code class="highlighter-rouge">ActorSystem</code>（或者你正在编写一个库，并且有一个<code class="highlighter-rouge">ActorSystem</code>可能与应用程序的<code class="highlighter-rouge">ActorSystem</code>分离），那么你可能需要分离每个系统的配置。</p>
+<p>如果你有多个<code class="language-plaintext highlighter-rouge">ActorSystem</code>（或者你正在编写一个库，并且有一个<code class="language-plaintext highlighter-rouge">ActorSystem</code>可能与应用程序的<code class="language-plaintext highlighter-rouge">ActorSystem</code>分离），那么你可能需要分离每个系统的配置。</p>
 
-<p>考虑到<code class="highlighter-rouge">ConfigFactory.load()</code>从整个类路径中合并所有具有匹配名称的资源，利用该功能区分配置层次结构中的 Actor 系统是最容易：</p>
+<p>考虑到<code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>从整个类路径中合并所有具有匹配名称的资源，利用该功能区分配置层次结构中的 Actor 系统是最容易：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5862,9 +5862,9 @@ my.other.setting = "hello"
   <span class="n">config</span><span class="o">.</span><span class="na">getConfig</span><span class="o">(</span><span class="s">"myapp2"</span><span class="o">).</span><span class="na">withOnlyPath</span><span class="o">(</span><span class="s">"akka"</span><span class="o">).</span><span class="na">withFallback</span><span class="o">(</span><span class="n">config</span><span class="o">))</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>这两个示例演示了“提升子树（<code class="highlighter-rouge">lift-a-subtree</code>）”技巧的不同变化：在第一种情况下，从 Actor 系统中访问的配置是</p>
+<p>这两个示例演示了“提升子树（<code class="language-plaintext highlighter-rouge">lift-a-subtree</code>）”技巧的不同变化：在第一种情况下，从 Actor 系统中访问的配置是</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5875,7 +5875,7 @@ my.other.setting = "hello"
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>在第二种情况下，只提升“akka”子树，结果如下</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -5888,7 +5888,7 @@ my.other.setting = "hello"
   <li><strong>注释</strong>：配置库非常强大，说明其所有功能超出了本文的范围。尤其不包括如何将其他配置文件包含在其他文件中（参见「<a href="https://github.com/guobinhit/akka-guide/blob/master/articles/general-concepts/configuration.md#%E5%8C%85%E5%90%AB%E6%96%87%E4%BB%B6">包含文件</a>」中的一个小示例）以及通过路径替换复制配置树的部分。</li>
 </ul>
 
-<p>在实例化<code class="highlighter-rouge">ActorSystem</code>时，还可以通过其他方式以编程方式指定和分析配置。</p>
+<p>在实例化<code class="language-plaintext highlighter-rouge">ActorSystem</code>时，还可以通过其他方式以编程方式指定和分析配置。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -5919,19 +5919,19 @@ my.other.setting = "hello"
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <h3 id="398-从自定义位置读取配置">3.9.8. 从自定义位置读取配置</h3>
-<p>你可以在代码或使用系统属性中替换或补充<code class="highlighter-rouge">application.conf</code>。</p>
+<p>你可以在代码或使用系统属性中替换或补充<code class="language-plaintext highlighter-rouge">application.conf</code>。</p>
 
-<p>如果你使用的是<code class="highlighter-rouge">ConfigFactory.load()</code>（默认情况下 Akka 会这样做），那么可以通过定义<code class="highlighter-rouge">-Dconfig.resource=whatever</code>、<code class="highlighter-rouge">-Dconfig.file=whatever</code>或<code class="highlighter-rouge">-Dconfig.url=whatever</code>来替换<code class="highlighter-rouge">application.conf</code>。</p>
+<p>如果你使用的是<code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>（默认情况下 Akka 会这样做），那么可以通过定义<code class="language-plaintext highlighter-rouge">-Dconfig.resource=whatever</code>、<code class="language-plaintext highlighter-rouge">-Dconfig.file=whatever</code>或<code class="language-plaintext highlighter-rouge">-Dconfig.url=whatever</code>来替换<code class="language-plaintext highlighter-rouge">application.conf</code>。</p>
 
-<p>在用<code class="highlighter-rouge">-Dconfig.resource</code>和<code class="highlighter-rouge">friends</code>指定的替换文件中，如果你仍然想使用<code class="highlighter-rouge">application.{conf,json,properties}</code>，可以使用<code class="highlighter-rouge">include "application"</code>。在<code class="highlighter-rouge">include "application"</code>之前指定的设置将被包含的文件覆盖，而在<code class="highlighter-rouge">include "application"</code>之后指定的设置将覆盖包含的文件。</p>
+<p>在用<code class="language-plaintext highlighter-rouge">-Dconfig.resource</code>和<code class="language-plaintext highlighter-rouge">friends</code>指定的替换文件中，如果你仍然想使用<code class="language-plaintext highlighter-rouge">application.{conf,json,properties}</code>，可以使用<code class="language-plaintext highlighter-rouge">include "application"</code>。在<code class="language-plaintext highlighter-rouge">include "application"</code>之前指定的设置将被包含的文件覆盖，而在<code class="language-plaintext highlighter-rouge">include "application"</code>之后指定的设置将覆盖包含的文件。</p>
 
 <p>在代码中，有许多自定义选项。</p>
 
-<p><code class="highlighter-rouge">ConfigFactory.load()</code>有几个重载；这些重载允许你指定一些夹在系统属性（重写）和默认值（来自<code class="highlighter-rouge">reference.conf</code>）之间的内容，替换常规<code class="highlighter-rouge">application.{conf,json,properties}</code>并替换<code class="highlighter-rouge"> -Dconfig.file</code>和<code class="highlighter-rouge">friends</code>。</p>
+<p><code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>有几个重载；这些重载允许你指定一些夹在系统属性（重写）和默认值（来自<code class="language-plaintext highlighter-rouge">reference.conf</code>）之间的内容，替换常规<code class="language-plaintext highlighter-rouge">application.{conf,json,properties}</code>并替换<code class="language-plaintext highlighter-rouge"> -Dconfig.file</code>和<code class="language-plaintext highlighter-rouge">friends</code>。</p>
 
-<p><code class="highlighter-rouge">ConfigFactory.load()</code>的最简单变体采用资源基名称（<code class="highlighter-rouge">resource basename</code>），而不是应用程序；然后将使用<code class="highlighter-rouge">myname.conf</code>、<code class="highlighter-rouge">myname.json</code>和<code class="highlighter-rouge">myname.properties</code>而不是<code class="highlighter-rouge">application.{conf,json,properties}</code>。</p>
+<p><code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>的最简单变体采用资源基名称（<code class="language-plaintext highlighter-rouge">resource basename</code>），而不是应用程序；然后将使用<code class="language-plaintext highlighter-rouge">myname.conf</code>、<code class="language-plaintext highlighter-rouge">myname.json</code>和<code class="language-plaintext highlighter-rouge">myname.properties</code>而不是<code class="language-plaintext highlighter-rouge">application.{conf,json,properties}</code>。</p>
 
-<p>最灵活的变体采用<code class="highlighter-rouge">Config</code>对象，你可以使用<code class="highlighter-rouge">ConfigFactory</code>中的任何方法加载该对象。例如，你可以使用<code class="highlighter-rouge">ConfigFactory.parseString()</code>在代码中放置配置字符串，也可以制作映射和<code class="highlighter-rouge">ConfigFactory.parseMap()</code>，或者加载文件。</p>
+<p>最灵活的变体采用<code class="language-plaintext highlighter-rouge">Config</code>对象，你可以使用<code class="language-plaintext highlighter-rouge">ConfigFactory</code>中的任何方法加载该对象。例如，你可以使用<code class="language-plaintext highlighter-rouge">ConfigFactory.parseString()</code>在代码中放置配置字符串，也可以制作映射和<code class="language-plaintext highlighter-rouge">ConfigFactory.parseMap()</code>，或者加载文件。</p>
 
 <p>你还可以将自定义配置与常规配置结合起来，这可能看起来像：</p>
 
@@ -5960,30 +5960,30 @@ my.other.setting = "hello"
 <span class="c1">// create ActorSystem</span>
 <span class="nc">ActorSystem</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"myname"</span><span class="o">,</span> <span class="n">complete</span><span class="o">);</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
-<p>使用<code class="highlighter-rouge">Config</code>对象时，请记住蛋糕中有三个“层”：</p>
+<p>使用<code class="language-plaintext highlighter-rouge">Config</code>对象时，请记住蛋糕中有三个“层”：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">ConfigFactory.defaultOverrides()</code>（系统属性）</li>
+  <li><code class="language-plaintext highlighter-rouge">ConfigFactory.defaultOverrides()</code>（系统属性）</li>
   <li>应用程序的设置</li>
-  <li><code class="highlighter-rouge">ConfigFactory.defaultReference()</code>（<code class="highlighter-rouge">reference.conf</code>）</li>
+  <li><code class="language-plaintext highlighter-rouge">ConfigFactory.defaultReference()</code>（<code class="language-plaintext highlighter-rouge">reference.conf</code>）</li>
 </ul>
 
 <p>通常的目标是定制中间层，而不让其他两层单独使用。</p>
 
 <ul>
-  <li><code class="highlighter-rouge">ConfigFactory.load()</code>加载整个堆栈</li>
-  <li><code class="highlighter-rouge">ConfigFactory.load()</code>的重载允许你指定不同的中间层</li>
-  <li><code class="highlighter-rouge">ConfigFactory.parse()</code>变体加载单个文件或资源</li>
+  <li><code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>加载整个堆栈</li>
+  <li><code class="language-plaintext highlighter-rouge">ConfigFactory.load()</code>的重载允许你指定不同的中间层</li>
+  <li><code class="language-plaintext highlighter-rouge">ConfigFactory.parse()</code>变体加载单个文件或资源</li>
 </ul>
 
-<p>要堆叠两层，请使用<code class="highlighter-rouge">override.withFallback(fallback)</code>；尝试将系统属性（<code class="highlighter-rouge">defaultOverrides()</code>）保持在顶部，并将<code class="highlighter-rouge">reference.conf</code>（<code class="highlighter-rouge">defaultReference()</code>）保持在底部。</p>
+<p>要堆叠两层，请使用<code class="language-plaintext highlighter-rouge">override.withFallback(fallback)</code>；尝试将系统属性（<code class="language-plaintext highlighter-rouge">defaultOverrides()</code>）保持在顶部，并将<code class="language-plaintext highlighter-rouge">reference.conf</code>（<code class="language-plaintext highlighter-rouge">defaultReference()</code>）保持在底部。</p>
 
-<p>请记住，你通常可以在<code class="highlighter-rouge">application.conf</code>中添加另一个<code class="highlighter-rouge">include</code>语句，而不是编写代码。<code class="highlighter-rouge">application.conf</code>顶部的<code class="highlighter-rouge">include</code>将被<code class="highlighter-rouge">application.conf</code>的其余部分覆盖，而底部的<code class="highlighter-rouge">include</code>将覆盖前面的内容。</p>
+<p>请记住，你通常可以在<code class="language-plaintext highlighter-rouge">application.conf</code>中添加另一个<code class="language-plaintext highlighter-rouge">include</code>语句，而不是编写代码。<code class="language-plaintext highlighter-rouge">application.conf</code>顶部的<code class="language-plaintext highlighter-rouge">include</code>将被<code class="language-plaintext highlighter-rouge">application.conf</code>的其余部分覆盖，而底部的<code class="language-plaintext highlighter-rouge">include</code>将覆盖前面的内容。</p>
 
 <h3 id="399-actor-部署配置">3.9.9. Actor 部署配置</h3>
-<p>特定 Actor 的部署设置可以在配置的<code class="highlighter-rouge">akka.actor.deployment</code>部分中定义。在部署部分，可以定义调度程序、邮箱、路由设置和远程部署等内容。这些功能的配置在详细介绍相应主题的章节中进行了描述。示例如下：</p>
+<p>特定 Actor 的部署设置可以在配置的<code class="language-plaintext highlighter-rouge">akka.actor.deployment</code>部分中定义。在部署部分，可以定义调度程序、邮箱、路由设置和远程部署等内容。这些功能的配置在详细介绍相应主题的章节中进行了描述。示例如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -6059,16 +6059,16 @@ prio-mailbox {
 }
 </pre></td></tr></tbody></table></code></pre></div></div>
 <ul>
-  <li><strong>注释</strong>：特定 Actor 的部署部分由 Actor 相对于<code class="highlighter-rouge">/user</code>的路径标识。</li>
+  <li><strong>注释</strong>：特定 Actor 的部署部分由 Actor 相对于<code class="language-plaintext highlighter-rouge">/user</code>的路径标识。</li>
 </ul>
 
-<p>可以使用星号作为 Actor 路径部分的通配符匹配，因此可以指定：<code class="highlighter-rouge">/*/sampleActor</code>，它将匹配层次结构中该级别上的所有<code class="highlighter-rouge">sampleActor</code>。此外，请注意：</p>
+<p>可以使用星号作为 Actor 路径部分的通配符匹配，因此可以指定：<code class="language-plaintext highlighter-rouge">/*/sampleActor</code>，它将匹配层次结构中该级别上的所有<code class="language-plaintext highlighter-rouge">sampleActor</code>。此外，请注意：</p>
 
 <ul>
-  <li>可以在最后一个位置使用通配符来匹配特定级别的所有 Actor：<code class="highlighter-rouge">/someparent/*</code></li>
-  <li>可以在最后一个位置使用双通配符以递归方式匹配所有子 Actor 及其子参 Actor：<code class="highlighter-rouge">/someparent/**</code></li>
-  <li>非通配符匹配总是比通配符具有更高的匹配优先级，并且单个通配符匹配比双通配符具有更高的优先级，因此：<code class="highlighter-rouge">/foo/bar</code>被认为比<code class="highlighter-rouge">/foo/*</code>更具体，后者被认为比<code class="highlighter-rouge">/foo/**</code>更具体，仅使用最高优先级匹配。</li>
-  <li>通配符不能用于部分匹配，如<code class="highlighter-rouge">/foo*/bar</code>、<code class="highlighter-rouge">/f*o/bar</code>等。</li>
+  <li>可以在最后一个位置使用通配符来匹配特定级别的所有 Actor：<code class="language-plaintext highlighter-rouge">/someparent/*</code></li>
+  <li>可以在最后一个位置使用双通配符以递归方式匹配所有子 Actor 及其子参 Actor：<code class="language-plaintext highlighter-rouge">/someparent/**</code></li>
+  <li>非通配符匹配总是比通配符具有更高的匹配优先级，并且单个通配符匹配比双通配符具有更高的优先级，因此：<code class="language-plaintext highlighter-rouge">/foo/bar</code>被认为比<code class="language-plaintext highlighter-rouge">/foo/*</code>更具体，后者被认为比<code class="language-plaintext highlighter-rouge">/foo/**</code>更具体，仅使用最高优先级匹配。</li>
+  <li>通配符不能用于部分匹配，如<code class="language-plaintext highlighter-rouge">/foo*/bar</code>、<code class="language-plaintext highlighter-rouge">/f*o/bar</code>等。</li>
   <li>双通配符只能放在最后一个位置。</li>
 </ul>
 
@@ -6142,7 +6142,7 @@ prio-mailbox {
 
 <p>在Akka中Actor永远属于父Actor。您可以通过调用ActorContext.spawn()来创建一个actor。创建者Actor成为新创建的子Actor的父Actor。您可能会问，您创建的第一个actor的父元素是谁?</p>
 
-<p>如下所示，所有Actors都有一个共同的父Actor，即用户监护人，它是在启动ActorSystem时定义和创建的。正如我们在《快速入门指南》中提到的，actor的创建将返回一个引用，该引用是一个有效的URL。例如，如果我们从用户guardian中使用<code class="highlighter-rouge">context.spawn(someBehavior, "someActor")</code>创建一个名为someActor的actor，其引用将包括路径<code class="highlighter-rouge">/user/someActor</code>。</p>
+<p>如下所示，所有Actors都有一个共同的父Actor，即用户监护人，它是在启动ActorSystem时定义和创建的。正如我们在《快速入门指南》中提到的，actor的创建将返回一个引用，该引用是一个有效的URL。例如，如果我们从用户guardian中使用<code class="language-plaintext highlighter-rouge">context.spawn(someBehavior, "someActor")</code>创建一个名为someActor的actor，其引用将包括路径<code class="language-plaintext highlighter-rouge">/user/someActor</code>。</p>
 
 <p><img src="https://liulv.work/images/img/20200802224604.png" alt="20200802224604" /></p>
 
@@ -6162,7 +6162,7 @@ prio-mailbox {
 
 <p>查看actor层次结构的最简单方法是打印ActorRef实例。在这个小实验中，我们创建一个actor，打印它的引用，创建这个actor的子元素，然后打印子元素的引用。我们从Hello World项目开始，如果您还没有下载它，请从Lightbend技术中心下载Quickstart项目。</p>
 
-<p>在Hello World项目中，导航到<code class="highlighter-rouge">com.tcfuture.akka.actor.architecture</code>示例包，并为下面代码片段中的每个类创建一个Java文件，并复制各自的内容。保存文件并运行<code class="highlighter-rouge">com.tcfuture.akka.actor.hello.PrintMyActorRefActor.ActorHierarchyExperiments</code>从构建工具或IDE中观察输出。</p>
+<p>在Hello World项目中，导航到<code class="language-plaintext highlighter-rouge">com.tcfuture.akka.actor.architecture</code>示例包，并为下面代码片段中的每个类创建一个Java文件，并复制各自的内容。保存文件并运行<code class="language-plaintext highlighter-rouge">com.tcfuture.akka.actor.hello.PrintMyActorRefActor.ActorHierarchyExperiments</code>从构建工具或IDE中观察输出。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -6286,7 +6286,7 @@ prio-mailbox {
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>请注意消息要求第一个actor执行其工作的方式。我们使用父节点的引用发送消息:<code class="highlighter-rouge">firstRef.tell("printit", ActorRef.noSender())</code>。当代码执行时，输出包括对第一个actor的引用以及它作为printit大小写的一部分创建的子元素。您的输出应该类似于以下内容:</p>
+<p>请注意消息要求第一个actor执行其工作的方式。我们使用父节点的引用发送消息:<code class="language-plaintext highlighter-rouge">firstRef.tell("printit", ActorRef.noSender())</code>。当代码执行时，输出包括对第一个actor的引用以及它作为printit大小写的一部分创建的子元素。您的输出应该类似于以下内容:</p>
 
 <pre><code class="language-log">First: Actor[akka://testSystem/user/first-actor#1053618476]
 Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
@@ -6300,13 +6300,13 @@ Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
 
 <ul>
   <li>
-    <p>两个路径都从<code class="highlighter-rouge">akka://testSystem/</code>开始。因为所有的actor引用都是有效的url，所以akka://是协议字段的值。</p>
+    <p>两个路径都从<code class="language-plaintext highlighter-rouge">akka://testSystem/</code>开始。因为所有的actor引用都是有效的url，所以akka://是协议字段的值。</p>
   </li>
   <li>
     <p>接下来，就像在万维网上一样，URL标识系统。在本例中，系统被命名为testSystem，但它可以是任何其他名称。如果启用了多个系统之间的远程通信，URL的这一部分将包含主机名，以便其他系统可以在网络上找到它。</p>
   </li>
   <li>
-    <p>因为第二个Actor的引用包含路径<code class="highlighter-rouge">/first-actor/</code>，所以它将其标识为第一个Actor的子元素。</p>
+    <p>因为第二个Actor的引用包含路径<code class="language-plaintext highlighter-rouge">/first-actor/</code>，所以它将其标识为第一个Actor的子元素。</p>
   </li>
   <li>
     <p>actor引用的最后一部分#1053618476或#-1544706041是一个在大多数情况下可以忽略的惟一标识符。</p>
@@ -6435,7 +6435,7 @@ Second: Actor[akka://testSystem/user/first-actor/second-actor#-1544706041]
 
 <p>运行结果如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -6593,7 +6593,7 @@ first stopped
 
 <p>您应该会看到类似如下的输出:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4

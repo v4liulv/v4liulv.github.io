@@ -43,7 +43,9 @@ git clone https://gitlab.tcfuture.tech/szgy/caelum-datax.git
 
 * **step4:** 执行编译打包
 
-* **step5:** 通过命令`Maven package`打包发布到本地Maven库
+* **step5:** 通过命令`Maven install`打包发布到本地Maven库
+
+![20200817143125](https://liulv.work/images/img/20200817143125.png)
 
 * **step6:**检查本地Maven库是否存在DataX依赖`com\alibaba\datax`, 如下图证明已经编译打包到本地Maven库
 
