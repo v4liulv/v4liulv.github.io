@@ -1,0 +1,161 @@
+I"�<h1 id="本地jekyll搭建">本地Jekyll搭建</h1>
+
+<h2 id="参考官方文档">参考官方文档</h2>
+
+<p>windows运行Jekyll参考<a href="http://jekyllcn.com/docs/windows/#installation">官方文档</a></p>
+
+<h2 id="安装ruby-devkit">安装ruby-devkit</h2>
+
+<p>百度网盘<a href="https://pan.baidu.com/s/1v2snQyrCzNehOIVYDlwDYQ">下载地址</a></p>
+
+<p>可使用官方<a href="http://jekyll-windows.juthilo.com/1-ruby-and-devkit/">下载地址</a>进行下载</p>
+
+<p>点击运行下载的<code class="language-plaintext highlighter-rouge">rubyinstaller-devkit-2.6.6-1-x64.exe</code>安装即可，在安装结束时，不要勾选ridk install的选项，后面再手动安装</p>
+
+<p>检查ruby是否正常安装，会出现版本号</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ruby <span class="nt">-v</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/20200817150431.png" alt="20200817150431" /></p>
+
+<h2 id="配置国内镜像">配置国内镜像</h2>
+
+<p>默认镜像太慢了，需要替换为国内镜像</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">--add</span> https://gems.ruby-china.com/ <span class="nt">--remove</span> https://rubygems.org/
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>确保只有 gems.ruby-china.com</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">-l</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="安装msys2">安装MSYS2</h2>
+
+<p>控制台运行下面命令安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ridk <span class="nb">install</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>输入“ridk install”进行MSYS2的安装，会出现然你选择123，你选3就行</p>
+
+<h1 id="安装bundler">安装bundler</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>bundler
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="安装jekyll">安装Jekyll</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>jekyll
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果出现那个包提示不存在，直接单个安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>gem <span class="nb">install</span> <span class="nt">-v</span><span class="o">=</span>&lt;版本号&gt; &lt;包名&gt;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>检查安装情况</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>jekyll <span class="nt">-v</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="下载jekyll博客模板">下载Jekyll博客模板</h2>
+
+<p>模板常用地址有以下：</p>
+
+<ul>
+  <li><a href="http://jekyllthemes.org/">Jekyll Themes</a></li>
+  <li>http://painterlin.com/</li>
+  <li>http://miloyip.com/</li>
+</ul>
+
+<p>根据自己喜欢选择对于模板git clone到本地</p>
+
+<h2 id="本地运行jekyll">本地运行Jekyll</h2>
+
+<p>CD到下载的模板的目录下,然后进行解析运行</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>E:<span class="se">\G</span>itgub<span class="se">\s</span>imple.green.techblog
+bundle <span class="nb">install
+
+</span>bundle <span class="nb">exec </span>jekyll s
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>最终运行成功会打印</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>  Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>目录说明</p>
+
+<p>jekyll目录结构主要包含如下目录：</p>
+
+<blockquote>
+  <p>_posts 博客内容
+_pages 其他需要生成的网页，如About页
+_layouts 网页排版模板
+_includes 被模板包含的HTML片段，可在_config.yml中修改位置
+assets 辅助资源 css布局 js脚本 图片等
+_data 动态数据
+_sites 最终生成的静态网页
+_config.yml 网站的一些配置信息
+index.html 网站的入口</p>
+</blockquote>
+
+<p>在<code class="language-plaintext highlighter-rouge">_posts</code>目录下可以编辑md文章，md文件命名规则<code class="language-plaintext highlighter-rouge">年-月-日-文件名称.md</code>.</p>
+
+<p>文章内容首添加标题、子标题、标签等信息</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">基于Jekyll搭建个人博客"</span>
+<span class="na">subtitle</span><span class="pi">:</span> <span class="s2">"</span><span class="s">「gitHub结合jekyll」-</span><span class="nv"> </span><span class="s">搭建个人博客"</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
+<span class="na">author</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LiuL"</span>
+<span class="na">header-style</span><span class="pi">:</span> <span class="s">text</span>
+<span class="na">tags</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">Jekyll</span>
+  <span class="pi">-</span> <span class="s">GitHub</span>
+  <span class="pi">-</span> <span class="s">个人博客</span>
+<span class="nn">---</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>然后添加文章正文即可</p>
+
+<p>最后web访问<code class="language-plaintext highlighter-rouge">http://127.0.0.1:4000/</code></p>
+
+<p><img src="https://liulv.work/images/img/20200817152920.png" alt="20200817152920" /></p>
+
+<h1 id="jekyll结合github远程服务博客">Jekyll结合Github远程服务博客</h1>
+
+<h2 id="github创建上创建名为用户名githubio的repository">Github创建上创建名为<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository</h2>
+
+<p>把本地运行的博客pull到<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository工程下，然后访问<code class="language-plaintext highlighter-rouge">https://用户名.github.io</code></p>
+
+<p>##</p>
+
+<p>博客配置域名，在腾讯云购买域名，然后在</p>
+
+:ET

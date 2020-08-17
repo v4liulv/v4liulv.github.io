@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 17 Aug 2020 14:31:35 +0800</pubDate>
-    <lastBuildDate>Mon, 17 Aug 2020 14:31:35 +0800</lastBuildDate>
+    <pubDate>Mon, 17 Aug 2020 16:12:56 +0800</pubDate>
+    <lastBuildDate>Mon, 17 Aug 2020 16:12:56 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -835,6 +835,195 @@ document.write(fib(10));
         <guid isPermaLink="true">http://localhost:4000/2020/08/17/markdown-grammar/</guid>
         
         <category>Markdown</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>基于Jekyll搭建个人博客</title>
+        <description>&lt;h1 id=&quot;本地jekyll搭建&quot;&gt;本地Jekyll搭建&lt;/h1&gt;
+
+&lt;h2 id=&quot;参考官方文档&quot;&gt;参考官方文档&lt;/h2&gt;
+
+&lt;p&gt;windows运行Jekyll参考&lt;a href=&quot;http://jekyllcn.com/docs/windows/#installation&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;安装ruby-devkit&quot;&gt;安装ruby-devkit&lt;/h2&gt;
+
+&lt;p&gt;百度网盘&lt;a href=&quot;https://pan.baidu.com/s/1v2snQyrCzNehOIVYDlwDYQ&quot;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;可使用官方&lt;a href=&quot;http://jekyll-windows.juthilo.com/1-ruby-and-devkit/&quot;&gt;下载地址&lt;/a&gt;进行下载&lt;/p&gt;
+
+&lt;p&gt;点击运行下载的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rubyinstaller-devkit-2.6.6-1-x64.exe&lt;/code&gt;安装即可，在安装结束时，不要勾选ridk install的选项，后面再手动安装&lt;/p&gt;
+
+&lt;p&gt;检查ruby是否正常安装，会出现版本号&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;ruby &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200817150431.png&quot; alt=&quot;20200817150431&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;配置国内镜像&quot;&gt;配置国内镜像&lt;/h2&gt;
+
+&lt;p&gt;默认镜像太慢了，需要替换为国内镜像&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;gem sources &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; https://gems.ruby-china.com/ &lt;span class=&quot;nt&quot;&gt;--remove&lt;/span&gt; https://rubygems.org/
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;确保只有 gems.ruby-china.com&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;gem sources &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;安装msys2&quot;&gt;安装MSYS2&lt;/h2&gt;
+
+&lt;p&gt;控制台运行下面命令安装&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;ridk &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;输入“ridk install”进行MSYS2的安装，会出现然你选择123，你选3就行&lt;/p&gt;
+
+&lt;h1 id=&quot;安装bundler&quot;&gt;安装bundler&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;安装jekyll&quot;&gt;安装Jekyll&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;jekyll
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果出现那个包提示不存在，直接单个安装&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;gem &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;lt;版本号&amp;gt; &amp;lt;包名&amp;gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;检查安装情况&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;jekyll &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;下载jekyll博客模板&quot;&gt;下载Jekyll博客模板&lt;/h2&gt;
+
+&lt;p&gt;模板常用地址有以下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jekyllthemes.org/&quot;&gt;Jekyll Themes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;http://painterlin.com/&lt;/li&gt;
+  &lt;li&gt;http://miloyip.com/&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;根据自己喜欢选择对于模板git clone到本地&lt;/p&gt;
+
+&lt;h2 id=&quot;本地运行jekyll&quot;&gt;本地运行Jekyll&lt;/h2&gt;
+
+&lt;p&gt;CD到下载的模板的目录下,然后进行解析运行&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;E:&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;itgub&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;imple.green.techblog
+bundle &lt;span class=&quot;nb&quot;&gt;install
+
+&lt;/span&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll s
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;最终运行成功会打印&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;  Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;目录说明&lt;/p&gt;
+
+&lt;p&gt;jekyll目录结构主要包含如下目录：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;_posts 博客内容
+_pages 其他需要生成的网页，如About页
+_layouts 网页排版模板
+_includes 被模板包含的HTML片段，可在_config.yml中修改位置
+assets 辅助资源 css布局 js脚本 图片等
+_data 动态数据
+_sites 最终生成的静态网页
+_config.yml 网站的一些配置信息
+index.html 网站的入口&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt;目录下可以编辑md文章，md文件命名规则&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;年-月-日-文件名称.md&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;文章内容首添加标题、子标题、标签等信息&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;基于Jekyll搭建个人博客&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;subtitle&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;「gitHub结合jekyll」-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;搭建个人博客&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;LiuL&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;header-style&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;text&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Jekyll&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GitHub&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;个人博客&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后添加文章正文即可&lt;/p&gt;
+
+&lt;p&gt;最后web访问&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://127.0.0.1:4000/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200817152920.png&quot; alt=&quot;20200817152920&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;jekyll结合github远程服务博客&quot;&gt;Jekyll结合Github远程服务博客&lt;/h1&gt;
+
+&lt;h2 id=&quot;github创建上创建名为用户名githubio的repository&quot;&gt;Github创建上创建名为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;用户名.github.io&lt;/code&gt;的repository&lt;/h2&gt;
+
+&lt;p&gt;把本地运行的博客pull到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;用户名.github.io&lt;/code&gt;的repository工程下，然后访问&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://用户名.github.io&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;博客使用域名&quot;&gt;博客使用域名&lt;/h2&gt;
+
+&lt;p&gt;博客配置域名，在腾讯云购买域名。如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://liulv.work&lt;/code&gt;域名&lt;/p&gt;
+
+&lt;p&gt;Github的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;用户名.github.io&lt;/code&gt;的repository点击Settings，配置都默认即可。&lt;/p&gt;
+
+&lt;p&gt;在github pages那栏点击launch automatic page generator&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200817160910.png&quot; alt=&quot;20200817160910&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后设置如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200817161027.png&quot; alt=&quot;20200817161027&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;用户名.github.io&lt;/code&gt;工程下新增博客的域名，具体操作：
+创建名CNAME的文件，在文件中添加域名即可&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;liulv.work&lt;/code&gt;,然后pull到gitHub，即可通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://liulv.work&lt;/code&gt;访问博客了&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 17 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/17/jekyll/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/17/jekyll/</guid>
+        
+        <category>Jekyll</category>
+        
+        <category>GitHub</category>
+        
+        <category>个人博客</category>
         
         
       </item>

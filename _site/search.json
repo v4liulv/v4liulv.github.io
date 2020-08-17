@@ -9,6 +9,14 @@
     } ,
   
     {
+      "title"    : "基于Jekyll搭建个人博客",
+      "subtitle" : "「gitHub结合jekyll」- 搭建个人博客",
+      "tags"     : "Jekyll, GitHub, 个人博客",
+      "url"      : "/2020/08/17/jekyll/",
+      "date"     : "2020-08-17 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "DataX-Job配置说明",
       "subtitle" : "DataX使用",
       "tags"     : "DataX, 数字贵阳",
