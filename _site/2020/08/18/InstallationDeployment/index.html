@@ -11,16 +11,28 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Archive - 刘律的博客 | LiuL Blog">
+    <meta property="og:title" content="Windows平台安装部署Mongodb - 刘律的博客 | LiuL Blog">
     
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="keep hungry keep foolish">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="mongodb安装
+">
+    
+    <meta property="article:published_time" content="2020-08-18T00:00:00Z">
+    
+    
+    <meta property="article:author" content="LiuL">
+    
+    
+    <meta property="article:tag" content="Mongodb">
+    
+    <meta property="article:tag" content="笔记">
+    
     
     <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
-    <meta property="og:url" content="http://localhost:4000/archive/">
+    <meta property="og:url" content="http://localhost:4000/2020/08/18/InstallationDeployment/">
     <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
     
-    <title>Archive - 刘律的博客 | LiuL Blog</title>
+    <title>Windows平台安装部署Mongodb - 刘律的博客 | LiuL Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -29,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/archive/">
+    <link rel="canonical" href="http://localhost:4000/2020/08/18/InstallationDeployment/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -60,8 +72,8 @@
 
     <!-- Navigation -->
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -188,220 +200,398 @@
   </div>
 </div>
 
-    <!-- 
-Credits: this page shamelessly borrowed a lot from:
-https://github.com/kitian616/jekyll-TeXt-theme
--->
-<!-- Page Header -->
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
 
 
 
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg');
+        background: ;
+    }
 
+    
+</style>
 
+<header class="intro-header style-text" >
 
-
-<header class="intro-header" style="background-image: url('/img/tag-bg.jpg')">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="site-heading" id="tag-heading">
-        
-          <h1>Archive</h1>
-          <span class="subheading">keep hungry keep foolish</span>
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Mongodb" title="Mongodb">Mongodb</a>
+                        
+                        <a class="tag" href="/archive/?tag=%E7%AC%94%E8%AE%B0" title="笔记">笔记</a>
+                        
+                    </div>
+                    <h1>Windows平台安装部署Mongodb</h1>
+                    
+                    <h2 class="subheading">「Windows安装部署」- 简单使用</h2>
+                    <span class="meta">Posted by LiuL on August 18, 2020</span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </header>
 
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-			<!-- Tags (as filter) -->
-			<div id='tag_cloud' class="tags tags-sup js-tags">
-				<a class="tag-button--all" data-encode="">
-					Show All
-					<sup>7</sup>
-				</a>
 
-				
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h1 id="mongodb安装">mongodb安装</h1>
+
+<h2 id="下载">下载</h2>
+
+<p>请点击<a href="https://www.mongodb.com/try/download/community">官方下载地址</a>，下载完成后解压到本地如<code class="language-plaintext highlighter-rouge">D:/gongji/mongodb</code>。</p>
+
+<h2 id="安装">安装</h2>
+
+<p>通过命令安装步骤：</p>
+
+<ul>
+  <li>创建数据和日志目录
+    <ul>
+      <li>创建F:\mongodb\data\log和F:\mongodb\data\db目录</li>
+      <li>创建F:\mongodb\mongod.cfg配置文件</li>
+    </ul>
+  </li>
+  <li>
+    <p>创建安装配置文件mongod.cfg</p>
+
+    <p>在F:\mongodb\命令下创建mongod.cfg并写入下面配置</p>
+
+    <pre><code class="language-cfg">  systemLog:
+      destination: file
+      path: D:/gongji/mongodb/log/mongod.log
+  storage:
+      dbPath: D:/gongji/mongodb/data
+</code></pre>
+  </li>
+  <li>
+    <p>安装mongoDB服务</p>
+
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="w">  </span><span class="nf">cd</span><span class="w"> </span><span class="nx">D:\gongji\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18</span><span class="w">
+  </span><span class="nf">bin\mongod.exe</span><span class="w"> </span><span class="nt">--config</span><span class="w"> </span><span class="s2">"F:\mongodb\mongod.cfg"</span><span class="w"> </span><span class="nt">--install</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="启动停止服务">启动停止服务</h2>
+
+<p>安装服务完成后，可以启动和停止服务等操作</p>
+
+<p>启动MongoDB服务
+net start MongoDB</p>
+
+<p>关闭MongoDB服务
+net stop MongoDB</p>
+
+<p>移除 MongoDB 服务
+ cd F:\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18
+bin\mongod.exe –remove</p>
+
+<h2 id="mongodb环境变量设置">MongoDB环境变量设置</h2>
+
+<p>添加<code class="language-plaintext highlighter-rouge">MONGODB_HOME=D:\gongji\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18</code></p>
+
+<p>Path添加<code class="language-plaintext highlighter-rouge">%MONGODB_HOME%/bin</code></p>
+
+<h2 id="mongodb默认连接">MongoDB默认连接</h2>
+
+<p>mongo mongodb://localhost:27017/powerjob_dev</p>
+
+<p>mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb</p>
+
+<h2 id="mongodb-后台管理-shell">MongoDB 后台管理 Shell</h2>
+
+<p>如果你需要进入MongoDB后台管理，你需要先打开mongodb装目录的下的bin目录，然后执行mongo.exe文件，MongoDB Shell是MongoDB自带的交互式Javascript shell,用来对MongoDB进行操作和管理的交互式环境。</p>
+
+<p>当你进入mongoDB后台后，它默认会链接到 test 文档（数据库）：</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">mongo</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="远程数据库连接">远程数据库连接</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">cd</span><span class="w"> </span><span class="nx">F:\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18</span><span class="w">
+
+</span><span class="nf">/bin/mongo</span><span class="w">  </span><span class="nx">mongodb://localhost:27017/powerjob_dev</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>默认端口连接</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">/bin/mongo</span><span class="w"> </span><span class="nx">mongodb://admin:123456</span><span class="err">@</span><span class="nx">localhost/</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>指定gssapiServiceName</strong></p>
+
+<p>mongodb://127.0.0.1:27017/powerjob_dev?gssapiServiceName=mongodb</p>
+
+<h1 id="简单使用">简单使用</h1>
+
+<h1 id="创建数据库">创建数据库</h1>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># 创建数据库</span><span class="w">
+</span><span class="nf">use</span><span class="w"> </span><span class="nx">powerjob_dev</span><span class="w">
+
+</span><span class="c"># 当查询数据库，新建的数据库是不显示的</span><span class="w">
+</span><span class="nf">show</span><span class="w"> </span><span class="nx">dbs</span><span class="w">
+
+</span><span class="c"># 往数据库中插入一条数据</span><span class="w">
+</span><span class="nf">db.powerjob_dev.insert</span><span class="p">({</span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"菜鸟教程"</span><span class="p">})</span><span class="w">
+
+</span><span class="c"># 再一次查询数据库就能查询到</span><span class="w">
+</span><span class="nf">show</span><span class="w"> </span><span class="nx">dbs</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="插入数据">插入数据</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># 当前连接的数据库</span><span class="w">
+</span><span class="nf">db</span><span class="w">
+
+</span><span class="c"># 将数字 10 插入到 runoob 集合的 x 字段中。</span><span class="w">
+</span><span class="nf">db.runoob.insert</span><span class="p">({</span><span class="nf">x:10</span><span class="p">})</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="查询数据">查询数据</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># 当前数据库查询</span><span class="w">
+</span><span class="nf">db.runoob.find</span><span class="p">()</span><span class="w">
+
+</span><span class="c"># 也可指定数据库查询</span><span class="w">
+</span><span class="nf">db.powerjob.find</span><span class="p">()</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="mongodb概念解析">MongoDB概念解析</h1>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/08/17/markdown-grammar/" data-toggle="tooltip" data-placement="top" title="Markdown 语法及渲染">
+                        Previous<br>
+                        <span>Markdown 语法及渲染</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/08/18/powerjob-container-datax/" data-toggle="tooltip" data-placement="top" title="PowerJob容器开发集成DataX及任务配置">
+                        Next<br>
+                        <span>PowerJob容器开发集成DataX及任务配置</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
         
-				
-				
-				
-				<a data-sort="0005"
-					data-encode="%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
-					class="tag-button"
-					title="数字贵阳" rel="2">
-					数字贵阳
-					<sup>2</sup>
-				</a>
-				
-				<a data-sort="0005"
-					data-encode="DataX"
-					class="tag-button"
-					title="DataX" rel="2">
-					DataX
-					<sup>2</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2"
-					class="tag-button"
-					title="个人博客" rel="1">
-					个人博客
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="%E7%AC%94%E8%AE%B0"
-					class="tag-button"
-					title="笔记" rel="1">
-					笔记
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="Akka"
-					class="tag-button"
-					title="Akka" rel="1">
-					Akka
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="GitHub"
-					class="tag-button"
-					title="GitHub" rel="1">
-					GitHub
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="Jekyll"
-					class="tag-button"
-					title="Jekyll" rel="1">
-					Jekyll
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="Markdown"
-					class="tag-button"
-					title="Markdown" rel="1">
-					Markdown
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="Mongodb"
-					class="tag-button"
-					title="Mongodb" rel="1">
-					Mongodb
-					<sup>1</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="PowerJob"
-					class="tag-button"
-					title="PowerJob" rel="1">
-					PowerJob
-					<sup>1</sup>
-				</a>
-			</div>
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
 
-            <!-- Article List -->
-			<div class="mini-post-list js-result d-none"><section>
-				<span class="fa listing-seperator">
-					<span class="tag-text">2020</span>
-				</span><div class="post-preview item" data-tags="PowerJob,DataX,%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3">
-				    <a href="/2020/08/18/powerjob-container-datax/">
-				        <h2 class="post-title">
-                            PowerJob容器开发集成DataX及任务配置
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            「PowerJob容器V1.0.1」- DataX3
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="Mongodb,%E7%AC%94%E8%AE%B0">
-				    <a href="/2020/08/18/InstallationDeployment/">
-				        <h2 class="post-title">
-                            Windows平台安装部署Mongodb
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            「Windows安装部署」- 简单使用
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="Markdown">
-				    <a href="/2020/08/17/markdown-grammar/">
-				        <h2 class="post-title">
-                            Markdown 语法及渲染
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            Markdown手冊
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="Jekyll,GitHub,%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2">
-				    <a href="/2020/08/17/jekyll/">
-				        <h2 class="post-title">
-                            基于Jekyll搭建个人博客
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            「gitHub结合jekyll」- 搭建个人博客
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="">
-				    <a href="/2020/08/14/datax-bigdata-tbds/">
-				        <h2 class="post-title">
-                            Datax Bigdata Tbds
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="DataX,%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3">
-				    <a href="/2020/08/14/datax-job-configuration-instruction/">
-				        <h2 class="post-title">
-                            DataX-Job配置说明
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            DataX使用
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="Akka">
-				    <a href="/2020/08/11/doc-translation/">
-				        <h2 class="post-title">
-                            Akka 官方文档翻译
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            「AKKA」- 2.6.8
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div></section>
-			</div>
-		</div>
-	</div>
-</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0005" 
+                    href="/archive/?tag=DataX"
+                    title="DataX"
+                    rel="2">DataX</a>
+        
+                <a data-sort="0005" 
+                    href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
+                    title="数字贵阳"
+                    rel="2">数字贵阳</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="http://mida.re/">乱序</a></li>
+  
+  <li><a href="https://xuechundesign.github.io">Sherry Wu</a></li>
+  
+  <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+  
+  <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+  
+  <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+  
+  <li><a href="http://tiye.me/">JiyinYiyong</a></li>
+  
+  <li><a href="https://www.ruoyaowu.com/">David's Game</a></li>
+  
+  <li><a href="http://dhong.co">DHong Say</a></li>
+  
+  <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "LiuL";
+    var disqus_identifier = "/2020/08/18/InstallationDeployment";
+    var disqus_url = "http://localhost:4000/2020/08/18/InstallationDeployment/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
@@ -529,18 +719,6 @@ https://github.com/kitian616/jekyll-TeXt-theme
 
 
 
-
-<!-- jquery.tagcloud.js -->
-<script>
-    async('/js/jquery.tagcloud.js', function () {
-        $.fn.tagcloud.defaults = {
-            //size: {start: 1, end: 1, unit: 'em'},
-            color: { start: '#bbbbee', end: '#2f93b4' },
-        };
-        $('#tag_cloud a').tagcloud();
-    })
-</script>
-<script src='/js/archive.js '></script>
 
 
 <!--fastClick.js -->

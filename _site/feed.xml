@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 17 Aug 2020 16:20:56 +0800</pubDate>
-    <lastBuildDate>Mon, 17 Aug 2020 16:20:56 +0800</lastBuildDate>
+    <pubDate>Tue, 18 Aug 2020 15:50:41 +0800</pubDate>
+    <lastBuildDate>Tue, 18 Aug 2020 15:50:41 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -1133,6 +1133,174 @@
         <category>DataX</category>
         
         <category>数字贵阳</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Windows平台安装部署Mongodb</title>
+        <description>&lt;h1 id=&quot;mongodb安装&quot;&gt;mongodb安装&lt;/h1&gt;
+
+&lt;h2 id=&quot;下载&quot;&gt;下载&lt;/h2&gt;
+
+&lt;p&gt;请点击&lt;a href=&quot;https://www.mongodb.com/try/download/community&quot;&gt;官方下载地址&lt;/a&gt;，下载完成后解压到本地如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;D:/gongji/mongodb&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;通过命令安装步骤：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;创建数据和日志目录
+    &lt;ul&gt;
+      &lt;li&gt;创建F:\mongodb\data\log和F:\mongodb\data\db目录&lt;/li&gt;
+      &lt;li&gt;创建F:\mongodb\mongod.cfg配置文件&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建安装配置文件mongod.cfg&lt;/p&gt;
+
+    &lt;p&gt;在F:\mongodb\命令下创建mongod.cfg并写入下面配置&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-cfg&quot;&gt;  systemLog:
+      destination: file
+      path: D:/gongji/mongodb/log/mongod.log
+  storage:
+      dbPath: D:/gongji/mongodb/data
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装mongoDB服务&lt;/p&gt;
+
+    &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;D:\gongji\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bin\mongod.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--config&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;F:\mongodb\mongod.cfg&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--install&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;启动停止服务&quot;&gt;启动停止服务&lt;/h2&gt;
+
+&lt;p&gt;安装服务完成后，可以启动和停止服务等操作&lt;/p&gt;
+
+&lt;p&gt;启动MongoDB服务
+net start MongoDB&lt;/p&gt;
+
+&lt;p&gt;关闭MongoDB服务
+net stop MongoDB&lt;/p&gt;
+
+&lt;p&gt;移除 MongoDB 服务
+ cd F:\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18
+bin\mongod.exe –remove&lt;/p&gt;
+
+&lt;h2 id=&quot;mongodb环境变量设置&quot;&gt;MongoDB环境变量设置&lt;/h2&gt;
+
+&lt;p&gt;添加&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MONGODB_HOME=D:\gongji\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Path添加&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%MONGODB_HOME%/bin&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mongodb默认连接&quot;&gt;MongoDB默认连接&lt;/h2&gt;
+
+&lt;p&gt;mongo mongodb://localhost:27017/powerjob_dev&lt;/p&gt;
+
+&lt;p&gt;mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb&lt;/p&gt;
+
+&lt;h2 id=&quot;mongodb-后台管理-shell&quot;&gt;MongoDB 后台管理 Shell&lt;/h2&gt;
+
+&lt;p&gt;如果你需要进入MongoDB后台管理，你需要先打开mongodb装目录的下的bin目录，然后执行mongo.exe文件，MongoDB Shell是MongoDB自带的交互式Javascript shell,用来对MongoDB进行操作和管理的交互式环境。&lt;/p&gt;
+
+&lt;p&gt;当你进入mongoDB后台后，它默认会链接到 test 文档（数据库）：&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;mongo&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;远程数据库连接&quot;&gt;远程数据库连接&lt;/h2&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;F:\mongodb\mongodb-win32-x86_64-2008plus-ssl-3.6.18&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/bin/mongo&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mongodb://localhost:27017/powerjob_dev&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;默认端口连接&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;/bin/mongo&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mongodb://admin:123456&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localhost/&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;指定gssapiServiceName&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;mongodb://127.0.0.1:27017/powerjob_dev?gssapiServiceName=mongodb&lt;/p&gt;
+
+&lt;h1 id=&quot;简单使用&quot;&gt;简单使用&lt;/h1&gt;
+
+&lt;h1 id=&quot;创建数据库&quot;&gt;创建数据库&lt;/h1&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;# 创建数据库&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;powerjob_dev&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 当查询数据库，新建的数据库是不显示的&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dbs&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 往数据库中插入一条数据&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;db.powerjob_dev.insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;菜鸟教程&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 再一次查询数据库就能查询到&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dbs&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;插入数据&quot;&gt;插入数据&lt;/h2&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;# 当前连接的数据库&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 将数字 10 插入到 runoob 集合的 x 字段中。&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;db.runoob.insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;x:10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;查询数据&quot;&gt;查询数据&lt;/h2&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;# 当前数据库查询&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;db.runoob.find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 也可指定数据库查询&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;db.powerjob.find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;mongodb概念解析&quot;&gt;MongoDB概念解析&lt;/h1&gt;
+
+</description>
+        <pubDate>Tue, 18 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/18/InstallationDeployment/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/18/InstallationDeployment/</guid>
+        
+        <category>Mongodb</category>
+        
+        <category>笔记</category>
         
         
       </item>
@@ -11313,7 +11481,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;在请求和响应之间存在1:1映射的交互中，我们可以在ActorContext上使用ask来与另一个Actor交互。&lt;/p&gt;
 
-&lt;p&gt;交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef&lt;Response&gt;作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送参与者协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。&lt;/Response&gt;&lt;/p&gt;
+&lt;p&gt;交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef&lt;Response&gt;作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送Actor协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。&lt;/Response&gt;&lt;/p&gt;
 
 &lt;p&gt;Example:&lt;/p&gt;
 
@@ -11557,8 +11725,8 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;ul&gt;
   &lt;li&gt;单响应查询&lt;/li&gt;
-  &lt;li&gt;在继续之前，参与者需要知道消息已被处理&lt;/li&gt;
-  &lt;li&gt;如果没有产生及时的响应，允许参与者重新发送&lt;/li&gt;
+  &lt;li&gt;在继续之前，Actor需要知道消息已被处理&lt;/li&gt;
+  &lt;li&gt;如果没有产生及时的响应，允许Actor重新发送&lt;/li&gt;
   &lt;li&gt;跟踪未完成的请求，而不是用消息淹没收件人(“backpressure”)&lt;/li&gt;
   &lt;li&gt;上下文应该附加到交互中，但是协议不支持(请求id，响应的是什么查询)&lt;/li&gt;
 &lt;/ul&gt;
@@ -11575,7 +11743,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;有时你需要与Actor的Actor从外部系统交互,这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage &lt;反应&gt;是完成一个成功或失败的响应TimeoutException指定的超时时间内如果没有响应。&lt;/反应&gt;&lt;/p&gt;
 
-&lt;p&gt;为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个参与者并获得一个CompletionState[Response] 返回。&lt;/p&gt;
+&lt;p&gt;为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。&lt;/p&gt;
 
 &lt;p&gt;Example:&lt;/p&gt;
 
@@ -11791,7 +11959,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;有用的时候:&lt;/p&gt;
 
-&lt;p&gt;从参与者系统外部查询参与者&lt;/p&gt;
+&lt;p&gt;从Actor系统外部查询Actor&lt;/p&gt;
 
 &lt;p&gt;存在问题：&lt;/p&gt;
 
@@ -12165,7 +12333,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;h3 id=&quot;448-忽略回复&quot;&gt;4.4.8. 忽略回复&lt;/h3&gt;
 
-&lt;p&gt;在某些情况下，参与者对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。&lt;/p&gt;
+&lt;p&gt;在某些情况下，Actor对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。&lt;/p&gt;
 
 &lt;p&gt;顾名思义，system.ignoreRef()返回一个忽略发送给它的任何消息的ActorRef。&lt;/p&gt;
 
@@ -12199,7 +12367,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200805214503.png&quot; alt=&quot;20200805214503&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;一个参与者CustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。&lt;/p&gt;
+&lt;p&gt;一个ActorCustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
@@ -12443,7 +12611,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;有用的时候:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;访问从参与者返回CompletionStage的api，例如数据库或外部服务&lt;/li&gt;
+  &lt;li&gt;访问从Actor返回CompletionStage的api，例如数据库或外部服务&lt;/li&gt;
   &lt;li&gt;当CompletionStage完成时，actor需要继续处理&lt;/li&gt;
   &lt;li&gt;保持上下文与原始请求的关系，并在CompletionStage完成时使用它，例如replyTo actor引用&lt;/li&gt;
 &lt;/ul&gt;
@@ -12453,13 +12621,13 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;h3 id=&quot;4410-每个子actor会话&quot;&gt;4.4.10. 每个子Actor会话&lt;/h3&gt;
 
-&lt;p&gt;在某些情况下，只有在从其他参与者收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。&lt;/p&gt;
+&lt;p&gt;在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。&lt;/p&gt;
 
 &lt;p&gt;请注意，这本质上就是ask的实现方式，如果您所需要的只是一个带有超时的响应，那么最好使用ask。&lt;/p&gt;
 
 &lt;p&gt;子元素是用它执行工作所需的上下文创建的，包括它可以响应的ActorRef。当完整的结果出现时，孩子会以结果做出反应，然后停止。&lt;/p&gt;
 
-&lt;p&gt;由于会话参与者的协议不是公共API，而是父参与者的实现细节，因此使用显式协议并调整会话参与者与之交互的参与者的消息可能并不总是有意义的。对于这个用例，可以表示参与者可以接收任何消息(对象)。&lt;/p&gt;
+&lt;p&gt;由于会话Actor的协议不是公共API，而是父Actor的实现细节，因此使用显式协议并调整会话Actor与之交互的Actor的消息可能并不总是有意义的。对于这个用例，可以表示Actor可以接收任何消息(对象)。&lt;/p&gt;
 
 &lt;p&gt;Example:&lt;/p&gt;
 
@@ -12795,13 +12963,13 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;有用的时候:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合&lt;/li&gt;
+  &lt;li&gt;在构建结果之前，单个传入请求应该与其他Actor进行多次交互，例如多个结果的聚合&lt;/li&gt;
   &lt;li&gt;您需要处理确认和重试消息，以便至少传递一次&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;问题:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景&lt;/li&gt;
+  &lt;li&gt;必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话Actor的场景&lt;/li&gt;
   &lt;li&gt;它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行&lt;/li&gt;
 &lt;/ul&gt;
 

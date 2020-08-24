@@ -1,4 +1,4 @@
-I"o�<h1 id="1-akka简介">1. Akka简介</h1>
+I"o�<h1 id="1-akka简介">1. Akka简介</h1>
 
 <ul>
   <li>为什么要用Akka/好处</li>
@@ -9127,7 +9127,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>在请求和响应之间存在1:1映射的交互中，我们可以在ActorContext上使用ask来与另一个Actor交互。</p>
 
-<p>交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef<Response>作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送参与者协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。</Response></p>
+<p>交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef<Response>作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送Actor协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。</Response></p>
 
 <p>Example:</p>
 
@@ -9371,8 +9371,8 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <ul>
   <li>单响应查询</li>
-  <li>在继续之前，参与者需要知道消息已被处理</li>
-  <li>如果没有产生及时的响应，允许参与者重新发送</li>
+  <li>在继续之前，Actor需要知道消息已被处理</li>
+  <li>如果没有产生及时的响应，允许Actor重新发送</li>
   <li>跟踪未完成的请求，而不是用消息淹没收件人(“backpressure”)</li>
   <li>上下文应该附加到交互中，但是协议不支持(请求id，响应的是什么查询)</li>
 </ul>
@@ -9389,7 +9389,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>有时你需要与Actor的Actor从外部系统交互,这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage <反应>是完成一个成功或失败的响应TimeoutException指定的超时时间内如果没有响应。</反应></p>
 
-<p>为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个参与者并获得一个CompletionState[Response] 返回。</p>
+<p>为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。</p>
 
 <p>Example:</p>
 
@@ -9605,7 +9605,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>有用的时候:</p>
 
-<p>从参与者系统外部查询参与者</p>
+<p>从Actor系统外部查询Actor</p>
 
 <p>存在问题：</p>
 
@@ -9979,7 +9979,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <h3 id="448-忽略回复">4.4.8. 忽略回复</h3>
 
-<p>在某些情况下，参与者对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。</p>
+<p>在某些情况下，Actor对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。</p>
 
 <p>顾名思义，system.ignoreRef()返回一个忽略发送给它的任何消息的ActorRef。</p>
 
@@ -10013,7 +10013,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p><img src="https://liulv.work/images/img/20200805214503.png" alt="20200805214503" /></p>
 
-<p>一个参与者CustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。</p>
+<p>一个ActorCustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -10257,7 +10257,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>有用的时候:</p>
 <ul>
-  <li>访问从参与者返回CompletionStage的api，例如数据库或外部服务</li>
+  <li>访问从Actor返回CompletionStage的api，例如数据库或外部服务</li>
   <li>当CompletionStage完成时，actor需要继续处理</li>
   <li>保持上下文与原始请求的关系，并在CompletionStage完成时使用它，例如replyTo actor引用</li>
 </ul>
@@ -10267,13 +10267,13 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <h3 id="4410-每个子actor会话">4.4.10. 每个子Actor会话</h3>
 
-<p>在某些情况下，只有在从其他参与者收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。</p>
+<p>在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。</p>
 
 <p>请注意，这本质上就是ask的实现方式，如果您所需要的只是一个带有超时的响应，那么最好使用ask。</p>
 
 <p>子元素是用它执行工作所需的上下文创建的，包括它可以响应的ActorRef。当完整的结果出现时，孩子会以结果做出反应，然后停止。</p>
 
-<p>由于会话参与者的协议不是公共API，而是父参与者的实现细节，因此使用显式协议并调整会话参与者与之交互的参与者的消息可能并不总是有意义的。对于这个用例，可以表示参与者可以接收任何消息(对象)。</p>
+<p>由于会话Actor的协议不是公共API，而是父Actor的实现细节，因此使用显式协议并调整会话Actor与之交互的Actor的消息可能并不总是有意义的。对于这个用例，可以表示Actor可以接收任何消息(对象)。</p>
 
 <p>Example:</p>
 
@@ -10609,13 +10609,13 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>有用的时候:</p>
 <ul>
-  <li>在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合</li>
+  <li>在构建结果之前，单个传入请求应该与其他Actor进行多次交互，例如多个结果的聚合</li>
   <li>您需要处理确认和重试消息，以便至少传递一次</li>
 </ul>
 
 <p>问题:</p>
 <ul>
-  <li>必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景</li>
+  <li>必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话Actor的场景</li>
   <li>它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行</li>
 </ul>
 

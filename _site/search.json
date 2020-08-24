@@ -9,6 +9,14 @@
     } ,
   
     {
+      "title"    : "Windows平台安装部署Mongodb",
+      "subtitle" : "「Windows安装部署」- 简单使用",
+      "tags"     : "Mongodb, 笔记",
+      "url"      : "/2020/08/18/InstallationDeployment/",
+      "date"     : "2020-08-18 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Markdown 语法及渲染",
       "subtitle" : "Markdown手冊",
       "tags"     : "Markdown",

@@ -5643,7 +5643,7 @@ public class Frontend {
 
 在请求和响应之间存在1:1映射的交互中，我们可以在ActorContext上使用ask来与另一个Actor交互。
 
-交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef<Response>作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送参与者协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。
+交互有两个步骤，首先我们需要构造传出消息，为此我们需要一个ActorRef<Response>作为传出消息中的接收方。第二步是将成功响应或失败转换为消息，该消息是发送Actor协议的一部分。还请参阅[通用响应包装器](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#generic-response-wrapper)，了解成功或错误的响应。
 
 Example:
 
@@ -5772,8 +5772,8 @@ public class Dave extends AbstractBehavior<Dave.Command> {
 有用的时候:
 
 * 单响应查询
-* 在继续之前，参与者需要知道消息已被处理
-* 如果没有产生及时的响应，允许参与者重新发送
+* 在继续之前，Actor需要知道消息已被处理
+* 如果没有产生及时的响应，允许Actor重新发送
 * 跟踪未完成的请求，而不是用消息淹没收件人(“backpressure”)
 * 上下文应该附加到交互中，但是协议不支持(请求id，响应的是什么查询)
 
@@ -5783,11 +5783,11 @@ public class Dave extends AbstractBehavior<Dave.Command> {
 * 当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它
 * 为超时寻找一个合适的值，特别是当在接收actor中被链接的ask触发器请求时。您希望有一个短的超时时间来响应请求程序，但同时又不希望出现许多误报。
 
-### 4.4.6. 来着外部Actor的请求-响应ask
+### 4.4.6. 与外部Actor的请求-响应ask
 
-有时你需要与Actor的Actor从外部系统交互,这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage <反应>是完成一个成功或失败的响应TimeoutException指定的超时时间内如果没有响应。
+有时你需要与外部系统的Actor进行交互，这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage <反应>是完成一个成功或失败的响应（TimeoutException）。
 
-为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个参与者并获得一个CompletionState[Response] 返回。
+为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。
 
 Example:
 
@@ -5902,15 +5902,13 @@ cookies.whenComplete(
     });
 ```
 
-有用的时候:
+有用的时候
+: 从Actor系统外部查询Actor
 
-从参与者系统外部查询参与者
-
-存在问题：
-
-* 在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行
-* 对一个请求只能有一个单一的响应(参见[每个会话child Actor](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor))
-* 当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它
+存在问题
+: * 在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行。
+: * 对一个请求只能有一个单一的响应(参见[每个会话child Actor](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor))。
+* 当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它。
 
 ### 4.4.7. 一般反应包装
 
@@ -6110,7 +6108,7 @@ cookies.whenComplete(
 
 ### 4.4.8. 忽略回复
 
-在某些情况下，参与者对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。
+在某些情况下，Actor对特定请求消息有响应，但您对响应不感兴趣。在这种情况下，您可以传递system.ignoreRef()，将请求-响应转换为“发射-忘记”。
 
 顾名思义，system.ignoreRef()返回一个忽略发送给它的任何消息的ActorRef。
 
@@ -6141,7 +6139,7 @@ Example:
 
 ![20200805214503](https://liulv.work/images/img/20200805214503.png)
 
-一个参与者CustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。
+一个ActorCustomerRepository正在调用CustomerDataAccess上的一个方法，该方法返回一个CompletionStage。
 
 ```java
 public interface CustomerDataAccess {
@@ -6267,7 +6265,7 @@ public class CustomerRepository extends AbstractBehavior<CustomerRepository.Comm
 在CompletionStage上使用回调可能很诱人，但是这会带来从外部线程访问不是线程安全的actor的内部状态的风险。例如，上面例子中的numberOfPendingOperations计数器不能从这样的回调访问。因此，最好将结果映射到消息并在接收该消息时执行进一步处理。
 
 有用的时候:
-* 访问从参与者返回CompletionStage的api，例如数据库或外部服务
+* 访问从Actor返回CompletionStage的api，例如数据库或外部服务
 * 当CompletionStage完成时，actor需要继续处理
 * 保持上下文与原始请求的关系，并在CompletionStage完成时使用它，例如replyTo actor引用
 
@@ -6276,13 +6274,13 @@ public class CustomerRepository extends AbstractBehavior<CustomerRepository.Comm
 
 ### 4.4.10. 每个子Actor会话
 
-在某些情况下，只有在从其他参与者收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。
+在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。
 
 请注意，这本质上就是ask的实现方式，如果您所需要的只是一个带有超时的响应，那么最好使用ask。
 
 子元素是用它执行工作所需的上下文创建的，包括它可以响应的ActorRef。当完整的结果出现时，孩子会以结果做出反应，然后停止。
 
-由于会话参与者的协议不是公共API，而是父参与者的实现细节，因此使用显式协议并调整会话参与者与之交互的参与者的消息可能并不总是有意义的。对于这个用例，可以表示参与者可以接收任何消息(对象)。
+由于会话Actor的协议不是公共API，而是父Actor的实现细节，因此使用显式协议并调整会话Actor与之交互的Actor的消息可能并不总是有意义的。对于这个用例，可以表示Actor可以接收任何消息(对象)。
 
 Example:
 
@@ -6456,11 +6454,11 @@ class PrepareToLeaveHome extends AbstractBehavior<Object> {
 在实际的会话子节点中，您可能还希望包括某种形式的超时(请参阅[将消息调度到self](https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#scheduling-messages-to-self))。
 
 有用的时候:
-* 在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合
+* 在构建结果之前，单个传入请求应该与其他Actor进行多次交互，例如多个结果的聚合
 * 您需要处理确认和重试消息，以便至少传递一次
 
 问题:
-* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景
+* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话Actor的场景
 * 它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行
 
 ### 4.4.11. 通用响应聚合器
