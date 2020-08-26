@@ -6463,7 +6463,7 @@ class PrepareToLeaveHome extends AbstractBehavior<Object> {
 
 ### 4.4.11. 通用响应聚合器
 
-这类似于上面的[每个会话子Actor模式](#4410-每个字Actor会话)。有时，您可能会重复以相同的方式聚合应答，并希望将其提取到可重用的参与者。
+这类似于上面的[每个会话子Actor模式](#4410-每个字Actor会话)。有时，您可能会重复以相同的方式聚合应答，并希望将其提取到可重用的Actor。
 
 此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。
 
@@ -6471,7 +6471,7 @@ class PrepareToLeaveHome extends AbstractBehavior<Object> {
 
 ![20200826141327](https://liulv.work/images/img/20200826141327.png)
 
-此示例是预期应答数量的聚合器。报价请求通过给定的sendrequest函数发送给两个酒店参与者，它们使用不同的协议。当两个预期的响应都被收集之后，它们将使用给定的aggregateReplies函数进行聚合并发送回replyTo。如果响应没有在超时内到达，则聚合到目前为止的响应并发送回replyTo。
+此示例是预期应答数量的聚合器。报价请求通过给定的sendrequest函数发送给两个酒店Actor，它们使用不同的协议。当两个预期的响应都被收集之后，它们将使用给定的aggregateReplies函数进行聚合并发送回replyTo。如果响应没有在超时内到达，则聚合到目前为止的响应并发送回replyTo。
 
 ```java
 public class Hotel1 {
@@ -6709,13 +6709,13 @@ public class Aggregator<Reply, Aggregate> extends AbstractBehavior<Aggregator.Co
 使用场景：
 
 * 聚合响应在多个位置以相同的方式执行，应该将其提取到一个更通用的actor。
-* 在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合
+* 在构建结果之前，单个传入请求应该与其他Actor进行多次交互，例如多个结果的聚合
 * 您需要处理确认和重试消息，以便至少传递一次
 
 问题：
 
 * 具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除
-* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景
+* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话Actor的场景
 * 它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行
   
 
@@ -6723,7 +6723,7 @@ public class Aggregator<Reply, Aggregate> extends AbstractBehavior<Aggregator.Co
 
 这是上述[通用响应聚合器模式](#4411-通用响应聚合器)的变体。
 
-此算法的目标是在多个目标参与者可以执行相同的工作，并且某个参与者的响应有时可能比预期的要慢的情况下，减少尾部延迟(“切断尾部延迟”)。在这种情况下，向另一个参与者发送相同的工作请求(也称为“备份请求”)会减少响应时间——因为多个参与者不太可能同时处于高负载下。Jeff Dean[关于在大型在线服务中实现快速响应时间](https://static.googleusercontent.com/media/research.google.com/en//people/jeff/Berkeley-Latency-Mar2012.pdf)的演讲中对该技术进行了深入的解释。
+此算法的目标是在多个目标Actor可以执行相同的工作，并且某个Actor的响应有时可能比预期的要慢的情况下，减少尾部延迟(“切断尾部延迟”)。在这种情况下，向另一个Actor发送相同的工作请求(也称为“备份请求”)会减少响应时间——因为多个Actor不太可能同时处于高负载下。Jeff Dean[关于在大型在线服务中实现快速响应时间](https://static.googleusercontent.com/media/research.google.com/en//people/jeff/Berkeley-Latency-Mar2012.pdf)的演讲中对该技术进行了深入的解释。
 
 此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。
 
@@ -6871,7 +6871,7 @@ public class TailChopping<Reply> extends AbstractBehavior<TailChopping.Command> 
 * 由于发送更多消息和多次执行“工作”，负载增加
 * 当“功”不是幂等且只能执行一次时不能使用
 * 具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除
-* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景
+* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话Actor的场景
 
 ### 4.4.13. 将消息调度到自己
 
@@ -6999,7 +6999,7 @@ Buncher actor缓冲大量传入消息，并在超时后或批处理的消息数�
 * 每个计时器都有一个键，如果启动了具有相同键的新计时器，则取消之前的计时器。它保证不会收到来自前一个计时器的消息，即使它在新计时器启动时已经在邮箱中排队。
 * 支持定期计时器和单消息计时器。
 * TimerScheduler本身是可变的，因为它执行和管理注册计划任务的副作用。
-* TimerScheduler绑定到拥有它的参与者的生命周期，并在参与者停止时自动取消。
+* TimerScheduler绑定到拥有它的Actor的生命周期，并在Actor停止时自动取消。
 * 行为。withtimer也可以在行为内部使用。监督，它将在actor重新启动时自动正确地取消已启动的计时器，以便新的化身将不会接收来自前一个化身的预定消息。
 
 **定期执行**
@@ -7128,6 +7128,667 @@ interface ShardingReplyCompileOnlyTest {
 
 缺点是不能使用消息适配器，因此响应必须位于被响应的actor的协议中。另外，如果不知道EntityTypeKey是静态的，则可以将其包含在消息中。
 
+## 4.5. Actor容错
+
+当actor在处理消息或初始化过程中抛出意外异常或失败时, actor将默认停止。
+
+> **请注意**
+> 
+> 类型actor和经典actor之间的一个重要区别是，在默认情况下:前者在抛出异常时停止，并且在经典中重新启动时没有定义监控策略。
+
+注意，失败和验证错误之间有一个重要的区别:
+
+验证错误意味着发送给Actor的命令数据是无效的，这应该被建模为Actor协议的一部分，而不是让Actor抛出异常。
+
+相反，失败是Actor自身无法控制的意外事件，例如数据库连接中断。与验证错误相反，它很少对作为协议一部分的失败建模有用，因为发送方很少能对它做任何有用的事情。
+对于失败，应用“让它崩溃”的哲学是有用的:我们将责任转移到其他地方，而不是将由于失败而部分失效的内部状态的细粒度恢复和修正与业务逻辑混合在一起。在许多情况下，解决方法可以是“崩溃”Actor，然后使用我们知道有效的新状态启动一个新的Actor。
+
+#### 4.5.0.1. 监管
+
+在Akka，这个“某处”被称为监督。监视允许您以声明的方式描述在actor中抛出某些类型的异常时应该发生什么。
+默认的监控策略是在抛出异常时停止actor。在许多情况下，您需要进一步定制此行为。要使用监督，实际的参与者行为是用behaviors . supervision来包装的。通常，当将actor作为子元素生成时，您会在父元素中封装带有监督的actor。
+
+这个例子在actor失败时通过IllegalStateException重新启动它:
+
+```java
+Behaviors.supervise(behavior)
+    .onFailure(IllegalStateException.class, SupervisorStrategy.restart());
+```
+
+或者继续，忽略失败并处理下一条消息，而不是:
+
+```java
+Behaviors.supervise(behavior)
+    .onFailure(IllegalStateException.class, SupervisorStrategy.resume());
+```
+
+可以使用更复杂的重启策略，例如在10秒内重启不超过10次:
+
+```java
+Behaviors.supervise(behavior)
+    .onFailure(
+        IllegalStateException.class,
+        SupervisorStrategy.restart().withLimit(10, Duration.ofSeconds(10)));
+```
+
+处理不同的异常与不同的策略，调用监督可以嵌套:
+
+```java
+Behaviors.supervise(
+        Behaviors.supervise(behavior)
+            .onFailure(IllegalStateException.class, SupervisorStrategy.restart()))
+    .onFailure(IllegalArgumentException.class, SupervisorStrategy.stop());
+```
+
+如需完整的策略列表，请参阅[监管策略](https://doc.akka.io/japi/akka/2.6/akka/actor/typed/SupervisorStrategy.html)中的公共方法。
+
+> **请注意**
+> 当行为被重新启动时，原来的行为被给予行为。supervise被重新安装，这意味着如果它包含可变状态，那么它必须是通过Behaviors.setup实现的工厂。当对扩展AbstractBehavior的类使用面向对象风格时，总是建议通过行为来创建它。按照行为工厂方法中描述的设置。对于函数样式，如果状态在不可变参数中捕获，则通常不需要使用工厂。
+
+**包装行为**
+
+对于函数样式，通过改变行为来存储状态是很常见的。
+
+```java
+/*
+ * Copyright (C) 2018-2020 Lightbend Inc. <https://www.lightbend.com>
+ */
+
+package jdocs.akka.typed.supervision;
+
+import akka.actor.typed.*;
+import akka.actor.typed.javadsl.Behaviors;
+
+import java.time.Duration;
+
+public class SupervisionCompileOnlyTest {
+  // #wrap
+  public static class Counter {
+    public interface Command {}
+
+    public static final class Increase implements Command {}
+
+    public static final class Get implements Command {
+      public final ActorRef<Got> replyTo;
+
+      public Get(ActorRef<Got> replyTo) {
+        this.replyTo = replyTo;
+      }
+    }
+
+    public static final class Got {
+      public final int n;
+
+      public Got(int n) {
+        this.n = n;
+      }
+    }
+
+    // #top-level
+    public static Behavior<Command> create() {
+      return Behaviors.supervise(counter(1)).onFailure(SupervisorStrategy.restart());
+    }
+    // #top-level
+
+    private static Behavior<Command> counter(int currentValue) {
+      return Behaviors.receive(Command.class)
+          .onMessage(Increase.class, o -> onIncrease(currentValue))
+          .onMessage(Get.class, command -> onGet(currentValue, command))
+          .build();
+    }
+
+    private static Behavior<Command> onIncrease(int currentValue) {
+      return counter(currentValue + 1);
+    }
+
+    private static Behavior<Command> onGet(int currentValue, Get command) {
+      command.replyTo.tell(new Got(currentValue));
+      return Behaviors.same();
+    }
+  }
+
+
+}
+```
+
+做这个监督时只需要添加到顶层:
+
+```java
+public static Behavior<Command> create() {
+  return Behaviors.supervise(counter(1)).onFailure(SupervisorStrategy.restart());
+}
+```
+
+每个返回的行为都将与监控器自动重新包装。
+
+### 4.5.1. 当父actor重新启动时，子actor停止
+
+子actor通常在setup块中启动，该设置块在父actor重新启动时再次运行。停止子actor是为了避免每次重新启动父actor时创建新的子actor时的资源泄漏。
+
+```java
+  // #restart-stop-children
+  static Behavior<String> child(long size) {
+    return Behaviors.receiveMessage(msg -> child(size + msg.length()));
+  }
+
+  static Behavior<String> parent() {
+    return Behaviors.<String>supervise(
+            Behaviors.setup(
+                ctx -> {
+                  final ActorRef<String> child1 = ctx.spawn(child(0), "child1");
+                  final ActorRef<String> child2 = ctx.spawn(child(0), "child2");
+
+                  return Behaviors.receiveMessage(
+                      msg -> {
+                        // message handling that might throw an exception
+                        String[] parts = msg.split(" ");
+                        child1.tell(parts[0]);
+                        child2.tell(parts[1]);
+                        return Behaviors.same();
+                      });
+                }))
+        .onFailure(SupervisorStrategy.restart());
+  }
+```
+
+可以重写这一点，这样当父actor重新启动时，子actor就不会受到影响。然后，重新启动的父实例将拥有与失败之前相同的子实例。
+
+如果子角色是从前面的例子中创建的，当父角色被重新启动时，它们应该保持原样(不停止)，那么监督应该放在设置中，使用supervise strategy .restart().withStopChildren(false):
+
+```java
+static Behavior<String> parent2() {
+  return Behaviors.setup(
+      ctx -> {
+        final ActorRef<String> child1 = ctx.spawn(child(0), "child1");
+        final ActorRef<String> child2 = ctx.spawn(child(0), "child2");
+
+        // supervision strategy inside the setup to not recreate children on restart
+        return Behaviors.<String>supervise(
+                Behaviors.receiveMessage(
+                    msg -> {
+                      // message handling that might throw an exception
+                      String[] parts = msg.split(" ");
+                      child1.tell(parts[0]);
+                      child2.tell(parts[1]);
+                      return Behaviors.same();
+                    }))
+            .onFailure(SupervisorStrategy.restart().withStopChildren(false));
+      });
+}
+```
+
+这意味着setup块将只在父actor第一次启动时运行，而不是在它重新启动时运行。
+
+### 4.5.2. PreRestart信号
+
+：在一个受监督的actor重新启动之前，它会被发送PreRestart信号，让它有机会清理它创建的资源，这很像actor停止时的PostStop信号。从PreRestart信号返回的行为将被忽略。
+
+```java
+Behaviors.supervise(
+        Behaviors.<String>setup(
+            ctx -> {
+              final Resource resource = claimResource();
+
+              return Behaviors.receive(String.class)
+                  .onMessage(
+                      String.class,
+                      msg -> {
+                        // message handling that might throw an exception
+                        String[] parts = msg.split(" ");
+                        resource.process(parts);
+                        return Behaviors.same();
+                      })
+                  .onSignal(
+                      PreRestart.class,
+                      signal -> {
+                        resource.close();
+                        return Behaviors.same();
+                      })
+                  .onSignal(
+                      PostStop.class,
+                      signal -> {
+                        resource.close();
+                        return Behaviors.same();
+                      })
+                  .build();
+            }))
+    .onFailure(Exception.class, SupervisorStrategy.restart());
+```
+
+注意，PostStop不是为重新启动而发出的，因此通常需要同时处理PreRestart和PostStop来清理资源。
+
+### 4.5.3. Bubble在层级上失败了
+
+在某些场景中，在Actor层次结构中向上推动关于在失败时应该做什么的决策，并让父Actor处理在失败时应该发生的事情可能会很有用(在经典的Akka Actor中，默认情况下它就是这样工作的)。
+
+如果父节点在子节点终止时被通知，父节点必须监视子节点。如果child failed因为失败而停止，则会接收到包含原因的child failed信号。ChildFailed扩展Terminated所以，如果你的用例不需要区分停止和失败，你可以用Terminated信号来处理这两种情况.
+
+如果父节点不处理终止的消息，那么它本身将失败，并出现akka.actor.type . deathpactexception异常。
+
+这意味着演员的层次结构可以有一个孩子失败泡沫使每个演员在路上停止但通知最顶部的父母有失败和如何处理它,然而,原始异常导致失败只会直接父可用的(这通常是一件好事,而不是实现细节泄漏)。
+
+在某些情况下，您可能希望原始异常在层次结构中向上冒气泡，这可以通过处理终止信号并在每个actor中重新抛出异常来实现。
+
+```java
+/*
+ * Copyright (C) 2018-2020 Lightbend Inc. <https://www.lightbend.com>
+ */
+
+package jdocs.akka.typed;
+
+import akka.actor.typed.ActorSystem;
+
+// #bubbling-example
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.DeathPactException;
+import akka.actor.typed.SupervisorStrategy;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+
+// #bubbling-example
+
+public class BubblingSample {
+  // #bubbling-example
+  public interface Protocol {
+    public interface Command {}
+
+    public static class Fail implements Command {
+      public final String text;
+
+      public Fail(String text) {
+        this.text = text;
+      }
+    }
+
+    public static class Hello implements Command {
+      public final String text;
+      public final ActorRef<String> replyTo;
+
+      public Hello(String text, ActorRef<String> replyTo) {
+        this.text = text;
+        this.replyTo = replyTo;
+      }
+    }
+  }
+
+  public static class Worker extends AbstractBehavior<Protocol.Command> {
+
+    public static Behavior<Protocol.Command> create() {
+      return Behaviors.setup(Worker::new);
+    }
+
+    private Worker(ActorContext<Protocol.Command> context) {
+      super(context);
+    }
+
+    @Override
+    public Receive<Protocol.Command> createReceive() {
+      return newReceiveBuilder()
+          .onMessage(Protocol.Fail.class, this::onFail)
+          .onMessage(Protocol.Hello.class, this::onHello)
+          .build();
+    }
+
+    private Behavior<Protocol.Command> onFail(Protocol.Fail message) {
+      throw new RuntimeException(message.text);
+    }
+
+    private Behavior<Protocol.Command> onHello(Protocol.Hello message) {
+      message.replyTo.tell(message.text);
+      return this;
+    }
+  }
+
+  public static class MiddleManagement extends AbstractBehavior<Protocol.Command> {
+
+    public static Behavior<Protocol.Command> create() {
+      return Behaviors.setup(MiddleManagement::new);
+    }
+
+    private final ActorRef<Protocol.Command> child;
+
+    private MiddleManagement(ActorContext<Protocol.Command> context) {
+      super(context);
+
+      context.getLog().info("Middle management starting up");
+      // default supervision of child, meaning that it will stop on failure
+      child = context.spawn(Worker.create(), "child");
+
+      // we want to know when the child terminates, but since we do not handle
+      // the Terminated signal, we will in turn fail on child termination
+      context.watch(child);
+    }
+
+    @Override
+    public Receive<Protocol.Command> createReceive() {
+      // here we don't handle Terminated at all which means that
+      // when the child fails or stops gracefully this actor will
+      // fail with a DeathPactException
+      return newReceiveBuilder().onMessage(Protocol.Command.class, this::onCommand).build();
+    }
+
+    private Behavior<Protocol.Command> onCommand(Protocol.Command message) {
+      // just pass messages on to the child
+      child.tell(message);
+      return this;
+    }
+  }
+
+  public static class Boss extends AbstractBehavior<Protocol.Command> {
+
+    public static Behavior<Protocol.Command> create() {
+      return Behaviors.supervise(Behaviors.setup(Boss::new))
+          .onFailure(DeathPactException.class, SupervisorStrategy.restart());
+    }
+
+    private final ActorRef<Protocol.Command> middleManagement;
+
+    private Boss(ActorContext<Protocol.Command> context) {
+      super(context);
+      context.getLog().info("Boss starting up");
+      // default supervision of child, meaning that it will stop on failure
+      middleManagement = context.spawn(MiddleManagement.create(), "middle-management");
+      context.watch(middleManagement);
+    }
+
+    @Override
+    public Receive<Protocol.Command> createReceive() {
+      // here we don't handle Terminated at all which means that
+      // when middle management fails with a DeathPactException
+      // this actor will also fail
+      return newReceiveBuilder().onMessage(Protocol.Command.class, this::onCommand).build();
+    }
+
+    private Behavior<Protocol.Command> onCommand(Protocol.Command message) {
+      // just pass messages on to the child
+      middleManagement.tell(message);
+      return this;
+    }
+  }
+
+  // #bubbling-example
+
+  public static void main(String[] args) {
+    final ActorSystem<Protocol.Command> system = ActorSystem.create(Boss.create(), "boss");
+
+    system.tell(new Protocol.Fail("boom"));
+    // this will now bubble up all the way to the boss, which will be restarted
+  }
+}
+```
+
+## 4.6. Actor发现
+
+### 4.6.1. 依赖关系
+
+要使用Akka Actor类型，您必须在项目中添加以下依赖项:
+
+```xml
+<properties>
+  <akka.version>2.6.8</akka.version>
+  <scala.binary.version>2.13</scala.binary.version>
+</properties>
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-actor-typed_${scala.binary.version}</artifactId>
+  <version>${akka.version}</version>
+</dependency>
+```
+
+### 4.6.2. 获取Actor的引用
+
+有两种获取Actor引用的一般方法:通过创建Actor和使用前台进行发现。
+
+您可以将actor引用作为构造函数参数或消息的一部分在actor之间传递。
+
+有时候，您需要一些东西来引导交互，例如当actor在集群中的不同节点上运行时，或者当不适用带有构造函数参数的“依赖注入”时。
+
+### 4.6.3. 前台
+
+当需要另一个actor发现某个actor，但您无法在传入消息中对其进行引用时，您可以使用前台。它同时支持本地和集群(参见集群)。您注册了可以从本地前台实例中的每个节点中发现的特定actor。Akka的API也基于actor消息。然后，在集群中，actor引用的注册表自动分布到所有其他节点。您可以使用注册时使用的键查找这样的actor。对这样一个查找请求的响应是一个清单，其中包含一组为键注册的actor引用。注意，几个actor可以注册到同一个键。
+
+注册表是动态的。可以在系统的生命周期中注册新的参与者。当已注册的actor被停止、手动取消注册或从集群中删除它们所在的节点时，条目将被删除。为了促进这一动态方面，您还可以订阅前台的更改。订阅消息。它将向订阅方发送清单消息，首先在订阅时发送条目集，然后在键的条目发生更改时发送清单消息。
+
+这些导入在以下示例中使用:
+
+```java
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.receptionist.Receptionist;
+import akka.actor.typed.receptionist.ServiceKey;
+```
+
+首先，我们创建一个PingService actor，并根据ServiceKey向前台注册它，ServiceKey稍后将用于查找引用:
+
+```java
+package jdocs.akka.cluster.typed;
+
+// #import
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.receptionist.Receptionist;
+import akka.actor.typed.receptionist.ServiceKey;
+// #import
+import akka.actor.typed.ActorSystem;
+
+public interface ReceptionistExample {
+
+  // #ping-service
+  public class PingService {
+
+    public static final ServiceKey<Ping> pingServiceKey =
+        ServiceKey.create(Ping.class, "pingService");
+
+    public static class Pong {}
+
+    public static class Ping {
+      private final ActorRef<Pong> replyTo;
+
+      public Ping(ActorRef<Pong> replyTo) {
+        this.replyTo = replyTo;
+      }
+    }
+
+    public static Behavior<Ping> create() {
+      return Behaviors.setup(
+          context -> {
+            context
+                .getSystem()
+                .receptionist()
+                .tell(Receptionist.register(pingServiceKey, context.getSelf()));
+
+            return new PingService(context).behavior();
+          });
+    }
+
+    private final ActorContext<Ping> context;
+
+    private PingService(ActorContext<Ping> context) {
+      this.context = context;
+    }
+
+    private Behavior<Ping> behavior() {
+      return Behaviors.receive(Ping.class).onMessage(Ping.class, this::onPing).build();
+    }
+
+    private Behavior<Ping> onPing(Ping msg) {
+      context.getLog().info("Pinged by {}", msg.replyTo);
+      msg.replyTo.tell(new Pong());
+      return Behaviors.same();
+    }
+  }
+  // #ping-service
+
+}
+```
+
+然后我们有另一个需要构建PingService的actor:
+
+```java
+public class Pinger {
+  private final ActorContext<PingService.Pong> context;
+  private final ActorRef<PingService.Ping> pingService;
+
+  private Pinger(ActorContext<PingService.Pong> context, ActorRef<PingService.Ping> pingService) {
+    this.context = context;
+    this.pingService = pingService;
+  }
+
+  public static Behavior<PingService.Pong> create(ActorRef<PingService.Ping> pingService) {
+    return Behaviors.setup(
+        ctx -> {
+          pingService.tell(new PingService.Ping(ctx.getSelf()));
+          return new Pinger(ctx, pingService).behavior();
+        });
+  }
+
+  private Behavior<PingService.Pong> behavior() {
+    return Behaviors.receive(PingService.Pong.class)
+        .onMessage(PingService.Pong.class, this::onPong)
+        .build();
+  }
+
+  private Behavior<PingService.Pong> onPong(PingService.Pong msg) {
+    context.getLog().info("{} was ponged!!", context.getSelf());
+    return Behaviors.stopped();
+  }
+}
+```
+
+最后，在守护参与者中，我们衍生服务并订阅针对ServiceKey注册的任何参与者。订阅意味着卫报参与者将通过列表消息获知任何新的注册:
+
+```java
+public class Guardian {
+
+  public static Behavior<Void> create() {
+    return Behaviors.setup(
+            (ActorContext<Receptionist.Listing> context) -> {
+              context
+                  .getSystem()
+                  .receptionist()
+                  .tell(
+                      Receptionist.subscribe(
+                          PingService.pingServiceKey, context.getSelf().narrow()));
+              context.spawnAnonymous(PingService.create());
+
+              return new Guardian(context).behavior();
+            })
+        .unsafeCast(); // Void
+  }
+
+  private final ActorContext<Receptionist.Listing> context;
+
+  private Guardian(ActorContext<Receptionist.Listing> context) {
+    this.context = context;
+  }
+
+  private Behavior<Receptionist.Listing> behavior() {
+    return Behaviors.receive(Receptionist.Listing.class)
+        .onMessage(Receptionist.Listing.class, this::onListing)
+        .build();
+  }
+
+  private Behavior<Receptionist.Listing> onListing(Receptionist.Listing msg) {
+    msg.getServiceInstances(PingService.pingServiceKey)
+        .forEach(pingService -> context.spawnAnonymous(Pinger.create(pingService)));
+    return Behaviors.same();
+  }
+}
+```
+
+每注册一个新的PingService(在本例中仅为一次)，守护参与者就会为当前已知的每个PingService生成一个ping inger。声波发射器会发送一个Ping信息，当收到Pong回复时，它就会停止。
+
+在上面的例子中，我们使用了接待员。订阅，但也可以通过发送接待员请求当前状态的单个列表，而不接收进一步的更新。找消息给接待员。一个使用accept的例子。
+
+```java
+public class PingManager {
+
+  interface Command {}
+
+  enum PingAll implements Command {
+    INSTANCE
+  }
+
+  private static class ListingResponse implements Command {
+    final Receptionist.Listing listing;
+
+    private ListingResponse(Receptionist.Listing listing) {
+      this.listing = listing;
+    }
+  }
+
+  public static Behavior<Command> create() {
+    return Behaviors.setup(context -> new PingManager(context).behavior());
+  }
+
+  private final ActorContext<Command> context;
+  private final ActorRef<Receptionist.Listing> listingResponseAdapter;
+
+  private PingManager(ActorContext<Command> context) {
+    this.context = context;
+    this.listingResponseAdapter =
+        context.messageAdapter(Receptionist.Listing.class, ListingResponse::new);
+
+    context.spawnAnonymous(PingService.create());
+  }
+
+  private Behavior<Command> behavior() {
+    return Behaviors.receive(Command.class)
+        .onMessage(PingAll.class, notUsed -> onPingAll())
+        .onMessage(ListingResponse.class, response -> onListing(response.listing))
+        .build();
+  }
+
+  private Behavior<Command> onPingAll() {
+    context
+        .getSystem()
+        .receptionist()
+        .tell(Receptionist.find(PingService.pingServiceKey, listingResponseAdapter));
+    return Behaviors.same();
+  }
+
+  private Behavior<Command> onListing(Receptionist.Listing msg) {
+    msg.getServiceInstances(PingService.pingServiceKey)
+        .forEach(pingService -> context.spawnAnonymous(Pinger.create(pingService)));
+    return Behaviors.same();
+  }
+}
+```
+
+还要注意如何使用messageAdapter转换接待员。列出PingManager能够理解的消息类型。
+如果服务器不再希望与服务密钥关联，它可以使用命令前台取消注册。Receptionist.Deregister 将删除关联并通知所有订阅者。
+
+该命令可以选择在本地前台删除注册后发送确认信息。确认不保证所有订阅者都看到实例已被删除，在此之后的一段时间内，它仍可能从订阅者那里接收消息。
+
+```java
+context
+    .getSystem()
+    .receptionist()
+    .tell(Receptionist.deregister(PingService.pingServiceKey, context.getSelf()));
+```
+
+### 4.6.4. Cluster Receptionist
+
+Receptionist也在集群中工作，注册到Receptionist的actor将出现在集群中其他节点的Receptionist中。
+
+前台的状态是通过分布的数据传播的，这意味着每个节点最终会到达每个ServiceKey相同的参与者集合。
+
+
+对集群Subscription的订阅和Find将跟踪集群可达性，并只列出可访问的已注册参与者。完整的参与者集(包括不可到达的参与者)可以通过list . getallserviceinstances获得。
+
+与仅本地接收的一个重要区别是序列化问题，从另一个节点上的actor发送和返回的所有消息都必须是可序列化的，请参阅序列化。'
+
+### 4.6.5. Receptionist延伸性
+
+前台没有任何规模的服务或非常高的周转服务。它可能会处理成千上万的服务。较高的用例要求接待员在节点上的参与者之间进行初始联系，而这些联系的实际逻辑由应用程序自己的参与者决定。
+
 
 
 
@@ -7145,6 +7806,12 @@ Remoting 解决的挑战包括:
 * 如何管理主机之间的低级网络连接(和重连接)，检测崩溃的Actor系统和主机，所有这些都是透明的。
 * 如何在同一网络连接上透明地多路传输来自一组不相关的Actor的通信。
 
+在某些情况下，在一组actor上分发相同类型的消息是有用的，这样消息就可以并行处理——单个actor一次只能处理一条消息。
+
+路由器本身是一种衍生为运行actor的行为，然后将发送给它的任何消息转发给routee集合中的最后一个接收者。
+
+在Akka类型中包含了两种路由器——池路由器和组路由器。
+
 ## 5.2. Remote Maven库
 
 ```xml
@@ -7157,5 +7824,147 @@ Remoting 解决的挑战包括:
   <artifactId>akka-remote_${scala.binary.version}</artifactId>
   <version>${akka.version}</version>
 </dependency>
+```
+
+## 5.3. 池路由器
+
+池路由器是通过一个路由者行为创建的，并通过该行为生成大量的子节点，然后将消息转发给这些子节点。
+
+如果一个子节点被停止，池路由器将把它从它的routee集合中删除。当最后一个子节点停止时，路由器本身停止。为了制造一个能够处理故障的弹性路由器，必须对路由者的行为进行监督。
+
+```java
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.SupervisorStrategy;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.GroupRouter;
+import akka.actor.typed.javadsl.PoolRouter;
+import akka.actor.typed.javadsl.Routers;
+import akka.actor.typed.receptionist.Receptionist;
+import akka.actor.typed.receptionist.ServiceKey;
+
+class Worker {
+  interface Command {}
+
+  static class DoLog implements Command {
+    public final String text;
+
+    public DoLog(String text) {
+      this.text = text;
+    }
+  }
+
+  static final Behavior<Command> create() {
+    return Behaviors.setup(
+        context -> {
+          context.getLog().info("Starting worker");
+
+          return Behaviors.receive(Command.class)
+              .onMessage(DoLog.class, doLog -> onDoLog(context, doLog))
+              .build();
+        });
+  }
+
+  private static Behavior<Command> onDoLog(ActorContext<Command> context, DoLog doLog) {
+    context.getLog().info("Got message {}", doLog.text);
+    return Behaviors.same();
+  }
+}
+
+        int poolSize = 4;
+        PoolRouter<Worker.Command> pool =
+            Routers.pool(
+                poolSize,
+                // make sure the workers are restarted if they fail
+                Behaviors.supervise(Worker.create()).onFailure(SupervisorStrategy.restart()));
+        ActorRef<Worker.Command> router = context.spawn(pool, "worker-pool");
+
+        for (int i = 0; i < 10; i++) {
+          router.tell(new Worker.DoLog("msg " + i));
+        }
+```
+
+**配置调度程序**
+
+由于路由器本身是作为actor派生的，因此用于它的dispatcher可以在派生调用中直接配置。然而，routee是由路由器生成的。因此，PoolRouter有一个属性来配置它的routee的道具:
+
+```java
+// make sure workers use the default blocking IO dispatcher
+PoolRouter<Worker.Command> blockingPool =
+    pool.withRouteeProps(DispatcherSelector.blocking());
+// spawn head router using the same executor as the parent
+ActorRef<Worker.Command> blockingRouter =
+    context.spawn(blockingPool, "blocking-pool", DispatcherSelector.sameAsParent());
+```
+
+## 5.4. 组路由器
+
+组路由器使用ServiceKey创建，并使用前台(请参阅前台)发现该密钥可用的参与者，并将消息路由到当前已知的已注册的密钥参与者之一。
+
+由于使用了前台，这意味着组路由器是集群感知的开箱。路由器向集群中任何可到达的节点上的注册参与者发送消息。如果没有可到达的参与者存在，路由器将后退并将消息路由到标记为不可到达的节点上的参与者。
+
+接待员是使用也意味着最终路线的设置是一致的,这组路由器时立即开始的路线就知道是空的,直到它已经上市的接待员将传入的消息,并将它们转发尽快接待员的清单。
+
+当路由器从前台收到一个清单并且已注册的参与者集合为空时，路由器将删除它们(以akka.actor. drop的形式将它们发布到事件流中)。
+
+```java
+ServiceKey<Worker.Command> serviceKey = ServiceKey.create(Worker.Command.class, "log-worker");
+
+      // this would likely happen elsewhere - if we create it locally we
+      // can just as well use a pool
+      ActorRef<Worker.Command> worker = context.spawn(Worker.create(), "worker");
+      context.getSystem().receptionist().tell(Receptionist.register(serviceKey, worker));
+
+      GroupRouter<Worker.Command> group = Routers.group(serviceKey);
+      ActorRef<Worker.Command> router = context.spawn(group, "worker-group");
+
+      // the group router will stash messages until it sees the first listing of registered
+      // services from the receptionist, so it is safe to send messages right away
+      for (int i = 0; i < 10; i++) {
+        router.tell(new Worker.DoLog("msg " + i));
+      }
+```
+
+## 路由策略
+
+有三种不同的策略选择哪个routee一个消息被转发到可以选择从路由器之前产卵它:
+
+```java
+PoolRouter<Worker.Command> alternativePool = pool.withPoolSize(2).withRoundRobinRouting();
+```
+
+### Round Robin
+
+对路由集进行旋转，确保如果有n个路由，那么对于通过路由器发送的n个消息，每个参与者被转发一条消息。
+
+轮询调度提供了公平的路由，只要路由集保持相对稳定，每个可用路由集就会获得相同数量的消息，但如果路由集变化很大，则可能不公平。
+
+这是池路由器的默认值，因为routee的池应该保持不变。进入翻译
+
+该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。
+
+
+### Random
+
+当消息通过路由器发送时，随机选择一个routee。
+
+这是group router的默认设置，因为routee的组预计会随着节点加入和离开集群而改变。
+
+该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。
+
+### Consistent Hashing
+
+使用一致的散列来根据所发送的消息选择路由。本文很好地了解了如何实现一致性哈希。
+
+目前，您必须定义路由器的hashMapping，以将传入的消息映射到它们一致的散列键。这使得决策对发送方透明。
+
+只要routee集合保持不变，一致的哈希将使具有相同哈希路由的消息发送到相同的路由。当routee集发生更改时，一致性散列试图确保(但不保证)具有相同散列的消息被路由到相同的routee。
+
+## 路由器和性能
+
+请注意，如果路由共享一个资源，则资源将决定增加参与者的数量实际上是提供更高的吞吐量还是更快的答案。例如，如果routee是CPU绑定的actor，那么创建的routee数量不会比执行actor的线程数量多，从而获得更好的性能。
+
+由于路由器本身是一个参与者并且有一个邮箱，这意味着消息将按顺序路由到路由，在那里可以并行地处理它(取决于dispatcher中可用的线程)。在高吞吐量用例中，顺序路由可能成为瓶颈。Akka Typed并没有为此提供一个优化的工具。
 
 
