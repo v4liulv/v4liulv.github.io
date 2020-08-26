@@ -6274,7 +6274,7 @@ public class CustomerRepository extends AbstractBehavior<CustomerRepository.Comm
 
 ### 4.4.10. 每个子Actor会话
 
-在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。
+在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的子actor。子actor还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。
 
 请注意，这本质上就是ask的实现方式，如果您所需要的只是一个带有超时的响应，那么最好使用ask。
 
@@ -6463,7 +6463,673 @@ class PrepareToLeaveHome extends AbstractBehavior<Object> {
 
 ### 4.4.11. 通用响应聚合器
 
-测试
+这类似于上面的[每个会话子Actor模式](#4410-每个字Actor会话)。有时，您可能会重复以相同的方式聚合应答，并希望将其提取到可重用的参与者。
+
+此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。
+
+示例：
+
+![20200826141327](https://liulv.work/images/img/20200826141327.png)
+
+此示例是预期应答数量的聚合器。报价请求通过给定的sendrequest函数发送给两个酒店参与者，它们使用不同的协议。当两个预期的响应都被收集之后，它们将使用给定的aggregateReplies函数进行聚合并发送回replyTo。如果响应没有在超时内到达，则聚合到目前为止的响应并发送回replyTo。
+
+```java
+public class Hotel1 {
+  public static class RequestQuote {
+    public final ActorRef<Quote> replyTo;
+
+    public RequestQuote(ActorRef<Quote> replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Quote {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Quote(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+}
+
+public class Hotel2 {
+  public static class RequestPrice {
+    public final ActorRef<Price> replyTo;
+
+    public RequestPrice(ActorRef<Price> replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Price {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Price(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+}
+
+public class HotelCustomer extends AbstractBehavior<HotelCustomer.Command> {
+
+  interface Command {}
+
+  public static class Quote {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Quote(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+
+  public static class AggregatedQuotes implements Command {
+    public final List<Quote> quotes;
+
+    public AggregatedQuotes(List<Quote> quotes) {
+      this.quotes = quotes;
+    }
+  }
+
+  public static Behavior<Command> create(
+      ActorRef<Hotel1.RequestQuote> hotel1, ActorRef<Hotel2.RequestPrice> hotel2) {
+    return Behaviors.setup(context -> new HotelCustomer(context, hotel1, hotel2));
+  }
+
+  public HotelCustomer(
+      ActorContext<Command> context,
+      ActorRef<Hotel1.RequestQuote> hotel1,
+      ActorRef<Hotel2.RequestPrice> hotel2) {
+    super(context);
+
+    Consumer<ActorRef<Object>> sendRequests =
+        replyTo -> {
+          hotel1.tell(new Hotel1.RequestQuote(replyTo.narrow()));
+          hotel2.tell(new Hotel2.RequestPrice(replyTo.narrow()));
+        };
+
+    int expectedReplies = 2;
+    // Object since no common type between Hotel1 and Hotel2
+    context.spawnAnonymous(
+        Aggregator.create(
+            Object.class,
+            sendRequests,
+            expectedReplies,
+            context.getSelf(),
+            this::aggregateReplies,
+            Duration.ofSeconds(5)));
+  }
+
+  private AggregatedQuotes aggregateReplies(List<Object> replies) {
+    List<Quote> quotes =
+        replies.stream()
+            .map(
+                r -> {
+                  // The hotels have different protocols with different replies,
+                  // convert them to `HotelCustomer.Quote` that this actor understands.
+                  if (r instanceof Hotel1.Quote) {
+                    Hotel1.Quote q = (Hotel1.Quote) r;
+                    return new Quote(q.hotel, q.price);
+                  } else if (r instanceof Hotel2.Price) {
+                    Hotel2.Price p = (Hotel2.Price) r;
+                    return new Quote(p.hotel, p.price);
+                  } else {
+                    throw new IllegalArgumentException("Unknown reply " + r);
+                  }
+                })
+            .sorted((a, b) -> a.price.compareTo(b.price))
+            .collect(Collectors.toList());
+
+    return new AggregatedQuotes(quotes);
+  }
+
+  @Override
+  public Receive<Command> createReceive() {
+    return newReceiveBuilder()
+        .onMessage(AggregatedQuotes.class, this::onAggregatedQuotes)
+        .build();
+  }
+
+  private Behavior<Command> onAggregatedQuotes(AggregatedQuotes aggregated) {
+    if (aggregated.quotes.isEmpty()) getContext().getLog().info("Best Quote N/A");
+    else getContext().getLog().info("Best {}", aggregated.quotes.get(0));
+    return this;
+  }
+}
+```
+
+Aggregator聚合器的实现:
+
+```java
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class Aggregator<Reply, Aggregate> extends AbstractBehavior<Aggregator.Command> {
+
+  interface Command {}
+
+  private enum ReceiveTimeout implements Command {
+    INSTANCE
+  }
+
+  private class WrappedReply implements Command {
+    final Reply reply;
+
+    private WrappedReply(Reply reply) {
+      this.reply = reply;
+    }
+  }
+
+  public static <R, A> Behavior<Command> create(
+      Class<R> replyClass,
+      Consumer<ActorRef<R>> sendRequests,
+      int expectedReplies,
+      ActorRef<A> replyTo,
+      Function<List<R>, A> aggregateReplies,
+      Duration timeout) {
+    return Behaviors.setup(
+        context ->
+            new Aggregator<R, A>(
+                replyClass,
+                context,
+                sendRequests,
+                expectedReplies,
+                replyTo,
+                aggregateReplies,
+                timeout));
+  }
+
+  private final int expectedReplies;
+  private final ActorRef<Aggregate> replyTo;
+  private final Function<List<Reply>, Aggregate> aggregateReplies;
+  private final List<Reply> replies = new ArrayList<>();
+
+  private Aggregator(
+      Class<Reply> replyClass,
+      ActorContext<Command> context,
+      Consumer<ActorRef<Reply>> sendRequests,
+      int expectedReplies,
+      ActorRef<Aggregate> replyTo,
+      Function<List<Reply>, Aggregate> aggregateReplies,
+      Duration timeout) {
+    super(context);
+    this.expectedReplies = expectedReplies;
+    this.replyTo = replyTo;
+    this.aggregateReplies = aggregateReplies;
+
+    context.setReceiveTimeout(timeout, ReceiveTimeout.INSTANCE);
+
+    ActorRef<Reply> replyAdapter = context.messageAdapter(replyClass, WrappedReply::new);
+    sendRequests.accept(replyAdapter);
+  }
+
+  @Override
+  public Receive<Command> createReceive() {
+    return newReceiveBuilder()
+        .onMessage(WrappedReply.class, this::onReply)
+        .onMessage(ReceiveTimeout.class, notUsed -> onReceiveTimeout())
+        .build();
+  }
+
+  private Behavior<Command> onReply(WrappedReply wrappedReply) {
+    Reply reply = wrappedReply.reply;
+    replies.add(reply);
+    if (replies.size() == expectedReplies) {
+      Aggregate result = aggregateReplies.apply(replies);
+      replyTo.tell(result);
+      return Behaviors.stopped();
+    } else {
+      return this;
+    }
+  }
+
+  private Behavior<Command> onReceiveTimeout() {
+    Aggregate result = aggregateReplies.apply(replies);
+    replyTo.tell(result);
+    return Behaviors.stopped();
+  }
+}
+```
+
+使用场景：
+
+* 聚合响应在多个位置以相同的方式执行，应该将其提取到一个更通用的actor。
+* 在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合
+* 您需要处理确认和重试消息，以便至少传递一次
+
+问题：
+
+* 具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除
+* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景
+* 它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行
+  
+
+### 4.4.12. Latency tail chopping
+
+这是上述[通用响应聚合器模式](#4411-通用响应聚合器)的变体。
+
+此算法的目标是在多个目标参与者可以执行相同的工作，并且某个参与者的响应有时可能比预期的要慢的情况下，减少尾部延迟(“切断尾部延迟”)。在这种情况下，向另一个参与者发送相同的工作请求(也称为“备份请求”)会减少响应时间——因为多个参与者不太可能同时处于高负载下。Jeff Dean[关于在大型在线服务中实现快速响应时间](https://static.googleusercontent.com/media/research.google.com/en//people/jeff/Berkeley-Latency-Mar2012.pdf)的演讲中对该技术进行了深入的解释。
+
+此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。
+
+示例：
+
+![20200826142401](https://liulv.work/images/img/20200826142401.png)
+
+```java
+/*
+ * Copyright (C) 2019-2020 Lightbend Inc. <https://www.lightbend.com>
+ */
+
+package jdocs.akka.typed;
+
+// #behavior
+import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+import akka.actor.typed.javadsl.TimerScheduler;
+
+import java.time.Duration;
+import java.util.function.BiFunction;
+
+public class TailChopping<Reply> extends AbstractBehavior<TailChopping.Command> {
+
+  interface Command {}
+
+  private enum RequestTimeout implements Command {
+    INSTANCE
+  }
+
+  private enum FinalTimeout implements Command {
+    INSTANCE
+  }
+
+  private class WrappedReply implements Command {
+    final Reply reply;
+
+    private WrappedReply(Reply reply) {
+      this.reply = reply;
+    }
+  }
+
+  public static <R> Behavior<Command> create(
+      Class<R> replyClass,
+      BiFunction<Integer, ActorRef<R>, Boolean> sendRequest,
+      Duration nextRequestAfter,
+      ActorRef<R> replyTo,
+      Duration finalTimeout,
+      R timeoutReply) {
+    return Behaviors.setup(
+        context ->
+            Behaviors.withTimers(
+                timers ->
+                    new TailChopping<R>(
+                        replyClass,
+                        context,
+                        timers,
+                        sendRequest,
+                        nextRequestAfter,
+                        replyTo,
+                        finalTimeout,
+                        timeoutReply)));
+  }
+
+  private final TimerScheduler<Command> timers;
+  private final BiFunction<Integer, ActorRef<Reply>, Boolean> sendRequest;
+  private final Duration nextRequestAfter;
+  private final ActorRef<Reply> replyTo;
+  private final Duration finalTimeout;
+  private final Reply timeoutReply;
+  private final ActorRef<Reply> replyAdapter;
+
+  private int requestCount = 0;
+
+  private TailChopping(
+      Class<Reply> replyClass,
+      ActorContext<Command> context,
+      TimerScheduler<Command> timers,
+      BiFunction<Integer, ActorRef<Reply>, Boolean> sendRequest,
+      Duration nextRequestAfter,
+      ActorRef<Reply> replyTo,
+      Duration finalTimeout,
+      Reply timeoutReply) {
+    super(context);
+    this.timers = timers;
+    this.sendRequest = sendRequest;
+    this.nextRequestAfter = nextRequestAfter;
+    this.replyTo = replyTo;
+    this.finalTimeout = finalTimeout;
+    this.timeoutReply = timeoutReply;
+
+    replyAdapter = context.messageAdapter(replyClass, WrappedReply::new);
+
+    sendNextRequest();
+  }
+
+  @Override
+  public Receive<Command> createReceive() {
+    return newReceiveBuilder()
+        .onMessage(WrappedReply.class, this::onReply)
+        .onMessage(RequestTimeout.class, notUsed -> onRequestTimeout())
+        .onMessage(FinalTimeout.class, notUsed -> onFinalTimeout())
+        .build();
+  }
+
+  private Behavior<Command> onReply(WrappedReply wrappedReply) {
+    Reply reply = wrappedReply.reply;
+    replyTo.tell(reply);
+    return Behaviors.stopped();
+  }
+
+  private Behavior<Command> onRequestTimeout() {
+    sendNextRequest();
+    return this;
+  }
+
+  private Behavior<Command> onFinalTimeout() {
+    replyTo.tell(timeoutReply);
+    return Behaviors.stopped();
+  }
+
+  private void sendNextRequest() {
+    requestCount++;
+    if (sendRequest.apply(requestCount, replyAdapter)) {
+      timers.startSingleTimer(RequestTimeout.INSTANCE, RequestTimeout.INSTANCE, nextRequestAfter);
+    } else {
+      timers.startSingleTimer(FinalTimeout.INSTANCE, FinalTimeout.INSTANCE, finalTimeout);
+    }
+  }
+}
+// #behavior
+```
+
+使用场景：
+
+* 减少较高的延迟百分比和延迟的变化非常重要
+* “工作”可以在相同的结果下进行多次，例如请求检索信息
+
+问题：
+
+* 由于发送更多消息和多次执行“工作”，负载增加
+* 当“功”不是幂等且只能执行一次时不能使用
+* 具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除
+* 必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景
+
+### 4.4.13. 将消息调度到自己
+
+下面的示例演示如何使用计时器将消息调度到actor。
+
+**示例：**
+
+![20200826143653](https://liulv.work/images/img/20200826143653.png)
+
+Buncher actor缓冲大量传入消息，并在超时后或批处理的消息数量超过最大大小时将其作为批处理交付。
+
+```java
+ // #timer
+    public class Buncher {
+
+      public interface Command {}
+
+      public static final class Batch {
+        private final List<Command> messages;
+
+        public Batch(List<Command> messages) {
+          this.messages = Collections.unmodifiableList(messages);
+        }
+
+        public List<Command> getMessages() {
+          return messages;
+        }
+        // #timer
+        @Override
+        public boolean equals(Object o) {
+          if (this == o) return true;
+          if (o == null || getClass() != o.getClass()) return false;
+          Batch batch = (Batch) o;
+          return Objects.equals(messages, batch.messages);
+        }
+
+        @Override
+        public int hashCode() {
+          return Objects.hash(messages);
+        } // #timer
+      }
+
+      public static final class ExcitingMessage implements Command {
+        public final String message;
+
+        public ExcitingMessage(String message) {
+          this.message = message;
+        }
+      }
+
+      private static final Object TIMER_KEY = new Object();
+
+      private enum Timeout implements Command {
+        INSTANCE
+      }
+
+      public static Behavior<Command> create(ActorRef<Batch> target, Duration after, int maxSize) {
+        return Behaviors.withTimers(timers -> new Buncher(timers, target, after, maxSize).idle());
+      }
+
+      private final TimerScheduler<Command> timers;
+      private final ActorRef<Batch> target;
+      private final Duration after;
+      private final int maxSize;
+
+      private Buncher(
+          TimerScheduler<Command> timers, ActorRef<Batch> target, Duration after, int maxSize) {
+        this.timers = timers;
+        this.target = target;
+        this.after = after;
+        this.maxSize = maxSize;
+      }
+
+      private Behavior<Command> idle() {
+        return Behaviors.receive(Command.class)
+            .onMessage(Command.class, this::onIdleCommand)
+            .build();
+      }
+
+      private Behavior<Command> onIdleCommand(Command message) {
+        timers.startSingleTimer(TIMER_KEY, Timeout.INSTANCE, after);
+        return Behaviors.setup(context -> new Active(context, message));
+      }
+
+      private class Active extends AbstractBehavior<Command> {
+
+        private final List<Command> buffer = new ArrayList<>();
+
+        Active(ActorContext<Command> context, Command firstCommand) {
+          super(context);
+          buffer.add(firstCommand);
+        }
+
+        @Override
+        public Receive<Command> createReceive() {
+          return newReceiveBuilder()
+              .onMessage(Timeout.class, message -> onTimeout())
+              .onMessage(Command.class, this::onCommand)
+              .build();
+        }
+
+        private Behavior<Command> onTimeout() {
+          target.tell(new Batch(buffer));
+          return idle(); // switch to idle
+        }
+
+        private Behavior<Command> onCommand(Command message) {
+          buffer.add(message);
+          if (buffer.size() == maxSize) {
+            timers.cancel(TIMER_KEY);
+            target.tell(new Batch(buffer));
+            return idle(); // switch to idle
+          } else {
+            return this; // stay Active
+          }
+        }
+      }
+    }
+    // #timer
+```
+
+这里有几件事值得注意:
+
+* 要访问计时器，首先从行为开始。将TimerScheduler实例传递给函数的withtimer。这可以用于任何类型的行为，包括接收、receiveMessage，但也可以用于设置或任何其他行为。
+* 每个计时器都有一个键，如果启动了具有相同键的新计时器，则取消之前的计时器。它保证不会收到来自前一个计时器的消息，即使它在新计时器启动时已经在邮箱中排队。
+* 支持定期计时器和单消息计时器。
+* TimerScheduler本身是可变的，因为它执行和管理注册计划任务的副作用。
+* TimerScheduler绑定到拥有它的参与者的生命周期，并在参与者停止时自动取消。
+* 行为。withtimer也可以在行为内部使用。监督，它将在actor重新启动时自动正确地取消已启动的计时器，以便新的化身将不会接收来自前一个化身的预定消息。
+
+**定期执行**
+
+循环消息的调度可以有两个不同的特征:
+
+* 固定延迟——发送后续消息之间的延迟将总是(至少)给定的延迟。使用startTimerWithFixedDelay。
+* 固定比率-执行的频率在一段时间内将满足给定的时间间隔。使用startTimerAtFixedRate。
+
+如果您不确定使用哪一个，您应该选择startTimerWithFixedDelay。
+
+当使用固定延迟时，如果调度由于某种原因延迟的时间超过了指定的时间，它将不会补偿消息之间的延迟。发送后续消息之间的延迟将始终(至少)是给定的延迟。从长远来看，消息的频率通常会略低于指定延迟的倒数。
+固定延迟执行适用于需要“平滑性”的重复活动。换句话说，它适用于那些短期内保持频率准确比长期更重要的活动。
+
+当使用固定速率时，如果先前的消息延迟太久，它将补偿后续任务的延迟。在这种情况下，实际的发送时间间隔将与传递给scheduleAtFixedRate方法的时间间隔不同。
+如果任务的延迟时间超过了时间间隔，则随后的消息将立即在前一条消息之后发送。这还会造成这样的后果:在长时间的垃圾收集暂停之后，或者JVM被挂起时，所有“错过的”任务都将在进程再次唤醒时执行。例如，以1秒间隔的scheduleAtFixedRate进程被挂起30秒将导致30条消息被快速连续地发送以赶上。在长期运行中，执行的频率将恰好是指定时间间隔的倒数。
+
+固定速率执行适合于对绝对时间敏感的重复活动，或者执行固定次数执行的总时间很重要的情况，例如每秒钟计时一次，持续10秒的倒计时计时器。
+
+> 警告
+
+> 在长时间的垃圾收集暂停之后，scheduleAtFixedRate警告可能会导致计划消息爆发，在最坏的情况下，这可能会在系统上造成不需要的负载。有固定延迟的日程安排通常是首选。
+
+
+### 4.4.14. 回应一个分片的actor
+
+当使用Akka集群对actor进行分片时，您需要考虑到actor可能会移动或被钝化。
+
+预期应答的正常模式是在消息中包含一个ActorRef，通常是一个消息适配器。这可以用于切分的actor，但是如果发送了ctx.getSelf()，并且切分的actor被移动或钝化，那么回复将发送到死字母。
+
+另一种方法是在消息中发送entityId，并通过分片发送应答。
+
+**示例**
+
+![20200826143633](https://liulv.work/images/img/20200826143633.png)
+
+```java
+/*
+ * Copyright (C) 2018-2020 Lightbend Inc. <https://www.lightbend.com>
+ */
+
+package jdocs.akka.cluster.sharding.typed;
+
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+import akka.cluster.sharding.typed.javadsl.ClusterSharding;
+import akka.cluster.sharding.typed.javadsl.EntityRef;
+import akka.cluster.sharding.typed.javadsl.EntityTypeKey;
+
+interface ShardingReplyCompileOnlyTest {
+
+  // #sharded-response
+  // a sharded actor that needs counter updates
+  public class CounterConsumer {
+    public static EntityTypeKey<Command> typeKey =
+        EntityTypeKey.create(Command.class, "example-sharded-response");
+
+    public interface Command {}
+
+    public static class NewCount implements Command {
+      public final long value;
+
+      public NewCount(long value) {
+        this.value = value;
+      }
+    }
+  }
+
+  // a sharded counter that sends responses to another sharded actor
+  public class Counter extends AbstractBehavior<Counter.Command> {
+    public static EntityTypeKey<Command> typeKey =
+        EntityTypeKey.create(Command.class, "example-sharded-counter");
+
+    public interface Command {}
+
+    public enum Increment implements Command {
+      INSTANCE
+    }
+
+    public static class GetValue implements Command {
+      public final String replyToEntityId;
+
+      public GetValue(String replyToEntityId) {
+        this.replyToEntityId = replyToEntityId;
+      }
+    }
+
+    public static Behavior<Command> create() {
+      return Behaviors.setup(Counter::new);
+    }
+
+    private final ClusterSharding sharding;
+    private int value = 0;
+
+    private Counter(ActorContext<Command> context) {
+      super(context);
+      this.sharding = ClusterSharding.get(context.getSystem());
+    }
+
+    @Override
+    public Receive<Command> createReceive() {
+      return newReceiveBuilder()
+          .onMessage(Increment.class, msg -> onIncrement())
+          .onMessage(GetValue.class, this::onGetValue)
+          .build();
+    }
+
+    private Behavior<Command> onIncrement() {
+      value++;
+      return this;
+    }
+
+    private Behavior<Command> onGetValue(GetValue msg) {
+      EntityRef<CounterConsumer.Command> entityRef =
+          sharding.entityRefFor(CounterConsumer.typeKey, msg.replyToEntityId);
+      entityRef.tell(new CounterConsumer.NewCount(value));
+      return this;
+    }
+  }
+  // #sharded-response
+}
+```
+
+缺点是不能使用消息适配器，因此响应必须位于被响应的actor的协议中。另外，如果不知道EntityTypeKey是静态的，则可以将其包含在消息中。
+
+
+
 
 # 5. Remote模块
 

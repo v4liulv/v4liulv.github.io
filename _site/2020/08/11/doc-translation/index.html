@@ -9645,9 +9645,9 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
   <li>为超时寻找一个合适的值，特别是当在接收actor中被链接的ask触发器请求时。您希望有一个短的超时时间来响应请求程序，但同时又不希望出现许多误报。</li>
 </ul>
 
-<h3 id="446-来着外部actor的请求-响应ask">4.4.6. 来着外部Actor的请求-响应ask</h3>
+<h3 id="446-与外部actor的请求-响应ask">4.4.6. 与外部Actor的请求-响应ask</h3>
 
-<p>有时你需要与Actor的Actor从外部系统交互,这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage <反应>是完成一个成功或失败的响应TimeoutException指定的超时时间内如果没有响应。</反应></p>
+<p>有时你需要与外部系统的Actor进行交互，这可以用“即发即弃”如上所述或通过另一个版本的要求返回一个CompletionStage <反应>是完成一个成功或失败的响应（TimeoutException）。</反应></p>
 
 <p>为此，我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。</p>
 
@@ -9863,17 +9863,22 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
     <span class="o">});</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>有用的时候:</p>
-
-<p>从Actor系统外部查询Actor</p>
-
-<p>存在问题：</p>
-
-<ul>
-  <li>在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行</li>
-  <li>对一个请求只能有一个单一的响应(参见<a href="https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor">每个会话child Actor</a>)</li>
-  <li>当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它</li>
-</ul>
+<dl>
+  <dt>有用的时候</dt>
+  <dd>从Actor系统外部查询Actor</dd>
+  <dt>存在问题</dt>
+  <dd>
+    <ul>
+      <li>在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行。</li>
+    </ul>
+  </dd>
+  <dd>
+    <ul>
+      <li>对一个请求只能有一个单一的响应(参见<a href="https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor">每个会话child Actor</a>)。</li>
+      <li>当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它。</li>
+    </ul>
+  </dd>
+</dl>
 
 <h3 id="447-一般反应包装">4.4.7. 一般反应包装</h3>
 
@@ -10527,7 +10532,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <h3 id="4410-每个子actor会话">4.4.10. 每个子Actor会话</h3>
 
-<p>在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的儿童演员。子节点还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。</p>
+<p>在某些情况下，只有在从其他Actor收集多个答案之后，才能创建并发回对请求的完整响应。对于这些类型的交互，最好将工作委托给每个“会话”的子actor。子actor还可以包含实现重试、超时失败、尾部截断、进度检查等的任意逻辑。</p>
 
 <p>请注意，这本质上就是ask的实现方式，如果您所需要的只是一个带有超时的响应，那么最好使用ask。</p>
 
@@ -10881,7 +10886,1225 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <h3 id="4411-通用响应聚合器">4.4.11. 通用响应聚合器</h3>
 
-<p>测试</p>
+<p>这类似于上面的<a href="#4410-每个字Actor会话">每个会话子Actor模式</a>。有时，您可能会重复以相同的方式聚合应答，并希望将其提取到可重用的参与者。</p>
+
+<p>此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。</p>
+
+<p>示例：</p>
+
+<p><img src="https://liulv.work/images/img/20200826141327.png" alt="20200826141327" /></p>
+
+<p>此示例是预期应答数量的聚合器。报价请求通过给定的sendrequest函数发送给两个酒店参与者，它们使用不同的协议。当两个预期的响应都被收集之后，它们将使用给定的aggregateReplies函数进行聚合并发送回replyTo。如果响应没有在超时内到达，则聚合到目前为止的响应并发送回replyTo。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hotel1</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RequestQuote</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Quote</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RequestQuote</span><span class="o">(</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Quote</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">replyTo</span> <span class="o">=</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Quote</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">hotel</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Quote</span><span class="o">(</span><span class="nc">String</span> <span class="n">hotel</span><span class="o">,</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">hotel</span> <span class="o">=</span> <span class="n">hotel</span><span class="o">;</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hotel2</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RequestPrice</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Price</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RequestPrice</span><span class="o">(</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Price</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">replyTo</span> <span class="o">=</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Price</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">hotel</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Price</span><span class="o">(</span><span class="nc">String</span> <span class="n">hotel</span><span class="o">,</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">hotel</span> <span class="o">=</span> <span class="n">hotel</span><span class="o">;</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotelCustomer</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">HotelCustomer</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Quote</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">hotel</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Quote</span><span class="o">(</span><span class="nc">String</span> <span class="n">hotel</span><span class="o">,</span> <span class="nc">BigDecimal</span> <span class="n">price</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">hotel</span> <span class="o">=</span> <span class="n">hotel</span><span class="o">;</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">AggregatedQuotes</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Quote</span><span class="o">&gt;</span> <span class="n">quotes</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AggregatedQuotes</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Quote</span><span class="o">&gt;</span> <span class="n">quotes</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">quotes</span> <span class="o">=</span> <span class="n">quotes</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Hotel1</span><span class="o">.</span><span class="na">RequestQuote</span><span class="o">&gt;</span> <span class="n">hotel1</span><span class="o">,</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Hotel2</span><span class="o">.</span><span class="na">RequestPrice</span><span class="o">&gt;</span> <span class="n">hotel2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">HotelCustomer</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">hotel1</span><span class="o">,</span> <span class="n">hotel2</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nf">HotelCustomer</span><span class="o">(</span>
+      <span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Hotel1</span><span class="o">.</span><span class="na">RequestQuote</span><span class="o">&gt;</span> <span class="n">hotel1</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Hotel2</span><span class="o">.</span><span class="na">RequestPrice</span><span class="o">&gt;</span> <span class="n">hotel2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+
+    <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">sendRequests</span> <span class="o">=</span>
+        <span class="n">replyTo</span> <span class="o">-&gt;</span> <span class="o">{</span>
+          <span class="n">hotel1</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Hotel1</span><span class="o">.</span><span class="na">RequestQuote</span><span class="o">(</span><span class="n">replyTo</span><span class="o">.</span><span class="na">narrow</span><span class="o">()));</span>
+          <span class="n">hotel2</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Hotel2</span><span class="o">.</span><span class="na">RequestPrice</span><span class="o">(</span><span class="n">replyTo</span><span class="o">.</span><span class="na">narrow</span><span class="o">()));</span>
+        <span class="o">};</span>
+
+    <span class="kt">int</span> <span class="n">expectedReplies</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+    <span class="c1">// Object since no common type between Hotel1 and Hotel2</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">spawnAnonymous</span><span class="o">(</span>
+        <span class="nc">Aggregator</span><span class="o">.</span><span class="na">create</span><span class="o">(</span>
+            <span class="nc">Object</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="n">sendRequests</span><span class="o">,</span>
+            <span class="n">expectedReplies</span><span class="o">,</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">getSelf</span><span class="o">(),</span>
+            <span class="k">this</span><span class="o">::</span><span class="n">aggregateReplies</span><span class="o">,</span>
+            <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">5</span><span class="o">)));</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">AggregatedQuotes</span> <span class="nf">aggregateReplies</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">replies</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Quote</span><span class="o">&gt;</span> <span class="n">quotes</span> <span class="o">=</span>
+        <span class="n">replies</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">map</span><span class="o">(</span>
+                <span class="n">r</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                  <span class="c1">// The hotels have different protocols with different replies,</span>
+                  <span class="c1">// convert them to `HotelCustomer.Quote` that this actor understands.</span>
+                  <span class="k">if</span> <span class="o">(</span><span class="n">r</span> <span class="k">instanceof</span> <span class="nc">Hotel1</span><span class="o">.</span><span class="na">Quote</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Hotel1</span><span class="o">.</span><span class="na">Quote</span> <span class="n">q</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Hotel1</span><span class="o">.</span><span class="na">Quote</span><span class="o">)</span> <span class="n">r</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="k">new</span> <span class="nf">Quote</span><span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="na">hotel</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">price</span><span class="o">);</span>
+                  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">r</span> <span class="k">instanceof</span> <span class="nc">Hotel2</span><span class="o">.</span><span class="na">Price</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Hotel2</span><span class="o">.</span><span class="na">Price</span> <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Hotel2</span><span class="o">.</span><span class="na">Price</span><span class="o">)</span> <span class="n">r</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="k">new</span> <span class="nf">Quote</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">hotel</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="na">price</span><span class="o">);</span>
+                  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Unknown reply "</span> <span class="o">+</span> <span class="n">r</span><span class="o">);</span>
+                  <span class="o">}</span>
+                <span class="o">})</span>
+            <span class="o">.</span><span class="na">sorted</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="o">.</span><span class="na">price</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">price</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">AggregatedQuotes</span><span class="o">(</span><span class="n">quotes</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">AggregatedQuotes</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onAggregatedQuotes</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onAggregatedQuotes</span><span class="o">(</span><span class="nc">AggregatedQuotes</span> <span class="n">aggregated</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">aggregated</span><span class="o">.</span><span class="na">quotes</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="n">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"Best Quote N/A"</span><span class="o">);</span>
+    <span class="k">else</span> <span class="nf">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"Best {}"</span><span class="o">,</span> <span class="n">aggregated</span><span class="o">.</span><span class="na">quotes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Aggregator聚合器的实现:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">akka.actor.typed.ActorRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.Behavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.AbstractBehavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.ActorContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Receive</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.Duration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.Consumer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.Function</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Aggregator</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">,</span> <span class="nc">Aggregate</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">Aggregator</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+  <span class="kd">private</span> <span class="kd">enum</span> <span class="nc">ReceiveTimeout</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="no">INSTANCE</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">WrappedReply</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">Reply</span> <span class="n">reply</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">WrappedReply</span><span class="o">(</span><span class="nc">Reply</span> <span class="n">reply</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">reply</span> <span class="o">=</span> <span class="n">reply</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">R</span><span class="o">,</span> <span class="no">A</span><span class="o">&gt;</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span>
+      <span class="nc">Class</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="n">replyClass</span><span class="o">,</span>
+      <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;&gt;</span> <span class="n">sendRequests</span><span class="o">,</span>
+      <span class="kt">int</span> <span class="n">expectedReplies</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">,</span>
+      <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;,</span> <span class="no">A</span><span class="o">&gt;</span> <span class="n">aggregateReplies</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">timeout</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span>
+        <span class="n">context</span> <span class="o">-&gt;</span>
+            <span class="k">new</span> <span class="nc">Aggregator</span><span class="o">&lt;</span><span class="no">R</span><span class="o">,</span> <span class="no">A</span><span class="o">&gt;(</span>
+                <span class="n">replyClass</span><span class="o">,</span>
+                <span class="n">context</span><span class="o">,</span>
+                <span class="n">sendRequests</span><span class="o">,</span>
+                <span class="n">expectedReplies</span><span class="o">,</span>
+                <span class="n">replyTo</span><span class="o">,</span>
+                <span class="n">aggregateReplies</span><span class="o">,</span>
+                <span class="n">timeout</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">expectedReplies</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Aggregate</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;,</span> <span class="nc">Aggregate</span><span class="o">&gt;</span> <span class="n">aggregateReplies</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replies</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+  <span class="kd">private</span> <span class="nf">Aggregator</span><span class="o">(</span>
+      <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyClass</span><span class="o">,</span>
+      <span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">,</span>
+      <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;&gt;</span> <span class="n">sendRequests</span><span class="o">,</span>
+      <span class="kt">int</span> <span class="n">expectedReplies</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Aggregate</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">,</span>
+      <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;,</span> <span class="nc">Aggregate</span><span class="o">&gt;</span> <span class="n">aggregateReplies</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">timeout</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">expectedReplies</span> <span class="o">=</span> <span class="n">expectedReplies</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">replyTo</span> <span class="o">=</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">aggregateReplies</span> <span class="o">=</span> <span class="n">aggregateReplies</span><span class="o">;</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="na">setReceiveTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="nc">ReceiveTimeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
+
+    <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyAdapter</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">messageAdapter</span><span class="o">(</span><span class="n">replyClass</span><span class="o">,</span> <span class="nl">WrappedReply:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+    <span class="n">sendRequests</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">replyAdapter</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">WrappedReply</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onReply</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">ReceiveTimeout</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">notUsed</span> <span class="o">-&gt;</span> <span class="n">onReceiveTimeout</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onReply</span><span class="o">(</span><span class="nc">WrappedReply</span> <span class="n">wrappedReply</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Reply</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">wrappedReply</span><span class="o">.</span><span class="na">reply</span><span class="o">;</span>
+    <span class="n">replies</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">reply</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">replies</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="n">expectedReplies</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">Aggregate</span> <span class="n">result</span> <span class="o">=</span> <span class="n">aggregateReplies</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">replies</span><span class="o">);</span>
+      <span class="n">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+      <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">stopped</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onReceiveTimeout</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Aggregate</span> <span class="n">result</span> <span class="o">=</span> <span class="n">aggregateReplies</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">replies</span><span class="o">);</span>
+    <span class="n">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">stopped</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>使用场景：</p>
+
+<ul>
+  <li>聚合响应在多个位置以相同的方式执行，应该将其提取到一个更通用的actor。</li>
+  <li>在构建结果之前，单个传入请求应该与其他参与者进行多次交互，例如多个结果的聚合</li>
+  <li>您需要处理确认和重试消息，以便至少传递一次</li>
+</ul>
+
+<p>问题：</p>
+
+<ul>
+  <li>具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除</li>
+  <li>必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景</li>
+  <li>它增加了复杂性，因为每个这样的子节点都可以与其他子节点和父节点并发执行</li>
+</ul>
+
+<h3 id="4412-latency-tail-chopping">4.4.12. Latency tail chopping</h3>
+
+<p>这是上述<a href="#4411-通用响应聚合器">通用响应聚合器模式</a>的变体。</p>
+
+<p>此算法的目标是在多个目标参与者可以执行相同的工作，并且某个参与者的响应有时可能比预期的要慢的情况下，减少尾部延迟(“切断尾部延迟”)。在这种情况下，向另一个参与者发送相同的工作请求(也称为“备份请求”)会减少响应时间——因为多个参与者不太可能同时处于高负载下。Jeff Dean<a href="https://static.googleusercontent.com/media/research.google.com/en//people/jeff/Berkeley-Latency-Mar2012.pdf">关于在大型在线服务中实现快速响应时间</a>的演讲中对该技术进行了深入的解释。</p>
+
+<p>此模式有许多变体，这就是为什么将其作为文档示例而不是Akka中的内建行为提供的原因。它旨在根据您的具体需要进行调整。</p>
+
+<p>示例：</p>
+
+<p><img src="https://liulv.work/images/img/20200826142401.png" alt="20200826142401" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+</pre></td><td class="rouge-code"><pre><span class="cm">/*
+ * Copyright (C) 2019-2020 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */</span>
+
+<span class="kn">package</span> <span class="nn">jdocs.akka.typed</span><span class="o">;</span>
+
+<span class="c1">// #behavior</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.Behavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.AbstractBehavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.ActorContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Receive</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.TimerScheduler</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.Duration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.BiFunction</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TailChopping</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">TailChopping</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+  <span class="kd">private</span> <span class="kd">enum</span> <span class="nc">RequestTimeout</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="no">INSTANCE</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">enum</span> <span class="nc">FinalTimeout</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="no">INSTANCE</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">WrappedReply</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">Reply</span> <span class="n">reply</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">WrappedReply</span><span class="o">(</span><span class="nc">Reply</span> <span class="n">reply</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">reply</span> <span class="o">=</span> <span class="n">reply</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span>
+      <span class="nc">Class</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="n">replyClass</span><span class="o">,</span>
+      <span class="nc">BiFunction</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">sendRequest</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">nextRequestAfter</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">finalTimeout</span><span class="o">,</span>
+      <span class="no">R</span> <span class="n">timeoutReply</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span>
+        <span class="n">context</span> <span class="o">-&gt;</span>
+            <span class="nc">Behaviors</span><span class="o">.</span><span class="na">withTimers</span><span class="o">(</span>
+                <span class="n">timers</span> <span class="o">-&gt;</span>
+                    <span class="k">new</span> <span class="nc">TailChopping</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;(</span>
+                        <span class="n">replyClass</span><span class="o">,</span>
+                        <span class="n">context</span><span class="o">,</span>
+                        <span class="n">timers</span><span class="o">,</span>
+                        <span class="n">sendRequest</span><span class="o">,</span>
+                        <span class="n">nextRequestAfter</span><span class="o">,</span>
+                        <span class="n">replyTo</span><span class="o">,</span>
+                        <span class="n">finalTimeout</span><span class="o">,</span>
+                        <span class="n">timeoutReply</span><span class="o">)));</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TimerScheduler</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">timers</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">BiFunction</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">sendRequest</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Duration</span> <span class="n">nextRequestAfter</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Duration</span> <span class="n">finalTimeout</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Reply</span> <span class="n">timeoutReply</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyAdapter</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">requestCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="nf">TailChopping</span><span class="o">(</span>
+      <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyClass</span><span class="o">,</span>
+      <span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">,</span>
+      <span class="nc">TimerScheduler</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">timers</span><span class="o">,</span>
+      <span class="nc">BiFunction</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">sendRequest</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">nextRequestAfter</span><span class="o">,</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">,</span>
+      <span class="nc">Duration</span> <span class="n">finalTimeout</span><span class="o">,</span>
+      <span class="nc">Reply</span> <span class="n">timeoutReply</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">timers</span> <span class="o">=</span> <span class="n">timers</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">sendRequest</span> <span class="o">=</span> <span class="n">sendRequest</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">nextRequestAfter</span> <span class="o">=</span> <span class="n">nextRequestAfter</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">replyTo</span> <span class="o">=</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">finalTimeout</span> <span class="o">=</span> <span class="n">finalTimeout</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">timeoutReply</span> <span class="o">=</span> <span class="n">timeoutReply</span><span class="o">;</span>
+
+    <span class="n">replyAdapter</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">messageAdapter</span><span class="o">(</span><span class="n">replyClass</span><span class="o">,</span> <span class="nl">WrappedReply:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+
+    <span class="n">sendNextRequest</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">WrappedReply</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onReply</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">RequestTimeout</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">notUsed</span> <span class="o">-&gt;</span> <span class="n">onRequestTimeout</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">FinalTimeout</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">notUsed</span> <span class="o">-&gt;</span> <span class="n">onFinalTimeout</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onReply</span><span class="o">(</span><span class="nc">WrappedReply</span> <span class="n">wrappedReply</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Reply</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">wrappedReply</span><span class="o">.</span><span class="na">reply</span><span class="o">;</span>
+    <span class="n">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="n">reply</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">stopped</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onRequestTimeout</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">sendNextRequest</span><span class="o">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onFinalTimeout</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="n">timeoutReply</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">stopped</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">sendNextRequest</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">requestCount</span><span class="o">++;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">sendRequest</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">requestCount</span><span class="o">,</span> <span class="n">replyAdapter</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">timers</span><span class="o">.</span><span class="na">startSingleTimer</span><span class="o">(</span><span class="nc">RequestTimeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">,</span> <span class="nc">RequestTimeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">,</span> <span class="n">nextRequestAfter</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">timers</span><span class="o">.</span><span class="na">startSingleTimer</span><span class="o">(</span><span class="nc">FinalTimeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">,</span> <span class="nc">FinalTimeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">,</span> <span class="n">finalTimeout</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// #behavior</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>使用场景：</p>
+
+<ul>
+  <li>减少较高的延迟百分比和延迟的变化非常重要</li>
+  <li>“工作”可以在相同的结果下进行多次，例如请求检索信息</li>
+</ul>
+
+<p>问题：</p>
+
+<ul>
+  <li>由于发送更多消息和多次执行“工作”，负载增加</li>
+  <li>当“功”不是幂等且只能执行一次时不能使用</li>
+  <li>具有泛型类型的消息协议很困难，因为泛型类型在运行时被擦除</li>
+  <li>必须对子节点的生命周期进行管理，以避免造成资源泄漏，因此很容易忽略未停止会话参与者的场景</li>
+</ul>
+
+<h3 id="4413-将消息调度到自己">4.4.13. 将消息调度到自己</h3>
+
+<p>下面的示例演示如何使用计时器将消息调度到actor。</p>
+
+<p><strong>示例：</strong></p>
+
+<p><img src="https://liulv.work/images/img/20200826143653.png" alt="20200826143653" /></p>
+
+<p>Buncher actor缓冲大量传入消息，并在超时后或批处理的消息数量超过最大大小时将其作为批处理交付。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+</pre></td><td class="rouge-code"><pre> <span class="c1">// #timer</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Buncher</span> <span class="o">{</span>
+
+      <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+      <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Batch</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">messages</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Batch</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">messages</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">messages</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">messages</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">getMessages</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">messages</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// #timer</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="nc">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">if</span> <span class="o">(</span><span class="k">this</span> <span class="o">==</span> <span class="n">o</span><span class="o">)</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">getClass</span><span class="o">()</span> <span class="o">!=</span> <span class="n">o</span><span class="o">.</span><span class="na">getClass</span><span class="o">())</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+          <span class="nc">Batch</span> <span class="n">batch</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Batch</span><span class="o">)</span> <span class="n">o</span><span class="o">;</span>
+          <span class="k">return</span> <span class="nc">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">messages</span><span class="o">,</span> <span class="n">batch</span><span class="o">.</span><span class="na">messages</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="nc">Objects</span><span class="o">.</span><span class="na">hash</span><span class="o">(</span><span class="n">messages</span><span class="o">);</span>
+        <span class="o">}</span> <span class="c1">// #timer</span>
+      <span class="o">}</span>
+
+      <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ExcitingMessage</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">message</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">ExcitingMessage</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">;</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+
+      <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Object</span> <span class="no">TIMER_KEY</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="o">();</span>
+
+      <span class="kd">private</span> <span class="kd">enum</span> <span class="nc">Timeout</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+        <span class="no">INSTANCE</span>
+      <span class="o">}</span>
+
+      <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Batch</span><span class="o">&gt;</span> <span class="n">target</span><span class="o">,</span> <span class="nc">Duration</span> <span class="n">after</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">withTimers</span><span class="o">(</span><span class="n">timers</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Buncher</span><span class="o">(</span><span class="n">timers</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="n">after</span><span class="o">,</span> <span class="n">maxSize</span><span class="o">).</span><span class="na">idle</span><span class="o">());</span>
+      <span class="o">}</span>
+
+      <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TimerScheduler</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">timers</span><span class="o">;</span>
+      <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Batch</span><span class="o">&gt;</span> <span class="n">target</span><span class="o">;</span>
+      <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Duration</span> <span class="n">after</span><span class="o">;</span>
+      <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">maxSize</span><span class="o">;</span>
+
+      <span class="kd">private</span> <span class="nf">Buncher</span><span class="o">(</span>
+          <span class="nc">TimerScheduler</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">timers</span><span class="o">,</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Batch</span><span class="o">&gt;</span> <span class="n">target</span><span class="o">,</span> <span class="nc">Duration</span> <span class="n">after</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">timers</span> <span class="o">=</span> <span class="n">timers</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">after</span> <span class="o">=</span> <span class="n">after</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">maxSize</span> <span class="o">=</span> <span class="n">maxSize</span><span class="o">;</span>
+      <span class="o">}</span>
+
+      <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">idle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">receive</span><span class="o">(</span><span class="nc">Command</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Command</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onIdleCommand</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onIdleCommand</span><span class="o">(</span><span class="nc">Command</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">timers</span><span class="o">.</span><span class="na">startSingleTimer</span><span class="o">(</span><span class="no">TIMER_KEY</span><span class="o">,</span> <span class="nc">Timeout</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">,</span> <span class="n">after</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Active</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">message</span><span class="o">));</span>
+      <span class="o">}</span>
+
+      <span class="kd">private</span> <span class="kd">class</span> <span class="nc">Active</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+        <span class="nc">Active</span><span class="o">(</span><span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">,</span> <span class="nc">Command</span> <span class="n">firstCommand</span><span class="o">)</span> <span class="o">{</span>
+          <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+          <span class="n">buffer</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">firstCommand</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Timeout</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">message</span> <span class="o">-&gt;</span> <span class="n">onTimeout</span><span class="o">())</span>
+              <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Command</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onCommand</span><span class="o">)</span>
+              <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onTimeout</span><span class="o">()</span> <span class="o">{</span>
+          <span class="n">target</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Batch</span><span class="o">(</span><span class="n">buffer</span><span class="o">));</span>
+          <span class="k">return</span> <span class="nf">idle</span><span class="o">();</span> <span class="c1">// switch to idle</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onCommand</span><span class="o">(</span><span class="nc">Command</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">buffer</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">timers</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="no">TIMER_KEY</span><span class="o">);</span>
+            <span class="n">target</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Batch</span><span class="o">(</span><span class="n">buffer</span><span class="o">));</span>
+            <span class="k">return</span> <span class="nf">idle</span><span class="o">();</span> <span class="c1">// switch to idle</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">;</span> <span class="c1">// stay Active</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">// #timer</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这里有几件事值得注意:</p>
+
+<ul>
+  <li>要访问计时器，首先从行为开始。将TimerScheduler实例传递给函数的withtimer。这可以用于任何类型的行为，包括接收、receiveMessage，但也可以用于设置或任何其他行为。</li>
+  <li>每个计时器都有一个键，如果启动了具有相同键的新计时器，则取消之前的计时器。它保证不会收到来自前一个计时器的消息，即使它在新计时器启动时已经在邮箱中排队。</li>
+  <li>支持定期计时器和单消息计时器。</li>
+  <li>TimerScheduler本身是可变的，因为它执行和管理注册计划任务的副作用。</li>
+  <li>TimerScheduler绑定到拥有它的参与者的生命周期，并在参与者停止时自动取消。</li>
+  <li>行为。withtimer也可以在行为内部使用。监督，它将在actor重新启动时自动正确地取消已启动的计时器，以便新的化身将不会接收来自前一个化身的预定消息。</li>
+</ul>
+
+<p><strong>定期执行</strong></p>
+
+<p>循环消息的调度可以有两个不同的特征:</p>
+
+<ul>
+  <li>固定延迟——发送后续消息之间的延迟将总是(至少)给定的延迟。使用startTimerWithFixedDelay。</li>
+  <li>固定比率-执行的频率在一段时间内将满足给定的时间间隔。使用startTimerAtFixedRate。</li>
+</ul>
+
+<p>如果您不确定使用哪一个，您应该选择startTimerWithFixedDelay。</p>
+
+<p>当使用固定延迟时，如果调度由于某种原因延迟的时间超过了指定的时间，它将不会补偿消息之间的延迟。发送后续消息之间的延迟将始终(至少)是给定的延迟。从长远来看，消息的频率通常会略低于指定延迟的倒数。
+固定延迟执行适用于需要“平滑性”的重复活动。换句话说，它适用于那些短期内保持频率准确比长期更重要的活动。</p>
+
+<p>当使用固定速率时，如果先前的消息延迟太久，它将补偿后续任务的延迟。在这种情况下，实际的发送时间间隔将与传递给scheduleAtFixedRate方法的时间间隔不同。
+如果任务的延迟时间超过了时间间隔，则随后的消息将立即在前一条消息之后发送。这还会造成这样的后果:在长时间的垃圾收集暂停之后，或者JVM被挂起时，所有“错过的”任务都将在进程再次唤醒时执行。例如，以1秒间隔的scheduleAtFixedRate进程被挂起30秒将导致30条消息被快速连续地发送以赶上。在长期运行中，执行的频率将恰好是指定时间间隔的倒数。</p>
+
+<p>固定速率执行适合于对绝对时间敏感的重复活动，或者执行固定次数执行的总时间很重要的情况，例如每秒钟计时一次，持续10秒的倒计时计时器。</p>
+
+<blockquote>
+  <p>警告</p>
+</blockquote>
+
+<blockquote>
+  <p>在长时间的垃圾收集暂停之后，scheduleAtFixedRate警告可能会导致计划消息爆发，在最坏的情况下，这可能会在系统上造成不需要的负载。有固定延迟的日程安排通常是首选。</p>
+</blockquote>
+
+<h3 id="4414-回应一个分片的actor">4.4.14. 回应一个分片的actor</h3>
+
+<p>当使用Akka集群对actor进行分片时，您需要考虑到actor可能会移动或被钝化。</p>
+
+<p>预期应答的正常模式是在消息中包含一个ActorRef，通常是一个消息适配器。这可以用于切分的actor，但是如果发送了ctx.getSelf()，并且切分的actor被移动或钝化，那么回复将发送到死字母。</p>
+
+<p>另一种方法是在消息中发送entityId，并通过分片发送应答。</p>
+
+<p><strong>示例</strong></p>
+
+<p><img src="https://liulv.work/images/img/20200826143633.png" alt="20200826143633" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+</pre></td><td class="rouge-code"><pre><span class="cm">/*
+ * Copyright (C) 2018-2020 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */</span>
+
+<span class="kn">package</span> <span class="nn">jdocs.akka.cluster.sharding.typed</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">akka.actor.typed.Behavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.AbstractBehavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.ActorContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Receive</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.sharding.typed.javadsl.ClusterSharding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.sharding.typed.javadsl.EntityRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.sharding.typed.javadsl.EntityTypeKey</span><span class="o">;</span>
+
+<span class="kd">interface</span> <span class="nc">ShardingReplyCompileOnlyTest</span> <span class="o">{</span>
+
+  <span class="c1">// #sharded-response</span>
+  <span class="c1">// a sharded actor that needs counter updates</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterConsumer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">EntityTypeKey</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">typeKey</span> <span class="o">=</span>
+        <span class="nc">EntityTypeKey</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Command</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"example-sharded-response"</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">NewCount</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
+
+      <span class="kd">public</span> <span class="nf">NewCount</span><span class="o">(</span><span class="kt">long</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// a sharded counter that sends responses to another sharded actor</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">Counter</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">EntityTypeKey</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">typeKey</span> <span class="o">=</span>
+        <span class="nc">EntityTypeKey</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Command</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"example-sharded-counter"</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+    <span class="kd">public</span> <span class="kd">enum</span> <span class="nc">Increment</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+      <span class="no">INSTANCE</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetValue</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">replyToEntityId</span><span class="o">;</span>
+
+      <span class="kd">public</span> <span class="nf">GetValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">replyToEntityId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">replyToEntityId</span> <span class="o">=</span> <span class="n">replyToEntityId</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="nl">Counter:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ClusterSharding</span> <span class="n">sharding</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">Counter</span><span class="o">(</span><span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">sharding</span> <span class="o">=</span> <span class="nc">ClusterSharding</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+          <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Increment</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">msg</span> <span class="o">-&gt;</span> <span class="n">onIncrement</span><span class="o">())</span>
+          <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">GetValue</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onGetValue</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onIncrement</span><span class="o">()</span> <span class="o">{</span>
+      <span class="n">value</span><span class="o">++;</span>
+      <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">onGetValue</span><span class="o">(</span><span class="nc">GetValue</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">EntityRef</span><span class="o">&lt;</span><span class="nc">CounterConsumer</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">entityRef</span> <span class="o">=</span>
+          <span class="n">sharding</span><span class="o">.</span><span class="na">entityRefFor</span><span class="o">(</span><span class="nc">CounterConsumer</span><span class="o">.</span><span class="na">typeKey</span><span class="o">,</span> <span class="n">msg</span><span class="o">.</span><span class="na">replyToEntityId</span><span class="o">);</span>
+      <span class="n">entityRef</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">CounterConsumer</span><span class="o">.</span><span class="na">NewCount</span><span class="o">(</span><span class="n">value</span><span class="o">));</span>
+      <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="c1">// #sharded-response</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>缺点是不能使用消息适配器，因此响应必须位于被响应的actor的协议中。另外，如果不知道EntityTypeKey是静态的，则可以将其包含在消息中。</p>
 
 <h1 id="5-remote模块">5. Remote模块</h1>
 
@@ -10978,15 +12201,20 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
         
         
         
-                <a data-sort="0005" 
-                    href="/archive/?tag=DataX"
-                    title="DataX"
-                    rel="2">DataX</a>
+                <a data-sort="0006" 
+                    href="/archive/?tag=Akka"
+                    title="Akka"
+                    rel="2">Akka</a>
         
-                <a data-sort="0005" 
+                <a data-sort="0006" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
+        
+                <a data-sort="0006" 
+                    href="/archive/?tag=DataX"
+                    title="DataX"
+                    rel="2">DataX</a>
     </div>
 </section>
 

@@ -11,30 +11,28 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="基于Jekyll搭建个人博客 - 刘律的博客 | LiuL Blog">
+    <meta property="og:title" content="PowerJob中Akka ask实现 - 刘律的博客 | LiuL Blog">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="本地Jekyll搭建
+    <meta property="og:description" content="Actor ask介绍
 ">
     
-    <meta property="article:published_time" content="2020-08-17T00:00:00Z">
+    <meta property="article:published_time" content="2020-08-19T00:00:00Z">
     
     
     <meta property="article:author" content="LiuL">
     
     
-    <meta property="article:tag" content="Jekyll">
+    <meta property="article:tag" content="Akka">
     
-    <meta property="article:tag" content="GitHub">
-    
-    <meta property="article:tag" content="个人博客">
+    <meta property="article:tag" content="PowerJob-ask实现">
     
     
     <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
-    <meta property="og:url" content="http://localhost:4000/2020/08/17/jekyll/">
+    <meta property="og:url" content="http://localhost:4000/2020/08/19/akka-ask/">
     <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
     
-    <title>基于Jekyll搭建个人博客 - 刘律的博客 | LiuL Blog</title>
+    <title>PowerJob中Akka ask实现 - 刘律的博客 | LiuL Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -43,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2020/08/17/jekyll/">
+    <link rel="canonical" href="http://localhost:4000/2020/08/19/akka-ask/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -230,17 +228,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=Jekyll" title="Jekyll">Jekyll</a>
+                        <a class="tag" href="/archive/?tag=Akka" title="Akka">Akka</a>
                         
-                        <a class="tag" href="/archive/?tag=GitHub" title="GitHub">GitHub</a>
-                        
-                        <a class="tag" href="/archive/?tag=%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2" title="个人博客">个人博客</a>
+                        <a class="tag" href="/archive/?tag=PowerJob-ask%E5%AE%9E%E7%8E%B0" title="PowerJob-ask实现">PowerJob-ask实现</a>
                         
                     </div>
-                    <h1>基于Jekyll搭建个人博客</h1>
+                    <h1>PowerJob中Akka ask实现</h1>
                     
-                    <h2 class="subheading">「gitHub结合jekyll」- 搭建个人博客</h2>
-                    <span class="meta">Posted by LiuL on August 17, 2020</span>
+                    <h2 class="subheading">「AKKA」- 2.6.8</h2>
+                    <span class="meta">Posted by LiuL on August 19, 2020</span>
                 </div>
             </div>
         </div>
@@ -266,127 +262,45 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h1 id="本地jekyll搭建">本地Jekyll搭建</h1>
+				<h1 id="actor-ask介绍">Actor ask介绍</h1>
 
-<h2 id="参考官方文档">参考官方文档</h2>
+<p>与外部的Ackor进行交互，可以使用send发送后不管，前面文章已经介绍send交互方式，send为最常用的交互方式发送后不管，但是这里需要给外部Actor发生一个消息，并要求返回CompletionState[Response]。为此我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。可通过可设置超时时间，如果在如果时间内没有响应则返回的失败CompletionStage。</p>
 
-<p>windows运行Jekyll参考<a href="http://jekyllcn.com/docs/windows/#installation">官方文档</a></p>
+<dl>
+  <dt>实例流程图</dt>
+  <dd><img src="https://liulv.work/images/img/20200805213553.png" alt="20200805213553" /></dd>
+</dl>
 
-<h2 id="安装ruby-devkit">安装ruby-devkit</h2>
+<h1 id="使用场景和缺陷">使用场景和缺陷</h1>
 
-<p>百度网盘<a href="https://pan.baidu.com/s/1v2snQyrCzNehOIVYDlwDYQ">下载地址</a></p>
+<dl>
+  <dt>适用场景</dt>
+  <dd>从Actor系统外部查询Actor</dd>
+  <dt>缺陷和问题</dt>
+  <dd>
+    <ul>
+      <li>在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行。</li>
+    </ul>
+  </dd>
+  <dd>
+    <ul>
+      <li>对一个请求只能有一个单一的响应(参见<a href="https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor">每个会话child Actor</a>)。</li>
+    </ul>
+  </dd>
+  <dd>
+    <ul>
+      <li>当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它。</li>
+    </ul>
+  </dd>
+</dl>
 
-<p>可使用官方<a href="http://jekyll-windows.juthilo.com/1-ruby-and-devkit/">下载地址</a>进行下载</p>
+<h1 id="使用示例">使用示例</h1>
 
-<p>点击运行下载的<code class="language-plaintext highlighter-rouge">rubyinstaller-devkit-2.6.6-1-x64.exe</code>安装即可，在安装结束时，不要勾选ridk install的选项，后面再手动安装</p>
+<h2 id="老版本abstractactor">老版本AbstractActor</h2>
 
-<p>检查ruby是否正常安装，会出现版本号</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ruby <span class="nt">-v</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>在创建ActorSystem的类添加根据指定地址构造Actor方法，返回ActorSelection</p>
 
-<p><img src="https://liulv.work/images/img/20200817150431.png" alt="20200817150431" /></p>
-
-<h2 id="配置国内镜像">配置国内镜像</h2>
-
-<p>默认镜像太慢了，需要替换为国内镜像</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">--add</span> https://gems.ruby-china.com/ <span class="nt">--remove</span> https://rubygems.org/
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>确保只有 gems.ruby-china.com</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">-l</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="安装msys2">安装MSYS2</h2>
-
-<p>控制台运行下面命令安装</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ridk <span class="nb">install</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>输入“ridk install”进行MSYS2的安装，会出现然你选择123，你选3就行</p>
-
-<h1 id="安装bundler">安装bundler</h1>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>bundler
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="安装jekyll">安装Jekyll</h2>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>jekyll
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>如果出现那个包提示不存在，直接单个安装</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install</span> <span class="nt">-v</span><span class="o">=</span>&lt;版本号&gt; &lt;包名&gt;
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>检查安装情况</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>jekyll <span class="nt">-v</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="下载jekyll博客模板">下载Jekyll博客模板</h2>
-
-<p>模板常用地址有以下：</p>
-
-<ul>
-  <li><a href="http://jekyllthemes.org/">Jekyll Themes</a></li>
-  <li>http://painterlin.com/</li>
-  <li>http://miloyip.com/</li>
-</ul>
-
-<p>根据自己喜欢选择对于模板git clone到本地</p>
-
-<h2 id="本地运行jekyll">本地运行Jekyll</h2>
-
-<p>CD到下载的模板的目录下,然后进行解析运行</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>E:<span class="se">\G</span>itgub<span class="se">\s</span>imple.green.techblog
-bundle <span class="nb">install
-
-</span>bundle <span class="nb">exec </span>jekyll s
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>最终运行成功会打印</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre>  Server address: http://127.0.0.1:4000/
-  Server running... press ctrl-c to stop.
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>目录说明</p>
-
-<p>jekyll目录结构主要包含如下目录：</p>
-
-<blockquote>
-  <p>_posts 博客内容
-_pages 其他需要生成的网页，如About页
-_layouts 网页排版模板
-_includes 被模板包含的HTML片段，可在_config.yml中修改位置
-assets 辅助资源 css布局 js脚本 图片等
-_data 动态数据
-_sites 最终生成的静态网页
-_config.yml 网站的一些配置信息
-index.html 网站的入口</p>
-</blockquote>
-
-<p>在<code class="language-plaintext highlighter-rouge">_posts</code>目录下可以编辑md文章，md文件命名规则<code class="language-plaintext highlighter-rouge">年-月-日-文件名称.md</code>.</p>
-
-<p>文章内容首添加标题、子标题、标签等信息</p>
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -397,47 +311,44 @@ index.html 网站的入口</p>
 9
 10
 11
-</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
-<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">基于Jekyll搭建个人博客"</span>
-<span class="na">subtitle</span><span class="pi">:</span> <span class="s2">"</span><span class="s">「gitHub结合jekyll」-</span><span class="nv"> </span><span class="s">搭建个人博客"</span>
-<span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
-<span class="na">author</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LiuL"</span>
-<span class="na">header-style</span><span class="pi">:</span> <span class="s">text</span>
-<span class="na">tags</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">Jekyll</span>
-  <span class="pi">-</span> <span class="s">GitHub</span>
-  <span class="pi">-</span> <span class="s">个人博客</span>
-<span class="nn">---</span>
+12
+13
+</pre></td><td class="rouge-code"><pre>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ActorSystem</span> <span class="n">actorSystem</span><span class="o">;</span>
+
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+
+     <span class="nc">Config</span> <span class="n">akkaBasicConfig</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"oms-server.akka.conf"</span><span class="o">);</span>
+     <span class="n">actorSystem</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"oms-server"</span><span class="o">,</span> <span class="n">akkaBasicConfig</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ActorSelection</span> <span class="nf">getFriendActor</span><span class="o">(</span><span class="nc">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">path</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"akka://%s@%s/user/%s"</span><span class="o">,</span> <span class="s">"oms-server"</span><span class="o">,</span> <span class="n">address</span><span class="o">,</span> <span class="s">"friend_actor"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">actorSystem</span><span class="o">.</span><span class="na">actorSelection</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+    <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>然后添加文章正文即可</p>
+<p>获取远程Actor</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">ActorSelection</span> <span class="n">serverActor</span> <span class="o">=</span> <span class="nc">OhMyServer</span><span class="o">.</span><span class="na">getFriendActor</span><span class="o">(</span><span class="n">serverAddress</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>最后web访问<code class="language-plaintext highlighter-rouge">http://127.0.0.1:4000/</code></p>
+<p>Actor ask</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nc">Ping</span> <span class="n">ping</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Ping</span><span class="o">();</span>
+<span class="n">ping</span><span class="o">.</span><span class="na">setCurrentTime</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+<span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">askCS</span> <span class="o">=</span> <span class="nc">Patterns</span><span class="o">.</span><span class="na">ask</span><span class="o">(</span><span class="n">serverActor</span><span class="o">,</span> <span class="n">ping</span><span class="o">,</span> <span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">1000</span><span class="o">));</span>
+<span class="nc">AskResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="o">(</span><span class="nc">AskResponse</span><span class="o">)</span> <span class="n">askCS</span><span class="o">.</span><span class="na">toCompletableFuture</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">1000</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
 
-<p><img src="https://liulv.work/images/img/20200817152920.png" alt="20200817152920" /></p>
+<span class="c1">//downServerCache.remove(serverAddress);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<h1 id="jekyll结合github远程服务博客">Jekyll结合Github远程服务博客</h1>
-
-<h2 id="github创建上创建名为用户名githubio的repository">Github创建上创建名为<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository</h2>
-
-<p>把本地运行的博客pull到<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository工程下，然后访问<code class="language-plaintext highlighter-rouge">https://用户名.github.io</code></p>
-
-<h2 id="博客使用域名">博客使用域名</h2>
-
-<p>博客配置域名，在腾讯云购买域名。如<code class="language-plaintext highlighter-rouge">https://liulv.work</code>域名</p>
-
-<p>Github的<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository点击Settings，配置都默认即可。</p>
-
-<p>在github pages那栏点击launch automatic page generator</p>
-
-<p><img src="https://liulv.work/images/img/20200817160910.png" alt="20200817160910" /></p>
-
-<p>然后设置如下：</p>
-
-<p><img src="https://liulv.work/images/img/20200817161027.png" alt="20200817161027" /></p>
-
-<p>在<code class="language-plaintext highlighter-rouge">用户名.github.io</code>工程下新增博客的域名，具体操作：
-创建名CNAME的文件，在文件中添加域名即可<code class="language-plaintext highlighter-rouge">liulv.work</code>,然后pull到gitHub，即可通过<code class="language-plaintext highlighter-rouge">https://liulv.work</code>访问博客了</p>
+<h2 id="新版本abstractbehavior">新版本AbstractBehavior</h2>
 
 
 
@@ -445,19 +356,12 @@ index.html 网站的入口</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2020/08/14/datax-job-configuration-instruction/" data-toggle="tooltip" data-placement="top" title="DataX-Job配置说明">
+                        <a href="/2020/08/18/powerjob-container-datax/" data-toggle="tooltip" data-placement="top" title="PowerJob容器开发集成DataX及任务配置">
                         Previous<br>
-                        <span>DataX-Job配置说明</span>
+                        <span>PowerJob容器开发集成DataX及任务配置</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2020/08/17/markdown-grammar/" data-toggle="tooltip" data-placement="top" title="Markdown 语法及渲染">
-                        Next<br>
-                        <span>Markdown 语法及渲染</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
@@ -572,8 +476,8 @@ index.html 网站的入口</p>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "LiuL";
-    var disqus_identifier = "/2020/08/17/jekyll";
-    var disqus_url = "http://localhost:4000/2020/08/17/jekyll/";
+    var disqus_identifier = "/2020/08/19/akka-ask";
+    var disqus_url = "http://localhost:4000/2020/08/19/akka-ask/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
