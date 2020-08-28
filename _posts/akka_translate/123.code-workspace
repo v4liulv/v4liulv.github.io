@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "v4liulv.github.io-master",
+			"path": "..\\.."
+		},
+		{
+			"name": "Z-常用文档",
+			"path": "..\\..\\..\\..\\document\\Z-常用文档"
+		}
+	],
+	"settings": {
+		"files.watcherExclude": {
+			"**/target": true
+		}
+	}
+}

@@ -7926,7 +7926,7 @@ ServiceKey<Worker.Command> serviceKey = ServiceKey.create(Worker.Command.class, 
       }
 ```
 
-## 路由策略
+## 5.5. 路由策略
 
 有三种不同的策略选择哪个routee一个消息被转发到可以选择从路由器之前产卵它:
 
@@ -7934,7 +7934,7 @@ ServiceKey<Worker.Command> serviceKey = ServiceKey.create(Worker.Command.class, 
 PoolRouter<Worker.Command> alternativePool = pool.withPoolSize(2).withRoundRobinRouting();
 ```
 
-### Round Robin
+### 5.5.1. Round Robin
 
 对路由集进行旋转，确保如果有n个路由，那么对于通过路由器发送的n个消息，每个参与者被转发一条消息。
 
@@ -7945,7 +7945,7 @@ PoolRouter<Worker.Command> alternativePool = pool.withPoolSize(2).withRoundRobin
 该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。
 
 
-### Random
+### 5.5.2. Random
 
 当消息通过路由器发送时，随机选择一个routee。
 
@@ -7953,7 +7953,7 @@ PoolRouter<Worker.Command> alternativePool = pool.withPoolSize(2).withRoundRobin
 
 该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。
 
-### Consistent Hashing
+### 5.5.3. Consistent Hashing
 
 使用一致的散列来根据所发送的消息选择路由。本文很好地了解了如何实现一致性哈希。
 
@@ -7961,7 +7961,7 @@ PoolRouter<Worker.Command> alternativePool = pool.withPoolSize(2).withRoundRobin
 
 只要routee集合保持不变，一致的哈希将使具有相同哈希路由的消息发送到相同的路由。当routee集发生更改时，一致性散列试图确保(但不保证)具有相同散列的消息被路由到相同的routee。
 
-## 路由器和性能
+## 5.6. 路由器和性能
 
 请注意，如果路由共享一个资源，则资源将决定增加参与者的数量实际上是提供更高的吞吐量还是更快的答案。例如，如果routee是CPU绑定的actor，那么创建的routee数量不会比执行actor的线程数量多，从而获得更好的性能。
 

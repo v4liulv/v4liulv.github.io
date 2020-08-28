@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 26 Aug 2020 15:57:59 +0800</pubDate>
-    <lastBuildDate>Wed, 26 Aug 2020 15:57:59 +0800</lastBuildDate>
+    <pubDate>Wed, 26 Aug 2020 23:53:52 +0800</pubDate>
+    <lastBuildDate>Wed, 26 Aug 2020 23:53:52 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -15650,7 +15650,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
       &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;路由策略&quot;&gt;路由策略&lt;/h2&gt;
+&lt;h2 id=&quot;55-路由策略&quot;&gt;5.5. 路由策略&lt;/h2&gt;
 
 &lt;p&gt;有三种不同的策略选择哪个routee一个消息被转发到可以选择从路由器之前产卵它:&lt;/p&gt;
 
@@ -15658,7 +15658,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 &lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;PoolRouter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alternativePool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPoolSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withRoundRobinRouting&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;round-robin&quot;&gt;Round Robin&lt;/h3&gt;
+&lt;h3 id=&quot;551-round-robin&quot;&gt;5.5.1. Round Robin&lt;/h3&gt;
 
 &lt;p&gt;对路由集进行旋转，确保如果有n个路由，那么对于通过路由器发送的n个消息，每个参与者被转发一条消息。&lt;/p&gt;
 
@@ -15668,7 +15668,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。&lt;/p&gt;
 
-&lt;h3 id=&quot;random&quot;&gt;Random&lt;/h3&gt;
+&lt;h3 id=&quot;552-random&quot;&gt;5.5.2. Random&lt;/h3&gt;
 
 &lt;p&gt;当消息通过路由器发送时，随机选择一个routee。&lt;/p&gt;
 
@@ -15676,7 +15676,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。&lt;/p&gt;
 
-&lt;h3 id=&quot;consistent-hashing&quot;&gt;Consistent Hashing&lt;/h3&gt;
+&lt;h3 id=&quot;553-consistent-hashing&quot;&gt;5.5.3. Consistent Hashing&lt;/h3&gt;
 
 &lt;p&gt;使用一致的散列来根据所发送的消息选择路由。本文很好地了解了如何实现一致性哈希。&lt;/p&gt;
 
@@ -15684,7 +15684,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 &lt;p&gt;只要routee集合保持不变，一致的哈希将使具有相同哈希路由的消息发送到相同的路由。当routee集发生更改时，一致性散列试图确保(但不保证)具有相同散列的消息被路由到相同的routee。&lt;/p&gt;
 
-&lt;h2 id=&quot;路由器和性能&quot;&gt;路由器和性能&lt;/h2&gt;
+&lt;h2 id=&quot;56-路由器和性能&quot;&gt;5.6. 路由器和性能&lt;/h2&gt;
 
 &lt;p&gt;请注意，如果路由共享一个资源，则资源将决定增加参与者的数量实际上是提供更高的吞吐量还是更快的答案。例如，如果routee是CPU绑定的actor，那么创建的routee数量不会比执行actor的线程数量多，从而获得更好的性能。&lt;/p&gt;
 

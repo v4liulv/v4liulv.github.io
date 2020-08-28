@@ -13454,7 +13454,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
       <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<h2 id="路由策略">路由策略</h2>
+<h2 id="55-路由策略">5.5. 路由策略</h2>
 
 <p>有三种不同的策略选择哪个routee一个消息被转发到可以选择从路由器之前产卵它:</p>
 
@@ -13462,7 +13462,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 </pre></td><td class="rouge-code"><pre><span class="nc">PoolRouter</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">alternativePool</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="na">withPoolSize</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">withRoundRobinRouting</span><span class="o">();</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<h3 id="round-robin">Round Robin</h3>
+<h3 id="551-round-robin">5.5.1. Round Robin</h3>
 
 <p>对路由集进行旋转，确保如果有n个路由，那么对于通过路由器发送的n个消息，每个参与者被转发一条消息。</p>
 
@@ -13472,7 +13472,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。</p>
 
-<h3 id="random">Random</h3>
+<h3 id="552-random">5.5.2. Random</h3>
 
 <p>当消息通过路由器发送时，随机选择一个routee。</p>
 
@@ -13480,7 +13480,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。</p>
 
-<h3 id="consistent-hashing">Consistent Hashing</h3>
+<h3 id="553-consistent-hashing">5.5.3. Consistent Hashing</h3>
 
 <p>使用一致的散列来根据所发送的消息选择路由。本文很好地了解了如何实现一致性哈希。</p>
 
@@ -13488,7 +13488,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 
 <p>只要routee集合保持不变，一致的哈希将使具有相同哈希路由的消息发送到相同的路由。当routee集发生更改时，一致性散列试图确保(但不保证)具有相同散列的消息被路由到相同的routee。</p>
 
-<h2 id="路由器和性能">路由器和性能</h2>
+<h2 id="56-路由器和性能">5.6. 路由器和性能</h2>
 
 <p>请注意，如果路由共享一个资源，则资源将决定增加参与者的数量实际上是提供更高的吞吐量还是更快的答案。例如，如果routee是CPU绑定的actor，那么创建的routee数量不会比执行actor的线程数量多，从而获得更好的性能。</p>
 

@@ -1,4 +1,4 @@
-I"מ<h1 id="1-akka简介">1. Akka简介</h1>
+I"p�<h1 id="1-akka简介">1. Akka简介</h1>
 
 <ul>
   <li>为什么要用Akka/好处</li>
@@ -13026,7 +13026,7 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<h2 id="池路由器">池路由器</h2>
+<h2 id="53-池路由器">5.3. 池路由器</h2>
 
 <p>池路由器是通过一个路由者行为创建的，并通过该行为生成大量的子节点，然后将消息转发给这些子节点。</p>
 
@@ -13152,6 +13152,86 @@ ActorSystem是重量级结构，它将分配线程，因此为每个逻辑应用
     <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="n">blockingPool</span><span class="o">,</span> <span class="s">"blocking-pool"</span><span class="o">,</span> <span class="nc">DispatcherSelector</span><span class="o">.</span><span class="na">sameAsParent</span><span class="o">());</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<h2 id="组路由器">组路由器</h2>
+<h2 id="54-组路由器">5.4. 组路由器</h2>
+
+<p>组路由器使用ServiceKey创建，并使用前台(请参阅前台)发现该密钥可用的参与者，并将消息路由到当前已知的已注册的密钥参与者之一。</p>
+
+<p>由于使用了前台，这意味着组路由器是集群感知的开箱。路由器向集群中任何可到达的节点上的注册参与者发送消息。如果没有可到达的参与者存在，路由器将后退并将消息路由到标记为不可到达的节点上的参与者。</p>
+
+<p>接待员是使用也意味着最终路线的设置是一致的,这组路由器时立即开始的路线就知道是空的,直到它已经上市的接待员将传入的消息,并将它们转发尽快接待员的清单。</p>
+
+<p>当路由器从前台收到一个清单并且已注册的参与者集合为空时，路由器将删除它们(以akka.actor. drop的形式将它们发布到事件流中)。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="nc">ServiceKey</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">serviceKey</span> <span class="o">=</span> <span class="nc">ServiceKey</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"log-worker"</span><span class="o">);</span>
+
+      <span class="c1">// this would likely happen elsewhere - if we create it locally we</span>
+      <span class="c1">// can just as well use a pool</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">worker</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">Worker</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"worker"</span><span class="o">);</span>
+      <span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">().</span><span class="na">receptionist</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Receptionist</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">serviceKey</span><span class="o">,</span> <span class="n">worker</span><span class="o">));</span>
+
+      <span class="nc">GroupRouter</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">group</span> <span class="o">=</span> <span class="nc">Routers</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">serviceKey</span><span class="o">);</span>
+      <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">router</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="n">group</span><span class="o">,</span> <span class="s">"worker-group"</span><span class="o">);</span>
+
+      <span class="c1">// the group router will stash messages until it sees the first listing of registered</span>
+      <span class="c1">// services from the receptionist, so it is safe to send messages right away</span>
+      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">router</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Worker</span><span class="o">.</span><span class="na">DoLog</span><span class="o">(</span><span class="s">"msg "</span> <span class="o">+</span> <span class="n">i</span><span class="o">));</span>
+      <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="55-路由策略">5.5. 路由策略</h2>
+
+<p>有三种不同的策略选择哪个routee一个消息被转发到可以选择从路由器之前产卵它:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">PoolRouter</span><span class="o">&lt;</span><span class="nc">Worker</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">alternativePool</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="na">withPoolSize</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">withRoundRobinRouting</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="551-round-robin">5.5.1. Round Robin</h3>
+
+<p>对路由集进行旋转，确保如果有n个路由，那么对于通过路由器发送的n个消息，每个参与者被转发一条消息。</p>
+
+<p>轮询调度提供了公平的路由，只要路由集保持相对稳定，每个可用路由集就会获得相同数量的消息，但如果路由集变化很大，则可能不公平。</p>
+
+<p>这是池路由器的默认值，因为routee的池应该保持不变。进入翻译</p>
+
+<p>该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。</p>
+
+<h3 id="552-random">5.5.2. Random</h3>
+
+<p>当消息通过路由器发送时，随机选择一个routee。</p>
+
+<p>这是group router的默认设置，因为routee的组预计会随着节点加入和离开集群而改变。</p>
+
+<p>该策略可以使用一个可选参数preferLocalRoutees。如果preferlocalroutee为真且本地routee确实存在，路由器将只使用位于本地actor系统中的routee。此参数的默认值为false。</p>
+
+<h3 id="553-consistent-hashing">5.5.3. Consistent Hashing</h3>
+
+<p>使用一致的散列来根据所发送的消息选择路由。本文很好地了解了如何实现一致性哈希。</p>
+
+<p>目前，您必须定义路由器的hashMapping，以将传入的消息映射到它们一致的散列键。这使得决策对发送方透明。</p>
+
+<p>只要routee集合保持不变，一致的哈希将使具有相同哈希路由的消息发送到相同的路由。当routee集发生更改时，一致性散列试图确保(但不保证)具有相同散列的消息被路由到相同的routee。</p>
+
+<h2 id="56-路由器和性能">5.6. 路由器和性能</h2>
+
+<p>请注意，如果路由共享一个资源，则资源将决定增加参与者的数量实际上是提供更高的吞吐量还是更快的答案。例如，如果routee是CPU绑定的actor，那么创建的routee数量不会比执行actor的线程数量多，从而获得更好的性能。</p>
+
+<p>由于路由器本身是一个参与者并且有一个邮箱，这意味着消息将按顺序路由到路由，在那里可以并行地处理它(取决于dispatcher中可用的线程)。在高吞吐量用例中，顺序路由可能成为瓶颈。Akka Typed并没有为此提供一个优化的工具。</p>
 
 :ET
