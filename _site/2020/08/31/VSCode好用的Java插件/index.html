@@ -11,28 +11,28 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="PowerJob中Akka ask实现 - 刘律的博客 | LiuL Blog">
+    <meta property="og:title" content="VSCode好用的Java插件 - 刘律的博客 | LiuL Blog">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="Actor ask介绍
+    <meta property="og:description" content="引文
 ">
     
-    <meta property="article:published_time" content="2020-08-19T00:00:00Z">
+    <meta property="article:published_time" content="2020-08-31T00:00:00Z">
     
     
     <meta property="article:author" content="LiuL">
     
     
-    <meta property="article:tag" content="Akka">
+    <meta property="article:tag" content="VSCode">
     
-    <meta property="article:tag" content="PowerJob-ask实现">
+    <meta property="article:tag" content="VSCode Java">
     
     
     <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
-    <meta property="og:url" content="http://localhost:4000/2020/08/19/akka-ask/">
+    <meta property="og:url" content="http://localhost:4000/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/">
     <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
     
-    <title>PowerJob中Akka ask实现 - 刘律的博客 | LiuL Blog</title>
+    <title>VSCode好用的Java插件 - 刘律的博客 | LiuL Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2020/08/19/akka-ask/">
+    <link rel="canonical" href="http://localhost:4000/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -228,15 +228,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=Akka" title="Akka">Akka</a>
+                        <a class="tag" href="/archive/?tag=VSCode" title="VSCode">VSCode</a>
                         
-                        <a class="tag" href="/archive/?tag=PowerJob-ask%E5%AE%9E%E7%8E%B0" title="PowerJob-ask实现">PowerJob-ask实现</a>
+                        <a class="tag" href="/archive/?tag=VSCode+Java" title="VSCode Java">VSCode Java</a>
                         
                     </div>
-                    <h1>PowerJob中Akka ask实现</h1>
+                    <h1>VSCode好用的Java插件</h1>
                     
-                    <h2 class="subheading">「AKKA」- 2.6.8</h2>
-                    <span class="meta">Posted by LiuL on August 19, 2020</span>
+                    <h2 class="subheading">「VSCode」- Java插件</h2>
+                    <span class="meta">Posted by LiuL on August 31, 2020</span>
                 </div>
             </div>
         </div>
@@ -262,93 +262,48 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h1 id="actor-ask介绍">Actor ask介绍</h1>
+				<h1 id="引文">引文</h1>
 
-<p>与外部的Ackor进行交互，可以使用send发送后不管，前面文章已经介绍send交互方式，send为最常用的交互方式发送后不管，但是这里需要给外部Actor发生一个消息，并要求返回CompletionState[Response]。为此我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一个CompletionState[Response] 返回。可通过可设置超时时间，如果在如果时间内没有响应则返回的失败CompletionStage。</p>
+<p>说到写 Java，想必做 Java 开发的童鞋，蛮多都是会用 IntelliJ IDEA， Eclipse 或是 Netbeans。许多童鞋也许会问，VS Code 也能写 Java? 是的，没错，VS Code 可以写 Java，而且有着很好的开发体验。特别对于多语言开发者来说，如果能在同一个 IDE 或是编辑器编写多种语言，岂不是很方便？笔者在微软近六年，除了C#，主要写 TypeScript，还写过 PHP，Python，Java 等语言。自从有了 VS Code，再也不用在不同的 IDE/编辑器之间切换了。那么，我们就来看看 VS Code 中有哪些好用的 Java 插件。</p>
 
-<dl>
-  <dt>实例流程图</dt>
-  <dd><img src="https://liulv.work/images/img/20200805213553.png" alt="20200805213553" /></dd>
-</dl>
+<h1 id="language-support-for-javatm-by-red-hat"><a href="https://marketplace.visualstudio.com/items?itemName=redhat.java">Language Support for Java(TM) by Red Hat</a></h1>
 
-<h1 id="使用场景和缺陷">使用场景和缺陷</h1>
+<p><img src="https://liulv.work/images/img/20200831230142.png" alt="20200831230142" /></p>
 
-<dl>
-  <dt>适用场景</dt>
-  <dd>从Actor系统外部查询Actor</dd>
-  <dt>缺陷和问题</dt>
-  <dd>
-    <ul>
-      <li>在返回的CompletionStage上的回调很容易意外地关闭和不安全的可变状态，因为这些回调将在不同的线程上执行。</li>
-    </ul>
-  </dd>
-  <dd>
-    <ul>
-      <li>对一个请求只能有一个单一的响应(参见<a href="https://doc.akka.io/docs/akka/current/typed/interaction-patterns.html#per-session-child-actor">每个会话child Actor</a>)。</li>
-    </ul>
-  </dd>
-  <dd>
-    <ul>
-      <li>当请求超时时，接收方并不知道，可能仍然处理它直到完成，甚至在事后开始处理它。</li>
-    </ul>
-  </dd>
-</dl>
+<p>Red Hat 的 Java 插件是每个 VS Code Java 用户的必装插件。对 Maven/Gradle 项目的基本支持、代码格式化，代码重构、代码片段、语法高亮、代码自动补全等等核心功能，都在这个插件中。
+[</p>
+<h1 id="debugger-for-java"><a href="https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-debug">Debugger for Java</a></h1>
 
-<h1 id="使用示例">使用示例</h1>
+<p><img src="https://liulv.work/images/img/20200831230401.png" alt="20200831230401" /></p>
 
-<h2 id="老版本abstractactor">老版本AbstractActor</h2>
+<p>调试对于每一个语言来说当然是必不可少的功能。Debugger for Java 除了提供 Launch/Attach、断点/条件断点、Step In/Out/Over、Callstacks 这些基本功能，还支持 Logpoints、Hot Code Replace 等高级功能，使得调试 Java 项目如丝般顺滑。</p>
 
-<p>在创建ActorSystem的类添加根据指定地址构造Actor方法，返回ActorSelection</p>
+<h1 id="java-test-runner"><a href="https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-java-test">Java Test Runner</a></h1>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="rouge-code"><pre>
- <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ActorSystem</span> <span class="n">actorSystem</span><span class="o">;</span>
+<p>在项目生命周期中，测试是一个重要的环节。Java Test Runner 对主流的测试框架 JUnit 和 TestNG 都有着很好的支持。在 Test Explorer 中，可以方便地查看所有测试用例、运行/调试测试代码、查看测试报告。</p>
 
- <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+<h1 id="maven-for-java"><a href="https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-maven">Maven for Java</a></h1>
 
-     <span class="nc">Config</span> <span class="n">akkaBasicConfig</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"oms-server.akka.conf"</span><span class="o">);</span>
-     <span class="n">actorSystem</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"oms-server"</span><span class="o">,</span> <span class="n">akkaBasicConfig</span><span class="o">);</span>
- <span class="o">}</span>
+<p>Maven 是 Java 生态圈中使用最多的构建工具，在 VS Code 中也有很好的支持。基于 Maven Archetype 生成 Maven 项目、运行各种 Maven 命令，在 VS Code 中也能轻松地开发 Maven 项目。</p>
 
- <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ActorSelection</span> <span class="nf">getFriendActor</span><span class="o">(</span><span class="nc">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
-        <span class="nc">String</span> <span class="n">path</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"akka://%s@%s/user/%s"</span><span class="o">,</span> <span class="s">"oms-server"</span><span class="o">,</span> <span class="n">address</span><span class="o">,</span> <span class="s">"friend_actor"</span><span class="o">);</span>
-        <span class="k">return</span> <span class="n">actorSystem</span><span class="o">.</span><span class="na">actorSelection</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
-    <span class="o">}</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<h1 id="java-dependency-viewer"><a href="https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-java-dependency">Java Dependency Viewer</a></h1>
 
-<p>获取远程Actor</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nc">ActorSelection</span> <span class="n">serverActor</span> <span class="o">=</span> <span class="nc">OhMyServer</span><span class="o">.</span><span class="na">getFriendActor</span><span class="o">(</span><span class="n">serverAddress</span><span class="o">);</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>顾名思义，Java Dependency Viewer 可以方便地列出当前 Java 项目所有地依赖项，并且可以开始地创建一个 Java 项目。</p>
 
-<p>Actor ask</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-</pre></td><td class="rouge-code"><pre><span class="nc">Ping</span> <span class="n">ping</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Ping</span><span class="o">();</span>
-<span class="n">ping</span><span class="o">.</span><span class="na">setCurrentTime</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
-<span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">askCS</span> <span class="o">=</span> <span class="nc">Patterns</span><span class="o">.</span><span class="na">ask</span><span class="o">(</span><span class="n">serverActor</span><span class="o">,</span> <span class="n">ping</span><span class="o">,</span> <span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">1000</span><span class="o">));</span>
-<span class="nc">AskResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="o">(</span><span class="nc">AskResponse</span><span class="o">)</span> <span class="n">askCS</span><span class="o">.</span><span class="na">toCompletableFuture</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">1000</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+<h1 id="更多好用的-java-插件">更多好用的 Java 插件</h1>
 
-<span class="c1">//downServerCache.remove(serverAddress);</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="新版本abstractbehavior">新版本AbstractBehavior</h2>
+<ul>
+  <li>Spring Boot Tools</li>
+  <li>Spring Initializr Java Support</li>
+  <li>Spring Boot Dashboard</li>
+  <li>Tomcat</li>
+  <li>Jetty</li>
+  <li>CheckStyle</li>
+  <li>Java Linter</li>
+  <li>Java Decompiler</li>
+  <li>Lombok Annotations Support</li>
+  <li>Java Properties</li>
+</ul>
 
 
 
@@ -356,19 +311,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2020/08/18/powerjob-container-datax/" data-toggle="tooltip" data-placement="top" title="PowerJob容器开发集成DataX及任务配置">
+                        <a href="/2020/08/19/akka-ask/" data-toggle="tooltip" data-placement="top" title="PowerJob中Akka ask实现">
                         Previous<br>
-                        <span>PowerJob容器开发集成DataX及任务配置</span>
+                        <span>PowerJob中Akka ask实现</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="VSCode好用的Java插件">
-                        Next<br>
-                        <span>VSCode好用的Java插件</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
@@ -483,8 +431,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "LiuL";
-    var disqus_identifier = "/2020/08/19/akka-ask";
-    var disqus_url = "http://localhost:4000/2020/08/19/akka-ask/";
+    var disqus_identifier = "/2020/08/31/VSCode好用的Java插件";
+    var disqus_url = "http://localhost:4000/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

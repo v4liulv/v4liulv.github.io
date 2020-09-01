@@ -5,9 +5,66 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 26 Aug 2020 23:53:52 +0800</pubDate>
-    <lastBuildDate>Wed, 26 Aug 2020 23:53:52 +0800</lastBuildDate>
+    <pubDate>Mon, 31 Aug 2020 23:16:12 +0800</pubDate>
+    <lastBuildDate>Mon, 31 Aug 2020 23:16:12 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>VSCode好用的Java插件</title>
+        <description>&lt;h1 id=&quot;引文&quot;&gt;引文&lt;/h1&gt;
+
+&lt;p&gt;说到写 Java，想必做 Java 开发的童鞋，蛮多都是会用 IntelliJ IDEA， Eclipse 或是 Netbeans。许多童鞋也许会问，VS Code 也能写 Java? 是的，没错，VS Code 可以写 Java，而且有着很好的开发体验。特别对于多语言开发者来说，如果能在同一个 IDE 或是编辑器编写多种语言，岂不是很方便？笔者在微软近六年，除了C#，主要写 TypeScript，还写过 PHP，Python，Java 等语言。自从有了 VS Code，再也不用在不同的 IDE/编辑器之间切换了。那么，我们就来看看 VS Code 中有哪些好用的 Java 插件。&lt;/p&gt;
+
+&lt;h1 id=&quot;language-support-for-javatm-by-red-hat&quot;&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=redhat.java&quot;&gt;Language Support for Java(TM) by Red Hat&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200831230142.png&quot; alt=&quot;20200831230142&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Red Hat 的 Java 插件是每个 VS Code Java 用户的必装插件。对 Maven/Gradle 项目的基本支持、代码格式化，代码重构、代码片段、语法高亮、代码自动补全等等核心功能，都在这个插件中。
+[&lt;/p&gt;
+&lt;h1 id=&quot;debugger-for-java&quot;&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-debug&quot;&gt;Debugger for Java&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200831230401.png&quot; alt=&quot;20200831230401&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;调试对于每一个语言来说当然是必不可少的功能。Debugger for Java 除了提供 Launch/Attach、断点/条件断点、Step In/Out/Over、Callstacks 这些基本功能，还支持 Logpoints、Hot Code Replace 等高级功能，使得调试 Java 项目如丝般顺滑。&lt;/p&gt;
+
+&lt;h1 id=&quot;java-test-runner&quot;&gt;&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-java-test&quot;&gt;Java Test Runner&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;在项目生命周期中，测试是一个重要的环节。Java Test Runner 对主流的测试框架 JUnit 和 TestNG 都有着很好的支持。在 Test Explorer 中，可以方便地查看所有测试用例、运行/调试测试代码、查看测试报告。&lt;/p&gt;
+
+&lt;h1 id=&quot;maven-for-java&quot;&gt;&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-maven&quot;&gt;Maven for Java&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Maven 是 Java 生态圈中使用最多的构建工具，在 VS Code 中也有很好的支持。基于 Maven Archetype 生成 Maven 项目、运行各种 Maven 命令，在 VS Code 中也能轻松地开发 Maven 项目。&lt;/p&gt;
+
+&lt;h1 id=&quot;java-dependency-viewer&quot;&gt;&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//marketplace.visualstudio.com/items%3FitemName%3Dvscjava.vscode-java-dependency&quot;&gt;Java Dependency Viewer&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;顾名思义，Java Dependency Viewer 可以方便地列出当前 Java 项目所有地依赖项，并且可以开始地创建一个 Java 项目。&lt;/p&gt;
+
+&lt;h1 id=&quot;更多好用的-java-插件&quot;&gt;更多好用的 Java 插件&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Spring Boot Tools&lt;/li&gt;
+  &lt;li&gt;Spring Initializr Java Support&lt;/li&gt;
+  &lt;li&gt;Spring Boot Dashboard&lt;/li&gt;
+  &lt;li&gt;Tomcat&lt;/li&gt;
+  &lt;li&gt;Jetty&lt;/li&gt;
+  &lt;li&gt;CheckStyle&lt;/li&gt;
+  &lt;li&gt;Java Linter&lt;/li&gt;
+  &lt;li&gt;Java Decompiler&lt;/li&gt;
+  &lt;li&gt;Lombok Annotations Support&lt;/li&gt;
+  &lt;li&gt;Java Properties&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 31 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/</guid>
+        
+        <category>VSCode</category>
+        
+        <category>VSCode Java</category>
+        
+        
+      </item>
     
       <item>
         <title>PowerJob中Akka ask实现</title>
