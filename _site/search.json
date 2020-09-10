@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Akka 集群",
+      "subtitle" : "「AKKA官方文档」- 2.6.8",
+      "tags"     : "Akka, Akka cluster",
+      "url"      : "/2020/09/10/akka-cluster/",
+      "date"     : "2020-09-10 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "VSCode好用的Java插件",
       "subtitle" : "「VSCode」- Java插件",
       "tags"     : "VSCode, VSCode Java",

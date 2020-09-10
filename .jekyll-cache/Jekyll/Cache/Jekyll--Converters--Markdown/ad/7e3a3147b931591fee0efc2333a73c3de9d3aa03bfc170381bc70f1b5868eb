@@ -1,0 +1,361 @@
+I"_a<h1 id="1-使用集群">1. 使用集群</h1>
+
+<h2 id="11-module-info">1.1. Module info</h2>
+
+<p>要使用Akka集群，请在项目中添加以下依赖项:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;properties&gt;</span>
+  <span class="nt">&lt;akka.version&gt;</span>2.6.8<span class="nt">&lt;/akka.version&gt;</span>
+  <span class="nt">&lt;scala.binary.version&gt;</span>2.13<span class="nt">&lt;/scala.binary.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>akka-cluster-typed_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="12-集群api扩展">1.2. 集群API扩展</h2>
+
+<p>集群扩展允许您访问管理任务，比如加入、离开和退出，以及订阅集群成员关系事件，比如MemberUp、memberremove和UnreachableMember，它们公开为事件api。</p>
+
+<p>它通过集群扩展上的这些引用来实现:</p>
+
+<ul>
+  <li>
+    <p>manager: 一个ActorRef &lt;akka.cluster.typed。ClusterCommand&gt;，其中ClusterCommand是一个命令，例如:Join, Leave和Down</p>
+  </li>
+  <li>
+    <p>subscriptions: 一个ActorRef<akka.cluster.typed.ClusterStateSubscription>这里的clusterstatesubscription是GetCurrentState或订阅和取消订阅的集群事件，如memberremove</akka.cluster.typed.ClusterStateSubscription></p>
+  </li>
+  <li>
+    <p>state: 当前CurrentClusterState</p>
+  </li>
+</ul>
+
+<p>下面的所有示例都假设导入如下内容:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">akka.actor.typed.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.ClusterEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.typed.*</span><span class="o">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>所需的最小配置是为remoting和akka.actor设置一个主机/端口。提供者=“集群”。</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="n">akka</span> {
+  <span class="n">actor</span> {
+    <span class="n">provider</span> = <span class="s2">"cluster"</span>
+  }
+  <span class="n">remote</span>.<span class="n">artery</span> {
+    <span class="n">canonical</span> {
+      <span class="n">hostname</span> = <span class="s2">"127.0.0.1"</span>
+      <span class="n">port</span> = <span class="m">2551</span>
+    }
+  }
+
+  <span class="n">cluster</span> {
+    <span class="n">seed</span>-<span class="n">nodes</span> = [
+      <span class="s2">"akka://ClusterSystem@127.0.0.1:2551"</span>,
+      <span class="s2">"akka://ClusterSystem@127.0.0.1:2552"</span>]
+    
+    <span class="n">downing</span>-<span class="n">provider</span>-<span class="n">class</span> = <span class="s2">"akka.cluster.sbr.SplitBrainResolverProvider"</span>
+  }
+}
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>访问每个节点上的集群扩展:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">Cluster</span> <span class="n">cluster</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p><strong>注意</strong></p>
+  <blockquote>
+    <p>集群的ActorSystem的名称必须对所有成员相同，这是在您启动ActorSystem时传入的。</p>
+  </blockquote>
+</blockquote>
+
+<h3 id="121-加入和离开一个集群">1.2.1. 加入和离开一个集群</h3>
+
+<p>如果不使用配置指定要加入的种子节点，则可以通过管理器以编程方式加入集群。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">cluster</span><span class="o">.</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Join</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">cluster</span><span class="o">.</span><span class="na">selfMember</span><span class="o">().</span><span class="na">address</span><span class="o">()));</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>离开集群和关闭一个节点是类似的:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">cluster2</span><span class="o">.</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Leave</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">cluster2</span><span class="o">.</span><span class="na">selfMember</span><span class="o">().</span><span class="na">address</span><span class="o">()));</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="122-集群订阅">1.2.2. 集群订阅</h3>
+
+<p>集群订阅可用于在集群状态更改时接收消息。例如，注册所有MemberEvents，然后使用manager让一个节点离开集群，将导致该节点在成员关系生命周期中发生事件。</p>
+
+<p>此示例订阅了一个ActorRef<MemberEvent>订阅服务器:</MemberEvent></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">cluster</span><span class="o">.</span><span class="na">subscriptions</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Subscribe</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">subscriber</span><span class="o">,</span> <span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberEvent</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="123-集群状态">1.2.3. 集群状态</h3>
+
+<p>与订阅集群事件不同，有时使用cluster.get(system).state()只获得完整的成员资格状态是很方便的。请注意，此状态不一定与发布到集群订阅的事件同步。</p>
+
+<p>有关成员事件的详细信息，请参见集群成员。还有更多类型的更改事件，请参考扩展akka.cluster.ClusterEvent的类的API文档。ClusterDomainEvent了解事件的详细信息。</p>
+
+<h2 id="13-集群成员api">1.3. 集群成员API</h2>
+
+<h3 id="131-joining">1.3.1. Joining</h3>
+
+<p>种子节点是加入集群的初始接触点，可以通过不同的方式实现:</p>
+
+<ul>
+  <li>自动与集群引导
+<strong>* 配置种子节点</strong></li>
+</ul>
+
+<p>在加入过程之后，种子节点并不特殊，它们以与其他节点完全相同的方式参与到集群中.</p>
+
+<p>通过集群引导自动连接到种子节点
+使用开源的Akka管理项目的模块Cluster Bootstrap，可以自动发现连接过程的节点。请参阅其文档以了解更多细节。</p>
+
+<p><strong>你可以在配置文件(application.conf)中定义种子节点:</strong></p>
+
+<p>akka.cluster.seed-nodes = [
+  “akka://ClusterSystem@host1:2552”,
+  “akka://ClusterSystem@host2:2552”]</p>
+
+<p><strong>在启动JVM时，也可以使用以下语法将其定义为Java系统属性:</strong></p>
+
+<p>-Dakka.cluster.seed-nodes.0=akka://ClusterSystem@host1:2552
+-Dakka.cluster.seed-nodes.1=akka://ClusterSystem@host2:2552</p>
+
+<p>当一个新节点启动时，它向所有配置的种子节点发送一条消息，然后向第一个响应的节点发送一个join命令。如果没有一个种子节点响应(可能还没有启动)，它将重试此过程，直到成功或关闭。</p>
+
+<p>种子节点可以按照任何顺序启动。没有必要让所有种子节点都运行，但是在初始启动集群时必须启动配置为种子节点列表中的第一个元素的节点。否则，其他种子节点将不会被初始化，并且没有其他节点可以加入集群。使用特殊的第一个种子节点的原因是为了避免在从一个空集群开始时形成独立的孤岛。同时启动所有配置的种子节点是最快的(顺序无关紧要)，否则可能会达到配置的种子-节点-超时，直到节点可以加入。</p>
+
+<p>一旦启动了两个以上的种子节点，关闭第一个种子节点是没有问题的。如果第一个种子节点重新启动，它将首先尝试加入现有集群中的其他种子节点。请注意，如果您同时停止所有种子节点，并使用相同的种子节点配置重新启动它们，它们将连接自己并形成一个新的集群，而不是连接现有集群的其余节点。这可能不是我们想要的，为了冗余，可以通过将几个节点作为种子节点来避免，并且不需要同时停止所有节点。</p>
+
+<p>如果要在不同的机器上启动节点，则需要在application.conf中指定机器的ip地址或主机名，而不是127.0.0.1</p>
+
+<p><strong>以编程方式连接到种子节点</strong></p>
+
+<p>当通过外部工具或API在启动时动态发现其他节点时，通过编程方式连接非常有用。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">akka.actor.Address</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.AddressFromURIString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.Member</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.cluster.typed.JoinSeedNodes</span><span class="o">;</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Address</span><span class="o">&gt;</span> <span class="n">seedNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+<span class="n">seedNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">AddressFromURIString</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"akka://ClusterSystem@127.0.0.1:2551"</span><span class="o">));</span>
+<span class="n">seedNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">AddressFromURIString</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"akka://ClusterSystem@127.0.0.1:2552"</span><span class="o">));</span>
+
+<span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">).</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">JoinSeedNodes</span><span class="o">(</span><span class="n">seedNodes</span><span class="o">));</span><span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>种子节点地址列表与配置的种子节点具有相同的语义，流程的底层实现也相同，请参阅连接配置的种子节点。</p>
+
+<p>在连接到种子节点时，不应该包括节点本身，除了应该是引导集群的第一个种子节点的节点。在编程联接的参数中，所需的初始种子节点地址应该放在第一个位置。</p>
+
+<p><strong>优化连接</strong></p>
+
+<p>在配置属性seed-node-timeout中定义的时间段之后，将自动重试未成功的联系种子节点的尝试。连接特定种子节点的不成功尝试将在配置的重试-不成功-连接-之后自动重试。重试意味着它尝试联系所有种子节点，然后加入第一个响应的节点。如果种子节点列表中的第一个节点不能与配置的种子节点超时内的任何其他种子节点联系，那么它将连接自己。</p>
+
+<p>默认情况下，将无限期地重试给定种子节点的联接，直到联接成功为止。如果通过配置超时不成功，可以中止该进程。当中止时，它将运行协调关闭，这将在默认情况下终止ActorSystem。还可以配置CoordinatedShutdown来退出JVM。如果种子节点是动态组装的，那么定义此超时将非常有用，并且在尝试失败后应该尝试使用新种子节点重新启动.</p>
+
+<p>akka.cluster.shutdown-after-unsuccessful-join-seed-nodes = 20s
+akka.coordinated-shutdown.terminate-actor-system = on</p>
+
+<p>如果没有配置种子节点或使用联接种子节点函数之一，则需要使用JMX或HTTP手动联接集群。</p>
+
+<p>您可以连接到集群中的任何节点。它不需要配置为种子节点。注意，只能连接到现有的集群成员，这意味着节点必须连接自己，随后的节点可以连接它们来组成一个集群。</p>
+
+<p>参与者系统只能加入一个集群一次，其他的尝试将被忽略。一旦actor系统成功加入集群，就必须重新启动它以再次加入相同的集群。它可以在重启后使用相同的主机名和端口。当它作为集群中现有成员的新化身出现并试图加入时，现有成员将被删除，其新化身允许加入。</p>
+
+<h3 id="132-leaving">1.3.2. Leaving</h3>
+
+<p>有几种方法可以从集群中删除成员。</p>
+
+<ul>
+  <li>离开集群的推荐方法是优雅地退出，通知集群某个节点应该离开。当ActorSystem终止时，以及从环境中发送SIGTERM来停止JVM进程时，通过协调关闭来执行此操作。</li>
+  <li>还可以使用HTTP或JMX执行优雅退出。</li>
+  <li>当无法优雅地退出时，例如JVM进程突然终止时，将检测到其他节点无法访问该节点，并在关闭后删除该节点。</li>
+</ul>
+
+<p>当集群节点认为自己退出时，协调关闭也会运行，即离开另一个节点将触发离开节点上的关闭过程。使用Akka集群时，自动添加优雅离开集群的任务，包括优雅关闭集群单例和集群分片。例如，运行关机进程还将触发优雅的离开(如果还没有进行)。</p>
+
+<p>正常情况下，这是自动处理，但在此过程中，如果网络故障，它可能仍然需要设置节点的状态，以完成删除，参阅下降。</p>
+
+<h3 id="133-downing">1.3.3. Downing</h3>
+
+<p>在许多情况下，成员可以从集群中优雅地退出，如leave中所述，但是在删除成员之前，需要明确地做出退出决策。例如，在JVM进程突然终止、无法恢复的系统过载或无法恢复的网络分区的情况下。在这种情况下，节点会被其他节点检测为不可到达，但是在删除它们之前，它们也必须被标记为Down。</p>
+
+<p>当故障检测器认为某个成员不可到达时，leader不允许执行其职责，比如将新加入成员的状态更改为“Up”。该节点必须首先再次变为可达的，否则不可达成员的状态必须更改为向下。将状态更改为Down可以自动执行，也可以手动执行。</p>
+
+<p>我们建议启用作为Akka集群模块一部分的Split Brain解析器。您启用它与配置:</p>
+
+<p>akka.cluster.downing-provider-class = “akka.cluster.sbr.SplitBrainResolverProvider”</p>
+
+<p>你还应该考虑不同的掉落策略。</p>
+
+<p>如果没有配置侦听提供程序，则必须使用HTTP或JMX手动执行侦听。</p>
+
+<p>：注意，在崩溃(无法到达)节点上运行的集群单例或集群分片实体将不会在另一个节点上启动，直到前一个节点从集群中移除。删除崩溃(无法到达)的节点是在击落决定之后执行的。</p>
+
+<p>Downing也可以通过Cluster.get(system).manager().tell(Down(address))以编程方式执行，但这在测试和实现DowningProvider时非常有用。</p>
+
+<p>如果重新启动崩溃的节点，并使用相同的主机名和端口再次加入集群，则该成员的前一个化身将首先被关闭并删除。使用相同主机名和端口的新连接尝试作为前一个连接不再存在的证据。</p>
+
+<p>如果一个节点仍然在运行，并且看到它自己关闭了，那么它将关闭。如果将down设置为on(缺省值)，那么协调关闭将自动运行，但是节点不会尝试优雅地离开集群。</p>
+
+<h2 id="134-节点的角色">1.3.4. 节点的角色</h2>
+
+<p>并不是集群中的所有节点都需要执行相同的功能。例如，可能有一个子集运行web前端，一个子集运行数据访问层，一个子集运行数字处理。在每个节点上选择启动哪个角色(例如集群感知路由器)，可以考虑节点角色来实现这种责任分配。</p>
+
+<p>节点角色在名为akka.cluster的配置属性中定义。角色，通常在开始脚本中定义为系统属性或环境变量。</p>
+
+<p>角色是MemberEvent中可以订阅的成员信息的一部分。自身节点的角色可以从selfMember获得，可以用于有条件地启动某些actor:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nc">Member</span> <span class="n">selfMember</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">()).</span><span class="na">selfMember</span><span class="o">();</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">selfMember</span><span class="o">.</span><span class="na">hasRole</span><span class="o">(</span><span class="s">"backend"</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">Backend</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"back"</span><span class="o">);</span>
+<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">selfMember</span><span class="o">.</span><span class="na">hasRole</span><span class="o">(</span><span class="s">"front"</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">Frontend</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"front"</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="故障检测">故障检测</h3>
+
+<p>集群中的节点通过发送心跳来检测某个节点是否无法从集群的其他部分到达，从而相互监视。请参阅:</p>
+
+<ul>
+  <li>故障检测规范</li>
+  <li>Phi累积故障检测器实现</li>
+  <li>使用故障检测器</li>
+</ul>
+
+<p><strong>使用故障检测器</strong></p>
+
+<p>集群使用akka.remote.PhiAccrualFailureDetector默认情况下，也可以通过实现akka.remote.FailureDetector来提供故障检测器。故障检测器和配置:</p>
+
+<p>akka.cluster.implementation-class = “com.example.CustomFailureDetector”</p>
+
+<p>在集群配置中，您可能需要根据您的环境调整这些:
+当phi值被认为是一个失败的akka.cluster.failure-detector.threshold
+突发异常的误差范围akka.群集。akka.cluster.failure-detector.acceptable-heartbeat-pause</p>
+
+<h3 id="如何测试">如何测试</h3>
+
+<p>Akka附带并使用了几种类型的测试策略:</p>
+
+<ul>
+  <li>测试</li>
+  <li>多节点测试</li>
+  <li>多JVM测试</li>
+</ul>
+
+<h3 id="配置">配置</h3>
+
+<p>集群有几个配置属性。请参阅参考配置以获得完整的配置描述、默认值和选项。</p>
+
+<p><strong>当集群大小达到时如何启动</strong></p>
+
+<p>一个常见的用例是在集群已经初始化、成员已经加入并且集群已经达到一定大小之后启动actor。
+通过配置选项，在领导将“加入”成员状态更改为“Up”之前，您可以定义所需的成员数量。</p>
+
+<p>akka.cluster.min-nr-of-members = 3</p>
+
+<p>同样，在领导将“加入”成员的状态更改为“Up”之前，您可以定义某个角色所需的成员数量。</p>
+
+<p>akka.cluster.role {
+  frontend.min-nr-of-members = 1
+  backend.min-nr-of-members = 2
+}</p>
+
+<p><strong>集群信息日志</strong></p>
+
+<p>通过配置属性，您可以在信息级别沉默集群事件的日志记录:
+akka.cluster.log-info = off</p>
+
+<p>您可以在信息级别启用集群事件的详细日志记录，例如用于临时故障排除，配置属性:
+akka.cluster.log-info-verbose = on</p>
+
+<p><strong>集群调度程序</strong></p>
+
+<p>集群扩展是由actor实现的。为了保护它们免受用户参与者的干扰，默认情况下，它们在配置在akka.actor.internal-dispatcher下的内部dispatcher上运行。集群参与者可以通过设置akka.cluster进一步隔离到它们自己的分派器上。use-dispatcher或make在同一个dispatcher上运行，以降低线程的数量。</p>
+
+<p><strong>配置兼容性检查</strong></p>
+
+<p>创建集群需要部署两个或多个节点，并让它们像单个应用程序一样运行。因此，集群中的所有节点配置兼容设置是极其重要的。</p>
+
+<p>配置兼容性检查特性确保集群中的所有节点都具有兼容的配置。每当一个新节点加入一个现有集群时，它的配置设置的子集(只有那些需要检查的配置)被发送到集群中的节点进行验证。一旦在集群端检查了配置，集群就会返回它自己的一组必需的配置设置。然后，加入节点将验证它是否符合集群配置。只有在所有检查都通过的情况下，连接节点才会继续。</p>
+
+<p>可以通过扩展akka.cluster.JoinConfigCompatChecker添加新的自定义检查器，并将它们包含在配置中。每个检查器必须与一个唯一的键相关联:</p>
+
+<p>akka.cluster.configuration-compatibility-check.checkers {
+  my-custom-config = “com.company.MyCustomJoinConfigCompatChecker”
+}</p>
+
+<p><strong>请注意</strong>
+配置兼容性检查是默认启用的，但是可以通过设置akka.cluster.configuration-compatibility-check=off关闭。这在执行滚动更新时特别有用。显然，只有在无法完全关闭集群的情况下才应该这样做。具有不同配置设置的节点的集群可能导致数据丢失或数据损坏。</p>
+
+<p>此设置应仅在联接节点上禁用。检查总是在两边执行，并记录警告。在出现不兼容的情况下，连接节点负责决定进程是否应该被中断。</p>
+
+<p>如果使用Akka 2.5.9或更早版本(因此，不支持此特性)在集群上执行滚动更新，则不会执行检查，因为运行中的集群无法验证连接节点发送的配置，也无法返回自己的配置。</p>
+
+<h2 id="高级集群工具">高级集群工具</h2>
+
+:ET
