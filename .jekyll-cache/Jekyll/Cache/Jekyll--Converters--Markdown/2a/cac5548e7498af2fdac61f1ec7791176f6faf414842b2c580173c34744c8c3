@@ -1,0 +1,2429 @@
+I"�b<h1 id="1-maven依赖">1. Maven依赖</h1>
+
+<p>当前akka最新版本2.6.8、akka http最新版本为10.2.0</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></td><td class="rouge-code"><pre>    <span class="nt">&lt;properties&gt;</span>
+        <span class="nt">&lt;akka.version&gt;</span>2.6.8<span class="nt">&lt;/akka.version&gt;</span>
+        <span class="nt">&lt;akka.http.version&gt;</span>10.2.0<span class="nt">&lt;/akka.http.version&gt;</span>
+        <span class="nt">&lt;scala.binary.version&gt;</span>2.13<span class="nt">&lt;/scala.binary.version&gt;</span>
+        <span class="nt">&lt;lombok.version&gt;</span>1.18.12<span class="nt">&lt;/lombok.version&gt;</span>
+        <span class="nt">&lt;logback.version&gt;</span>1.2.3<span class="nt">&lt;/logback.version&gt;</span>
+        <span class="nt">&lt;junit.version&gt;</span>4.12<span class="nt">&lt;/junit.version&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
+
+    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="c">&lt;!-- akka stream --&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>akka-stream_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="c">&lt;!-- akka http --&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>akka-http_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${akka.http.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>akka-http-core_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${akka.http.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="c">&lt;!-- akka http jackson--&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>akka-http-jackson_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${akka.http.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="c">&lt;!-- akka http test--&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>akka-http-testkit_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${akka.http.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2-akka-http简介">2. Akka http简介</h1>
+
+<p>Akka HTTP的高级路由API提供了一个DSL，用于描述HTTP “路由” 以及如何处理它们, 每个路由由一个或多个级别组成，范围缩小到处理一种特定类型的请求。</p>
+
+<p>例如</p>
+<ul>
+  <li>一条路由可能以匹配path请求的开头，只有在请求地址匹配“/hello”时才匹配，</li>
+  <li>然后将其范围缩小为仅处理HTTP get请求</li>
+  <li>然后将其处理为complete带有字符串文字的请求，这些请求将以HTTP OK的形式发送回字符串作为响应主体</li>
+  <li>然后，使用Route路由DSL创建的内容被“绑定”到端口以开始服务HTTP请求</li>
+</ul>
+
+<blockquote>
+  <p><strong>注意</strong>
+自定义HTTP路由类记得继承AllDirectives</p>
+  <blockquote>
+    <p>AllDirectives ： 将所有默认指令收集到一个类中，以便简单地导入静态函数。
+JavaDSL See [[akka.http.javadsl.server.AllDirectives]]
+ScalaDSLSee [[akka.http.scaladsl.server.Directives]]</p>
+  </blockquote>
+</blockquote>
+
+<p>如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpServerMinimal</span> <span class="kd">extends</span> <span class="nc">AllDirectives</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="3-hello-akka-http">3. Hello Akka HTTP</h1>
+
+<p>第一个最小级别入门示例Hello Akka Http</p>
+
+<h2 id="31-说明">3.1. 说明</h2>
+
+<p>使用Akka 构建本地localhost:8080的Http路由，添加请求地址/hello, 将处理为消息Complete带有字符串文字的请求,请求将以HTTP OK的形式发送回字符串作为响应主体。</p>
+
+<p>即为绑定<code class="language-plaintext highlighter-rouge">http://localhost:8080</code>的get请求，请求路径添加“/hello”响应主体<code class="language-plaintext highlighter-rouge">complete("&lt;h1&gt;Say hello to akka-http&lt;/h1&gt;"))</code>, 最终响应体为<code class="language-plaintext highlighter-rouge">&lt;h1&gt;Say hello to akka-http&lt;/h1&gt;"</code></p>
+
+<h2 id="32-akka配置">3.2. akka配置</h2>
+
+<p>resource创建文件http_test.conf并添加如下内容：</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="n">akka</span> {
+  <span class="n">loggers</span> = [<span class="s2">"akka.event.slf4j.Slf4jLogger"</span>]
+  <span class="n">loglevel</span> = <span class="n">debug</span>
+  <span class="n">actor</span> {
+    <span class="n">provider</span> = <span class="n">cluster</span>
+    <span class="n">allow</span>-<span class="n">java</span>-<span class="n">serialization</span> = <span class="n">off</span>
+  }
+  <span class="n">remote</span> {
+    <span class="n">artery</span> {
+      <span class="c"># transport = tcp
+</span>      <span class="n">canonical</span>.<span class="n">hostname</span> = <span class="s2">"127.0.0.1"</span>
+      <span class="n">canonical</span>.<span class="n">port</span> = <span class="m">25520</span>
+    }
+  }
+   <span class="n">cluster</span> {
+      <span class="c"># seed-nodes = [
+</span>       <span class="c"># "akka://ClusterSystem@127.0.0.1:25251",
+</span>       <span class="c"># "akka://ClusterSystem@127.0.0.1:25252"]
+</span>      <span class="n">downing</span>-<span class="n">provider</span>-<span class="n">class</span> = <span class="s2">"akka.cluster.sbr.SplitBrainResolverProvider"</span>
+    }
+}
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="33-路由route代码">3.3. 路由Route代码</h2>
+
+<p>通过concat方法path创建<code class="language-plaintext highlighter-rouge">/hello</code>路由并且绑定get请求，将其处理为complete带有字符串文字的请求，这些请求将以HTTP OK的形式发送回字符串作为响应主体。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre> <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">path</span><span class="o">(</span><span class="s">"hello"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                        <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                                <span class="n">complete</span><span class="o">(</span><span class="s">"&lt;h1&gt;Say hello to akka-http&lt;/h1&gt;"</span><span class="o">))));</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="34-创建actor-system">3.4. 创建Actor System</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c1">//自定义配置</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="c1">//可选的，如果不配置则默认端口为27700</span>
+<span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="s">"27702"</span><span class="o">);</span>
+<span class="c1">//overrides.put("akka.cluster.roles", Collections.singletonList(role));</span>
+    <span class="c1">//使用覆盖的配置加上http_test.conf</span>
+<span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">).</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">));</span>
+<span class="c1">//创建空类型ActorySystem</span>
+<span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"routes"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="35-通过actor-system创建http">3.5. 通过Actor System创建Http</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kd">final</span> <span class="nc">Http</span> <span class="n">http</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="36-创建路由">3.6. 创建路由</h2>
+
+<p>通过应用实例调用上面的<a href="#创建路由">createRoute</a>创建路由方法创建路由。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">Route</span> <span class="n">route</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpServerMinimal</span><span class="o">().</span><span class="na">createRoute</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="37-http构建server绑定ip和端口">3.7. http构建Server绑定ip和端口</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre> <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">binding</span> <span class="o">=</span>
+                <span class="n">http</span><span class="o">.</span><span class="na">newServerAt</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">route</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="38-根据实际情况清除绑定和停止actor-system">3.8. 根据实际情况清除绑定和停止Actor System</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1">//从端口解除绑定的触发器,解除后停止ActorSystem</span>
+<span class="n">binding</span><span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="nl">ServerBinding:</span><span class="o">:</span><span class="n">unbind</span><span class="o">).</span><span class="na">thenAccept</span><span class="o">(</span><span class="n">unbound</span> <span class="o">-&gt;</span> <span class="n">system</span><span class="o">.</span><span class="na">terminate</span><span class="o">());</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="39-完整示例代码">3.9. 完整示例代码</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="rouge-code"><pre><span class="kn">package</span> <span class="nn">com.tcfuture.akka.http.minisample</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.Http</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.ServerBinding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.AllDirectives</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.Route</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.Config</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.ConfigFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletionStage</span><span class="o">;</span>
+
+<span class="cm">/**
+ * 最小入门示例 Hello Akka Http
+ *
+ * @author liulv
+ * @since 1.0.0
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpServerMinimal</span> <span class="kd">extends</span> <span class="nc">AllDirectives</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">//自定义配置</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="c1">//可选的，如果不配置则默认端口为27700</span>
+        <span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="s">"27702"</span><span class="o">);</span>
+        <span class="c1">//overrides.put("akka.cluster.roles", Collections.singletonList(role));</span>
+         <span class="c1">//使用覆盖的配置加上http_test.conf</span>
+        <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">).</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">));</span>
+        <span class="c1">//创建空类型ActorySystem</span>
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"routes"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">Http</span> <span class="n">http</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+        <span class="c1">//创建路由</span>
+        <span class="nc">Route</span> <span class="n">route</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpServerMinimal</span><span class="o">().</span><span class="na">createRoute</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">binding</span> <span class="o">=</span>
+                <span class="n">http</span><span class="o">.</span><span class="na">newServerAt</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">route</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Server online at http://localhost:8080/\nPress RETURN to stop..."</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">.</span><span class="na">read</span><span class="o">();</span> <span class="c1">// let it run until user presses return</span>
+
+        <span class="n">binding</span><span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="nl">ServerBinding:</span><span class="o">:</span><span class="n">unbind</span><span class="o">)</span> <span class="c1">//从端口解除绑定的触发器</span>
+                <span class="o">.</span><span class="na">thenAccept</span><span class="o">(</span><span class="n">unbound</span> <span class="o">-&gt;</span> <span class="n">system</span><span class="o">.</span><span class="na">terminate</span><span class="o">());</span> <span class="c1">// 完成后关闭</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">path</span><span class="o">(</span><span class="s">"hello"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                        <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                                <span class="n">complete</span><span class="o">(</span><span class="s">"&lt;h1&gt;Say hello to akka-http&lt;/h1&gt;"</span><span class="o">))));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="310-示例测试">3.10. 示例测试</h2>
+
+<ol>
+  <li>运行main方法即可启动Akka Http。</li>
+</ol>
+
+<p><img src="https://liulv.work/images/img/20200914114137.png" alt="20200914114137" /></p>
+
+<ol>
+  <li>通过http get请求/hello,请求响应为<code class="language-plaintext highlighter-rouge">&lt;h1&gt;Say hello to akka-http&lt;/h1&gt;</code></li>
+</ol>
+
+<blockquote>
+  <ul>
+    <li>a. http get请求可通过浏览器请求<code class="language-plaintext highlighter-rouge">http://localhost:8080/hello</code>测试，如下</li>
+  </ul>
+</blockquote>
+
+<p><img src="https://liulv.work/images/img/20200914113900.png" alt="20200914113900" /></p>
+
+<p>请求响应如下：</p>
+
+<p><img src="https://liulv.work/images/img/20200914114430.png" alt="20200914114430" /></p>
+
+<blockquote>
+  <ul>
+    <li>通过curl 测试，git bash 或 shell输入<code class="language-plaintext highlighter-rouge">curl http://localhost:8080/hello</code></li>
+  </ul>
+</blockquote>
+
+<p><img src="https://liulv.work/images/img/20200914114743.png" alt="20200914114743" /></p>
+
+<h1 id="4-jackson-example">4. Jackson Example</h1>
+
+<h2 id="41-示例简介">4.1. 示例简介</h2>
+
+<p>一个常见的用例是使用模型对象来答复请求，该模型对象将编组器将其转换为JSON。在这种情况下，显示为两条单独的路线。</p>
+<ul>
+  <li>第一条路由查询异步数据库，并将结果编组为JSON响应。</li>
+  <li>第二个从收到的请求中解组一个an ，将其保存到数据库中，并在完成后单击OK进行回复。CompletionStage&lt;Optional<Item>&gt;Order</Item></li>
+</ul>
+
+<p>运行此服务器时，可以通过 curl http://localhost:8080/create-order -H “Content-Type: application/json” -X POST -d ‘{“items”:[{“name”:”hhgtg”,”id”:42}]}’
+终端上的库存更新-添加名为”hhgtg”并具有的项目id=42。</p>
+
+<p>然后在浏览器中通过类似http://localhost:8080/item/42的URL 或在终端上通过来查看清单curl http://localhost:8080/item/42。</p>
+
+<p>在本示例中，用于编组和解组JSON的逻辑由“Jackson”库提供。见JSON支持），以获取有关该库集成的详细信息, 需要添加akka-http-jackson的maven依赖。</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre> <span class="c">&lt;!-- akka http jackson--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>akka-http-jackson_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${akka.http.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>特别说明</strong></p>
+
+<p>onSuccess 参数使用异步编程方式CompletionStage， f(completionStage.v) =  … complete(respons_body) )</p>
+
+<p>创建CompletionStage方式，这里使用CompletableFuture.completedFuture(…)</p>
+
+<p>如果没有完成值可使用下面方式：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">completedFuture</span><span class="o">(</span><span class="nc">Done</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>Done通常与“Future未来”一起使用以表示完成，但没有完成的实际值。更清楚地表明意图比<code class="language-plaintext highlighter-rouge">Unit</code>，并且在Scala和Java中都可用（而<code class="language-plaintext highlighter-rouge">Unit</code>不是）。</p>
+
+<h2 id="42-创建路由">4.2. 创建路由</h2>
+
+<p>编组和解析json使用如下方式</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>  <span class="n">path</span><span class="o">(</span><span class="s">"..pathName"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">entity</span><span class="o">(</span><span class="nc">Jackson</span><span class="o">.</span><span class="na">unmarshaller</span><span class="o">(</span><span class="nc">Order</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">order</span> <span class="o">-&gt;</span>
+<span class="nc">CompletionStage</span> <span class="n">completionStage</span> <span class="o">=</span> <span class="o">..</span>
+<span class="n">returu</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="n">completionStage</span><span class="o">,</span> <span class="n">evn</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="o">..</span> <span class="n">complete</span><span class="o">(</span><span class="n">body</span><span class="o">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>示例创建路由</p>
+<ul>
+  <li>post请求”create-order”，解析实体的json字符串请求参数转换为Order, 调用保存order的逻辑，返回CompletionStage， 保存完成后onSuccess响应complete的响应体。</li>
+  <li>get请求，路径前缀<code class="language-plaintext highlighter-rouge">/item</code>, 路径添加<code class="language-plaintext highlighter-rouge">/id值</code>,查询库查询到结果返回CompletionStage&lt;Optional<Item>&gt;，onSuccess响应如果存在值响应每个item, 否则orElseGet响应StatusCodes.NOT_FOUND，响应体"Not Found"字符</Item></li>
+  <li></li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">pathPrefix</span><span class="o">(</span><span class="s">"item"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                                <span class="n">path</span><span class="o">(</span><span class="n">longSegment</span><span class="o">(),</span> <span class="o">(</span><span class="nc">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                    <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;&gt;</span> <span class="n">futureMaybeItem</span> <span class="o">=</span> <span class="n">fetchItem</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+                                    <span class="k">return</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="n">futureMaybeItem</span><span class="o">,</span> <span class="n">maybeItem</span> <span class="o">-&gt;</span>
+                                            <span class="n">maybeItem</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">item</span> <span class="o">-&gt;</span> <span class="n">completeOK</span><span class="o">(</span><span class="n">item</span><span class="o">,</span> <span class="nc">Jackson</span><span class="o">.</span><span class="na">marshaller</span><span class="o">()))</span>
+                                                    <span class="o">.</span><span class="na">orElseGet</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">,</span> <span class="s">"Not Found"</span><span class="o">))</span>
+                                    <span class="o">);</span>
+                                <span class="o">}))),</span>
+                <span class="n">post</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">path</span><span class="o">(</span><span class="s">"create-order"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                                <span class="n">entity</span><span class="o">(</span><span class="nc">Jackson</span><span class="o">.</span><span class="na">unmarshaller</span><span class="o">(</span><span class="nc">Order</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">order</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                    <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Done</span><span class="o">&gt;</span> <span class="n">futureSaved</span> <span class="o">=</span> <span class="n">saveOrder</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+                                    <span class="k">return</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="n">futureSaved</span><span class="o">,</span> <span class="n">done</span> <span class="o">-&gt;</span>
+                                            <span class="n">complete</span><span class="o">(</span><span class="s">"order created"</span><span class="o">)</span>
+                                    <span class="o">);</span>
+                                <span class="o">})))</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="43-创建actorsystemhttp并绑定端口和路由">4.3. 创建ActorSystem、http并绑定端口和路由</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre>        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="s">"27701"</span><span class="o">);</span>
+        <span class="c1">//overrides.put("akka.cluster.roles", Collections.singletonList(role));</span>
+        <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">));</span>
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"routes"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">Http</span> <span class="n">http</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+        <span class="c1">//In order to access all directives we need an instance where the routes are define.</span>
+        <span class="nc">JacksonExample</span> <span class="n">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JacksonExample</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">binding</span> <span class="o">=</span>
+                <span class="n">http</span><span class="o">.</span><span class="na">newServerAt</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">app</span><span class="o">.</span><span class="na">createRoute</span><span class="o">());</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="44-路由使用查询数据和保存数据">4.4. 路由使用查询数据和保存数据</h2>
+
+<p>创建POJ, 注意这里需要解析json字符，构造方法需要使用@JsonCreator</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="rouge-code"><pre>    <span class="nd">@Getter</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;</span> <span class="n">items</span><span class="o">;</span>
+
+        <span class="nd">@JsonCreator</span>
+        <span class="nc">Order</span><span class="o">(</span><span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"items"</span><span class="o">)</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;</span> <span class="n">items</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">items</span> <span class="o">=</span> <span class="n">items</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@Getter</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Item</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+        <span class="nd">@JsonCreator</span>
+        <span class="nc">Item</span><span class="o">(</span><span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+             <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span> <span class="kt">long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这里模拟查询数据如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;&gt;</span> <span class="nf">fetchItem</span><span class="o">(</span><span class="kt">long</span> <span class="n">itemId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">completedFuture</span><span class="o">(</span><span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="k">new</span> <span class="nc">Item</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="n">itemId</span><span class="o">)));</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>模拟保存数据</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1">// (fake) async database query api</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Done</span><span class="o">&gt;</span> <span class="nf">saveOrder</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">completedFuture</span><span class="o">(</span><span class="nc">Done</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="45-完成代码">4.5. 完成代码</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+</pre></td><td class="rouge-code"><pre><span class="kn">package</span> <span class="nn">com.tcfuture.akka.http.jsonsample</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">akka.Done</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.Http</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.ServerBinding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.marshallers.jackson.Jackson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.model.StatusCodes</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.AllDirectives</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.Route</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.fasterxml.jackson.annotation.JsonCreator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.fasterxml.jackson.annotation.JsonProperty</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.Config</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.ConfigFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Getter</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletableFuture</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletionStage</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">akka</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">javadsl</span><span class="o">.</span><span class="na">server</span><span class="o">.</span><span class="na">PathMatchers</span><span class="o">.</span><span class="na">longSegment</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @author liulv
+ *
+ * 一个常见的用例是使用模型对象来答复请求，该模型对象将编组器将其转换为JSON。在这种情况下，显示为两条单独的路线。
+ * 第一条路由查询异步数据库，并将结果编组为JSON响应。第二个从收到的请求中解组一个an ，将其保存到数据库中，并在
+ * 完成后单击OK进行回复。CompletionStage&lt;Optional&lt;Item&gt;&gt;Order
+ *
+ * 运行此服务器时，可以通过 curl http://localhost:8080/create-order -H "Content-Type: application/json" -X POST -d '{"items":[{"name":"hhgtg","id":42}]}'
+ * 终端上的库存更新-添加名为"hhgtg"并具有的项目id=42。然后在浏览器中通过类似http://localhost:8080/item/42
+ * 的URL 或在终端上通过来查看清单curl http://localhost:8080/item/42。
+ *
+ * 在本示例中，用于编组和解组JSON的逻辑由“ Jackson”库提供。见JSON支持），以获取有关该库集成的详细信息
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JacksonExample</span> <span class="kd">extends</span> <span class="nc">AllDirectives</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">// boot up server using the route as defined below</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="s">"27701"</span><span class="o">);</span>
+        <span class="c1">//overrides.put("akka.cluster.roles", Collections.singletonList(role));</span>
+        <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">));</span>
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"routes"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">Http</span> <span class="n">http</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+        <span class="c1">//In order to access all directives we need an instance where the routes are define.</span>
+        <span class="nc">JacksonExample</span> <span class="n">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JacksonExample</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">binding</span> <span class="o">=</span>
+                <span class="n">http</span><span class="o">.</span><span class="na">newServerAt</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">app</span><span class="o">.</span><span class="na">createRoute</span><span class="o">());</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Server online at http://localhost:8080/\nPress RETURN to stop..."</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">.</span><span class="na">read</span><span class="o">();</span> <span class="c1">// let it run until user presses return</span>
+
+        <span class="n">binding</span>
+                <span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="nl">ServerBinding:</span><span class="o">:</span><span class="n">unbind</span><span class="o">)</span> <span class="c1">// trigger unbinding from the port</span>
+                <span class="o">.</span><span class="na">thenAccept</span><span class="o">(</span><span class="n">unbound</span> <span class="o">-&gt;</span> <span class="n">system</span><span class="o">.</span><span class="na">terminate</span><span class="o">());</span> <span class="c1">// and shutdown when done</span>
+    <span class="o">}</span>
+
+    <span class="c1">// (fake) async database query api</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;&gt;</span> <span class="nf">fetchItem</span><span class="o">(</span><span class="kt">long</span> <span class="n">itemId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">completedFuture</span><span class="o">(</span><span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="k">new</span> <span class="nc">Item</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="n">itemId</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="c1">// (fake) async database query api</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Done</span><span class="o">&gt;</span> <span class="nf">saveOrder</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">completedFuture</span><span class="o">(</span><span class="nc">Done</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">pathPrefix</span><span class="o">(</span><span class="s">"item"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                                <span class="n">path</span><span class="o">(</span><span class="n">longSegment</span><span class="o">(),</span> <span class="o">(</span><span class="nc">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                    <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;&gt;</span> <span class="n">futureMaybeItem</span> <span class="o">=</span> <span class="n">fetchItem</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+                                    <span class="k">return</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="n">futureMaybeItem</span><span class="o">,</span> <span class="n">maybeItem</span> <span class="o">-&gt;</span>
+                                            <span class="n">maybeItem</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">item</span> <span class="o">-&gt;</span> <span class="n">completeOK</span><span class="o">(</span><span class="n">item</span><span class="o">,</span> <span class="nc">Jackson</span><span class="o">.</span><span class="na">marshaller</span><span class="o">()))</span>
+                                                    <span class="o">.</span><span class="na">orElseGet</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">,</span> <span class="s">"Not Found"</span><span class="o">))</span>
+                                    <span class="o">);</span>
+                                <span class="o">}))),</span>
+                <span class="n">post</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">path</span><span class="o">(</span><span class="s">"create-order"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                                <span class="n">entity</span><span class="o">(</span><span class="nc">Jackson</span><span class="o">.</span><span class="na">unmarshaller</span><span class="o">(</span><span class="nc">Order</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">order</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                    <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Done</span><span class="o">&gt;</span> <span class="n">futureSaved</span> <span class="o">=</span> <span class="n">saveOrder</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+                                    <span class="k">return</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="n">futureSaved</span><span class="o">,</span> <span class="n">done</span> <span class="o">-&gt;</span>
+                                            <span class="n">complete</span><span class="o">(</span><span class="s">"order created"</span><span class="o">)</span>
+                                    <span class="o">);</span>
+                                <span class="o">})))</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Getter</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Item</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+        <span class="nd">@JsonCreator</span>
+        <span class="nc">Item</span><span class="o">(</span><span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+             <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span> <span class="kt">long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Getter</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;</span> <span class="n">items</span><span class="o">;</span>
+
+        <span class="nd">@JsonCreator</span>
+        <span class="nc">Order</span><span class="o">(</span><span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"items"</span><span class="o">)</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Item</span><span class="o">&gt;</span> <span class="n">items</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">items</span> <span class="o">=</span> <span class="n">items</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="46-测试">4.6. 测试</h2>
+
+<p>运行</p>
+
+<p><img src="https://liulv.work/images/img/20200914140822.png" alt="20200914140822" /></p>
+
+<p>运行此服务器后，可以通过 curl http://localhost:8080/create-order -H “Content-Type: application/json” -X POST -d ‘{“items”:[{“name”:”hhgtg”,”id”:42}]}’
+终端上的库存更新-添加名为”hhgtg”并具有的项目id=42, 如下图</p>
+
+<p><img src="https://liulv.work/images/img/20200914141043.png" alt="20200914141043" /></p>
+
+<p>然后在浏览器中通过类似http://localhost:8080/item/42的URL 或在终端上通过来查看清单curl http://localhost:8080/item/42。</p>
+
+<p>curl测试如下：</p>
+
+<p><img src="https://liulv.work/images/img/20200914141238.png" alt="20200914141238" /></p>
+
+<p>浏览器请求：</p>
+
+<p><img src="https://liulv.work/images/img/20200914141431.png" alt="20200914141431" /></p>
+
+<h1 id="5-streaming">5. Streaming</h1>
+
+<p>Akka HTTP的优势之一是流数据是其核心，这意味着请求和响应主体都可以通过服务器进行流传输，即使对于非常大的请求或响应，也可以实现恒定的内存使用率。流响应将由远程客户端施加压力，因此服务器将不会以比客户端可以处理的速度更快地推送数据，流请求意味着服务器决定远程客户端可以以多快的速度推送请求主体的数据。</p>
+
+<p>只要客户端接受随机流的示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">(){</span>
+        <span class="c1">//随机数</span>
+        <span class="kd">final</span> <span class="nc">Random</span> <span class="n">rnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Random</span><span class="o">();</span>
+        <span class="c1">// 流是可重用的，所以我们可以在这里定义它</span>
+        <span class="c1">// 并对每个请求使用它</span>
+        <span class="nc">Source</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">NotUsed</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="nc">Source</span><span class="o">.</span><span class="na">fromIterator</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="nc">Stream</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span><span class="nl">rnd:</span><span class="o">:</span><span class="n">nextInt</span><span class="o">).</span><span class="na">iterator</span><span class="o">());</span>
+
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span><span class="n">path</span><span class="o">(</span><span class="s">"random"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">complete</span><span class="o">(</span><span class="nc">HttpEntities</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">ContentTypes</span><span class="o">.</span><span class="na">TEXT_PLAIN_UTF8</span><span class="o">,</span>
+                                <span class="c1">//将每个数字转换为字节块</span>
+                                <span class="n">numbers</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">ByteString</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="s">"\n"</span><span class="o">))</span>
+                                <span class="o">))</span>
+                        <span class="o">)</span>
+        <span class="o">));</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>使用慢速的HTTP客户端连接到该服务将产生反压力，以便根据需要在服务器上保持不变的内存使用情况下生成下一个随机数。使用卷曲和限制速率可以看出这一点curl –limit-rate 50b 127.0.0.1:8080/random</p>
+
+<h1 id="6-http与actor交互">6. Http与Actor交互</h1>
+
+<p>这个是我们的核心内容，我们通过发布http，最终通过ask请求act获取response，返回HTTP OK 或 KO的响应体，来达到不同Akka 集群之间actor消息交互效果。</p>
+
+<h2 id="61-示例1-auction">6.1. 示例1-Auction</h2>
+
+<h3 id="611-示例说明">6.1.1. 示例说明</h3>
+
+<p>Akka HTTP路由可以轻松地与参与者进行交互。在此示例中，一条路线允许以即发即弃(actor.tell)的方式发送出价竞标，而第二条路线包含与演员的请求-响应交互，结果响应将呈现为json，并在响应从actor到达时返回。</p>
+
+<p>此示例是模拟一个拍卖竞标信息，需要构建一个内部类拍卖类Auction用于构建Actor, Actor之间交互的信息POJO包含: 竞标者信息Bid（用户ID和中标数offer）、获取竞标信息GetBids（ActorRef<Bids>）、存储拍卖信息Bids（list<Bid>）。
+还需要添加Actor实例存储拍卖信息的参数List<Bid> bids;</Bid></Bid></Bids></p>
+
+<h3 id="612-actor处理">6.1.2. Actor处理</h3>
+
+<p><strong>为此给出内部拍卖信息Actor对象如下, 不使用内部类也可以</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre></td><td class="rouge-code"><pre><span class="kd">static</span> <span class="kd">class</span> <span class="nc">Auction</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="c1">//竞标列表</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Bid</span><span class="o">&gt;</span> <span class="n">bids</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">interface</span> <span class="nc">Message</span> <span class="o">{}</span>
+
+    <span class="c1">//竞标者信息</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="nd">@Getting</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Bid</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">userId</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">offer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//获取竞标信息</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBids</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Bids</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//全部竞标信息</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Bids</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Bid</span><span class="o">&gt;</span> <span class="n">bids</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">Auction</span><span class="o">(</span><span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="nl">Auction:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Bid</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onBid</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">GetBids</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onGetBids</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+        * 开始竞标消息回复，将竞标信息添加到竞标集合中
+        *
+        * @param bid Bid
+        * @return
+        */</span>
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">onBid</span><span class="o">(</span><span class="nc">Bid</span> <span class="n">bid</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">bids</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">bid</span><span class="o">);</span>
+        <span class="n">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"Bid complete: {}, {}"</span><span class="o">,</span> <span class="n">bid</span><span class="o">.</span><span class="na">userId</span><span class="o">,</span> <span class="n">bid</span><span class="o">.</span><span class="na">offer</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+        * 获取当前全部的竞标信息
+        *
+        * @param getBids GetBids
+        * @return Bids-示例中存储的竞标集合构建Bids实例返回
+        */</span>
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">onGetBids</span><span class="o">(</span><span class="nc">GetBids</span> <span class="n">getBids</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">getBids</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Bids</span><span class="o">(</span><span class="n">bids</span><span class="o">));</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="613-创建route">6.1.3. 创建Route</h3>
+
+<p>Route主要有两种情况处理：添加竞标信息、获取当前拍卖信息，分别对应Actor消息处理Auction.Bid、Auction.GetBids。</p>
+<ul>
+  <li>添加竞标信息只是即发即弃tell方式，不需要返回值</li>
+  <li>而获取当前拍卖信息需要获取actor响应，使用ask方法，使用异步处理CompletionStage<Auction.Bids>， 使用completeOKWithFuture(bids, Jackson.marshaller())返回POJO转换为JSON数据响应。</Auction.Bids></li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre> <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+            <span class="n">path</span><span class="o">(</span><span class="s">"auction"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">concat</span><span class="o">(</span>
+                    <span class="n">put</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                            <span class="n">parameter</span><span class="o">(</span><span class="nc">StringUnmarshallers</span><span class="o">.</span><span class="na">INTEGER</span><span class="o">,</span> <span class="s">"bid"</span><span class="o">,</span> <span class="n">bid</span> <span class="o">-&gt;</span>
+                                    <span class="n">parameter</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="n">user</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                        <span class="c1">//竞标，发完即丢弃，不用等待响应</span>
+                                        <span class="n">auction</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Auction</span><span class="o">.</span><span class="na">Bid</span><span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">bid</span><span class="o">));</span>
+                                        <span class="k">return</span> <span class="nf">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">ACCEPTED</span><span class="o">,</span> <span class="s">"bid placed"</span><span class="o">);</span>
+                                    <span class="o">})</span>
+                            <span class="o">)),</span>
+                    <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                        <span class="c1">//向actor查询当前拍卖状态</span>
+                        <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Bids</span><span class="o">&gt;</span> <span class="n">bids</span> <span class="o">=</span> <span class="n">ask</span><span class="o">(</span><span class="n">auction</span><span class="o">,</span> <span class="nc">Auction</span><span class="o">.</span><span class="na">GetBids</span><span class="o">::</span><span class="k">new</span><span class="o">,</span> <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">5</span><span class="o">),</span> <span class="n">system</span><span class="o">.</span><span class="na">scheduler</span><span class="o">());</span>
+                        <span class="k">return</span> <span class="nf">completeOKWithFuture</span><span class="o">(</span><span class="n">bids</span><span class="o">,</span> <span class="nc">Jackson</span><span class="o">.</span><span class="na">marshaller</span><span class="o">());</span>
+                    <span class="o">}))));</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="614-完整示例代码">6.1.4. 完整示例代码</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+</pre></td><td class="rouge-code"><pre><span class="kn">package</span> <span class="nn">com.tcfuture.akka.http.interaction</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.Behavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.AbstractBehavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.ActorContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Receive</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.Http</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.ServerBinding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.marshallers.jackson.Jackson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.model.StatusCodes</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.AllDirectives</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.Route</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.unmarshalling.StringUnmarshallers</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.Config</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.ConfigFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.AllArgsConstructor</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.Duration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletionStage</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">akka</span><span class="o">.</span><span class="na">actor</span><span class="o">.</span><span class="na">typed</span><span class="o">.</span><span class="na">javadsl</span><span class="o">.</span><span class="na">AskPattern</span><span class="o">.</span><span class="na">ask</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Akka HTTP路由可以轻松地与Actor进行交互。在此示例中，一条路线允许以即发即弃的方式放置出价，而第二条路线包含
+ * 与actor的请求-响应交互。结果响应将呈现为json，并在响应从actor到达时返回。
+ *
+ * @author liulv
+ * @since 1.0.0
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpServerActorInteractionExample</span> <span class="kd">extends</span> <span class="nc">AllDirectives</span> <span class="o">{</span>
+
+    <span class="c1">//ActorSystem属性</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="n">system</span><span class="o">;</span>
+    <span class="c1">//ActorRef 拍卖</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="n">auction</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">);</span>
+        <span class="c1">// boot up server using the route as defined below</span>
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Auction</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"routes"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">Http</span> <span class="n">http</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+        <span class="c1">//In order to access all directives we need an instance where the routes are define.</span>
+        <span class="nc">HttpServerActorInteractionExample</span> <span class="n">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpServerActorInteractionExample</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">binding</span> <span class="o">=</span>
+                <span class="n">http</span><span class="o">.</span><span class="na">newServerAt</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">app</span><span class="o">.</span><span class="na">createRoute</span><span class="o">());</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Server online at http://localhost:8080/\nPress RETURN to stop..."</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">.</span><span class="na">read</span><span class="o">();</span> <span class="c1">// let it run until user presses return</span>
+
+        <span class="n">binding</span>
+                <span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="nl">ServerBinding:</span><span class="o">:</span><span class="n">unbind</span><span class="o">)</span> <span class="c1">// trigger unbinding from the port</span>
+                <span class="o">.</span><span class="na">thenAccept</span><span class="o">(</span><span class="n">unbound</span> <span class="o">-&gt;</span> <span class="n">system</span><span class="o">.</span><span class="na">terminate</span><span class="o">());</span> <span class="c1">// and shutdown when done</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nf">HttpServerActorInteractionExample</span><span class="o">(</span><span class="kd">final</span> <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="n">system</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">system</span> <span class="o">=</span> <span class="n">system</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">auction</span> <span class="o">=</span> <span class="n">system</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">createRoute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">path</span><span class="o">(</span><span class="s">"auction"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">concat</span><span class="o">(</span>
+                        <span class="n">put</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                                <span class="n">parameter</span><span class="o">(</span><span class="nc">StringUnmarshallers</span><span class="o">.</span><span class="na">INTEGER</span><span class="o">,</span> <span class="s">"bid"</span><span class="o">,</span> <span class="n">bid</span> <span class="o">-&gt;</span>
+                                        <span class="n">parameter</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="n">user</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                            <span class="c1">//竞标，发完即丢弃，不用等待响应</span>
+                                            <span class="n">auction</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Auction</span><span class="o">.</span><span class="na">Bid</span><span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">bid</span><span class="o">));</span>
+                                            <span class="k">return</span> <span class="nf">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">ACCEPTED</span><span class="o">,</span> <span class="s">"bid placed"</span><span class="o">);</span>
+                                        <span class="o">})</span>
+                                <span class="o">)),</span>
+                        <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                            <span class="c1">//向actor查询当前拍卖状态</span>
+                            <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Bids</span><span class="o">&gt;</span> <span class="n">bids</span> <span class="o">=</span> <span class="n">ask</span><span class="o">(</span><span class="n">auction</span><span class="o">,</span> <span class="nc">Auction</span><span class="o">.</span><span class="na">GetBids</span><span class="o">::</span><span class="k">new</span><span class="o">,</span> <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">5</span><span class="o">),</span> <span class="n">system</span><span class="o">.</span><span class="na">scheduler</span><span class="o">());</span>
+                            <span class="k">return</span> <span class="nf">completeOKWithFuture</span><span class="o">(</span><span class="n">bids</span><span class="o">,</span> <span class="nc">Jackson</span><span class="o">.</span><span class="na">marshaller</span><span class="o">());</span>
+                        <span class="o">}))));</span>
+    <span class="o">}</span>
+
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Auction</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">Auction</span><span class="o">.</span><span class="na">Message</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="c1">//竞标列表</span>
+        <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Bid</span><span class="o">&gt;</span> <span class="n">bids</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+        <span class="kd">interface</span> <span class="nc">Message</span> <span class="o">{}</span>
+
+        <span class="c1">//竞标者信息</span>
+        <span class="nd">@AllArgsConstructor</span>
+        <span class="nd">@Getter</span>
+        <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Bid</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="nc">String</span> <span class="n">userId</span><span class="o">;</span>
+            <span class="kd">final</span> <span class="kt">int</span> <span class="n">offer</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">//获取竞标信息</span>
+        <span class="nd">@AllArgsConstructor</span>
+        <span class="kd">static</span> <span class="kd">class</span> <span class="nc">GetBids</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Bids</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">//全部竞标信息</span>
+        <span class="nd">@AllArgsConstructor</span>
+        <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Bids</span> <span class="o">{</span>
+            <span class="kd">public</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Bid</span><span class="o">&gt;</span> <span class="n">bids</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="nf">Auction</span><span class="o">(</span><span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="nl">Auction:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Bid</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onBid</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">GetBids</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">onGetBids</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="cm">/**
+         * 开始竞标消息回复，将竞标信息添加到竞标集合中
+         *
+         * @param bid Bid
+         * @return
+         */</span>
+        <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">onBid</span><span class="o">(</span><span class="nc">Bid</span> <span class="n">bid</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">bids</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">bid</span><span class="o">);</span>
+            <span class="n">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"Bid complete: {}, {}"</span><span class="o">,</span> <span class="n">bid</span><span class="o">.</span><span class="na">userId</span><span class="o">,</span> <span class="n">bid</span><span class="o">.</span><span class="na">offer</span><span class="o">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="cm">/**
+         * 获取当前全部的竞标信息
+         *
+         * @param getBids GetBids
+         * @return Bids-示例中存储的竞标集合构建Bids实例返回
+         */</span>
+        <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">onGetBids</span><span class="o">(</span><span class="nc">GetBids</span> <span class="n">getBids</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">getBids</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Bids</span><span class="o">(</span><span class="n">bids</span><span class="o">));</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="615-运行测试">6.1.5. 运行测试</h3>
+
+<p><strong>运行main方法进行测试</strong></p>
+
+<p>运行如下图：</p>
+
+<p><img src="https://liulv.work/images/img/20200914162930.png" alt="20200914162930" /></p>
+
+<p><strong>添加拍卖出价（竞标信息）测试</strong></p>
+
+<p>可以curl -X PUT “http://localhost:8080/auction?bid=22&amp;user=MartinO”在终端上通过添加拍卖出价(竞标信息)。</p>
+
+<p><img src="https://liulv.work/images/img/20200914163223.png" alt="20200914163223" /></p>
+
+<p><strong>查看拍卖信息（全部的竞标信息）测试</strong></p>
+
+<p>然后您可以在浏览器中，URL http//localhost:8080/auction上或在终端上通过来查看拍卖状态curl http://localhost:8080/auction。</p>
+
+<p><img src="https://liulv.work/images/img/20200915103120.png" alt="20200915103120" /></p>
+
+<p><img src="https://liulv.work/images/img/20200915103210.png" alt="20200915103210" /></p>
+
+<p>**遇到BUG：将Bis POJO解析json报错无法解析其中属性List<big>，提示无法系列化Big POJO类**</big></p>
+
+<p>Big POJO要作为Bids中list集合属性, 需要添加@Getter, 不然会无法解析Bids中的Bid集合, 报错无法系列化Big类。</p>
+
+<p><img src="https://liulv.work/images/img/20200915103653.png" alt="20200915103653" /></p>
+
+<p><strong>有关JSON编组和解编</strong></p>
+
+<p>有关JSON编组和解编工作方式的更多详细信息，请参见<a href="https://doc.akka.io/docs/akka-http/current/common/json-support.html">JSON支持</a>部分。</p>
+
+<p>在“高级服务器端API”小节中了解有关高级API的详细信息。</p>
+
+<h2 id="62-示例2-job操作">6.2. 示例2-Job操作</h2>
+
+<h3 id="621-示例简介">6.2.1. 示例简介</h3>
+
+<p>我们将创建一个小型Web服务器（Job作业管理），该服务器负责内容有以下3方面内容：</p>
+<ol>
+  <li>记录其状态和持续时间的构建作业Job</li>
+  <li>按ID和状态查询作业</li>
+  <li>清除作业Job历史记录。</li>
+</ol>
+
+<h3 id="622-构建job信息的存储库-与实际actor交互">6.2.2. 构建Job信息的存储库-与实际Actor交互</h3>
+
+<p>构建Actor-JobRepository，Actor交互必不可少必须先添加消息交付需要的POJO.</p>
+
+<p><strong>Job POJO</strong></p>
+
+<p>这里首先需要定义Job POJO，包含主键ID、项目名称、状态、持续时间等属性，并添加Jackson编组和解组JSON支持的配置@JsonFormat、 @JsonProperty、@JsonCreator等注解。Json参数模式使用JsonCreator.Mode.PROPERTIES即指示创建者的参数将不受匹配约束，使用创建者参数名称（显式或隐式）的传入对象值的属性使传入的 Object属性与参数匹配。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre>   <span class="cm">/**
+     * Job json对象
+     */</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="nd">@JsonFormat</span>
+    <span class="nd">@ToString</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Job</span> <span class="o">{</span>
+        <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span>
+        <span class="kd">final</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
+        <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"project-name"</span><span class="o">)</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">projectName</span><span class="o">;</span>
+        <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"status"</span><span class="o">)</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">status</span><span class="o">;</span>
+        <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"duration"</span><span class="o">)</span>
+        <span class="kd">final</span> <span class="nc">Long</span> <span class="n">duration</span><span class="o">;</span>
+
+        <span class="nd">@JsonCreator</span><span class="o">(</span><span class="n">mode</span> <span class="o">=</span> <span class="nc">JsonCreator</span><span class="o">.</span><span class="na">Mode</span><span class="o">.</span><span class="na">PROPERTIES</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nf">Job</span><span class="o">(</span><span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">,</span> <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"project-name"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">projectName</span><span class="o">,</span>
+                   <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"duration"</span><span class="o">)</span> <span class="nc">Long</span> <span class="n">duration</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">projectName</span><span class="o">,</span> <span class="s">"Success"</span><span class="o">,</span> <span class="n">duration</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>Actor消息类型Actor请求成功或失败的响应-Response</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre>  <span class="c1">// 成功和失败响应</span>
+    <span class="kd">interface</span> <span class="nc">Response</span> <span class="o">{}</span>
+
+    <span class="cm">/**
+     * 成功响应OK
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">OK</span> <span class="kd">implements</span> <span class="nc">Response</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="no">OK</span> <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="no">OK</span><span class="o">();</span>
+
+        <span class="kd">private</span> <span class="nf">OK</span><span class="o">()</span> <span class="o">{}</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="no">OK</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="no">INSTANCE</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 失败响应
+     */</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">KO</span> <span class="kd">implements</span> <span class="nc">Response</span> <span class="o">{</span>
+        <span class="c1">//失败原因</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">reason</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>Actor行为类型</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="rouge-code"><pre>    <span class="c1">//可以发送到此行为的所有可能的消息接口, 此actor需要接收的消息都必须继承Command接口</span>
+    <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+     <span class="cm">/**
+     * 添加job
+     */</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">AddJob</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Job</span> <span class="n">job</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Response</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 根据job ID获取Job信息
+     */</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">GetJobById</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Job</span><span class="o">&gt;&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 创建job 实例
+     */</span>
+    <span class="nd">@AllArgsConstructor</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ClearJobs</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">Response</span><span class="o">&gt;</span> <span class="n">replyTo</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>Actor实例-AbstractBehavior</strong></p>
+
+<p>上面已经创建消息交互相关的消息POJO和响应POJO, 那么接下来需要创建抽象行为AbstractBehavior创建Actor并接收处理AddJob、GetJobById、ClearJobs消息。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JobRepository</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     * jobs属性，添加所有添加job信息: Map&lt;jobId, Job&gt;
+     */</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">,</span> <span class="nc">Job</span><span class="o">&gt;</span> <span class="n">jobs</span><span class="o">;</span>
+
+    <span class="cm">/**
+     * 创建 Behavior
+     * @return Behavior&lt;Command&gt;
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">create</span><span class="o">(</span><span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">,</span> <span class="nc">Job</span><span class="o">&gt;());</span>
+    <span class="o">}</span>
+
+     <span class="cm">/**
+     * 创建Behavior 方法
+     * @param jobs Map&lt;Long, Job&gt;
+     * @return Behavior&lt;Command&gt;
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">,</span> <span class="nc">Job</span><span class="o">&gt;</span> <span class="n">jobs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">JobRepository</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">jobs</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Actor 构造函数
+     *
+     * @param context ActorContext&lt;Command&gt;
+     * @param jobs job的map集合
+     */</span>
+    <span class="kd">private</span> <span class="nf">JobRepository</span><span class="o">(</span><span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">,</span> <span class="nc">Job</span><span class="o">&gt;</span> <span class="n">jobs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jobs</span> <span class="o">=</span> <span class="n">jobs</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// 接收处理所有可能的传入消息并将状态job保留在actor中</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Receive</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">createReceive</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">newReceiveBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">AddJob</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">addJob</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">GetJobById</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">getJobById</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">ClearJobs</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">this</span><span class="o">::</span><span class="n">clearJobs</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">//消息处理..</span>
+     <span class="cm">/**
+     * 处理AddJob消息， 如果job已经存在job集合中，响应job已经存在
+     *
+     * @param msg AddJob
+     * @return
+     */</span>
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">addJob</span><span class="o">(</span><span class="nc">AddJob</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">jobId</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="na">job</span><span class="o">.</span><span class="na">id</span><span class="o">;</span>
+        <span class="n">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"actor 添加job {}"</span><span class="o">,</span> <span class="n">msg</span><span class="o">.</span><span class="na">job</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">jobs</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">jobId</span><span class="o">))</span>
+            <span class="n">msg</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="no">KO</span><span class="o">(</span><span class="s">"Job-"</span> <span class="o">+</span> <span class="n">jobId</span> <span class="o">+</span> <span class="s">" 已经存在"</span><span class="o">));</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="n">jobs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">msg</span><span class="o">.</span><span class="na">job</span><span class="o">);</span>
+            <span class="n">msg</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="no">OK</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">same</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">getJobById</span><span class="o">(</span><span class="nc">GetJobById</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">getContext</span><span class="o">().</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"actor 根据id-{}查询job "</span><span class="o">,</span> <span class="n">msg</span><span class="o">.</span><span class="na">id</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">jobs</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">id</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">msg</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">jobs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">id</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">msg</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="nc">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">same</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">clearJobs</span><span class="o">(</span><span class="nc">ClearJobs</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">msg</span><span class="o">.</span><span class="na">replyTo</span><span class="o">.</span><span class="na">tell</span><span class="o">(</span><span class="no">OK</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+        <span class="n">jobs</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">same</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="623-定义route">6.2.3. 定义Route</h3>
+
+<p>定义与先前定义的Actor行为进行通信并处理其所有可能响应的Route.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+</pre></td><td class="rouge-code"><pre><span class="kn">package</span> <span class="nn">com.tcfuture.akka.http.interaction</span><span class="o">;</span>
+
+<span class="c1">//#route</span>
+
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.AskPattern</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.marshallers.jackson.Jackson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.model.StatusCodes</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.AllDirectives</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.Route</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.Duration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletionStage</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">akka</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">javadsl</span><span class="o">.</span><span class="na">unmarshalling</span><span class="o">.</span><span class="na">StringUnmarshallers</span><span class="o">.</span><span class="na">LONG</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @author liulv
+ * @since 1.0.0
+ *
+ * 定义与先前定义的Actor行为进行通信并处理其所有可能响应的Route.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JobRoutes</span> <span class="kd">extends</span> <span class="nc">AllDirectives</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorSystem</span><span class="o">&lt;?&gt;</span> <span class="n">system</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">buildJobRepository</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">JobRoutes</span><span class="o">(</span><span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">buildJobRepository</span><span class="o">,</span> <span class="nc">ActorSystem</span><span class="o">&lt;?&gt;</span> <span class="n">system</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">system</span> <span class="o">=</span> <span class="n">system</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">buildJobRepository</span> <span class="o">=</span> <span class="n">buildJobRepository</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Route</span> <span class="nf">addOrDelete</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span>
+                <span class="n">post</span><span class="o">(()</span> <span class="o">-&gt;</span>
+                        <span class="n">entity</span><span class="o">(</span><span class="nc">Jackson</span><span class="o">.</span><span class="na">unmarshaller</span><span class="o">(</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Job</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">job</span> <span class="o">-&gt;</span>
+                                <span class="n">onSuccess</span><span class="o">(</span><span class="n">add</span><span class="o">(</span><span class="n">job</span><span class="o">),</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">complete</span><span class="o">(</span><span class="s">"Job added"</span><span class="o">))</span>
+                        <span class="o">)),</span>
+                <span class="c1">//删除</span>
+                <span class="n">delete</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">onSuccess</span><span class="o">(</span><span class="n">deleteAll</span><span class="o">(),</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">complete</span><span class="o">(</span><span class="s">"Jobs cleared"</span><span class="o">)))</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 根据Job构建AddJob消息请求Ask, Ask响应通过handleKO方法处理后返回
+     *
+     * @param job Job
+     * @return CompletionStage CompletionStage&lt;JobRepository.OK&gt;
+     */</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">OK</span><span class="o">&gt;</span> <span class="nf">add</span><span class="o">(</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Job</span> <span class="n">job</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">handleKO</span><span class="o">(</span><span class="nc">AskPattern</span><span class="o">.</span><span class="na">ask</span><span class="o">(</span>
+                <span class="n">buildJobRepository</span><span class="o">,</span>
+                <span class="n">replyTo</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">JobRepository</span><span class="o">.</span><span class="na">AddJob</span><span class="o">(</span><span class="n">job</span><span class="o">,</span> <span class="n">replyTo</span><span class="o">),</span>
+                <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">3</span><span class="o">),</span>
+                <span class="n">system</span><span class="o">.</span><span class="na">scheduler</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 构建ClearJobs消息请求Ask, Ask响应通过handleKO方法处理后返回
+     *
+     * @return CompletionStage CompletionStage&lt;JobRepository.OK&gt;
+     */</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">OK</span><span class="o">&gt;</span> <span class="nf">deleteAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">handleKO</span><span class="o">(</span><span class="nc">AskPattern</span><span class="o">.</span><span class="na">ask</span><span class="o">(</span>
+                <span class="n">buildJobRepository</span><span class="o">,</span>
+                <span class="nc">JobRepository</span><span class="o">.</span><span class="na">ClearJobs</span><span class="o">::</span><span class="k">new</span><span class="o">,</span>
+                <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">3</span><span class="o">),</span>
+                <span class="n">system</span><span class="o">.</span><span class="na">scheduler</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 构建Ask请求的路由Route
+     *
+     * @return Route
+     */</span>
+    <span class="kd">public</span> <span class="nc">Route</span> <span class="nf">jobRoutes</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">pathPrefix</span><span class="o">(</span><span class="s">"jobs"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+                <span class="n">concat</span><span class="o">(</span>
+                        <span class="n">pathEnd</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">addOrDelete</span><span class="o">),</span> <span class="c1">//子路由</span>
+                        <span class="n">get</span><span class="o">(()</span> <span class="o">-&gt;</span>     <span class="c1">//jobs/long路由</span>
+                                <span class="n">path</span><span class="o">(</span><span class="no">LONG</span><span class="o">,</span> <span class="n">jobId</span> <span class="o">-&gt;</span>
+                                        <span class="n">onSuccess</span><span class="o">(</span><span class="n">getJob</span><span class="o">(</span><span class="n">jobId</span><span class="o">),</span> <span class="n">jobOption</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                                            <span class="k">if</span> <span class="o">(</span><span class="n">jobOption</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+                                                <span class="k">return</span> <span class="nf">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">OK</span><span class="o">,</span> <span class="n">jobOption</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">Jackson</span><span class="o">.&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Job</span><span class="o">&gt;</span><span class="n">marshaller</span><span class="o">());</span>
+                                            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                                                <span class="k">return</span> <span class="nf">complete</span><span class="o">(</span><span class="nc">StatusCodes</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">,</span> <span class="s">"job-"</span> <span class="o">+</span> <span class="n">jobId</span> <span class="o">+</span>
+                                                        <span class="s">"不存在"</span><span class="o">);</span>
+                                            <span class="o">}</span>
+                                        <span class="o">})</span>
+                                <span class="o">)</span>
+                        <span class="o">)</span>
+                <span class="o">)</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 根据JobId构建Actor Ask的请求
+     *
+     * @param jobId Job ID
+     * @return CompletionStage&lt;Optional&lt;JobRepository.Job&gt;&gt;
+     */</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Job</span><span class="o">&gt;&gt;</span> <span class="nf">getJob</span><span class="o">(</span><span class="nc">Long</span> <span class="n">jobId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">AskPattern</span><span class="o">.</span><span class="na">ask</span><span class="o">(</span>
+                <span class="n">buildJobRepository</span><span class="o">,</span>
+                <span class="n">replyTo</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">JobRepository</span><span class="o">.</span><span class="na">GetJobById</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">replyTo</span><span class="o">),</span>
+                <span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">3</span><span class="o">),</span>
+                <span class="n">system</span><span class="o">.</span><span class="na">scheduler</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     *  处理Actor Ask请求的响应，异常处理失败原因或返回CompletionStage&lt;JobRepository.OK&gt;
+     *
+     * @param stage Actor Ask响应 CompletionStage&lt;JobRepository.Response&gt;
+     * @return CompletionStage&lt;JobRepository.OK&gt;
+     */</span>
+    <span class="kd">private</span> <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">OK</span><span class="o">&gt;</span> <span class="nf">handleKO</span><span class="o">(</span><span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Response</span><span class="o">&gt;</span> <span class="n">stage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">stage</span><span class="o">.</span><span class="na">thenApply</span><span class="o">(</span><span class="n">response</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">response</span> <span class="k">instanceof</span> <span class="nc">JobRepository</span><span class="o">.</span><span class="na">OK</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">(</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">OK</span><span class="o">)</span><span class="n">response</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">response</span> <span class="k">instanceof</span> <span class="nc">JobRepository</span><span class="o">.</span><span class="na">KO</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(((</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">KO</span><span class="o">)</span> <span class="n">response</span><span class="o">).</span><span class="na">reason</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span><span class="s">"Invalid response"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="624-创建根actor">6.2.4. 创建根Actor</h3>
+
+<p>我们创建一个actor系统的根行为Behavior用于引导Web服务器并使用它运行。</p>
+<ol>
+  <li>main方法创建了Config作为参数</li>
+  <li>然后通过ActorSystem.create方法创建ActorSyste</li>
+  <li>调用create()创建Behavior并创建HttpServer</li>
+  <li>并将创建的CompletionStage<ServerBinding> 情况发送给自己，如果ServerBinding不为空则发送Started(binding)消息给自己，否则发送StartFailed(failure)给自己。</ServerBinding></li>
+  <li>最终调用starting(false)创建Behavior
+    <ul>
+      <li>接收StartFailed消息则抛出异常-服务器启动失败</li>
+      <li>接收Started消息则打印服务启动情况，如果参数为wasStopped为true则发送Stop消息给自己，获取Started消息中ServerBinding传递给running方法创建Actor</li>
+      <li>接收Stop消息，调用starting(true)方法</li>
+    </ul>
+  </li>
+  <li>5步骤调用了running方法停止Actor，接收到Stop消息，则停止Actor并，onSignal(PostStop..即为停止actor后处理，这里解绑ServerBinding</li>
+</ol>
+
+<p>注意：</p>
+<ul>
+  <li>最终创建Actor是通过running方法，中间都是接收消息处理等</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+</pre></td><td class="rouge-code"><pre><span class="kn">package</span> <span class="nn">com.tcfuture.akka.http.interaction</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorRef</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.ActorSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.Behavior</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.PostStop</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.BehaviorBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.actor.typed.javadsl.Behaviors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.Http</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.ServerBinding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">akka.http.javadsl.server.Route</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.Config</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.typesafe.config.ConfigFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletionStage</span><span class="o">;</span>
+
+<span class="cm">/**
+ * 依赖JobRoutes、JobRepository
+ *
+ * 最后，我们创建一个引导Web服务器并使用它作为actor系统的根行为：Behavior
+ *
+ * @author liulv
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JobAppSample</span> <span class="o">{</span>
+
+    <span class="kd">interface</span> <span class="nc">Message</span> <span class="o">{}</span>
+
+    <span class="cm">/**
+     * 启动失败消息
+     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">StartFailed</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Throwable</span> <span class="n">ex</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">StartFailed</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">ex</span> <span class="o">=</span> <span class="n">ex</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 已启动
+     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Started</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">ServerBinding</span> <span class="n">binding</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Started</span><span class="o">(</span><span class="nc">ServerBinding</span> <span class="n">binding</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">binding</span> <span class="o">=</span> <span class="n">binding</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Stop</span> <span class="kd">implements</span> <span class="nc">Message</span> <span class="o">{}</span>
+
+    <span class="cm">/**
+     * 创建root Actor - ActorSystem
+     * 并创建子JobRepository、JobRoutes构建Route
+     *
+     * @param host http的ip地址
+     * @param port http的端口
+     * @return Behavior&lt;Message&gt;
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nc">String</span> <span class="n">host</span><span class="o">,</span> <span class="nc">Integer</span> <span class="n">port</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">();</span>
+            <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="n">buildJobRepository</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">JobRepository</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"JobRepository"</span><span class="o">);</span>
+            <span class="nc">Route</span> <span class="n">routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JobRoutes</span><span class="o">(</span><span class="n">buildJobRepository</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">()).</span><span class="na">jobRoutes</span><span class="o">();</span>
+
+            <span class="nc">CompletionStage</span><span class="o">&lt;</span><span class="nc">ServerBinding</span><span class="o">&gt;</span> <span class="n">serverBinding</span> <span class="o">=</span>
+                    <span class="nc">Http</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">).</span><span class="na">newServerAt</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">).</span><span class="na">bind</span><span class="o">(</span><span class="n">routes</span><span class="o">);</span>
+
+            <span class="c1">//修改后，将给定的第一个参数CompletionStage的结果发送给该Actor（“self”）给定的功能。</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">pipeToSelf</span><span class="o">(</span><span class="n">serverBinding</span><span class="o">,</span> <span class="o">(</span><span class="n">binding</span><span class="o">,</span> <span class="n">failure</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">binding</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="k">new</span> <span class="nc">Started</span><span class="o">(</span><span class="n">binding</span><span class="o">);</span>
+                <span class="k">else</span> <span class="k">return</span> <span class="k">new</span> <span class="nf">StartFailed</span><span class="o">(</span><span class="n">failure</span><span class="o">);</span>
+            <span class="o">});</span>
+
+            <span class="k">return</span> <span class="nf">starting</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 启动Actor方法，接收各种消息并最终调用自己或running方法创建Behavior，其最终都是调用running方法创建
+     * Behavior
+     *
+     * @param wasStopped 是否停止Actor，为true是停止actor暂时无意义，启动就马上停止有什么意义
+     * @return Behavior&lt;Message&gt;
+     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">starting</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">wasStopped</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span>
+                <span class="nc">BehaviorBuilder</span><span class="o">.&lt;</span><span class="nc">Message</span><span class="o">&gt;</span><span class="n">create</span><span class="o">()</span>
+                        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">StartFailed</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">failed</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"服务器启动失败"</span><span class="o">,</span> <span class="n">failed</span><span class="o">.</span><span class="na">ex</span><span class="o">);</span>
+                        <span class="o">})</span>
+                        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Started</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">msg</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                            <span class="n">context</span><span class="o">.</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span>
+                                    <span class="s">"Server online at http://{}:{}"</span><span class="o">,</span>
+                                    <span class="n">msg</span><span class="o">.</span><span class="na">binding</span><span class="o">.</span><span class="na">localAddress</span><span class="o">().</span><span class="na">getAddress</span><span class="o">(),</span>
+                                    <span class="n">msg</span><span class="o">.</span><span class="na">binding</span><span class="o">.</span><span class="na">localAddress</span><span class="o">().</span><span class="na">getPort</span><span class="o">());</span>
+
+                            <span class="k">if</span> <span class="o">(</span><span class="n">wasStopped</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSelf</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">Stop</span><span class="o">());</span>
+
+                            <span class="k">return</span> <span class="nf">running</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">binding</span><span class="o">);</span>
+                        <span class="o">})</span>
+                        <span class="o">.</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Stop</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                            <span class="c1">//我们收到了停止消息，但尚未完成开始，</span>
+                            <span class="c1">//我们无法停止，直到开始完成</span>
+                            <span class="k">return</span> <span class="nf">starting</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+                        <span class="o">})</span>
+                        <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 最终创建Behavior Actor
+     *
+     * @param binding ServerBinding Http服务绑定信息
+     * @return Behavior&lt;Message&gt;
+     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="nf">running</span><span class="o">(</span><span class="nc">ServerBinding</span> <span class="n">binding</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span>
+                    <span class="nc">BehaviorBuilder</span><span class="o">.&lt;</span><span class="nc">Message</span><span class="o">&gt;</span><span class="n">create</span><span class="o">().</span><span class="na">onMessage</span><span class="o">(</span><span class="nc">Stop</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">msg</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="n">context</span><span class="o">.</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"Behaviors 停止..."</span><span class="o">);</span>
+                    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">stopped</span><span class="o">();</span>
+                <span class="o">}).</span><span class="na">onSignal</span><span class="o">(</span><span class="nc">PostStop</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">msg</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="n">context</span><span class="o">.</span><span class="na">getLog</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"ServerBinding 解绑..."</span><span class="o">);</span>
+                    <span class="n">binding</span><span class="o">.</span><span class="na">unbind</span><span class="o">();</span>
+                    <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">same</span><span class="o">();</span>
+                <span class="o">}).</span><span class="na">build</span><span class="o">()</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="mi">27703</span><span class="o">);</span>
+        <span class="c1">//overrides.put("akka.cluster.roles", Collections.singletonList(role));</span>
+
+        <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"http_test"</span><span class="o">));</span>
+
+
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Message</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span>
+                <span class="nc">JobAppSample</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">),</span> <span class="s">"BuildJobsServer"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="625-运行测试">6.2.5. 运行测试</h3>
+
+<p><strong>运行启动</strong></p>
+
+<p>直接运行根actor类上的main方法即可，运行结果如下图：
+<img src="https://liulv.work/images/img/20200915150830.png" alt="20200915150830" /></p>
+
+<p><strong>新增Job测试</strong></p>
+
+<p>创建Job JSON文件http_job.json, 内容如下</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project-name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"测试2"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>通过CD命令到json文件目录，然后执行如curl命令</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">dirname</span> <span class="nv">$0</span><span class="si">)</span><span class="s2">"</span>
+curl http://localhost:8080/jobs <span class="nt">-X</span> POST <span class="nt">-d</span> @http_job.json <span class="nt">--header</span> <span class="s2">"Content-Type:application/json"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>执行几个如下图，新增成功</p>
+
+<p><img src="https://liulv.work/images/img/20200915151330.png" alt="20200915151330" /></p>
+
+<p><strong>通过ID查询Job信息</strong></p>
+
+<p>直接通过浏览器或者curl命令<code class="language-plaintext highlighter-rouge">curl http://localhost:8080/jobs/2</code>, 其中的2为jobId根据实际创建的json中id调整，结果出下图：</p>
+
+<p><img src="https://liulv.work/images/img/20200915151652.png" alt="20200915151652" /></p>
+
+<p><strong>删除Job信息</strong></p>
+
+<p>调用<code class="language-plaintext highlighter-rouge">curl http://localhost:8080/jobs -X DELETE</code></p>
+
+<p><img src="https://liulv.work/images/img/20200915152121.png" alt="20200915152121" /></p>
+
+<p>再次调用通过ID查询Job信息<code class="language-plaintext highlighter-rouge">curl http://localhost:8080/jobs/2</code>检查，正常情况会提示查询的ID的Job不存在，如下图</p>
+
+<p><img src="https://liulv.work/images/img/20200915152646.png" alt="20200915152646" /></p>
+
+:ET
