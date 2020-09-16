@@ -65,6 +65,14 @@
     } ,
   
     {
+      "title"    : "Akka创建Actor",
+      "subtitle" : "「AKKA」- 2.6.8",
+      "tags"     : "Akka, Akka create actor",
+      "url"      : "/2020/08/17/akka-create-actor/",
+      "date"     : "2020-08-17 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Akka 集群示例",
       "subtitle" : "「AKKA官方文档」- 2.6.8",
       "tags"     : "Akka, Akka cluster, Akka cluster example",

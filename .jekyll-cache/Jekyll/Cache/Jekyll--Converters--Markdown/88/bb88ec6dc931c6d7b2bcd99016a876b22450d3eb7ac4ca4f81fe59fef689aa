@@ -1,0 +1,44 @@
+I"�<h1 id="简单介绍">简单介绍</h1>
+
+<p>在新版的Akka中，创建Actor是我们最常用的，而创建Actor使用新版的AbstractBehavior<POJO>有两种常用的方式创建，太常用了所以单独列出两种创建Actor的示例。</POJO></p>
+
+<h1 id="创建actor的方式">创建Actor的方式</h1>
+
+<p>创建Actor新版本支持以下两种方式创建：</p>
+<ul>
+  <li>传统的继承AbstractBehavior<POJO>方式</POJO></li>
+  <li>方法直接函数式构造创建</li>
+</ul>
+
+<h1 id="传统的继承abstractbehavior方式">传统的继承AbstractBehavior<POJO>方式</POJO></h1>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ActorTest</span> <span class="kd">extends</span> <span class="nc">AbstractBehavior</span><span class="o">&lt;</span><span class="nc">ActorTest</span><span class="o">.</span><span class="na">Command</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="c1">//先定义Actor消息类型接口</span>
+    <span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{}</span>
+
+    <span class="c1">//创建actor入口方法</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Command</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">CustomerRepository</span><span class="o">(</span><span class="n">context</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    
+
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="方法直接函数式构造创建">方法直接函数式构造创建</h1>
+:ET
