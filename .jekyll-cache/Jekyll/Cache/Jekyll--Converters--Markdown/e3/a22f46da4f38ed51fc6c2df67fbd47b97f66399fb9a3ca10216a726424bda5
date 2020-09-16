@@ -1,0 +1,226 @@
+I"d+<h1 id="1-前台maven依赖">1. 前台Maven依赖</h1>
+
+<p>开发Akka集群可使用Maven添加最低依赖配置如下</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;properties&gt;</span>
+        <span class="nt">&lt;akka.version&gt;</span>2.6.8<span class="nt">&lt;/akka.version&gt;</span>
+        <span class="nt">&lt;scala.binary.version&gt;</span>2.13<span class="nt">&lt;/scala.binary.version&gt;</span>
+        <span class="nt">&lt;lombok.version&gt;</span>1.18.12<span class="nt">&lt;/lombok.version&gt;</span>
+        <span class="nt">&lt;logback.version&gt;</span>1.2.3<span class="nt">&lt;/logback.version&gt;</span>
+        <span class="nt">&lt;junit.version&gt;</span>4.12<span class="nt">&lt;/junit.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+
+<span class="nt">&lt;dependencies&gt;</span>
+  <span class="c">&lt;!-- lombok --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.projectlombok<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>lombok<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${lombok.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- logback --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${logback.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- akka actor typed --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>akka-actor-typed_2.13<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- akka actor test --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>akka-actor-testkit-typed_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="c">&lt;!--&lt;scope&gt;test&lt;/scope&gt;--&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- akka remote --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>akka-remote_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;scope&gt;</span>compile<span class="nt">&lt;/scope&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- akka cluster --&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>akka-cluster-typed_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="c">&lt;!-- akka serialization jackson--&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>com.typesafe.akka<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>akka-serialization-jackson_${scala.binary.version}<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${akka.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+<span class="err">&lt;</span>/&gt;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2--hello-akkacluster示例">2.  Hello AkkaCluster示例</h1>
+
+<h2 id="最小集群配置如下">最小集群配置如下</h2>
+
+<p>最小的Akka集群示例，配置如下</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="rouge-code"><pre><span class="n">akka</span> { 
+  <span class="n">actor</span>.<span class="n">provider</span> = <span class="n">cluster</span> 
+  <span class="n">remote</span>.<span class="n">artery</span> { 
+    <span class="n">canonical</span> { 
+      <span class="n">hostname</span> = <span class="s2">"127.0.0.1"</span> 
+      <span class="n">port</span> = <span class="m">2551</span> 
+    } 
+  } 
+} 
+``
+
+可直接解析生成<span class="n">Akka</span> <span class="n">Config</span>，也可配置到<span class="n">application</span>.<span class="n">conf</span>，默认创建<span class="n">ActorSystem</span>如果未指定<span class="n">Config</span>会加载<span class="n">application</span>.<span class="n">conf</span>配置。也可配置其他<span class="n">conf</span>文件配置，通过<span class="n">ConfigFactory</span>.<span class="n">load</span>加载配置文件创建<span class="n">Config</span>。
+
+
+示例中使用直接<span class="n">String</span>方法创建<span class="n">Config</span>配置并覆盖`<span class="n">akka</span>.<span class="n">remote</span>.<span class="n">classic</span>.<span class="n">netty</span>.<span class="n">tcp</span>.<span class="n">port</span>`和`<span class="n">akka</span>.<span class="n">remote</span>.<span class="n">artery</span>.<span class="n">canonical</span>.<span class="n">port</span>`配置，如下：
+
+```<span class="n">java</span>
+ <span class="n">private</span> <span class="n">Config</span> <span class="n">clusterConfig</span> =
+            <span class="n">ConfigFactory</span>.<span class="n">parseString</span>(
+                    <span class="s2">"akka { \n"</span>
+                            + <span class="s2">"  actor.provider = cluster \n"</span>
+                            + <span class="s2">"  remote.artery { \n"</span>
+                            + <span class="s2">"    canonical { \n"</span>
+                            + <span class="s2">"      hostname = \"</span><span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>\<span class="s2">" \n"</span>
+                            + <span class="s2">"      port = 2551 \n"</span>
+                            + <span class="s2">"    } \n"</span>
+                            + <span class="s2">"  } \n"</span>
+                            + <span class="s2">"}  \n"</span>);
+    <span class="n">private</span> <span class="n">Config</span> <span class="n">noPort</span> =
+            <span class="n">ConfigFactory</span>.<span class="n">parseString</span>(
+                    <span class="s2">"      akka.remote.classic.netty.tcp.port = 0 \n"</span>
+                            + <span class="s2">"      akka.remote.artery.canonical.port = 0 \n"</span>
+                            + <span class="s2">"      akka.cluster.jmx.multi-mbeans-in-same-jvm = on \n"</span>
+                            );
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p><strong>注意</strong></p>
+  <blockquote>
+    <p>为了测试需要，我们设置支持同一个JVM进程允许启动多个集群，需要配置akka.cluster.jmx.multi-mbeans-in-same-jvm = on</p>
+  </blockquote>
+</blockquote>
+
+<h2 id="根据配置创建actorsystem">根据配置创建ActorSystem</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span>
+                <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"ClusterSystem"</span><span class="o">,</span> <span class="n">noPort</span><span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="n">clusterConfig</span><span class="o">));</span>
+
+<span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">system2</span> <span class="o">=</span>
+        <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"ClusterSystem2"</span><span class="o">,</span> <span class="n">noPort</span><span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="n">clusterConfig</span><span class="o">));</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="创建集群">创建集群</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>  <span class="c1">// #cluster-create</span>
+  <span class="nc">Cluster</span> <span class="n">cluster</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+  <span class="c1">// #cluster-create</span>
+  <span class="nc">Cluster</span> <span class="n">cluster2</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system2</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

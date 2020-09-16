@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 15 Sep 2020 15:31:13 +0800</pubDate>
-    <lastBuildDate>Tue, 15 Sep 2020 15:31:13 +0800</lastBuildDate>
+    <pubDate>Tue, 15 Sep 2020 17:01:26 +0800</pubDate>
+    <lastBuildDate>Tue, 15 Sep 2020 17:01:26 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -3141,6 +3141,322 @@ index.html 网站的入口&lt;/p&gt;
       </item>
     
       <item>
+        <title>Akka 集群示例</title>
+        <description>&lt;h1 id=&quot;1-前台maven依赖&quot;&gt;1. 前台Maven依赖&lt;/h1&gt;
+
+&lt;p&gt;开发Akka集群可使用Maven添加最低依赖配置如下&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;akka.version&amp;gt;&lt;/span&gt;2.6.8&lt;span class=&quot;nt&quot;&gt;&amp;lt;/akka.version&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;scala.binary.version&amp;gt;&lt;/span&gt;2.13&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scala.binary.version&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;lombok.version&amp;gt;&lt;/span&gt;1.18.12&lt;span class=&quot;nt&quot;&gt;&amp;lt;/lombok.version&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;logback.version&amp;gt;&lt;/span&gt;1.2.3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/logback.version&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;junit.version&amp;gt;&lt;/span&gt;4.12&lt;span class=&quot;nt&quot;&gt;&amp;lt;/junit.version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- lombok --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.projectlombok&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;lombok&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${lombok.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- logback --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;ch.qos.logback&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;logback-classic&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${logback.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka actor typed --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-actor-typed_2.13&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka actor test --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-actor-testkit-typed_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;c&quot;&gt;&amp;lt;!--&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;--&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka remote --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-remote_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka cluster --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-cluster-typed_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka serialization jackson--&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-serialization-jackson_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;/&amp;gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;2-hello-akkacluster示例&quot;&gt;2. Hello AkkaCluster示例&lt;/h1&gt;
+
+&lt;h2 id=&quot;21-最小集群配置如下&quot;&gt;2.1. 最小集群配置如下&lt;/h2&gt;
+
+&lt;p&gt;最小的Akka集群示例，配置如下&lt;/p&gt;
+
+&lt;div class=&quot;language-conf highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;akka&lt;/span&gt; { 
+  &lt;span class=&quot;n&quot;&gt;actor&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;provider&lt;/span&gt; = &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; 
+  &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;artery&lt;/span&gt; { 
+    &lt;span class=&quot;n&quot;&gt;canonical&lt;/span&gt; { 
+      &lt;span class=&quot;n&quot;&gt;hostname&lt;/span&gt; = &lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt; 
+      &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; = &lt;span class=&quot;m&quot;&gt;2551&lt;/span&gt; 
+    } 
+  } 
+} 
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可直接解析生成Akka Config，也可配置到application.conf，默认创建ActorSystem如果未指定Config会加载application.conf配置。也可配置其他conf文件配置，通过ConfigFactory.load加载配置文件创建Config。&lt;/p&gt;
+
+&lt;p&gt;示例中使用直接String方法创建Config配置并覆盖&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.remote.classic.netty.tcp.port&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.remote.artery.canonical.port&lt;/code&gt;配置，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Config&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                    &lt;span class=&quot;s&quot;&gt;&quot;akka { \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  actor.provider = cluster \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  remote.artery { \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;    canonical { \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      hostname = \&quot;127.0.0.1\&quot; \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      port = 2551 \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;    } \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  } \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;}  \n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Config&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                    &lt;span class=&quot;s&quot;&gt;&quot;      akka.remote.classic.netty.tcp.port = 0 \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      akka.remote.artery.canonical.port = 0 \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      akka.cluster.jmx.multi-mbeans-in-same-jvm = on \n&quot;&lt;/span&gt;
+                            &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;为了测试需要，我们设置支持同一个JVM进程允许启动多个集群，需要配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.cluster.jmx.multi-mbeans-in-same-jvm = on&lt;/code&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;22-根据配置创建actorsystem&quot;&gt;2.2. 根据配置创建ActorSystem&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+                &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;23-创建加入离开集群&quot;&gt;2.3. 创建、加入、离开集群&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// #cluster-create&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// #cluster-join&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// TODO wait for/verify cluster to form&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// #cluster-leave&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Leave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Leave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// TODO wait for/verify node 2 leaving&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// #actorSystem-terminate终止&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;terminate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;terminate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;24-测试集群创建加入离开&quot;&gt;2.4. 测试集群创建、加入、离开&lt;/h2&gt;
+
+&lt;p&gt;直接@test测试，测试运行结果如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-log&quot;&gt;SLF4J: A number (1) of logging calls during the initialization phase have been intercepted and are
+SLF4J: now being replayed. These are subject to the filtering rules of the underlying logging system.
+SLF4J: See also http://www.slf4j.org/codes.html#replay
+[2020-09-15 16:51:27,369] [INFO] [akka.event.slf4j.Slf4jLogger] [ClusterSystem-akka.actor.default-dispatcher-3] [] - Slf4jLogger started
+[2020-09-15 16:51:28,049] [INFO] [akka.remote.artery.tcp.ArteryTcpTransport] [ClusterSystem-akka.actor.default-dispatcher-3] [ArteryTcpTransport(akka://ClusterSystem)] - Remoting started with transport [Artery tcp]; listening on address [akka://ClusterSystem@127.0.0.1:64600] with UID [4688141471941267513]
+[2020-09-15 16:51:28,089] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Starting up, Akka version [2.6.8] ...
+[2020-09-15 16:51:28,288] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Registered cluster JMX MBean [akka:type=Cluster,port=64600]
+[2020-09-15 16:51:28,288] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Started up successfully
+[2020-09-15 16:51:28,326] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - No downing-provider-class configured, manual cluster downing required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#downing
+[2020-09-15 16:51:28,327] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - No seed-nodes configured, manual cluster join required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#joining
+[2020-09-15 16:51:29,704] [INFO] [akka.event.slf4j.Slf4jLogger] [ClusterSystem2-akka.actor.default-dispatcher-3] [] - Slf4jLogger started
+[2020-09-15 16:51:29,745] [INFO] [akka.remote.artery.tcp.ArteryTcpTransport] [ClusterSystem2-akka.actor.default-dispatcher-3] [ArteryTcpTransport(akka://ClusterSystem2)] - Remoting started with transport [Artery tcp]; listening on address [akka://ClusterSystem2@127.0.0.1:64609] with UID [420093861921554813]
+[2020-09-15 16:51:29,747] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Starting up, Akka version [2.6.8] ...
+[2020-09-15 16:51:29,758] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Registered cluster JMX MBean [akka:type=Cluster,port=64609]
+[2020-09-15 16:51:29,758] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Started up successfully
+[2020-09-15 16:51:29,767] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - No downing-provider-class configured, manual cluster downing required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#downing
+[2020-09-15 16:51:29,768] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - No seed-nodes configured, manual cluster join required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#joining
+
+[2020-09-15 16:51:29,892] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Node [akka://ClusterSystem@127.0.0.1:64600] is JOINING itself (with roles [dc-default]) and forming new cluster
+[2020-09-15 16:51:29,892] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Node [akka://ClusterSystem2@127.0.0.1:64609] is JOINING itself (with roles [dc-default]) and forming new cluster
+[2020-09-15 16:51:29,898] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - is the new leader among reachable nodes (more leaders may exist)
+[2020-09-15 16:51:29,898] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - is the new leader among reachable nodes (more leaders may exist)
+[2020-09-15 16:51:29,917] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Leader is moving node [akka://ClusterSystem@127.0.0.1:64600] to [Up]
+[2020-09-15 16:51:29,917] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Leader is moving node [akka://ClusterSystem2@127.0.0.1:64609] to [Up]
+[2020-09-15 16:51:29,931] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Marked address [akka://ClusterSystem@127.0.0.1:64600] as [Leaving]
+[2020-09-15 16:51:29,933] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-15] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Marked address [akka://ClusterSystem2@127.0.0.1:64609] as [Leaving]
+[2020-09-15 16:51:30,365] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Leader is moving node [akka://ClusterSystem@127.0.0.1:64600] to [Exiting]
+[2020-09-15 16:51:30,369] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Exiting completed
+[2020-09-15 16:51:30,371] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Shutting down...
+[2020-09-15 16:51:30,373] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Successfully shut down
+[2020-09-15 16:51:30,391] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Shutting down remote daemon.
+[2020-09-15 16:51:30,394] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Remote daemon shut down; proceeding with flushing remote transports.
+[2020-09-15 16:51:30,419] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Remoting shut down.
+[2020-09-15 16:51:30,778] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Leader is moving node [akka://ClusterSystem2@127.0.0.1:64609] to [Exiting]
+[2020-09-15 16:51:30,779] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Exiting completed
+[2020-09-15 16:51:30,779] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Shutting down...
+[2020-09-15 16:51:30,780] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Successfully shut down
+[2020-09-15 16:51:30,789] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem2-akka.actor.default-dispatcher-15] [akka://ClusterSystem2@127.0.0.1:64609/system/remoting-terminator] - Shutting down remote daemon.
+[2020-09-15 16:51:30,789] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem2-akka.actor.default-dispatcher-15] [akka://ClusterSystem2@127.0.0.1:64609/system/remoting-terminator] - Remote daemon shut down; proceeding with flushing remote transports.
+[2020-09-15 16:51:30,791] [INFO] [akka.actor.LocalActorRef] [ClusterSystem2-akka.actor.default-dispatcher-16] [akka://ClusterSystem2/system/cluster/core/publisher] - Message [akka.cluster.InternalClusterAction$PublishChanges] from Actor[akka://ClusterSystem2/system/cluster/core/daemon#-964571468] to Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] was not delivered. [1] dead letters encountered. If this is not an expected behavior then Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] may have terminated unexpectedly. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+
+Process finished with exit code 0
+
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Sat, 15 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/08/15/akka-cluster-example/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/08/15/akka-cluster-example/</guid>
+        
+        <category>Akka</category>
+        
+        <category>Akka cluster</category>
+        
+        <category>Akka cluster example</category>
+        
+        
+      </item>
+    
+      <item>
         <title>DataX-Job配置说明</title>
         <description>&lt;h1 id=&quot;配置1&quot;&gt;配置1&lt;/h1&gt;
 </description>
@@ -3151,17 +3467,6 @@ index.html 网站的入口&lt;/p&gt;
         <category>DataX</category>
         
         <category>数字贵阳</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Datax Bigdata Tbds</title>
-        <description>
-</description>
-        <pubDate>Fri, 14 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2020/08/14/datax-bigdata-tbds/</link>
-        <guid isPermaLink="true">http://localhost:4000/2020/08/14/datax-bigdata-tbds/</guid>
         
         
       </item>

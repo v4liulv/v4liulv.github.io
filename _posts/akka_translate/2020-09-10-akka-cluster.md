@@ -158,7 +158,7 @@ List<Address> seedNodes = new ArrayList<>();
 seedNodes.add(AddressFromURIString.parse("akka://ClusterSystem@127.0.0.1:2551"));
 seedNodes.add(AddressFromURIString.parse("akka://ClusterSystem@127.0.0.1:2552"));
 
-Cluster.get(system).manager().tell(new JoinSeedNodes(seedNodes));s
+Cluster.get(system).manager().tell(new JoinSeedNodes(seedNodes));
 ```
 
 种子节点地址列表与配置的种子节点具有相同的语义，流程的底层实现也相同，请参阅连接配置的种子节点。

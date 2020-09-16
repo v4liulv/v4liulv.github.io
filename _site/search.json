@@ -65,6 +65,14 @@
     } ,
   
     {
+      "title"    : "Akka 集群示例",
+      "subtitle" : "「AKKA官方文档」- 2.6.8",
+      "tags"     : "Akka, Akka cluster, Akka cluster example",
+      "url"      : "/2020/08/15/akka-cluster-example/",
+      "date"     : "2020-08-15 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "DataX-Job配置说明",
       "subtitle" : "DataX使用",
       "tags"     : "DataX, 数字贵阳",
