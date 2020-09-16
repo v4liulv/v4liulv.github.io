@@ -384,6 +384,60 @@
 <span class="err">&lt;</span>/&gt;
 </pre></td></tr></tbody></table></code></pre></div></div>
 
+<h1 id="常用配置config方式">常用配置config方式</h1>
+
+<p>默认情况下创建ActorSystem时如不指定具体的config，那么会默认读取application.conf配置文件，但是通常建议都自己固定配置的配置文件，并且程序动态指定一些定制需要的配置。</p>
+
+<p>常用方式：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="n">从写覆盖定制配置</span><span class="err">，</span><span class="n">比如端口和角色</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">overrides</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.remote.artery.canonical.port"</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+<span class="n">overrides</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"akka.cluster.roles"</span><span class="o">,</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="n">role</span><span class="o">));</span>
+
+<span class="n">然后添加stats</span><span class="o">.</span><span class="na">conf配置</span><span class="err">，</span><span class="n">文件名可直接根据项目调整</span>
+ <span class="nc">Config</span> <span class="n">config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">parseMap</span><span class="o">(</span><span class="n">overrides</span><span class="o">)</span>
+<span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"stats"</span><span class="o">));</span>
+
+<span class="c1">//指定config创建ActorSystem</span>
+ <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">RootBehavior</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"ClusterSystem"</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+
+<span class="c1">//RootBehavior中创建集群</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RootBehavior</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="nc">Behavior</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Behaviors</span><span class="o">.</span><span class="na">setup</span><span class="o">(</span><span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="c1">//创建集群</span>
+            <span class="nc">Cluster</span> <span class="n">cluster</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">());</span>
+            <span class="o">...</span>
+            <span class="o">...</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
 <h1 id="2-hello-akkacluster示例">2. Hello AkkaCluster示例</h1>
 
 <h2 id="21-最小集群配置如下">2.1. 最小集群配置如下</h2>
@@ -565,8 +619,192 @@ SLF4J: See also http://www.slf4j.org/codes.html#replay
 [2020-09-15 16:51:30,791] [INFO] [akka.actor.LocalActorRef] [ClusterSystem2-akka.actor.default-dispatcher-16] [akka://ClusterSystem2/system/cluster/core/publisher] - Message [akka.cluster.InternalClusterAction$PublishChanges] from Actor[akka://ClusterSystem2/system/cluster/core/daemon#-964571468] to Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] was not delivered. [1] dead letters encountered. If this is not an expected behavior then Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] may have terminated unexpectedly. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
 
 Process finished with exit code 0
-
 </code></pre>
+
+<h2 id="25-集群订阅">2.5. 集群订阅</h2>
+
+<p>集群订阅：可用于在集群状态更改时接收消息,此示例订阅了一个ActorRef<MemberEvent>订阅服务器，控制集群成员添加和成员离开时，订阅用户subscriber将收到事件MemberUp，MemberLeft，MemberExited和MemberRemoved等信息。</MemberEvent></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="rouge-code"><pre> <span class="cm">/**
+     * 集群订阅：可用于在集群状态更改时接收消息
+     *
+     * @throws Exception
+     */</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">clusterSubscribe</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span>
+                <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"ClusterSystem"</span><span class="o">,</span> <span class="n">noPort</span><span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="n">clusterConfig</span><span class="o">));</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">Cluster</span> <span class="n">cluster</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+
+            <span class="nc">TestProbe</span><span class="o">&lt;</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberEvent</span><span class="o">&gt;</span> <span class="n">testProbe</span> <span class="o">=</span> <span class="nc">TestProbe</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">system</span><span class="o">);</span>
+            <span class="nc">ActorRef</span><span class="o">&lt;</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberEvent</span><span class="o">&gt;</span> <span class="n">subscriber</span> <span class="o">=</span> <span class="n">testProbe</span><span class="o">.</span><span class="na">getRef</span><span class="o">();</span>
+            <span class="c1">// #cluster-subscribe</span>
+            
+            <span class="n">cluster</span><span class="o">.</span><span class="na">subscriptions</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Subscribe</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">subscriber</span><span class="o">,</span> <span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberEvent</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+            <span class="c1">// #cluster-subscribe</span>
+
+            <span class="nc">Address</span> <span class="n">anotherMemberAddress</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="na">selfMember</span><span class="o">().</span><span class="na">address</span><span class="o">();</span>
+            <span class="c1">// #cluster-leave-example</span>
+            <span class="n">cluster</span><span class="o">.</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Join</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">anotherMemberAddress</span><span class="o">));</span>
+            <span class="n">cluster</span><span class="o">.</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="nc">Leave</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">anotherMemberAddress</span><span class="o">));</span>
+            <span class="c1">// subscriber will receive events MemberLeft, MemberExited and MemberRemoved</span>
+            <span class="c1">// #cluster-leave-example</span>
+            <span class="n">testProbe</span><span class="o">.</span><span class="na">expectMessageClass</span><span class="o">(</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberUp</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">testProbe</span><span class="o">.</span><span class="na">expectMessageClass</span><span class="o">(</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberLeft</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">testProbe</span><span class="o">.</span><span class="na">expectMessageClass</span><span class="o">(</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberExited</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">testProbe</span><span class="o">.</span><span class="na">expectMessageClass</span><span class="o">(</span><span class="nc">ClusterEvent</span><span class="o">.</span><span class="na">MemberRemoved</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">system</span><span class="o">.</span><span class="na">terminate</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="26-设置种子节点">2.6. 设置种子节点</h2>
+
+<p><strong>种子节点简介</strong></p>
+
+<p>种子节点是加入集群的初始接触点，可以通过不同的方式实现</p>
+<ul>
+  <li>配置文件指定</li>
+  <li>JVM启动参数指定</li>
+  <li>程序中添加</li>
+</ul>
+
+<p>在加入过程之后，种子节点并不特殊，它们以与其他节点完全相同的方式参与到集群中。</p>
+
+<p>通过集群引导自动连接到种子节点，使用开源的Akka管理项目的模块Cluster Bootstrap，可以自动发现连接过程的节点。请参阅其文档以了解更多细节。</p>
+
+<p>当一个新节点启动时，它向所有配置的种子节点发送一条消息，然后向第一个响应的节点发送一个join命令。如果没有一个种子节点响应(可能还没有启动)，它将重试此过程，直到成功或关闭。</p>
+
+<p>种子节点可以按照任何顺序启动。没有必要让所有种子节点都运行，但是在初始启动集群时必须启动配置为种子节点列表中的第一个元素的节点。否则，其他种子节点将不会被初始化，并且没有其他节点可以加入集群。</p>
+
+<p><strong>种子节点加入方式</strong></p>
+
+<p>具体加入方式</p>
+<ol>
+  <li>conf配置文件指定
+akka{
+  cluster{
+     seed-nodes = [“akka://ClusterSystem@host1:2552”,
+     “akka://ClusterSystem@host2:2552”]
+  }
+ }</li>
+  <li>
+    <p>可在JVM启动是指定
+-Dakka.cluster.seed-nodes.0=akka://ClusterSystem@host1:2552
+-Dakka.cluster.seed-nodes.1=akka://ClusterSystem@host2:2552</p>
+  </li>
+  <li>通过本示例程序中加入种子节点
+ Cluster.get(system).manager().tell(new JoinSeedNodes(seedNodes));</li>
+</ol>
+
+<p><strong>示例程序添加种子节点</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">illustrateJoinSeedNodes</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ActorSystem</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">system</span> <span class="o">=</span>
+            <span class="nc">ActorSystem</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">Behaviors</span><span class="o">.</span><span class="na">empty</span><span class="o">(),</span> <span class="s">"ClusterSystem"</span><span class="o">,</span> <span class="n">noPort</span><span class="o">.</span><span class="na">withFallback</span><span class="o">(</span><span class="n">clusterConfig</span><span class="o">));</span>
+
+    <span class="c1">// #join-seed-nodes</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Address</span><span class="o">&gt;</span> <span class="n">seedNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">seedNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">AddressFromURIString</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"akka://ClusterSystem@127.0.0.1:2551"</span><span class="o">));</span>
+    <span class="n">seedNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">AddressFromURIString</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"akka://ClusterSystem@127.0.0.1:2552"</span><span class="o">));</span>
+
+    <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">system</span><span class="o">).</span><span class="na">manager</span><span class="o">().</span><span class="na">tell</span><span class="o">(</span><span class="k">new</span> <span class="nc">JoinSeedNodes</span><span class="o">(</span><span class="n">seedNodes</span><span class="o">));</span>
+    <span class="c1">// #join-seed-nodes</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="27-集群会员角色">2.7. 集群会员角色</h2>
+
+<p>集群的角色通过指定配置akka.cluster.roles，即overrides.put(“akka.cluster.roles”, Collections.singletonList(role))即可指定集群会员角色，获取角色可通过下面示例方式获取集群角色。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre> <span class="cm">/**
+     * 集群角色示例
+     *
+     * 通过指定配置akka.cluster.roles
+     * overrides.put("akka.cluster.roles", Collections.singletonList(role));
+     */</span>
+    <span class="kt">void</span> <span class="nf">illustrateRoles</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">ActorContext</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">context</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+        <span class="c1">// #hasRole</span>
+        <span class="nc">Member</span> <span class="n">selfMember</span> <span class="o">=</span> <span class="nc">Cluster</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getSystem</span><span class="o">()).</span><span class="na">selfMember</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">selfMember</span><span class="o">.</span><span class="na">hasRole</span><span class="o">(</span><span class="s">"backend"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">Backend</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"back"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">selfMember</span><span class="o">.</span><span class="na">hasRole</span><span class="o">(</span><span class="s">"front"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">spawn</span><span class="o">(</span><span class="nc">Frontend</span><span class="o">.</span><span class="na">create</span><span class="o">(),</span> <span class="s">"front"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c1">// #hasRole</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 
 
