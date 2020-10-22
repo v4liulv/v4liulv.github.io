@@ -1,0 +1,503 @@
+I"�h<h1 id="1-docker介绍">1. Docker介绍</h1>
+
+<h2 id="11-什么是docker">1.1. 什么是Docker</h2>
+
+<ul>
+  <li>Docker是 Docker.Inc公司开源的一个基于LXC技术之上构建的container容器引擎技术。</li>
+  <li>Docker基于容器技术的轻量级虚拟化解决方案。</li>
+  <li>Docker是一个开源项目，诞生于2013年，基于 Google公司退出的Go语言实现</li>
+  <li>微软、Redhat、IBM、Oracle等主流IT厂商已经在自己的产品里面增加多Docker的支持</li>
+  <li>Gooler 每周启动超过数亿个容器进行业务服务，于上实际90年代已经开始大规模使用的容器技术。</li>
+</ul>
+
+<h2 id="12-docker历史">1.2. Docker历史</h2>
+
+<p>2013年docker/coreOS诞生
+2014年获取4000万美元融资
+-2015年融资超过1亿美元
+2015年6月成立开放容器技术项目“open container project”</p>
+
+<h2 id="13-集装箱">1.3. 集装箱</h2>
+
+<h2 id="14-传统vm方案痛点">1.4. 传统VM方案痛点</h2>
+
+<ol>
+  <li>资源利用低</li>
+  <li>单物理机多应用无法有效隔离（进程空间、cpu资源、磁盘）</li>
+  <li>运维部署不方便</li>
+  <li>测试、版本管理复杂</li>
+  <li>无法高效交互</li>
+  <li>传统虚拟机，空间占用大、启动慢、管理复杂。</li>
+</ol>
+
+<h2 id="15-docker的优势">1.5. Docker的优势</h2>
+
+<ol>
+  <li>秒级启动、停止，空间占用少</li>
+  <li>实现进程级别的隔离</li>
+  <li>可在普通服务器上建立上百个docker实例</li>
+  <li>加快开发测试部署的速度</li>
+  <li>简化版本管理</li>
+  <li>高效的交付方案</li>
+</ol>
+
+<h1 id="2-docker基本原理">2. Docker基本原理</h1>
+
+<h2 id="21-docker-三大核心">2.1. Docker 三大核心</h2>
+
+<p>镜像images、仓库、容器Container</p>
+
+<p>镜像：文件层次结构，以及包含如何运行容器的元数据，Dockerfile中的每条命令都会在文件系统中创建一个新的层次结构，文件系统在这些层次结构上建立起来，镜像就构建这些联合的文件系统之上</p>
+
+<dl>
+  <dt>容器</dt>
+  <dd>容器是镜像创建的运行实例，它可以被启动、开始、停止、删除。每个容器是相互隔离的、保证安全的平台。可以把容器看着简易版的Linux环境，Docker利用容器来运行应用。</dd>
+</dl>
+
+<p>仓库：仓库是集中存放镜像文件的场所，仓库注册服务器上往往存放着多个仓库，每个仓库中又保护了多个镜像，每个镜像有不同的标签tag。目前最大的公开仓库是Docker Hub，存放了数量庞大的镜像提供用户下载。</p>
+
+<h2 id="22-docker-特性">2.2. Docker 特性</h2>
+
+<ol>
+  <li>文件系统隔离 - 每个进程容器运行在完全独立的跟文件系统里。</li>
+  <li>资源限制 - 可以使用cgroup为每个进程容器分配不同的系统资源，例如CPU和内存。</li>
+  <li>namespace命名空间隔离 - 每个进程容器运行在自己的网络命名空间里，拥有自己的虚拟接口的IP地址等。</li>
+  <li>写是复制 - 由于镜像采用层次文件系统，所以采用写时复制方式创建镜像的跟文件系统，这让部署变得极为快捷，并且节省内存和磁盘空间。</li>
+  <li>日志记录 - Docker将会收集和记录每个进程容器的标准流（stdout/stderr/stdin），用于实时检索或批量检索，不消耗本地IO。</li>
+  <li>变更管理 - 容器文件系统的变更可以提交到新的镜像中，并且可重复使用以创建更多的容器。无需使用模板或手动配置。</li>
+  <li>交互式shell - Docker可以分配一个虚拟终端并关联到任何容器的标准输入上，例如运行一个交付式shell。</li>
+</ol>
+
+<h2 id="23-docker-隔离">2.3. Docker 隔离</h2>
+
+<p>Mount namespace : Mount namespace是对挂载的文件系统布局进行隔离
+UTS namespace : nodename 和 domanname隔离。每个容器可以有自己的hostnane和domainname。
+IPC namespace: 处于同一个 namespace 下的进程才可以进行进程间通信。
+NET namespace: 实现网络协议上的隔离，在自己的namespace中对网络的设置只能在本namespace中生效
+PID namespace: 进程隔离。
+USER namespace: 相当于用户系统隔离， User namespace中使用了map转换，由于container并不是真正的虚拟话，所以在Cuest-OS中创建的root用户会被映射到Host-OS中的普通用户在。</p>
+
+<h2 id="24-工作流程">2.4. 工作流程</h2>
+
+<ol>
+  <li>构建镜像，通过Dockerfile build构建</li>
+  <li>给镜像文件标识tag(版本)</li>
+  <li>上传到镜像出库</li>
+  <li>镜像下载</li>
+  <li>安装镜像-容器运行实例</li>
+  <li>容器运行、停止、删除</li>
+  <li>容器修改了添加新功能，可commit合并新的镜像到镜像出库</li>
+</ol>
+
+<h1 id="3-docker基本操作">3. Docker基本操作</h1>
+
+<h2 id="31-windows安装老版本新版本windows不主持">3.1. windows安装（老版本，新版本windows不主持）</h2>
+
+<h3 id="先手动安装virtualbox">先手动安装VirtualBox</h3>
+
+<h3 id="vt-x-is-not-availableverr_vmx_no_vmx">VT-x is not available(VERR_VMX_NO_VMX)</h3>
+
+<p>Win10 更新之后VirtualBox安装ubuntu启动报 VT-x is not available(VERR_VMX_NO_VMX).</p>
+
+<p>下载地址
+http://mirrors.aliyun.com/docker-toolbox/windows/docker-toolbox/</p>
+
+<p>安装过程如果已经安装了git，那么不需要勾选git, 如果已经自己手动安装了Oracle VM，也不要选择Oracle VM VirtualBox。</p>
+
+<p><img src="https://liulv.work/images/img/20200922110456.png" alt="20200922110456" /></p>
+
+<p>安装完成后，桌面会生成Oracle VM VirtualBox、Kitematic (Alpha)、Docker Quickstart Terminal三个图标</p>
+
+<p><img src="https://liulv.work/images/img/20200922102429.png" alt="20200922102429" /></p>
+
+<p>如果git没安装在C:\Program Files\Git目录，那么右键Docker Quickstart Terminal属性修改配置，如<code class="language-plaintext highlighter-rouge">D:\gongji\Git\bin\bash.exe --login -i "C:\Program Files\Docker Toolbox\start.sh"</code></p>
+
+<p>如直接启动Docker Quickstart Terminal 如果环节初始化出问题，那么删除~/.docker文件重启</p>
+
+<p>可能还会需要下载boot2docker</p>
+
+<p><img src="https://liulv.work/images/img/20200922102530.png" alt="20200922102530" /></p>
+
+<p>不要自动下载<a href="https://github.com/boot2docker/boot2docker/releases">boot2docker</a> ，然后放到<code class="language-plaintext highlighter-rouge">~\.docker\machine\cache\</code>目录下，然后重启docker</p>
+
+<p>启动成功界面如下：</p>
+
+<p><img src="https://liulv.work/images/img/20200922110649.png" alt="20200922110649" /></p>
+
+<h2 id="32-linux安装">3.2. linux安装</h2>
+
+<p><a href="https://download.docker.com/linux/static/stable/x86_64/">下载地址</a>选择自己想要的版本，我这里下载19.03.9</p>
+
+<p>上传到linux 服务器下，然后解压
+tar -zxvf docker-19.03.9.tgz</p>
+
+<p>文件拷贝到/usr/bin
+sudo cp docker/* /usr/bin</p>
+
+<p>docker注册为服务
+vim /etc/systemd/system/docker.service</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre>[<span class="n">Unit</span>]
+<span class="n">Description</span>=<span class="n">Docker</span> <span class="n">Application</span> <span class="n">Container</span> <span class="n">Engine</span>
+<span class="n">Documentation</span>=<span class="n">https</span>://<span class="n">docs</span>.<span class="n">docker</span>.<span class="n">com</span>
+<span class="n">After</span>=<span class="n">network</span>-<span class="n">online</span>.<span class="n">target</span> <span class="n">firewalld</span>.<span class="n">service</span>
+<span class="n">Wants</span>=<span class="n">network</span>-<span class="n">online</span>.<span class="n">target</span>
+ 
+[<span class="n">Service</span>]
+<span class="n">Type</span>=<span class="n">notify</span>
+<span class="c"># the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+</span><span class="n">ExecStart</span>=/<span class="n">usr</span>/<span class="n">bin</span>/<span class="n">dockerd</span>
+<span class="n">ExecReload</span>=/<span class="n">bin</span>/<span class="n">kill</span> -<span class="n">s</span> <span class="n">HUP</span> $<span class="n">MAINPID</span>
+<span class="c"># Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+</span><span class="n">LimitNOFILE</span>=<span class="n">infinity</span>
+<span class="n">LimitNPROC</span>=<span class="n">infinity</span>
+<span class="n">LimitCORE</span>=<span class="n">infinity</span>
+<span class="c"># Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+</span><span class="n">TimeoutStartSec</span>=<span class="m">0</span>
+<span class="c"># set delegate yes so that systemd does not reset the cgroups of docker containers
+</span><span class="n">Delegate</span>=<span class="n">yes</span>
+<span class="c"># kill only the docker process, not all processes in the cgroup
+</span><span class="n">KillMode</span>=<span class="n">process</span>
+<span class="c"># restart the docker process if it exits prematurely
+</span><span class="n">Restart</span>=<span class="n">on</span>-<span class="n">failure</span>
+<span class="n">StartLimitBurst</span>=<span class="m">3</span>
+<span class="n">StartLimitInterval</span>=<span class="m">60</span><span class="n">s</span>
+ 
+[<span class="n">Install</span>]
+<span class="n">WantedBy</span>=<span class="n">multi</span>-<span class="n">user</span>.<span class="n">target</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>设置执行权限</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">chmod</span><span class="w"> </span><span class="o">+</span><span class="nx">x</span><span class="w"> </span><span class="nx">/etc/systemd/system/docker.service</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>启动docker</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">systemctl</span><span class="w"> </span><span class="nx">daemon-reload</span><span class="w">
+</span><span class="nf">systemctl</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="nx">docker</span><span class="w">			</span><span class="c">#启动Docker</span><span class="w">
+</span><span class="nf">systemctl</span><span class="w"> </span><span class="nx">enable</span><span class="w"> </span><span class="nx">docker.service</span><span class="w">			</span><span class="c">#设置开机自启</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/20200923162719.png" alt="20200923162719" /></p>
+
+<p><img src="https://liulv.work/images/img/20200923162838.png" alt="20200923162838" /></p>
+
+<p>检查</p>
+
+<p>systemctl status docker</p>
+
+<p><img src="https://liulv.work/images/img/20200923210013.png" alt="20200923210013" /></p>
+
+<p>docker -v</p>
+
+<p><img src="https://liulv.work/images/img/20200923162900.png" alt="20200923162900" /></p>
+
+<p>需要关闭将SELINUX，编辑/etc/selinux/config将SELINUX=enforcing改为SELINUX=disable重启服</p>
+
+<h2 id="33-基本命令">3.3. 基本命令</h2>
+
+<p><strong>docker 镜像存储目录</strong>
+/var/lib/docker/</p>
+
+<p><strong>window查看虚拟宿主机ip</strong>
+docker-machine ls</p>
+
+<p>default虚拟机的默认用户名和密码
+用户名：docker 
+密码： tcuser</p>
+
+<p><strong>运行交互式的容器</strong>
+我们通过 docker 的两个参数 -i -t，让 docker 运行的容器实现”对话”的能力：</p>
+
+<p>docker run -i -t ubuntu:15.10 /bin/bash</p>
+
+<p><strong>查看日志</strong></p>
+
+<p>docker logs <dockerName>
+标准日志
+docker logs -f <dockerName></dockerName></dockerName></p>
+
+<p>docker logs -f -tail=200 <dockerName></dockerName></p>
+
+<p><strong>停止容器</strong></p>
+
+<p>docker stop <dockerName></dockerName></p>
+
+<p><strong>查看全部容器</strong>
+运行中
+docker ps
+全部
+docker ps -a</p>
+
+<p><strong>启动一个已经停止的容器</strong></p>
+
+<p>docker start b750bbbcfd88（name）</p>
+
+<p><strong>进入容器</strong>
+docker exec -it powerjob-server /bin/bash</p>
+
+<p><strong>显示容器分层</strong>
+inspect命令可以分层级显示一个镜像或容器的信息
+docker inspect</p>
+
+<p><strong>查询容器内IP地址</strong></p>
+
+<p>docker inspect -f ‘’ powerjob-server</p>
+
+<p><strong>停止容器</strong>
+docker stop powerjob-server</p>
+
+<p><strong>删除容器</strong>
+docker container rm powerjob-server</p>
+
+<p><strong>删除镜像</strong>
+docker rmi -f tjqq/powerjob-server:$version</p>
+
+<p><strong>保存已安装的镜像</strong>
+docker save -o powerjob-server.tar tjqq/powerjob-server</p>
+
+<p>下载到当前目录，然后拷贝到需要的机器下</p>
+
+<p><strong>加载拷贝上传的镜像</strong>
+docker load -i powerjob-server.tar</p>
+
+<h2 id="34-docker安装nginx">3.4. Docker安装Nginx</h2>
+
+<ol>
+  <li>查看Nginx版本</li>
+</ol>
+
+<p>访问 Nginx 镜像库地址： https://hub.docker.com/_/nginx?tab=tags。</p>
+
+<p>此外，我们还可以用下面命令来查看可用版本：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docker search nginx
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ol>
+  <li>pull最新版本镜像到本地</li>
+</ol>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">pull</span><span class="w"> </span><span class="nx">nginx:latest</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<ol>
+  <li>查看当前镜像
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">images</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>运行镜像
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nt">--name</span><span class="w"> </span><span class="nx">nginx-test</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">10080:80</span><span class="w"> </span><span class="nt">-d</span><span class="w"> </span><span class="nx">nginx</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>参数说明：</p>
+
+<p>–name nginx-test：容器名称。
+-p 10080:80： 端口进行映射，将本地 10080 端口映射到容器内部的 80 端口，可以指定多个-p 7701:7701 -p 10086:10086
+-d 设置容器在后台一直运行
+–restart=always ：指定该容器随着docker启动而自动启动应用
+ -e TZ=”Asia/Shanghai” ：时区，默认时区为中国标准时区（Asia/Shanghai），国外用户请修改为正确的时区
+ -v ~/docker/powerjob-server:/root/powerjob-server -v ~/.m2:/root/.m2 ：映射数据卷
+ nginx：指定使用的docker镜像，运行的镜像</p>
+
+<ol>
+  <li>查看运行容器
+docker ps</li>
+</ol>
+
+<p>可查看全部状态的容器
+docker ps -all</p>
+
+<ol>
+  <li>web地址访问启动的应用地址
+192.168.99.100:10080</li>
+</ol>
+
+<p>其中的192.168.99.100为default配置的ip地址</p>
+
+<h2 id="35-构建powerjob镜像linux虚拟机">3.5. 构建powerjob镜像（linux虚拟机）</h2>
+
+<ol>
+  <li>
+    <p>创建虚拟机linux</p>
+  </li>
+  <li>
+    <p>通过<a href="#3dot2-linux安装">上面章节</a>安装docker</p>
+  </li>
+  <li>
+    <p>先pull基础镜像
+docker pull adoptopenjdk:8-jdk-hotspot</p>
+  </li>
+  <li>
+    <p>创建构建镜像目录
+mkdir -p /powerjob-soucre/powerjob-server
+mkdir -p /powerjob-soucre/powerjob-worker-agent</p>
+  </li>
+  <li>
+    <p>maven打全量包并去掉版本后缀名后拷贝到本地工程的/powerjob-soucre/powerjob-server和/powerjob-soucre/powerjob-worker-agert</p>
+  </li>
+  <li>将程序工程对应的powerjob-server下的docker整个目录上传到/powerjob-soucre/powerjob-server目录</li>
+  <li>
+    <p>将程序工程对应的powerjob-worker-agert下的docker整个目录上传到/powerjob-soucre/powerjob-worker-agert目录</p>
+  </li>
+  <li>
+    <p>将工程下的other整个目录上传到/powerjob-soucre目录下并sh修改执行权限
+chmod 755 /data/docker/powerjob/others/script/*.sh</p>
+  </li>
+  <li>执行命令/powerjob-soucre/others/script/build_docker.sh
+或/data/docker/powerjob/others/script/build_docker.sh</li>
+</ol>
+
+<p>a. 输入镜像版本号如1.0.2
+b. 是否重新构建镜像（y/n） y
+c. 是否启动 server &amp; agent（y/n）n  —如果此虚拟机当开发测试用，则启动y，如果只是打包的话就没必要了</p>
+
+<ol>
+  <li>
+    <p>查看镜像
+docker images</p>
+  </li>
+  <li>
+    <p>保存镜像
+mkdir /data/docker/images
+cd /data/docker/images
+docker save -o powerjob-server.tar tjqq/powerjob-server
+docker save -o powerjob-agent.tar tjqq/powerjob-agent</p>
+  </li>
+</ol>
+
+<p>docker save -o adoptopenjdk_8-jdk-hotspot.tar adoptopenjdk:8-jdk-hotspot</p>
+
+<ol>
+  <li>
+    <p>将/data/docker-images目录下powerjob-server.tar、powerjob-agent.tar拷贝到需要执行的服务器下</p>
+  </li>
+  <li>
+    <p>在服务器下加载镜像
+cd /data/docker/images
+docker load -i powerjob-server.tar
+docker load -i powerjob-agent.tar</p>
+  </li>
+</ol>
+
+<p>docker load -i adoptopenjdk_8-jdk-hotspot.tar</p>
+
+<ol>
+  <li>执行镜像</li>
+</ol>
+
+<p>执行powerjob-server</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>docker run <span class="nt">-d</span> <span class="se">\</span>
+         <span class="nt">--name</span> powerjob-server <span class="se">\</span>
+         <span class="nt">-p</span> 7701:7701 <span class="nt">-p</span> 27001:27001 <span class="nt">-p</span> 27002:27002 <span class="nt">-p</span> 10086:10086 <span class="nt">-p</span> 5001:5005 <span class="nt">-p</span> 10001:10000 <span class="se">\</span>
+         <span class="nt">-e</span> <span class="nv">JVMOPTIONS</span><span class="o">=</span><span class="s2">"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"</span> <span class="se">\</span>
+         <span class="nt">-e</span> <span class="nv">PARAMS</span><span class="o">=</span><span class="s2">"--spring.profiles.active=local"</span> <span class="se">\</span>
+         <span class="nt">-e</span> <span class="nv">TZ</span><span class="o">=</span><span class="s2">"Asia/Shanghai"</span> <span class="se">\</span>
+		 <span class="nt">-v</span> ~/docker/powerjob-server:/root/powerjob-server <span class="nt">-v</span> ~/.m2:/root/.m2 <span class="se">\</span>
+         tjqq/powerjob-server:1.0.2
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意：如果是server启动的为我的本地模式local本地库，服务器情况需要修改为daily</p>
+
+<p>执行powerjob-agent, 执行同一台服务器下的需要根据server的容器地址修改172.17.0.2，如果是跨节点执行-s 后填写server容器所在服务器ip地址
+查看容器ip地址命令</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">inspect</span><span class="w"> </span><span class="nt">-f</span><span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="nx">powerjob-server</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意：执行agent命令必须等待server启动成功后，可访问server ip:7701 或 http://serverIp:7701/swagger-ui.html检查server是否启动成功</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nt">-d</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">--name</span><span class="w"> </span><span class="nf">powerjob-agent</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">-p</span><span class="w"> </span><span class="mi">7001</span><span class="p">:</span><span class="mi">7001</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="mi">5002</span><span class="p">:</span><span class="mi">5005</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="mi">10002</span><span class="p">:</span><span class="mi">10000</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-e</span><span class="w"> </span><span class="nx">JVMOPTIONS</span><span class="o">=</span><span class="s2">"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-e</span><span class="w"> </span><span class="nx">PARAMS</span><span class="o">=</span><span class="s2">"-s 172.17.0.2:7720 -a agent002 -p 7001 -c ENABLE "</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-v</span><span class="w"> </span><span class="nx">/root/docker/powerjob-agent:/root</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">-v</span><span class="w"> </span><span class="nf">/data/datax:/data/datax</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nf">tjqq/powerjob-agent:1.0.2</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如同一个服务器需要启动多个agent 可调整其中端口号7001，如果全部调整为7001，并修改名称为powerjob-agent2</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nt">-d</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">--name</span><span class="w"> </span><span class="nf">powerjob-agent2</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">-p</span><span class="w"> </span><span class="mi">7002</span><span class="p">:</span><span class="mi">7002</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="mi">5003</span><span class="p">:</span><span class="mi">5005</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="mi">10003</span><span class="p">:</span><span class="mi">10000</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-e</span><span class="w"> </span><span class="nx">JVMOPTIONS</span><span class="o">=</span><span class="s2">"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-e</span><span class="w"> </span><span class="nx">PARAMS</span><span class="o">=</span><span class="s2">"-s 172.17.0.2:7720 -a agent002 -p 7002 -c ENABLE "</span><span class="w"> </span><span class="nf">\</span><span class="w">
+         </span><span class="nt">-v</span><span class="w"> </span><span class="nx">/root/docker/powerjob-agent:/root</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nt">-v</span><span class="w"> </span><span class="nf">/data/datax:/data/datax</span><span class="w"> </span><span class="nx">\</span><span class="w">
+         </span><span class="nf">tjqq/powerjob-agent:1.0.2</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>特别注意：</strong>datax配置为我的本地测试，服务器需要去掉-d LOCAL参数</p>
+
+:ET

@@ -5,9 +5,574 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 17 Sep 2020 02:32:18 +0800</pubDate>
-    <lastBuildDate>Thu, 17 Sep 2020 02:32:18 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Oct 2020 16:58:15 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Oct 2020 16:58:15 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>SpringBoot容器启动完成后执行</title>
+        <description>&lt;h1 id=&quot;场景需求&quot;&gt;场景需求&lt;/h1&gt;
+
+&lt;p&gt;在开发中可能会有这样的情景。需要在容器启动的时候执行一些内容。比如读取配置文件，数据库连接，执行初始化等之类的。SpringBoot给我们提供了两个接口来帮助我们实现这种需求。这两个接口分别为CommandLineRunner和ApplicationRunner。他们的执行时机为容器启动完成的时候。&lt;/p&gt;
+
+&lt;h1 id=&quot;实现&quot;&gt;实现&lt;/h1&gt;
+
+&lt;p&gt;这两个接口中有一个run方法，我们只需要实现这个方法即可。这两个接口的不同之处在于：ApplicationRunner中run方法的参数为ApplicationArguments，而CommandLineRunner接口中run方法的参数为String数组。目前我在项目中用的是ApplicationRunner。是这么实现的：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.ApplicationArguments&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.ApplicationRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.stereotype.Component&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+ 
+&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;JDDRunner&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationRunner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ApplicationArguments&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;这个是测试ApplicationRunner接口&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;执行结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20201009103734.png&quot; alt=&quot;20201009103734&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 09 Oct 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/10/09/springboot-cy/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/10/09/springboot-cy/</guid>
+        
+        <category>SpringBoot</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Docker基础</title>
+        <description>&lt;h1 id=&quot;1-docker介绍&quot;&gt;1. Docker介绍&lt;/h1&gt;
+
+&lt;h2 id=&quot;11-什么是docker&quot;&gt;1.1. 什么是Docker&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker是 Docker.Inc公司开源的一个基于LXC技术之上构建的container容器引擎技术。&lt;/li&gt;
+  &lt;li&gt;Docker基于容器技术的轻量级虚拟化解决方案。&lt;/li&gt;
+  &lt;li&gt;Docker是一个开源项目，诞生于2013年，基于 Google公司退出的Go语言实现&lt;/li&gt;
+  &lt;li&gt;微软、Redhat、IBM、Oracle等主流IT厂商已经在自己的产品里面增加多Docker的支持&lt;/li&gt;
+  &lt;li&gt;Gooler 每周启动超过数亿个容器进行业务服务，于上实际90年代已经开始大规模使用的容器技术。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;12-docker历史&quot;&gt;1.2. Docker历史&lt;/h2&gt;
+
+&lt;p&gt;2013年docker/coreOS诞生
+2014年获取4000万美元融资
+-2015年融资超过1亿美元
+2015年6月成立开放容器技术项目“open container project”&lt;/p&gt;
+
+&lt;h2 id=&quot;13-集装箱&quot;&gt;1.3. 集装箱&lt;/h2&gt;
+
+&lt;h2 id=&quot;14-传统vm方案痛点&quot;&gt;1.4. 传统VM方案痛点&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;资源利用低&lt;/li&gt;
+  &lt;li&gt;单物理机多应用无法有效隔离（进程空间、cpu资源、磁盘）&lt;/li&gt;
+  &lt;li&gt;运维部署不方便&lt;/li&gt;
+  &lt;li&gt;测试、版本管理复杂&lt;/li&gt;
+  &lt;li&gt;无法高效交互&lt;/li&gt;
+  &lt;li&gt;传统虚拟机，空间占用大、启动慢、管理复杂。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;15-docker的优势&quot;&gt;1.5. Docker的优势&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;秒级启动、停止，空间占用少&lt;/li&gt;
+  &lt;li&gt;实现进程级别的隔离&lt;/li&gt;
+  &lt;li&gt;可在普通服务器上建立上百个docker实例&lt;/li&gt;
+  &lt;li&gt;加快开发测试部署的速度&lt;/li&gt;
+  &lt;li&gt;简化版本管理&lt;/li&gt;
+  &lt;li&gt;高效的交付方案&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;2-docker基本原理&quot;&gt;2. Docker基本原理&lt;/h1&gt;
+
+&lt;h2 id=&quot;21-docker-三大核心&quot;&gt;2.1. Docker 三大核心&lt;/h2&gt;
+
+&lt;p&gt;镜像images、仓库、容器Container&lt;/p&gt;
+
+&lt;p&gt;镜像：文件层次结构，以及包含如何运行容器的元数据，Dockerfile中的每条命令都会在文件系统中创建一个新的层次结构，文件系统在这些层次结构上建立起来，镜像就构建这些联合的文件系统之上&lt;/p&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;容器&lt;/dt&gt;
+  &lt;dd&gt;容器是镜像创建的运行实例，它可以被启动、开始、停止、删除。每个容器是相互隔离的、保证安全的平台。可以把容器看着简易版的Linux环境，Docker利用容器来运行应用。&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;仓库：仓库是集中存放镜像文件的场所，仓库注册服务器上往往存放着多个仓库，每个仓库中又保护了多个镜像，每个镜像有不同的标签tag。目前最大的公开仓库是Docker Hub，存放了数量庞大的镜像提供用户下载。&lt;/p&gt;
+
+&lt;h2 id=&quot;22-docker-特性&quot;&gt;2.2. Docker 特性&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;文件系统隔离 - 每个进程容器运行在完全独立的跟文件系统里。&lt;/li&gt;
+  &lt;li&gt;资源限制 - 可以使用cgroup为每个进程容器分配不同的系统资源，例如CPU和内存。&lt;/li&gt;
+  &lt;li&gt;namespace命名空间隔离 - 每个进程容器运行在自己的网络命名空间里，拥有自己的虚拟接口的IP地址等。&lt;/li&gt;
+  &lt;li&gt;写是复制 - 由于镜像采用层次文件系统，所以采用写时复制方式创建镜像的跟文件系统，这让部署变得极为快捷，并且节省内存和磁盘空间。&lt;/li&gt;
+  &lt;li&gt;日志记录 - Docker将会收集和记录每个进程容器的标准流（stdout/stderr/stdin），用于实时检索或批量检索，不消耗本地IO。&lt;/li&gt;
+  &lt;li&gt;变更管理 - 容器文件系统的变更可以提交到新的镜像中，并且可重复使用以创建更多的容器。无需使用模板或手动配置。&lt;/li&gt;
+  &lt;li&gt;交互式shell - Docker可以分配一个虚拟终端并关联到任何容器的标准输入上，例如运行一个交付式shell。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;23-docker-隔离&quot;&gt;2.3. Docker 隔离&lt;/h2&gt;
+
+&lt;p&gt;Mount namespace : Mount namespace是对挂载的文件系统布局进行隔离
+UTS namespace : nodename 和 domanname隔离。每个容器可以有自己的hostnane和domainname。
+IPC namespace: 处于同一个 namespace 下的进程才可以进行进程间通信。
+NET namespace: 实现网络协议上的隔离，在自己的namespace中对网络的设置只能在本namespace中生效
+PID namespace: 进程隔离。
+USER namespace: 相当于用户系统隔离， User namespace中使用了map转换，由于container并不是真正的虚拟话，所以在Cuest-OS中创建的root用户会被映射到Host-OS中的普通用户在。&lt;/p&gt;
+
+&lt;h2 id=&quot;24-工作流程&quot;&gt;2.4. 工作流程&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;构建镜像，通过Dockerfile build构建&lt;/li&gt;
+  &lt;li&gt;给镜像文件标识tag(版本)&lt;/li&gt;
+  &lt;li&gt;上传到镜像出库&lt;/li&gt;
+  &lt;li&gt;镜像下载&lt;/li&gt;
+  &lt;li&gt;安装镜像-容器运行实例&lt;/li&gt;
+  &lt;li&gt;容器运行、停止、删除&lt;/li&gt;
+  &lt;li&gt;容器修改了添加新功能，可commit合并新的镜像到镜像出库&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;3-docker基本操作&quot;&gt;3. Docker基本操作&lt;/h1&gt;
+
+&lt;h2 id=&quot;31-windows安装老版本新版本windows不主持&quot;&gt;3.1. windows安装（老版本，新版本windows不主持）&lt;/h2&gt;
+
+&lt;h3 id=&quot;先手动安装virtualbox&quot;&gt;先手动安装VirtualBox&lt;/h3&gt;
+
+&lt;h3 id=&quot;vt-x-is-not-availableverr_vmx_no_vmx&quot;&gt;VT-x is not available(VERR_VMX_NO_VMX)&lt;/h3&gt;
+
+&lt;p&gt;Win10 更新之后VirtualBox安装ubuntu启动报 VT-x is not available(VERR_VMX_NO_VMX).&lt;/p&gt;
+
+&lt;p&gt;下载地址
+http://mirrors.aliyun.com/docker-toolbox/windows/docker-toolbox/&lt;/p&gt;
+
+&lt;p&gt;安装过程如果已经安装了git，那么不需要勾选git, 如果已经自己手动安装了Oracle VM，也不要选择Oracle VM VirtualBox。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200922110456.png&quot; alt=&quot;20200922110456&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;安装完成后，桌面会生成Oracle VM VirtualBox、Kitematic (Alpha)、Docker Quickstart Terminal三个图标&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200922102429.png&quot; alt=&quot;20200922102429&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果git没安装在C:\Program Files\Git目录，那么右键Docker Quickstart Terminal属性修改配置，如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;D:\gongji\Git\bin\bash.exe --login -i &quot;C:\Program Files\Docker Toolbox\start.sh&quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如直接启动Docker Quickstart Terminal 如果环节初始化出问题，那么删除~/.docker文件重启&lt;/p&gt;
+
+&lt;p&gt;可能还会需要下载boot2docker&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200922102530.png&quot; alt=&quot;20200922102530&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;不要自动下载&lt;a href=&quot;https://github.com/boot2docker/boot2docker/releases&quot;&gt;boot2docker&lt;/a&gt; ，然后放到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~\.docker\machine\cache\&lt;/code&gt;目录下，然后重启docker&lt;/p&gt;
+
+&lt;p&gt;启动成功界面如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200922110649.png&quot; alt=&quot;20200922110649&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;32-linux安装&quot;&gt;3.2. linux安装&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://download.docker.com/linux/static/stable/x86_64/&quot;&gt;下载地址&lt;/a&gt;选择自己想要的版本，我这里下载19.03.9&lt;/p&gt;
+
+&lt;p&gt;上传到linux 服务器下，然后解压
+tar -zxvf docker-19.03.9.tgz&lt;/p&gt;
+
+&lt;p&gt;文件拷贝到/usr/bin
+sudo cp docker/* /usr/bin&lt;/p&gt;
+
+&lt;p&gt;docker注册为服务
+vim /etc/systemd/system/docker.service&lt;/p&gt;
+
+&lt;div class=&quot;language-conf highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[&lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt;]
+&lt;span class=&quot;n&quot;&gt;Description&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;Docker&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Container&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Engine&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Documentation&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;://&lt;span class=&quot;n&quot;&gt;docs&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;docker&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;After&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;online&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firewalld&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Wants&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;online&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;
+ 
+[&lt;span class=&quot;n&quot;&gt;Service&lt;/span&gt;]
+&lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;notify&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExecStart&lt;/span&gt;=/&lt;span class=&quot;n&quot;&gt;usr&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;bin&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;dockerd&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ExecReload&lt;/span&gt;=/&lt;span class=&quot;n&quot;&gt;bin&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;kill&lt;/span&gt; -&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HUP&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;MAINPID&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LimitNOFILE&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;LimitNPROC&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;LimitCORE&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TimeoutStartSec&lt;/span&gt;=&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# set delegate yes so that systemd does not reset the cgroups of docker containers
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Delegate&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;yes&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# kill only the docker process, not all processes in the cgroup
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;KillMode&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# restart the docker process if it exits prematurely
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Restart&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;on&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;failure&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;StartLimitBurst&lt;/span&gt;=&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;StartLimitInterval&lt;/span&gt;=&lt;span class=&quot;m&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;
+ 
+[&lt;span class=&quot;n&quot;&gt;Install&lt;/span&gt;]
+&lt;span class=&quot;n&quot;&gt;WantedBy&lt;/span&gt;=&lt;span class=&quot;n&quot;&gt;multi&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;设置执行权限&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;chmod&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/etc/systemd/system/docker.service&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;启动docker&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;systemctl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;daemon-reload&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;systemctl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;			&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#启动Docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;systemctl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;enable&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;docker.service&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;			&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#设置开机自启&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200923162719.png&quot; alt=&quot;20200923162719&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200923162838.png&quot; alt=&quot;20200923162838&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;检查&lt;/p&gt;
+
+&lt;p&gt;systemctl status docker&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200923210013.png&quot; alt=&quot;20200923210013&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;docker -v&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200923162900.png&quot; alt=&quot;20200923162900&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;需要关闭将SELINUX，编辑/etc/selinux/config将SELINUX=enforcing改为SELINUX=disable重启服&lt;/p&gt;
+
+&lt;h2 id=&quot;33-基本命令&quot;&gt;3.3. 基本命令&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;docker 镜像存储目录&lt;/strong&gt;
+/var/lib/docker/&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;window查看虚拟宿主机ip&lt;/strong&gt;
+docker-machine ls&lt;/p&gt;
+
+&lt;p&gt;default虚拟机的默认用户名和密码
+用户名：docker 
+密码： tcuser&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;运行交互式的容器&lt;/strong&gt;
+我们通过 docker 的两个参数 -i -t，让 docker 运行的容器实现”对话”的能力：&lt;/p&gt;
+
+&lt;p&gt;docker run -i -t ubuntu:15.10 /bin/bash&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;查看日志&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;docker logs &lt;dockerName&gt;
+标准日志
+docker logs -f &lt;dockerName&gt;&lt;/dockerName&gt;&lt;/dockerName&gt;&lt;/p&gt;
+
+&lt;p&gt;docker logs -f -tail=200 &lt;dockerName&gt;&lt;/dockerName&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;停止容器&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;docker stop &lt;dockerName&gt;&lt;/dockerName&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;查看全部容器&lt;/strong&gt;
+运行中
+docker ps
+全部
+docker ps -a&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;启动一个已经停止的容器&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;docker start b750bbbcfd88（name）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;进入容器&lt;/strong&gt;
+docker exec -it powerjob-server /bin/bash&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;显示容器分层&lt;/strong&gt;
+inspect命令可以分层级显示一个镜像或容器的信息
+docker inspect&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;查询容器内IP地址&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;docker inspect -f ‘’ powerjob-server&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;停止容器&lt;/strong&gt;
+docker stop powerjob-server&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;删除容器&lt;/strong&gt;
+docker container rm powerjob-server&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;删除镜像&lt;/strong&gt;
+docker rmi -f tjqq/powerjob-server:$version&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;保存已安装的镜像&lt;/strong&gt;
+docker save -o powerjob-server.tar tjqq/powerjob-server&lt;/p&gt;
+
+&lt;p&gt;下载到当前目录，然后拷贝到需要的机器下&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;加载拷贝上传的镜像&lt;/strong&gt;
+docker load -i powerjob-server.tar&lt;/p&gt;
+
+&lt;h2 id=&quot;34-docker安装nginx&quot;&gt;3.4. Docker安装Nginx&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看Nginx版本&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;访问 Nginx 镜像库地址： https://hub.docker.com/_/nginx?tab=tags。&lt;/p&gt;
+
+&lt;p&gt;此外，我们还可以用下面命令来查看可用版本：&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;docker search nginx
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;pull最新版本镜像到本地&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pull&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx:latest&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看当前镜像
+    &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;images&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;运行镜像
+    &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx-test&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;10080:80&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;参数说明：&lt;/p&gt;
+
+&lt;p&gt;–name nginx-test：容器名称。
+-p 10080:80： 端口进行映射，将本地 10080 端口映射到容器内部的 80 端口，可以指定多个-p 7701:7701 -p 10086:10086
+-d 设置容器在后台一直运行
+–restart=always ：指定该容器随着docker启动而自动启动应用
+ -e TZ=”Asia/Shanghai” ：时区，默认时区为中国标准时区（Asia/Shanghai），国外用户请修改为正确的时区
+ -v ~/docker/powerjob-server:/root/powerjob-server -v ~/.m2:/root/.m2 ：映射数据卷
+ nginx：指定使用的docker镜像，运行的镜像&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看运行容器
+docker ps&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;可查看全部状态的容器
+docker ps -all&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;web地址访问启动的应用地址
+192.168.99.100:10080&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;其中的192.168.99.100为default配置的ip地址&lt;/p&gt;
+
+&lt;h2 id=&quot;35-构建powerjob镜像linux虚拟机&quot;&gt;3.5. 构建powerjob镜像（linux虚拟机）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建虚拟机linux&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;通过&lt;a href=&quot;#3dot2-linux安装&quot;&gt;上面章节&lt;/a&gt;安装docker&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;先pull基础镜像
+docker pull adoptopenjdk:8-jdk-hotspot&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建构建镜像目录
+mkdir -p /powerjob-soucre/powerjob-server
+mkdir -p /powerjob-soucre/powerjob-worker-agent&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;maven打全量包并去掉版本后缀名后拷贝到本地工程的/powerjob-soucre/powerjob-server和/powerjob-soucre/powerjob-worker-agert&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;将程序工程对应的powerjob-server下的docker整个目录上传到/powerjob-soucre/powerjob-server目录&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将程序工程对应的powerjob-worker-agert下的docker整个目录上传到/powerjob-soucre/powerjob-worker-agert目录&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将工程下的other整个目录上传到/powerjob-soucre目录下并sh修改执行权限
+chmod 755 /data/docker/powerjob/others/script/*.sh&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;执行命令/powerjob-soucre/others/script/build_docker.sh
+或/data/docker/powerjob/others/script/build_docker.sh&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;a. 输入镜像版本号如1.0.2
+b. 是否重新构建镜像（y/n） y
+c. 是否启动 server &amp;amp; agent（y/n）n  —如果此虚拟机当开发测试用，则启动y，如果只是打包的话就没必要了&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看镜像
+docker images&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;保存镜像
+mkdir /data/docker/images
+cd /data/docker/images
+docker save -o powerjob-server.tar tjqq/powerjob-server
+docker save -o powerjob-agent.tar tjqq/powerjob-agent&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;docker save -o adoptopenjdk_8-jdk-hotspot.tar adoptopenjdk:8-jdk-hotspot&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;将/data/docker-images目录下powerjob-server.tar、powerjob-agent.tar拷贝到需要执行的服务器下&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在服务器下加载镜像
+cd /data/docker/images
+docker load -i powerjob-server.tar
+docker load -i powerjob-agent.tar&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;docker load -i adoptopenjdk_8-jdk-hotspot.tar&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;执行镜像&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;执行powerjob-server&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; powerjob-server &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 7701:7701 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 27001:27001 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 27002:27002 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 10086:10086 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 5001:5005 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 10001:10000 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;JVMOPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PARAMS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;--spring.profiles.active=local&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;TZ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Asia/Shanghai&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+		 &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; ~/docker/powerjob-server:/root/powerjob-server &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; ~/.m2:/root/.m2 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+         tjqq/powerjob-server:1.0.2
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意：如果是server启动的为我的本地模式local本地库，服务器情况需要修改为daily&lt;/p&gt;
+
+&lt;p&gt;执行powerjob-agent, 执行同一台服务器下的需要根据server的容器地址修改172.17.0.2，如果是跨节点执行-s 后填写server容器所在服务器ip地址
+查看容器ip地址命令&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;inspect&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;powerjob-server&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意：执行agent命令必须等待server启动成功后，可访问server ip:7701 或 http://serverIp:7701/swagger-ui.html检查server是否启动成功&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;powerjob-agent&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7001&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5002&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5005&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10002&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;JVMOPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PARAMS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-s 172.17.0.2:7720 -a agent002 -p 7001 -c ENABLE &quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/root/docker/powerjob-agent:/root&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/data/datax:/data/datax&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;tjqq/powerjob-agent:1.0.2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如同一个服务器需要启动多个agent 可调整其中端口号7001，如果全部调整为7001，并修改名称为powerjob-agent2&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;powerjob-agent2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7002&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7002&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5003&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5005&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10003&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;JVMOPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PARAMS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-s 172.17.0.2:7720 -a agent002 -p 7002 -c ENABLE &quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/root/docker/powerjob-agent:/root&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/data/datax:/data/datax&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+         &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;tjqq/powerjob-agent:1.0.2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;特别注意：&lt;/strong&gt;datax配置为我的本地测试，服务器需要去掉-d LOCAL参数&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 28 Sep 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2020/09/28/docker/</link>
+        <guid isPermaLink="true">http://localhost:4000/2020/09/28/docker/</guid>
+        
+        <category>Docker</category>
+        
+        <category>容器技术</category>
+        
+        
+      </item>
     
       <item>
         <title>用KMSTools工具激活win10正式版</title>
@@ -2569,15 +3134,17 @@ bin\mongod.exe –remove&lt;/p&gt;
     
       <item>
         <title>Markdown 语法及渲染</title>
-        <description>&lt;h2 id=&quot;说明&quot;&gt;说明&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;1-markdown-语法及渲染&quot;&gt;1. Markdown 语法及渲染&lt;/h1&gt;
+
+&lt;h2 id=&quot;11-说明&quot;&gt;1.1. 说明&lt;/h2&gt;
 
 &lt;p&gt;Jekyll 默认使用 &lt;a href=&quot;https://github.com/gettalong/kramdown&quot;&gt;kramdown&lt;/a&gt; 来渲染 markdown 类型文件，在 Minimalism 主题中也是使用其默认配置，但在其渲染的基础上自定义了自己的样式，主要参考了 GitHub 的渲染风格。&lt;/p&gt;
 
-&lt;h2 id=&quot;markdown-基本语法&quot;&gt;Markdown 基本语法&lt;/h2&gt;
+&lt;h2 id=&quot;12-markdown-基本语法&quot;&gt;1.2. Markdown 基本语法&lt;/h2&gt;
 
 &lt;p&gt;:stuck_out_tongue: 可能 Markdown 的基本语法大家都很熟悉了，这里主要还是想展示一下主题对各种格式的渲染效果，况且日常写作中，通常也不会全用得上。&lt;/p&gt;
 
-&lt;h3 id=&quot;1-斜体和粗体&quot;&gt;1. 斜体和粗体&lt;/h3&gt;
+&lt;h3 id=&quot;121-斜体和粗体&quot;&gt;1.2.1. 斜体和粗体&lt;/h3&gt;
 
 &lt;p&gt;使用 * 和 ** 表示斜体和粗体。&lt;/p&gt;
 
@@ -2591,7 +3158,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;这是 &lt;em&gt;斜体&lt;/em&gt;，这是 &lt;strong&gt;粗体&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;h3 id=&quot;2-分级标题&quot;&gt;2. 分级标题&lt;/h3&gt;
+&lt;h3 id=&quot;122-分级标题&quot;&gt;1.2.2. 分级标题&lt;/h3&gt;
 
 &lt;p&gt;标题分 6 级，在行首加 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#&lt;/code&gt; 以表示不同级别的标题 (H1-H6)，例如：# H1, ## H2, ### H3，#### H4，常用的标题主要就是 1 ~ 3 级，往后标题基本同加粗的效果差不多了。&lt;/p&gt;
 
@@ -2623,19 +3190,19 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;效果：&lt;/p&gt;
 
-&lt;h1 id=&quot;一级标题&quot;&gt;一级标题&lt;/h1&gt;
+&lt;h1 id=&quot;2-一级标题&quot;&gt;2. 一级标题&lt;/h1&gt;
 
-&lt;h2 id=&quot;二级标题&quot;&gt;二级标题&lt;/h2&gt;
+&lt;h2 id=&quot;21-二级标题&quot;&gt;2.1. 二级标题&lt;/h2&gt;
 
-&lt;h3 id=&quot;三级标题&quot;&gt;三级标题&lt;/h3&gt;
+&lt;h3 id=&quot;211-三级标题&quot;&gt;2.1.1. 三级标题&lt;/h3&gt;
 
-&lt;h4 id=&quot;四级标题&quot;&gt;四级标题&lt;/h4&gt;
+&lt;h4 id=&quot;2111-四级标题&quot;&gt;2.1.1.1. 四级标题&lt;/h4&gt;
 
-&lt;h5 id=&quot;五级标题&quot;&gt;五级标题&lt;/h5&gt;
+&lt;h5 id=&quot;21111-五级标题&quot;&gt;2.1.1.1.1. 五级标题&lt;/h5&gt;
 
-&lt;h6 id=&quot;六级标题&quot;&gt;六级标题&lt;/h6&gt;
+&lt;h6 id=&quot;211111-六级标题&quot;&gt;2.1.1.1.1.1. 六级标题&lt;/h6&gt;
 
-&lt;h3 id=&quot;3-外链接&quot;&gt;3. 外链接&lt;/h3&gt;
+&lt;h3 id=&quot;212-外链接&quot;&gt;2.1.2. 外链接&lt;/h3&gt;
 
 &lt;p&gt;使用 [描述](链接地址) 为文章增加外链接。&lt;/p&gt;
 
@@ -2701,7 +3268,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;这是我开发的一个新主题 &lt;a href=&quot;https://github.com/showzeng/minimalism&quot;&gt;Minimalism Theme&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h3 id=&quot;4-无序列表&quot;&gt;4. 无序列表&lt;/h3&gt;
+&lt;h3 id=&quot;213-无序列表&quot;&gt;2.1.3. 无序列表&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt; 表示无序列表。&lt;/p&gt;
 
@@ -2723,7 +3290,7 @@ bin\mongod.exe –remove&lt;/p&gt;
   &lt;li&gt;无序列表项 三&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;5-有序列表&quot;&gt;5. 有序列表&lt;/h3&gt;
+&lt;h3 id=&quot;214-有序列表&quot;&gt;2.1.4. 有序列表&lt;/h3&gt;
 
 &lt;p&gt;使用数字和点表示有序列表。&lt;/p&gt;
 
@@ -2745,7 +3312,7 @@ bin\mongod.exe –remove&lt;/p&gt;
   &lt;li&gt;有序列表项 三&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;6-引用&quot;&gt;6. 引用&lt;/h3&gt;
+&lt;h3 id=&quot;215-引用&quot;&gt;2.1.5. 引用&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; 表示引用。&lt;/p&gt;
 
@@ -2780,7 +3347,7 @@ bin\mongod.exe –remove&lt;/p&gt;
   &lt;/blockquote&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;7-行内代码块&quot;&gt;7. 行内代码块&lt;/h3&gt;
+&lt;h3 id=&quot;216-行内代码块&quot;&gt;2.1.6. 行内代码块&lt;/h3&gt;
 
 &lt;p&gt;使用 `代码` 表示行内代码块。&lt;/p&gt;
 
@@ -2794,7 +3361,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;让主题 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Minimalism&lt;/code&gt; 成为行内代码块。&lt;/p&gt;
 
-&lt;h3 id=&quot;8-代码块&quot;&gt;8. 代码块&lt;/h3&gt;
+&lt;h3 id=&quot;217-代码块&quot;&gt;2.1.7. 代码块&lt;/h3&gt;
 
 &lt;p&gt;使用四个缩进空格表示代码块。&lt;/p&gt;
 
@@ -2865,7 +3432,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;9-插入图像&quot;&gt;9. 插入图像&lt;/h3&gt;
+&lt;h3 id=&quot;218-插入图像&quot;&gt;2.1.8. 插入图像&lt;/h3&gt;
 
 &lt;p&gt;使用 ![描述](图片链接地址) 插入图像。&lt;/p&gt;
 
@@ -2891,7 +3458,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://www.z4a.net/images/2017/08/31/shortcut_icon.png&quot; alt=&quot;头像&quot; title=&quot;头像&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;10-分隔符&quot;&gt;10. 分隔符&lt;/h3&gt;
+&lt;h3 id=&quot;219-分隔符&quot;&gt;2.1.9. 分隔符&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;---&lt;/code&gt; 可显示分隔符。&lt;/p&gt;
 
@@ -2905,7 +3472,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;11-反转义&quot;&gt;11. 反转义&lt;/h3&gt;
+&lt;h3 id=&quot;2110-反转义&quot;&gt;2.1.10. 反转义&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\&lt;/code&gt; 可使 Markdown 解析时不会去解析本该属于语法部分的一些符号。&lt;/p&gt;
 
@@ -2919,7 +3486,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;`代码块`&lt;/p&gt;
 
-&lt;h3 id=&quot;12-emoji&quot;&gt;12. Emoji&lt;/h3&gt;
+&lt;h3 id=&quot;2111-emoji&quot;&gt;2.1.11. Emoji&lt;/h3&gt;
 
 &lt;p&gt;主题同样也支持 Emoji 表情，使用方法很简单。&lt;/p&gt;
 
@@ -2935,7 +3502,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;Emoji 的代码参考 &lt;a href=&quot;https://www.webfx.com/tools/emoji-cheat-sheet/&quot;&gt;Emoji sheet&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h3 id=&quot;13-段内换行&quot;&gt;13. 段内换行&lt;/h3&gt;
+&lt;h3 id=&quot;2112-段内换行&quot;&gt;2.1.12. 段内换行&lt;/h3&gt;
 
 &lt;p&gt;在同一段落里让文本换行，只需在上一行末尾加 2 个空格即可。&lt;/p&gt;
 
@@ -2952,9 +3519,9 @@ bin\mongod.exe –remove&lt;/p&gt;
 &lt;p&gt;这是这个段落的第一行。&lt;br /&gt;
 这是同一个段落的第二行。&lt;/p&gt;
 
-&lt;h2 id=&quot;markdown-高阶语法&quot;&gt;Markdown 高阶语法&lt;/h2&gt;
+&lt;h2 id=&quot;22-markdown-高阶语法&quot;&gt;2.2. Markdown 高阶语法&lt;/h2&gt;
 
-&lt;h3 id=&quot;1-删除线&quot;&gt;1. 删除线&lt;/h3&gt;
+&lt;h3 id=&quot;221-删除线&quot;&gt;2.2.1. 删除线&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~~&lt;/code&gt; 表示删除线。&lt;/p&gt;
 
@@ -2968,7 +3535,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;&lt;del&gt;这是一段错误的文本。&lt;/del&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;2-注脚&quot;&gt;2. 注脚&lt;/h3&gt;
+&lt;h3 id=&quot;222-注脚&quot;&gt;2.2.2. 注脚&lt;/h3&gt;
 
 &lt;p&gt;使用 [^keyword] 表示注脚。&lt;/p&gt;
 
@@ -2998,7 +3565,7 @@ bin\mongod.exe –remove&lt;/p&gt;
 
 &lt;p&gt;这是第二个注脚 &lt;sup id=&quot;fnref:footnote2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:footnote2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; 的样例。&lt;/p&gt;
 
-&lt;h3 id=&quot;3-加强的代码块&quot;&gt;3. 加强的代码块&lt;/h3&gt;
+&lt;h3 id=&quot;223-加强的代码块&quot;&gt;2.2.3. 加强的代码块&lt;/h3&gt;
 
 &lt;p&gt;使用 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism&lt;/a&gt; 官网定制的代码高亮主题，选择了所有支持的编程语言，你可以定制你自己的语法主题。&lt;/p&gt;
 
@@ -3131,7 +3698,7 @@ document.write(fib(10));
 &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;4-表格支持&quot;&gt;4. 表格支持&lt;/h3&gt;
+&lt;h3 id=&quot;224-表格支持&quot;&gt;2.2.4. 表格支持&lt;/h3&gt;
 
 &lt;p&gt;示例：&lt;/p&gt;
 
@@ -3221,7 +3788,7 @@ document.write(fib(10));
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h3 id=&quot;5-定义型列表&quot;&gt;5. 定义型列表&lt;/h3&gt;
+&lt;h3 id=&quot;225-定义型列表&quot;&gt;2.2.5. 定义型列表&lt;/h3&gt;
 
 &lt;p&gt;示例：&lt;/p&gt;
 
@@ -3246,7 +3813,7 @@ document.write(fib(10));
   &lt;dd&gt;定义 2（左侧有一个可见的冒号和空格）&lt;/dd&gt;
 &lt;/dl&gt;
 
-&lt;h3 id=&quot;6-html-标签&quot;&gt;6. Html 标签&lt;/h3&gt;
+&lt;h3 id=&quot;226-html-标签&quot;&gt;2.2.6. Html 标签&lt;/h3&gt;
 
 &lt;p&gt;可在 Markdown 语法中直接嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
 
@@ -3296,7 +3863,7 @@ document.write(fib(10));
     &lt;/tr&gt;
 &lt;/table&gt;
 
-&lt;h3 id=&quot;7-待办事项-todo-列表&quot;&gt;7. 待办事项 Todo 列表&lt;/h3&gt;
+&lt;h3 id=&quot;227-待办事项-todo-列表&quot;&gt;2.2.7. 待办事项 Todo 列表&lt;/h3&gt;
 
 &lt;p&gt;使用带有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[ ]&lt;/code&gt; 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[x]&lt;/code&gt; (未完成或已完成) 项的列表语法撰写一个待办事项列表，并且支持子列表嵌套以及混用Markdown语法。&lt;/p&gt;
 
@@ -3371,7 +3938,7 @@ document.write(fib(10));
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;写在最后&quot;&gt;写在最后&lt;/h2&gt;
+&lt;h2 id=&quot;23-写在最后&quot;&gt;2.3. 写在最后&lt;/h2&gt;
 
 &lt;p&gt;本篇博客列举的语法模板部分参考了 &lt;a href=&quot;https://www.zybuluo.com/mdeditor?url=https%3A%2F%2Fwww.zybuluo.com%2Fstatic%2Feditor%2Fmd-help.markdown&quot;&gt;Cmd Markdown 编辑阅读器的语法说明&lt;/a&gt; :+1:，感谢。&lt;/p&gt;
 
@@ -3407,11 +3974,47 @@ document.write(fib(10));
 
 &lt;h2 id=&quot;安装ruby-devkit&quot;&gt;安装ruby-devkit&lt;/h2&gt;
 
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;下载安装包&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;p&gt;百度网盘&lt;a href=&quot;https://pan.baidu.com/s/1v2snQyrCzNehOIVYDlwDYQ&quot;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;可使用官方&lt;a href=&quot;http://jekyll-windows.juthilo.com/1-ruby-and-devkit/&quot;&gt;下载地址&lt;/a&gt;进行下载&lt;/p&gt;
 
-&lt;p&gt;点击运行下载的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rubyinstaller-devkit-2.6.6-1-x64.exe&lt;/code&gt;安装即可，在安装结束时，不要勾选ridk install的选项，后面再手动安装&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;运行安装&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;点击运行下载的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rubyinstaller-devkit-2.6.6-1-x64.exe&lt;/code&gt;安装&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;安装过程勾选MSYS&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200927234149.png&quot; alt=&quot;20200927234149&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;在安装结束时，不要勾选ridk install的选项，后面再手动安装&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://liulv.work/images/img/20200927234255.png&quot; alt=&quot;20200927234255&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;检查ruby是否正常安装，会出现版本号&lt;/p&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
@@ -3442,6 +4045,14 @@ document.write(fib(10));
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;输入“ridk install”进行MSYS2的安装，会出现然你选择123，你选3就行&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;异常&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-log&quot;&gt;$ ridk install
+bash: ridk: command not found
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;cd到Ruby26 Home bin目录下执行&lt;/p&gt;
 
 &lt;h1 id=&quot;安装bundler&quot;&gt;安装bundler&lt;/h1&gt;
 
@@ -3582,799 +4193,6 @@ index.html 网站的入口&lt;/p&gt;
         <category>GitHub</category>
         
         <category>个人博客</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Akka创建Actor</title>
-        <description>&lt;h1 id=&quot;1-简单介绍&quot;&gt;1. 简单介绍&lt;/h1&gt;
-
-&lt;p&gt;在新版的Akka中，创建Actor是我们最常用的，而创建Actor使用新版的AbstractBehavior&lt;POJO&gt;有两种常用的方式创建，太常用了所以单独列出两种创建Actor的示例。&lt;/POJO&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;2-创建actor的方式&quot;&gt;2. 创建Actor的方式&lt;/h1&gt;
-
-&lt;p&gt;创建Actor新版本支持以下两种方式创建：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;继承AbstractBehavior&lt;POJO&gt;方式&lt;/POJO&gt;&lt;/li&gt;
-  &lt;li&gt;方法直接函数式构造创建&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;两种方式最终效果完全一致，可根据自己喜欢选择使用，函数式方式创建代码比较简洁推荐使用。&lt;/p&gt;
-
-&lt;h1 id=&quot;3-继承abstractbehavior方式&quot;&gt;3. 继承AbstractBehavior&lt;POJO&gt;方式&lt;/POJO&gt;&lt;/h1&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AbstractBehavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//先定义Actor请求消息类型接口&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//请求消息交互的POJO&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//响应消息接口&lt;/span&gt;
-     &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//响应消息交互的POJO&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//静态方法创建actor入口方法&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
- 
-    &lt;span class=&quot;c1&quot;&gt;//构造方法创建Actor&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//消息接收处理&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Receive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createReceive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;newReceiveBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;onMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;//实际消息处理&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onUpdate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ref&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//或return Behaviors.same();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;4-方法直接函数式构造创建&quot;&gt;4. 方法直接函数式构造创建&lt;/h1&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//这种方式无法getContext()获取context，通过静态全局属性设置&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    
-
-    &lt;span class=&quot;c1&quot;&gt;//先定义Actor请求消息类型接口&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//请求消息交互的POJO&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//响应消息接口&lt;/span&gt;
-     &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//响应消息交互的POJO&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;getContext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;receive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;onMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-   &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;getContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getLog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;收到请求了， 我在回复...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;replyTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Here are the cookies for &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;same&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;5-创建actorsystemrootbehavior组装actor&quot;&gt;5. 创建ActorSystem、RootBehavior组装Actor&lt;/h1&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;App&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actorSystem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RootBehavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;RequestResponseAsk&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-   
-    &lt;span class=&quot;cm&quot;&gt;/**
-     * RootBehavior
-     */&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootBehavior&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                
-                &lt;span class=&quot;c1&quot;&gt;//创建ActorTest Actor&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;ActorRef&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Command&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actorTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ActorTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ActorTest&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-                &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 17 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2020/08/17/akka-create-actor/</link>
-        <guid isPermaLink="true">http://localhost:4000/2020/08/17/akka-create-actor/</guid>
-        
-        <category>Akka</category>
-        
-        <category>Akka create actor</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Akka 集群示例</title>
-        <description>&lt;h1 id=&quot;1-前台maven依赖&quot;&gt;1. 前台Maven依赖&lt;/h1&gt;
-
-&lt;p&gt;开发Akka集群可使用Maven添加最低依赖配置如下&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;akka.version&amp;gt;&lt;/span&gt;2.6.8&lt;span class=&quot;nt&quot;&gt;&amp;lt;/akka.version&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;scala.binary.version&amp;gt;&lt;/span&gt;2.13&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scala.binary.version&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;lombok.version&amp;gt;&lt;/span&gt;1.18.12&lt;span class=&quot;nt&quot;&gt;&amp;lt;/lombok.version&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;logback.version&amp;gt;&lt;/span&gt;1.2.3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/logback.version&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;junit.version&amp;gt;&lt;/span&gt;4.12&lt;span class=&quot;nt&quot;&gt;&amp;lt;/junit.version&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- lombok --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.projectlombok&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;lombok&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${lombok.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- logback --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;ch.qos.logback&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;logback-classic&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${logback.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka actor typed --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-actor-typed_2.13&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka actor test --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-actor-testkit-typed_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;c&quot;&gt;&amp;lt;!--&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;--&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka remote --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-remote_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka cluster --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-cluster-typed_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- akka serialization jackson--&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.typesafe.akka&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;akka-serialization-jackson_${scala.binary.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${akka.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;/&amp;gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;常用配置config方式&quot;&gt;常用配置config方式&lt;/h1&gt;
-
-&lt;p&gt;默认情况下创建ActorSystem时如不指定具体的config，那么会默认读取application.conf配置文件，但是通常建议都自己固定配置的配置文件，并且程序动态指定一些定制需要的配置。&lt;/p&gt;
-
-&lt;p&gt;常用方式：&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;从写覆盖定制配置&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;比如端口和角色&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;akka.remote.artery.canonical.port&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;akka.cluster.roles&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;singletonList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;然后添加stats&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;conf配置&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;文件名可直接根据项目调整&lt;/span&gt;
- &lt;span class=&quot;nc&quot;&gt;Config&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stats&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//指定config创建ActorSystem&lt;/span&gt;
- &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RootBehavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//RootBehavior中创建集群&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootBehavior&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behavior&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;//创建集群&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;2-hello-akkacluster示例&quot;&gt;2. Hello AkkaCluster示例&lt;/h1&gt;
-
-&lt;h2 id=&quot;21-最小集群配置如下&quot;&gt;2.1. 最小集群配置如下&lt;/h2&gt;
-
-&lt;p&gt;最小的Akka集群示例，配置如下&lt;/p&gt;
-
-&lt;div class=&quot;language-conf highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;akka&lt;/span&gt; { 
-  &lt;span class=&quot;n&quot;&gt;actor&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;provider&lt;/span&gt; = &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; 
-  &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;artery&lt;/span&gt; { 
-    &lt;span class=&quot;n&quot;&gt;canonical&lt;/span&gt; { 
-      &lt;span class=&quot;n&quot;&gt;hostname&lt;/span&gt; = &lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt; 
-      &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; = &lt;span class=&quot;m&quot;&gt;2551&lt;/span&gt; 
-    } 
-  } 
-} 
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可直接解析生成Akka Config，也可配置到application.conf，默认创建ActorSystem如果未指定Config会加载application.conf配置。也可配置其他conf文件配置，通过ConfigFactory.load加载配置文件创建Config。&lt;/p&gt;
-
-&lt;p&gt;示例中使用直接String方法创建Config配置并覆盖&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.remote.classic.netty.tcp.port&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.remote.artery.canonical.port&lt;/code&gt;配置，如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Config&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;s&quot;&gt;&quot;akka { \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  actor.provider = cluster \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  remote.artery { \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;    canonical { \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      hostname = \&quot;127.0.0.1\&quot; \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      port = 2551 \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;    } \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;  } \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;}  \n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Config&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;ConfigFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;s&quot;&gt;&quot;      akka.remote.classic.netty.tcp.port = 0 \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      akka.remote.artery.canonical.port = 0 \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;      akka.cluster.jmx.multi-mbeans-in-same-jvm = on \n&quot;&lt;/span&gt;
-                            &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;为了测试需要，我们设置支持同一个JVM进程允许启动多个集群，需要配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;akka.cluster.jmx.multi-mbeans-in-same-jvm = on&lt;/code&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;22-根据配置创建actorsystem&quot;&gt;2.2. 根据配置创建ActorSystem&lt;/h2&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;23-创建加入离开集群&quot;&gt;2.3. 创建、加入、离开集群&lt;/h2&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// #cluster-create&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// #cluster-join&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// TODO wait for/verify cluster to form&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// #cluster-leave&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Leave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Leave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cluster2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// TODO wait for/verify node 2 leaving&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// #actorSystem-terminate终止&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;terminate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;system2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;terminate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;24-测试集群创建加入离开&quot;&gt;2.4. 测试集群创建、加入、离开&lt;/h2&gt;
-
-&lt;p&gt;直接@test测试，测试运行结果如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-log&quot;&gt;SLF4J: A number (1) of logging calls during the initialization phase have been intercepted and are
-SLF4J: now being replayed. These are subject to the filtering rules of the underlying logging system.
-SLF4J: See also http://www.slf4j.org/codes.html#replay
-[2020-09-15 16:51:27,369] [INFO] [akka.event.slf4j.Slf4jLogger] [ClusterSystem-akka.actor.default-dispatcher-3] [] - Slf4jLogger started
-[2020-09-15 16:51:28,049] [INFO] [akka.remote.artery.tcp.ArteryTcpTransport] [ClusterSystem-akka.actor.default-dispatcher-3] [ArteryTcpTransport(akka://ClusterSystem)] - Remoting started with transport [Artery tcp]; listening on address [akka://ClusterSystem@127.0.0.1:64600] with UID [4688141471941267513]
-[2020-09-15 16:51:28,089] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Starting up, Akka version [2.6.8] ...
-[2020-09-15 16:51:28,288] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Registered cluster JMX MBean [akka:type=Cluster,port=64600]
-[2020-09-15 16:51:28,288] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Started up successfully
-[2020-09-15 16:51:28,326] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - No downing-provider-class configured, manual cluster downing required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#downing
-[2020-09-15 16:51:28,327] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - No seed-nodes configured, manual cluster join required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#joining
-[2020-09-15 16:51:29,704] [INFO] [akka.event.slf4j.Slf4jLogger] [ClusterSystem2-akka.actor.default-dispatcher-3] [] - Slf4jLogger started
-[2020-09-15 16:51:29,745] [INFO] [akka.remote.artery.tcp.ArteryTcpTransport] [ClusterSystem2-akka.actor.default-dispatcher-3] [ArteryTcpTransport(akka://ClusterSystem2)] - Remoting started with transport [Artery tcp]; listening on address [akka://ClusterSystem2@127.0.0.1:64609] with UID [420093861921554813]
-[2020-09-15 16:51:29,747] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Starting up, Akka version [2.6.8] ...
-[2020-09-15 16:51:29,758] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Registered cluster JMX MBean [akka:type=Cluster,port=64609]
-[2020-09-15 16:51:29,758] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Started up successfully
-[2020-09-15 16:51:29,767] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - No downing-provider-class configured, manual cluster downing required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#downing
-[2020-09-15 16:51:29,768] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - No seed-nodes configured, manual cluster join required, see https://doc.akka.io/docs/akka/current/typed/cluster.html#joining
-
-[2020-09-15 16:51:29,892] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Node [akka://ClusterSystem@127.0.0.1:64600] is JOINING itself (with roles [dc-default]) and forming new cluster
-[2020-09-15 16:51:29,892] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Node [akka://ClusterSystem2@127.0.0.1:64609] is JOINING itself (with roles [dc-default]) and forming new cluster
-[2020-09-15 16:51:29,898] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - is the new leader among reachable nodes (more leaders may exist)
-[2020-09-15 16:51:29,898] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - is the new leader among reachable nodes (more leaders may exist)
-[2020-09-15 16:51:29,917] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Leader is moving node [akka://ClusterSystem@127.0.0.1:64600] to [Up]
-[2020-09-15 16:51:29,917] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Leader is moving node [akka://ClusterSystem2@127.0.0.1:64609] to [Up]
-[2020-09-15 16:51:29,931] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-3] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Marked address [akka://ClusterSystem@127.0.0.1:64600] as [Leaving]
-[2020-09-15 16:51:29,933] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-15] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Marked address [akka://ClusterSystem2@127.0.0.1:64609] as [Leaving]
-[2020-09-15 16:51:30,365] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Leader is moving node [akka://ClusterSystem@127.0.0.1:64600] to [Exiting]
-[2020-09-15 16:51:30,369] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Exiting completed
-[2020-09-15 16:51:30,371] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Shutting down...
-[2020-09-15 16:51:30,373] [INFO] [akka.cluster.Cluster] [ClusterSystem-akka.actor.default-dispatcher-6] [Cluster(akka://ClusterSystem)] - Cluster Node [akka://ClusterSystem@127.0.0.1:64600] - Successfully shut down
-[2020-09-15 16:51:30,391] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Shutting down remote daemon.
-[2020-09-15 16:51:30,394] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Remote daemon shut down; proceeding with flushing remote transports.
-[2020-09-15 16:51:30,419] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem@127.0.0.1:64600/system/remoting-terminator] - Remoting shut down.
-[2020-09-15 16:51:30,778] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Leader is moving node [akka://ClusterSystem2@127.0.0.1:64609] to [Exiting]
-[2020-09-15 16:51:30,779] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Exiting completed
-[2020-09-15 16:51:30,779] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Shutting down...
-[2020-09-15 16:51:30,780] [INFO] [akka.cluster.Cluster] [ClusterSystem2-akka.actor.default-dispatcher-16] [Cluster(akka://ClusterSystem2)] - Cluster Node [akka://ClusterSystem2@127.0.0.1:64609] - Successfully shut down
-[2020-09-15 16:51:30,789] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem2-akka.actor.default-dispatcher-15] [akka://ClusterSystem2@127.0.0.1:64609/system/remoting-terminator] - Shutting down remote daemon.
-[2020-09-15 16:51:30,789] [INFO] [akka.remote.RemoteActorRefProvider$RemotingTerminator] [ClusterSystem2-akka.actor.default-dispatcher-15] [akka://ClusterSystem2@127.0.0.1:64609/system/remoting-terminator] - Remote daemon shut down; proceeding with flushing remote transports.
-[2020-09-15 16:51:30,791] [INFO] [akka.actor.LocalActorRef] [ClusterSystem2-akka.actor.default-dispatcher-16] [akka://ClusterSystem2/system/cluster/core/publisher] - Message [akka.cluster.InternalClusterAction$PublishChanges] from Actor[akka://ClusterSystem2/system/cluster/core/daemon#-964571468] to Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] was not delivered. [1] dead letters encountered. If this is not an expected behavior then Actor[akka://ClusterSystem2/system/cluster/core/publisher#-1466189001] may have terminated unexpectedly. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
-
-Process finished with exit code 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;25-集群订阅&quot;&gt;2.5. 集群订阅&lt;/h2&gt;
-
-&lt;p&gt;集群订阅：可用于在集群状态更改时接收消息,此示例订阅了一个ActorRef&lt;MemberEvent&gt;订阅服务器，控制集群成员添加和成员离开时，订阅用户subscriber将收到事件MemberUp，MemberLeft，MemberExited和MemberRemoved等信息。&lt;/MemberEvent&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;cm&quot;&gt;/**
-     * 集群订阅：可用于在集群状态更改时接收消息
-     *
-     * @throws Exception
-     */&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;clusterSubscribe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-            &lt;span class=&quot;nc&quot;&gt;TestProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;ActorRef&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getRef&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// #cluster-subscribe&lt;/span&gt;
-            
-            &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subscriptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Subscribe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// #cluster-subscribe&lt;/span&gt;
-
-            &lt;span class=&quot;nc&quot;&gt;Address&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;anotherMemberAddress&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// #cluster-leave-example&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;anotherMemberAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Leave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;anotherMemberAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// subscriber will receive events MemberLeft, MemberExited and MemberRemoved&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// #cluster-leave-example&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expectMessageClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberUp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expectMessageClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberLeft&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expectMessageClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberExited&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;testProbe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expectMessageClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClusterEvent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MemberRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;terminate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;26-设置种子节点&quot;&gt;2.6. 设置种子节点&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;种子节点简介&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;种子节点是加入集群的初始接触点，可以通过不同的方式实现&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;配置文件指定&lt;/li&gt;
-  &lt;li&gt;JVM启动参数指定&lt;/li&gt;
-  &lt;li&gt;程序中添加&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在加入过程之后，种子节点并不特殊，它们以与其他节点完全相同的方式参与到集群中。&lt;/p&gt;
-
-&lt;p&gt;通过集群引导自动连接到种子节点，使用开源的Akka管理项目的模块Cluster Bootstrap，可以自动发现连接过程的节点。请参阅其文档以了解更多细节。&lt;/p&gt;
-
-&lt;p&gt;当一个新节点启动时，它向所有配置的种子节点发送一条消息，然后向第一个响应的节点发送一个join命令。如果没有一个种子节点响应(可能还没有启动)，它将重试此过程，直到成功或关闭。&lt;/p&gt;
-
-&lt;p&gt;种子节点可以按照任何顺序启动。没有必要让所有种子节点都运行，但是在初始启动集群时必须启动配置为种子节点列表中的第一个元素的节点。否则，其他种子节点将不会被初始化，并且没有其他节点可以加入集群。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;种子节点加入方式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;具体加入方式&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;conf配置文件指定
-akka{
-  cluster{
-     seed-nodes = [“akka://ClusterSystem@host1:2552”,
-     “akka://ClusterSystem@host2:2552”]
-  }
- }&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可在JVM启动是指定
--Dakka.cluster.seed-nodes.0=akka://ClusterSystem@host1:2552
--Dakka.cluster.seed-nodes.1=akka://ClusterSystem@host2:2552&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;通过本示例程序中加入种子节点
- Cluster.get(system).manager().tell(new JoinSeedNodes(seedNodes));&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;示例程序添加种子节点&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;illustrateJoinSeedNodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;ActorSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Behaviors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ClusterSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;noPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withFallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clusterConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// #join-seed-nodes&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seedNodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;seedNodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AddressFromURIString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;akka://ClusterSystem@127.0.0.1:2551&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;seedNodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;AddressFromURIString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;akka://ClusterSystem@127.0.0.1:2552&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;JoinSeedNodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seedNodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// #join-seed-nodes&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;27-集群会员角色&quot;&gt;2.7. 集群会员角色&lt;/h2&gt;
-
-&lt;p&gt;集群的角色通过指定配置akka.cluster.roles，即overrides.put(“akka.cluster.roles”, Collections.singletonList(role))即可指定集群会员角色，获取角色可通过下面示例方式获取集群角色。&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt; &lt;span class=&quot;cm&quot;&gt;/**
-     * 集群角色示例
-     *
-     * 通过指定配置akka.cluster.roles
-     * overrides.put(&quot;akka.cluster.roles&quot;, Collections.singletonList(role));
-     */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;illustrateRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;ActorContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// #hasRole&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Member&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;selfMember&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cluster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasRole&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;backend&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Backend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;back&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;selfMember&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasRole&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;front&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Frontend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;front&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// #hasRole&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 15 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2020/08/15/akka-cluster-example/</link>
-        <guid isPermaLink="true">http://localhost:4000/2020/08/15/akka-cluster-example/</guid>
-        
-        <category>Akka</category>
-        
-        <category>Akka cluster</category>
-        
-        <category>Akka cluster example</category>
         
         
       </item>
