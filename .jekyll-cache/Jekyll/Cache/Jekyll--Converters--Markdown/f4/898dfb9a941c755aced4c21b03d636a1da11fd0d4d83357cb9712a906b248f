@@ -1,4 +1,4 @@
-I"mg<h1 id="1-docker介绍">1. Docker介绍</h1>
+I"�j<h1 id="1-docker介绍">1. Docker介绍</h1>
 
 <h2 id="11-什么是docker">1.1. 什么是Docker</h2>
 
@@ -91,7 +91,13 @@ USER namespace: 相当于用户系统隔离， User namespace中使用了map转�
 
 <h1 id="3-docker基本操作">3. Docker基本操作</h1>
 
-<h2 id="31-windows安装">3.1. windows安装</h2>
+<h2 id="31-windows安装老版本新版本windows不主持">3.1. windows安装（老版本，新版本windows不主持）</h2>
+
+<h3 id="先手动安装virtualbox">先手动安装VirtualBox</h3>
+
+<h3 id="vt-x-is-not-availableverr_vmx_no_vmx">VT-x is not available(VERR_VMX_NO_VMX)</h3>
+
+<p>Win10 更新之后VirtualBox安装ubuntu启动报 VT-x is not available(VERR_VMX_NO_VMX).</p>
 
 <p>下载地址
 http://mirrors.aliyun.com/docker-toolbox/windows/docker-toolbox/</p>
@@ -278,7 +284,9 @@ docker inspect</p>
 
 <p><strong>查询容器内IP地址</strong></p>
 
-<p>docker inspect -f ‘’ powerjob-server</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">inspect</span><span class="w"> </span><span class="nt">-f</span><span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="nx">powerjob-server</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><strong>停止容器</strong>
 docker stop powerjob-server</p>
@@ -450,6 +458,7 @@ docker load -i powerjob-agent.tar</p>
 
 <p>执行powerjob-agent, 执行同一台服务器下的需要根据server的容器地址修改172.17.0.2，如果是跨节点执行-s 后填写server容器所在服务器ip地址
 查看容器ip地址命令</p>
+
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">inspect</span><span class="w"> </span><span class="nt">-f</span><span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="nx">powerjob-server</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></div></div>

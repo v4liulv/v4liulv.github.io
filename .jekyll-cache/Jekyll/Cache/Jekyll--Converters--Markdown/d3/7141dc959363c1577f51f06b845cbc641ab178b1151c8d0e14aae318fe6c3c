@@ -1,4 +1,4 @@
-I"&<h1 id="本地jekyll搭建">本地Jekyll搭建</h1>
+I"&<h1 id="本地jekyll搭建">本地Jekyll搭建</h1>
 
 <h2 id="参考官方文档">参考官方文档</h2>
 
@@ -130,7 +130,9 @@ bash: ridk: command not found
 2
 3
 4
+5
 </pre></td><td class="rouge-code"><pre><span class="nb">cd </span>E:<span class="se">\G</span>itgub<span class="se">\s</span>imple.green.techblog
+
 bundle <span class="nb">install
 
 </span>bundle <span class="nb">exec </span>jekyll s

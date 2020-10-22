@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Akka集群分布式主题消息及订阅",
+      "subtitle" : "「AKKA」- 2.6.8",
+      "tags"     : "Akka, Akka cluster topic",
+      "url"      : "/2020/10/22/akka-cluster-topic/",
+      "date"     : "2020-10-22 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "SpringBoot容器启动完成后执行",
       "subtitle" : "延迟启动",
       "tags"     : "SpringBoot",
