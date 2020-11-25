@@ -1,13 +1,11 @@
 ---
 title: "ClickHouse入门教程"
-subtitle: ""ClickHouse安装部署启动
+subtitle: "ClickHouse安装部署启动"
 layout: post
 author: "LiuL"
 header-style: text
 tags:
-
-  + ClickHouse
-
+  - ClickHouse
 ---
 
 # 1. 安装ClickHouse
@@ -23,14 +21,14 @@ Server: programs/clickhouse-server
 
 命令来查看安装可用版本：
 
-``` shell
+```shell
 docker search clickhouse-server
 docker search clickhouse-client
 ```
 
 查询得到可用的镜像有yandex/开头的，那么使用下面命令下载镜像到本地
 
-``` powershell
+```powershell
 docker pull yandex/clickhouse-server:latest
 docker pull yandex/clickhouse-client:latest
 ```

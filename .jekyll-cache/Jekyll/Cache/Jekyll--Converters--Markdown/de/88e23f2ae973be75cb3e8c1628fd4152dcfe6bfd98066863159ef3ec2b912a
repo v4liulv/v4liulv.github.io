@@ -1,0 +1,89 @@
+I"�<h1 id="1-安装clickhouse">1. 安装ClickHouse</h1>
+
+<h2 id="11-docker方式安装">1.1. Docker方式安装</h2>
+
+<p>要在Docker中运行ClickHouse，请遵循Docker的指南。那些镜像使用官方的deb包。</p>
+
+<h3 id="111-使用源码安装">1.1.1. 使用源码安装</h3>
+
+<p>Client: programs/clickhouse-client
+Server: programs/clickhouse-server</p>
+
+<p>命令来查看安装可用版本：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>docker search clickhouse-server
+docker search clickhouse-client
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>查询得到可用的镜像有yandex/开头的，那么使用下面命令下载镜像到本地</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">pull</span><span class="w"> </span><span class="nx">yandex/clickhouse-server:latest</span><span class="w">
+</span><span class="nf">docker</span><span class="w"> </span><span class="nx">pull</span><span class="w"> </span><span class="nx">yandex/clickhouse-client:latest</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>下载安装完成后，查看已经安装的镜像</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">images</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在服务器中为数据创建如下目录：</p>
+
+<p>/opt/clickhouse/data/default/
+/opt/clickhouse/metadata/default/</p>
+
+<p>(它们可以在server config中配置。)
+为需要的用户运行’chown’</p>
+
+<p>日志的路径可以在server config (src/programs/server/config.xml)中配置。</p>
+
+<h1 id="2-启动clickhouse">2. 启动ClickHouse</h1>
+
+<p>可以运行如下命令在后台启动服务：</p>
+
+<p>sudo service clickhouse-server start
+可以在/var/log/clickhouse-server/目录中查看日志。</p>
+
+<p>如果服务没有启动，请检查配置文件 /etc/clickhouse-server/config.xml。</p>
+
+<p>你也可以在控制台中直接启动服务：</p>
+
+<p>clickhouse-server –config-file=/etc/clickhouse-server/config.xml
+在这种情况下，日志将被打印到控制台中，这在开发过程中很方便。
+如果配置文件在当前目录中，你可以不指定’–config-file’参数。它默认使用’./config.xml’。</p>
+
+<p>你可以使用命令行客户端连接到服务：</p>
+
+<p>clickhouse-client
+默认情况下它使用’default’用户无密码的与localhost:9000服务建立连接。
+客户端也可以用于连接远程服务，例如：</p>
+
+<p>clickhouse-client –host=example.com
+有关更多信息，请参考«Command-line client»部分。</p>
+
+<h1 id="3-检查clickhouse是否工作">3. 检查ClickHouse是否工作</h1>
+
+<p>milovidov@hostname:~/work/metrica/src/src/Client$ ./clickhouse-client
+ClickHouse client version 0.0.18749.
+Connecting to localhost:9000.
+Connected to ClickHouse server version 0.0.18749.</p>
+
+<p>:) SELECT 1</p>
+
+<p>SELECT 1</p>
+
+<p>┌─1─┐
+│ 1 │
+└───┘</p>
+
+<p>1 rows in set. Elapsed: 0.003 sec.</p>
+
+<p>:)
+恭喜，系统已经工作了!</p>
+
+<p>为了继续进行实验，你可以尝试下载测试数据集。</p>
+:ET

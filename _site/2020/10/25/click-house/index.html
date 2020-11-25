@@ -11,30 +11,26 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="基于Jekyll搭建个人博客 - 刘律的博客 | LiuL Blog">
+    <meta property="og:title" content="ClickHouse入门教程 - 刘律的博客 | LiuL Blog">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="本地Jekyll搭建
+    <meta property="og:description" content="1. 安装ClickHouse
 ">
     
-    <meta property="article:published_time" content="2020-08-17T00:00:00Z">
+    <meta property="article:published_time" content="2020-10-25T00:00:00Z">
     
     
     <meta property="article:author" content="LiuL">
     
     
-    <meta property="article:tag" content="Jekyll">
-    
-    <meta property="article:tag" content="GitHub">
-    
-    <meta property="article:tag" content="个人博客">
+    <meta property="article:tag" content="ClickHouse">
     
     
     <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
-    <meta property="og:url" content="http://localhost:4000/2020/08/17/jekyll/">
+    <meta property="og:url" content="http://localhost:4000/2020/10/25/click-house/">
     <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
     
-    <title>基于Jekyll搭建个人博客 - 刘律的博客 | LiuL Blog</title>
+    <title>ClickHouse入门教程 - 刘律的博客 | LiuL Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -43,7 +39,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2020/08/17/jekyll/">
+    <link rel="canonical" href="http://localhost:4000/2020/10/25/click-house/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -232,17 +228,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=Jekyll" title="Jekyll">Jekyll</a>
-                        
-                        <a class="tag" href="/archive/?tag=GitHub" title="GitHub">GitHub</a>
-                        
-                        <a class="tag" href="/archive/?tag=%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2" title="个人博客">个人博客</a>
+                        <a class="tag" href="/archive/?tag=ClickHouse" title="ClickHouse">ClickHouse</a>
                         
                     </div>
-                    <h1>基于Jekyll搭建个人博客</h1>
+                    <h1>ClickHouse入门教程</h1>
                     
-                    <h2 class="subheading">「gitHub结合jekyll」- 搭建个人博客</h2>
-                    <span class="meta">Posted by LiuL on August 17, 2020</span>
+                    <h2 class="subheading">ClickHouse安装部署启动</h2>
+                    <span class="meta">Posted by LiuL on October 25, 2020</span>
                 </div>
             </div>
         </div>
@@ -268,244 +260,106 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h1 id="本地jekyll搭建">本地Jekyll搭建</h1>
+				<h1 id="1-安装clickhouse">1. 安装ClickHouse</h1>
 
-<h2 id="参考官方文档">参考官方文档</h2>
+<h2 id="11-docker方式安装">1.1. Docker方式安装</h2>
 
-<p>windows运行Jekyll参考<a href="http://jekyllcn.com/docs/windows/#installation">官方文档</a></p>
+<p>要在Docker中运行ClickHouse，请遵循Docker的指南。那些镜像使用官方的deb包。</p>
 
-<h2 id="安装ruby-devkit">安装ruby-devkit</h2>
+<h3 id="111-使用源码安装">1.1.1. 使用源码安装</h3>
 
-<ul>
-  <li>
-    <ol>
-      <li>下载安装包</li>
-    </ol>
-  </li>
-</ul>
+<p>Client: programs/clickhouse-client
+Server: programs/clickhouse-server</p>
 
-<p>百度网盘<a href="https://pan.baidu.com/s/1v2snQyrCzNehOIVYDlwDYQ">下载地址</a></p>
-
-<p>可使用官方<a href="http://jekyll-windows.juthilo.com/1-ruby-and-devkit/">下载地址</a>进行下载</p>
-
-<ul>
-  <li>
-    <ol>
-      <li>运行安装</li>
-    </ol>
-  </li>
-</ul>
-
-<p>点击运行下载的<code class="language-plaintext highlighter-rouge">rubyinstaller-devkit-2.6.6-1-x64.exe</code>安装</p>
-
-<ul>
-  <li>
-    <ol>
-      <li>安装过程勾选MSYS</li>
-    </ol>
-  </li>
-</ul>
-
-<p><img src="https://liulv.work/images/img/20200927234149.png" alt="20200927234149" /></p>
-
-<ul>
-  <li>
-    <ol>
-      <li>在安装结束时，不要勾选ridk install的选项，后面再手动安装</li>
-    </ol>
-  </li>
-</ul>
-
-<p><img src="https://liulv.work/images/img/20200927234255.png" alt="20200927234255" /></p>
-
-<p>检查ruby是否正常安装，会出现版本号</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ruby <span class="nt">-v</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://liulv.work/images/img/20200817150431.png" alt="20200817150431" /></p>
-
-<h2 id="配置国内镜像">配置国内镜像</h2>
-
-<p>默认镜像太慢了，需要替换为国内镜像</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">--add</span> https://gems.ruby-china.com/ <span class="nt">--remove</span> https://rubygems.org/
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>确保只有 gems.ruby-china.com</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem sources <span class="nt">-l</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="安装msys2">安装MSYS2</h2>
-
-<p>控制台运行下面命令安装</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ridk <span class="nb">install</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>输入“ridk install”进行MSYS2的安装，会出现然你选择123，你选3就行</p>
-
-<p><strong>异常</strong></p>
-
-<pre><code class="language-log">$ ridk install
-bash: ridk: command not found
-</code></pre>
-
-<p>cd到Ruby26 Home bin目录下执行</p>
-
-<h1 id="安装bundler">安装bundler</h1>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>bundler
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="安装jekyll">安装Jekyll</h2>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install </span>jekyll
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>如果出现那个包提示不存在，直接单个安装</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>gem <span class="nb">install</span> <span class="nt">-v</span><span class="o">=</span>&lt;版本号&gt; &lt;包名&gt;
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>检查安装情况</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>jekyll <span class="nt">-v</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<h2 id="下载jekyll博客模板">下载Jekyll博客模板</h2>
-
-<p>模板常用地址有以下：</p>
-
-<ul>
-  <li><a href="http://jekyllthemes.org/">Jekyll Themes</a></li>
-  <li>http://painterlin.com/</li>
-  <li>http://miloyip.com/</li>
-</ul>
-
-<p>根据自己喜欢选择对于模板git clone到本地</p>
-
-<h2 id="本地运行jekyll">本地运行Jekyll</h2>
-
-<p>CD到下载的模板的目录下,然后进行解析运行</p>
+<p>命令来查看安装可用版本：</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-3
-4
-5
-</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>E:<span class="se">\G</span>itgub<span class="se">\s</span>imple.green.techblog
-
-bundle <span class="nb">install
-
-</span>bundle <span class="nb">exec </span>jekyll s
+</pre></td><td class="rouge-code"><pre>docker search clickhouse-server
+docker search clickhouse-client
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>最终运行成功会打印</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<p>查询得到可用的镜像有yandex/开头的，那么使用下面命令下载镜像到本地</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre>  Server address: http://127.0.0.1:4000/
-  Server running... press ctrl-c to stop.
-</pre></td></tr></tbody></table></code></pre></div></div>
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">pull</span><span class="w"> </span><span class="nx">yandex/clickhouse-server:latest</span><span class="w">
+</span><span class="nf">docker</span><span class="w"> </span><span class="nx">pull</span><span class="w"> </span><span class="nx">yandex/clickhouse-client:latest</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>目录说明</p>
+<p>下载安装完成后，查看已经安装的镜像</p>
 
-<p>jekyll目录结构主要包含如下目录：</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">docker</span><span class="w"> </span><span class="nx">images</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
-<blockquote>
-  <p>_posts 博客内容
-_pages 其他需要生成的网页，如About页
-_layouts 网页排版模板
-_includes 被模板包含的HTML片段，可在_config.yml中修改位置
-assets 辅助资源 css布局 js脚本 图片等
-_data 动态数据
-_sites 最终生成的静态网页
-_config.yml 网站的一些配置信息
-index.html 网站的入口</p>
-</blockquote>
+<p>在服务器中为数据创建如下目录：</p>
 
-<p>在<code class="language-plaintext highlighter-rouge">_posts</code>目录下可以编辑md文章，md文件命名规则<code class="language-plaintext highlighter-rouge">年-月-日-文件名称.md</code>.</p>
+<p>/opt/clickhouse/data/default/
+/opt/clickhouse/metadata/default/</p>
 
-<p>文章内容首添加标题、子标题、标签等信息</p>
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
-<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">基于Jekyll搭建个人博客"</span>
-<span class="na">subtitle</span><span class="pi">:</span> <span class="s2">"</span><span class="s">「gitHub结合jekyll」-</span><span class="nv"> </span><span class="s">搭建个人博客"</span>
-<span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
-<span class="na">author</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LiuL"</span>
-<span class="na">header-style</span><span class="pi">:</span> <span class="s">text</span>
-<span class="na">tags</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">Jekyll</span>
-  <span class="pi">-</span> <span class="s">GitHub</span>
-  <span class="pi">-</span> <span class="s">个人博客</span>
-<span class="nn">---</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>(它们可以在server config中配置。)
+为需要的用户运行’chown’</p>
 
-<p>然后添加文章正文即可</p>
+<p>日志的路径可以在server config (src/programs/server/config.xml)中配置。</p>
 
-<p>最后web访问<code class="language-plaintext highlighter-rouge">http://127.0.0.1:4000/</code></p>
+<h1 id="2-启动clickhouse">2. 启动ClickHouse</h1>
 
-<p><img src="https://liulv.work/images/img/20200817152920.png" alt="20200817152920" /></p>
+<p>可以运行如下命令在后台启动服务：</p>
 
-<h1 id="jekyll结合github远程服务博客">Jekyll结合Github远程服务博客</h1>
+<p>sudo service clickhouse-server start
+可以在/var/log/clickhouse-server/目录中查看日志。</p>
 
-<h2 id="github创建上创建名为用户名githubio的repository">Github创建上创建名为<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository</h2>
+<p>如果服务没有启动，请检查配置文件 /etc/clickhouse-server/config.xml。</p>
 
-<p>把本地运行的博客pull到<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository工程下，然后访问<code class="language-plaintext highlighter-rouge">https://用户名.github.io</code></p>
+<p>你也可以在控制台中直接启动服务：</p>
 
-<h2 id="博客使用域名">博客使用域名</h2>
+<p>clickhouse-server –config-file=/etc/clickhouse-server/config.xml
+在这种情况下，日志将被打印到控制台中，这在开发过程中很方便。
+如果配置文件在当前目录中，你可以不指定’–config-file’参数。它默认使用’./config.xml’。</p>
 
-<p>博客配置域名，在腾讯云购买域名。如<code class="language-plaintext highlighter-rouge">https://liulv.work</code>域名</p>
+<p>你可以使用命令行客户端连接到服务：</p>
 
-<p>Github的<code class="language-plaintext highlighter-rouge">用户名.github.io</code>的repository点击Settings，配置都默认即可。</p>
+<p>clickhouse-client
+默认情况下它使用’default’用户无密码的与localhost:9000服务建立连接。
+客户端也可以用于连接远程服务，例如：</p>
 
-<p>在github pages那栏点击launch automatic page generator</p>
+<p>clickhouse-client –host=example.com
+有关更多信息，请参考«Command-line client»部分。</p>
 
-<p><img src="https://liulv.work/images/img/20200817160910.png" alt="20200817160910" /></p>
+<h1 id="3-检查clickhouse是否工作">3. 检查ClickHouse是否工作</h1>
 
-<p>然后设置如下：</p>
+<p>milovidov@hostname:~/work/metrica/src/src/Client$ ./clickhouse-client
+ClickHouse client version 0.0.18749.
+Connecting to localhost:9000.
+Connected to ClickHouse server version 0.0.18749.</p>
 
-<p><img src="https://liulv.work/images/img/20200817161027.png" alt="20200817161027" /></p>
+<p>:) SELECT 1</p>
 
-<p>在<code class="language-plaintext highlighter-rouge">用户名.github.io</code>工程下新增博客的域名，具体操作：
-创建名CNAME的文件，在文件中添加域名即可<code class="language-plaintext highlighter-rouge">liulv.work</code>,然后pull到gitHub，即可通过<code class="language-plaintext highlighter-rouge">https://liulv.work</code>访问博客了</p>
+<p>SELECT 1</p>
 
+<p>┌─1─┐
+│ 1 │
+└───┘</p>
+
+<p>1 rows in set. Elapsed: 0.003 sec.</p>
+
+<p>:)
+恭喜，系统已经工作了!</p>
+
+<p>为了继续进行实验，你可以尝试下载测试数据集。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2020/08/17/akka-create-actor/" data-toggle="tooltip" data-placement="top" title="Akka创建Actor">
+                        <a href="/2020/10/22/akka-cluster-topic/" data-toggle="tooltip" data-placement="top" title="Akka集群分布式主题消息及订阅">
                         Previous<br>
-                        <span>Akka创建Actor</span>
+                        <span>Akka集群分布式主题消息及订阅</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2020/08/17/markdown-grammar/" data-toggle="tooltip" data-placement="top" title="Markdown 语法及渲染">
-                        Next<br>
-                        <span>Markdown 语法及渲染</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
@@ -625,8 +479,8 @@ index.html 网站的入口</p>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "LiuL";
-    var disqus_identifier = "/2020/08/17/jekyll";
-    var disqus_url = "http://localhost:4000/2020/08/17/jekyll/";
+    var disqus_identifier = "/2020/10/25/click-house";
+    var disqus_url = "http://localhost:4000/2020/10/25/click-house/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
