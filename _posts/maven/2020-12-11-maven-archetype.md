@@ -69,10 +69,15 @@ mvn archetype:create-from-project
 ![20201211144850](https://liulv.work/images/img/20201211144850.png)
 
 
-# 使用自定义骨架
+# 3. 使用自定义骨架
 
 创建maven工程时候勾选Create from archetype并添加自定义的骨架
 
+![20201211145319](https://liulv.work/images/img/20201211145319.png)
+
+然后点击ok，选中自己的骨架创建工程即可
+
+![20201211145406](https://liulv.work/images/img/20201211145406.png)
 
 
 
