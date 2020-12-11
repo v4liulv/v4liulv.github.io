@@ -106,6 +106,8 @@
                         
                         
                         
+                        
+                        
                         <li class="search-icon">
                             <a href="javascript:void(0)">
                                 <i class="fa fa-search"></i>
@@ -230,33 +232,165 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2020/11/30/emr-basic/">
+        <h2 class="post-title">
+            腾讯云EMR-基础
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. 节点类型
+
+Hadoop集群
+
+EMR 定义了5种节点类型，您可以根据集群类型进行选择：
+
+
+  
+    
+      节点类型
+      说明
+      HA（高可用）数量
+      非 HA 数量
+    
+  
+  
+    
+      主节点（Master）
+      部署 NameNode、ResourceManager、HMaster 等进程。
+      2
+...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on November 30, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/11/27/emr-presto/">
+        <h2 class="post-title">
+            腾讯云EMR-Presto
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                
+  
+    
+      cat /data/account.csv
+      clickhouse-client –query=”INSERT INTO testdb.account FORMAT CSVWithNames” –password
+    
+  
+
+
+clickhouse-client –query=”insert into testdb.account FORMAT ...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on November 27, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/11/27/emr-knox/">
+        <h2 class="post-title">
+            腾讯云EMR-Knox
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. Knox 说明
+
+读音 /nɑːks/
+
+目前 EMR-V1.3.1 和 EMR-V2.0.1 版本已经支持 Apache Knox，同Zookeeper/Hadoop一样为Hadoop集群必选组件，完成以下准备工作后，即可在公网直接访问 Yarn、HDFS 等服务的 Web UI
+
+1.1. 准备工作
+
+确认您已开通腾讯云，并且创建了一个 EMR 集群。
+EMR-V1.3.1 和 E...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on November 27, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/11/27/emr-alluxio/">
+        <h2 class="post-title">
+            腾讯云EMR-Alluxio
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. Alluxio 简介
+
+读音 /aluxshel/
+
+1.1. Alluxio 是什么
+
+Alluxio是一个基于内存的分布式文件系统，它是架构在底层分布式文件系统和上层分布式计算框架之间的一个中间件，主要职责是以文件形式在内存或其
+储设施中提供数据的存取服务。
+
+Alluxio的前身为Tachyon。
+
+1.2. Alluxio 应用场景
+
+Alluxio居于传统大数据存储（如：Am...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on November 27, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2020/10/25/click-house/">
         <h2 class="post-title">
             ClickHouse入门教程
         </h2>
         
         <h3 class="post-subtitle">
-            ClickHouse安装部署启动
+            
         </h3>
         
         <div class="post-content-preview">
             
-                1. 安装ClickHouse
+                1. ClickHouse介绍
 
-1.1. Docker方式安装
+ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)。
 
-要在Docker中运行ClickHouse，请遵循Docker的指南。那些镜像使用官方的deb包。
+1.1. 行数据库与列数据库区别
 
-1.1.1. 使用源码安装
+在传统的行式数据库系统中，数据按顺序存储，处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有： MySQL、Postgres和MS SQL Server。
 
-Client: programs/clickhouse-client
-Server: programs/clickhouse-server
-
-命令来查看安装可用版本：
-
-1
-2
-docker s...
+在列式数据库系统中，存储格式是列名，列值1, 列2.方式存储，对...
             
         </div>
     </a>
@@ -432,124 +566,6 @@ D:\tools\windows\KMS Tools(KMS激活工具)v20191201免费版.zip
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/">
-        <h2 class="post-title">
-            VSCode好用的Java插件
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「VSCode」- Java插件
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                引文
-
-说到写 Java，想必做 Java 开发的童鞋，蛮多都是会用 IntelliJ IDEA， Eclipse 或是 Netbeans。许多童鞋也许会问，VS Code 也能写 Java? 是的，没错，VS Code 可以写 Java，而且有着很好的开发体验。特别对于多语言开发者来说，如果能在同一个 IDE 或是编辑器编写多种语言，岂不是很方便？笔者在微软近六年，除了C#，主要写 Typ...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 31, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/08/19/akka-ask/">
-        <h2 class="post-title">
-            PowerJob中Akka ask实现
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「AKKA」- 2.6.8
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. Actor ask介绍
-
-与外部的Ackor进行交互，可以使用send发送后不管，前面文章已经介绍send交互方式，send为最常用的交互方式发送后不管，但是这里需要给外部Actor发生一个消息，并要求返回CompletionState[Response]。为此我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 19, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/08/18/powerjob-container-datax/">
-        <h2 class="post-title">
-            PowerJob容器开发集成DataX及任务配置
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「PowerJob容器V1.0.1」- DataX3
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. DataX开发说明
-
-DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。
-
-DataX插件扩展开发相关内容请参考DataX插件开发宝典和DataX集成支持TBDS腾讯大数据套件插件开发。
-
-本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。
-
-2. Java...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 18, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/08/18/InstallationDeployment/">
-        <h2 class="post-title">
-            Windows平台安装部署Mongodb
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「Windows安装部署」- 简单使用
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                mongodb安装
-
-下载
-
-请点击官方下载地址，下载完成后解压到本地如D:/gongji/mongodb。
-
-安装
-
-通过命令安装步骤：
-
-
-  创建数据和日志目录
-    
-      创建F:\mongodb\data\log和F:\mongodb\data\db目录
-      创建F:\mongodb\mongod.cfg配置文件
-    
-  
-  
-    创建安装配置文件mo...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 18, 2020
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -586,22 +602,27 @@ DataX插件扩展开发相关内容请参考DataX插件开发宝典和DataX集�
         
         
         
-                <a data-sort="0011" 
+                <a data-sort="0015" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0018" 
+                    href="/archive/?tag=EMR"
+                    title="EMR"
+                    rel="4">EMR</a>
+        
+                <a data-sort="0020" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0020" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0020" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>

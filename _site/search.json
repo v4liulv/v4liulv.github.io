@@ -1,8 +1,40 @@
 [
   
     {
+      "title"    : "腾讯云EMR-基础",
+      "subtitle" : "",
+      "tags"     : "EMR",
+      "url"      : "/2020/11/30/emr-basic/",
+      "date"     : "2020-11-30 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "腾讯云EMR-Presto",
+      "subtitle" : "",
+      "tags"     : "EMR, Presto",
+      "url"      : "/2020/11/27/emr-presto/",
+      "date"     : "2020-11-27 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "腾讯云EMR-Knox",
+      "subtitle" : "",
+      "tags"     : "EMR, Knox",
+      "url"      : "/2020/11/27/emr-knox/",
+      "date"     : "2020-11-27 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "腾讯云EMR-Alluxio",
+      "subtitle" : "",
+      "tags"     : "EMR, Alluxio",
+      "url"      : "/2020/11/27/emr-alluxio/",
+      "date"     : "2020-11-27 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "ClickHouse入门教程",
-      "subtitle" : "ClickHouse安装部署启动",
+      "subtitle" : "",
       "tags"     : "ClickHouse",
       "url"      : "/2020/10/25/click-house/",
       "date"     : "2020-10-25 00:00:00 +0800"

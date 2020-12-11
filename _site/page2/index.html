@@ -106,6 +106,8 @@
                         
                         
                         
+                        
+                        
                         <li class="search-icon">
                             <a href="javascript:void(0)">
                                 <i class="fa fa-search"></i>
@@ -229,6 +231,124 @@
                 postlist-container
             ">
     			
+<div class="post-preview">
+    <a href="/2020/08/31/VSCode%E5%A5%BD%E7%94%A8%E7%9A%84Java%E6%8F%92%E4%BB%B6/">
+        <h2 class="post-title">
+            VSCode好用的Java插件
+        </h2>
+        
+        <h3 class="post-subtitle">
+            「VSCode」- Java插件
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                引文
+
+说到写 Java，想必做 Java 开发的童鞋，蛮多都是会用 IntelliJ IDEA， Eclipse 或是 Netbeans。许多童鞋也许会问，VS Code 也能写 Java? 是的，没错，VS Code 可以写 Java，而且有着很好的开发体验。特别对于多语言开发者来说，如果能在同一个 IDE 或是编辑器编写多种语言，岂不是很方便？笔者在微软近六年，除了C#，主要写 Typ...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on August 31, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/08/19/akka-ask/">
+        <h2 class="post-title">
+            PowerJob中Akka ask实现
+        </h2>
+        
+        <h3 class="post-subtitle">
+            「AKKA」- 2.6.8
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. Actor ask介绍
+
+与外部的Ackor进行交互，可以使用send发送后不管，前面文章已经介绍send交互方式，send为最常用的交互方式发送后不管，但是这里需要给外部Actor发生一个消息，并要求返回CompletionState[Response]。为此我们使用akka.actor.type.javadsl.askpattern.ask。请求发送一条消息给一个Actor并获得一...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on August 19, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/08/18/powerjob-container-datax/">
+        <h2 class="post-title">
+            PowerJob容器开发集成DataX及任务配置
+        </h2>
+        
+        <h3 class="post-subtitle">
+            「PowerJob容器V1.0.1」- DataX3
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. DataX开发说明
+
+DataX二次开发主要是插件扩展开发（集成支持TBDS腾讯大数据套件）和PowerJob调度平台集成DataX开发。
+
+DataX插件扩展开发相关内容请参考DataX插件开发宝典和DataX集成支持TBDS腾讯大数据套件插件开发。
+
+本文档主要是介绍PowerJob调度平台集成DataX开发及如何在PowerJob调度平台配置DataX JOB。
+
+2. Java...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on August 18, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2020/08/18/InstallationDeployment/">
+        <h2 class="post-title">
+            Windows平台安装部署Mongodb
+        </h2>
+        
+        <h3 class="post-subtitle">
+            「Windows安装部署」- 简单使用
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                mongodb安装
+
+下载
+
+请点击官方下载地址，下载完成后解压到本地如D:/gongji/mongodb。
+
+安装
+
+通过命令安装步骤：
+
+
+  创建数据和日志目录
+    
+      创建F:\mongodb\data\log和F:\mongodb\data\db目录
+      创建F:\mongodb\mongod.cfg配置文件
+    
+  
+  
+    创建安装配置文件mo...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on August 18, 2020
+    </p>
+</div>
+<hr>
+
 <div class="post-preview">
     <a href="/2020/08/17/markdown-grammar/">
         <h2 class="post-title">
@@ -469,116 +589,6 @@ windows运行Jekyll参考官方文档
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2020/08/14/akka-http/">
-        <h2 class="post-title">
-            Akka http
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「Akka http官方文档」- 2.6.8
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. Maven依赖
-
-当前akka最新版本2.6.8、akka http最新版本为10.2.0
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-    &lt;properties&gt;
-        &lt;a...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 14, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/08/11/doc-translation/">
-        <h2 class="post-title">
-            Akka 官方文档翻译
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「AKKA」- 2.6.8
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. Akka简介
-
-
-  为什么要用Akka/好处
-  Akka介绍
-
-
-1.1. 为什么要用Akka
-
-Akka提供可扩展的实时事务处理。
-
-Akka是一个运行时与编程模型一致的系统，为以下目标设计：
-
-
-  垂直扩展（并发）
-  水平扩展（远程调用）
-  高容错
-
-
-在Akka的世界里，只有一个内容需要学习和管理，具有高内聚和高一致的语义。
-
-Akka是一种高度可扩展的软件，这不仅仅表...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 11, 2020
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -588,6 +598,10 @@ Akka是一种高度可扩展的软件，这不仅仅表...
         <a href="/">&larr; Newer Posts</a>
     </li>
     
+    
+    <li class="next">
+        <a href="/page3">Older Posts &rarr;</a>
+    </li>
     
 </ul>
 
@@ -615,22 +629,27 @@ Akka是一种高度可扩展的软件，这不仅仅表...
         
         
         
-                <a data-sort="0011" 
+                <a data-sort="0015" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0018" 
+                    href="/archive/?tag=EMR"
+                    title="EMR"
+                    rel="4">EMR</a>
+        
+                <a data-sort="0020" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0020" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0016" 
+                <a data-sort="0020" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>

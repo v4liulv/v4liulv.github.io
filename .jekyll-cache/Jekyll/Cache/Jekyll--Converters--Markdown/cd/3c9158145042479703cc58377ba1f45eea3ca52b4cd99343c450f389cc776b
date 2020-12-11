@@ -1,0 +1,9 @@
+I"�<table>
+  <tbody>
+    <tr>
+      <td>cat /data/account.csv</td>
+      <td>clickhouse-client –query=”INSERT INTO testdb.account FORMAT CSVWithNames” –password</td>
+    </tr>
+  </tbody>
+</table>
+:ET
