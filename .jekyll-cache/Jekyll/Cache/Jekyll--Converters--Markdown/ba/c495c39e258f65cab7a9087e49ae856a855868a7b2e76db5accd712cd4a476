@@ -1,0 +1,127 @@
+I"�<h1 id="1-配置maven依赖">1. 配置Maven依赖</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">xiaoymin</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">knife4j</span><span class="o">-</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="k">version</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">.</span><span class="mi">9</span><span class="p">.</span><span class="mi">6</span><span class="o">&lt;/</span><span class="k">version</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2-添加swagger-app-ui配置">2. 添加swagger app ui配置</h1>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Swagger UI 配置
+ *
+ * @author bigdata@tcfuture.tech
+ * @since 2020/3/29
+ */</span>
+<span class="nd">@Configuration</span>
+<span class="nd">@EnableSwagger2</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">Docket</span> <span class="nf">createRestApi</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// apiInfo()用来创建该Api的基本信息（这些基本信息会展现在文档页面中</span>
+        <span class="nc">ApiInfo</span> <span class="n">apiInfo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ApiInfoBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="s">"spring-mybatis"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">"Spring Mybatis 框架."</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">license</span><span class="o">(</span><span class="s">"Apache Licence 2"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">termsOfServiceUrl</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">version</span><span class="o">(</span><span class="s">"1.0.0"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Docket</span><span class="o">(</span><span class="nc">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">)</span>
+                <span class="c1">// select()函数返回一个ApiSelectorBuilder实例</span>
+                <span class="o">.</span><span class="na">select</span><span class="o">()</span>
+                <span class="c1">// 决定了暴露哪些接口给 Swagger</span>
+                <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">any</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="3-在控制器设置">3. 在控制器设置</h1>
+
+<p>在控制器类上设置@Api</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nd">@Api</span><span class="o">(</span><span class="n">tags</span> <span class="o">=</span> <span class="s">"测试操作功能接口"</span><span class="o">)</span>
+<span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestInfoController</span> <span class="o">{</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在接口方法设置</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre>  <span class="nd">@ApiOperation</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"保存用户信息"</span><span class="o">,</span> <span class="n">notes</span> <span class="o">=</span> <span class="s">"访问此接口, 传递用户相关信息保存用户信息"</span><span class="o">)</span>
+    <span class="nd">@ApiResponses</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="nd">@ApiResponse</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="mi">200</span><span class="o">,</span> <span class="n">message</span> <span class="o">=</span> <span class="s">"接口返回成功状态"</span><span class="o">),</span>
+            <span class="nd">@ApiResponse</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="mi">500</span><span class="o">,</span> <span class="n">message</span> <span class="o">=</span> <span class="s">"接口返回未知错误，请联系开发人员调试"</span><span class="o">)</span>
+    <span class="o">})</span>
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/saveData"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">saveData</span> <span class="o">(</span><span class="nd">@RequestBody</span> <span class="nc">TestInfo</span> <span class="nc">TestInfo</span><span class="o">){</span>
+        <span class="nc">TestInfoService</span><span class="o">.</span><span class="na">saveData</span><span class="o">(</span><span class="nc">TestInfo</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"sus"</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="控制台">控制台</h1>
+
+<p>通过ip和springboot的服务端口加上doc.html和swagger-ui.html访问</p>
+
+<p><img src="https://liulv.work/images/img/20201214140507.png" alt="20201214140507" /></p>
+
+<p><img src="https://liulv.work/images/img/1607925941(1).png" alt="1607925941(1)" /></p>
+
+:ET

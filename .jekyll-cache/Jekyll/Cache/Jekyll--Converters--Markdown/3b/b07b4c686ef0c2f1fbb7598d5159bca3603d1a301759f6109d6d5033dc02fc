@@ -1,0 +1,77 @@
+I"X<h1 id="1-为什么要使用骨架">1. 为什么要使用骨架</h1>
+
+<p>在使用idea进行maven开发项目时, 发现每次新建一个maven项目之后,
+自带的骨架中都缺少目录和配置文件. 每次都需要自己建包 , 修改文件夹状态.(很麻烦)</p>
+
+<h1 id="2-自定义骨架">2. 自定义骨架</h1>
+
+<h2 id="21-前提准备">2.1. 前提准备</h2>
+
+<ul>
+  <li>新建一个maven项目</li>
+  <li>项目添加目录</li>
+  <li>修改文件夹状态</li>
+  <li>pom.xml中导入所依赖的jar包.</li>
+  <li>并创建三层架构, 导入每次所需的配置文件 , 工具类</li>
+</ul>
+
+<blockquote>
+  <p>注: 每一个文件夹中都要有一个占位文件 , 否则它会认为是空目录 ,不会创建.</p>
+</blockquote>
+
+<h2 id="22-添加骨架依赖">2.2. 添加骨架依赖</h2>
+
+<p>工程创建好之后 , 需要在pom文件中添加创建骨架的插件.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-archetype-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="23-根据项目创建archetype">2.3. 根据项目创建archetype</h2>
+
+<p>添加好依赖以后, gitbash到工程跟目录，执行下面命令:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">mvn</span> <span class="n">archetype</span><span class="p">:</span><span class="k">create</span><span class="o">-</span><span class="k">from</span><span class="o">-</span><span class="n">project</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/20201211144113.png" alt="20201211144113" /></p>
+
+<p>执行完成后会在项目的target目录下，生成archetype目录</p>
+
+<p><img src="https://liulv.work/images/img/20201211144225.png" alt="20201211144225" /></p>
+
+<h2 id="24-安装archetype">2.4. 安装archetype</h2>
+
+<p>在上一步生成的archetype目录下，执行<code class="language-plaintext highlighter-rouge">mvn install</code>命令</p>
+
+<p><img src="https://liulv.work/images/img/20201211144425.png" alt="20201211144425" /></p>
+
+<p>再执行<code class="language-plaintext highlighter-rouge">mvn archetype:crawl</code>命令</p>
+
+<p><img src="https://liulv.work/images/img/20201211144650.png" alt="20201211144650" /></p>
+
+<p>执行完成后会在本地maven仓库生成一个archetype-atalog.xml文件，xml内容包含自己的骨架信息</p>
+
+<p><img src="https://liulv.work/images/img/20201211144819.png" alt="20201211144819" /></p>
+
+<p><img src="https://liulv.work/images/img/20201211144850.png" alt="20201211144850" /></p>
+
+<h1 id="3-使用自定义骨架">3. 使用自定义骨架</h1>
+
+<p>创建maven工程时候勾选Create from archetype并添加自定义的骨架</p>
+
+<p><img src="https://liulv.work/images/img/20201211145319.png" alt="20201211145319" /></p>
+
+<p>然后点击ok，选中自己的骨架创建工程即可</p>
+
+<p><img src="https://liulv.work/images/img/20201211145406.png" alt="20201211145406" /></p>
+
+:ET

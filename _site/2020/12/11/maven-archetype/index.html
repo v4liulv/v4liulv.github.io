@@ -11,16 +11,28 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="About - 刘律的博客 | LiuL Blog">
+    <meta property="og:title" content="Maven自建骨架 - 刘律的博客 | LiuL Blog">
     
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="你是我的梦想">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="1. 为什么要使用骨架
+">
+    
+    <meta property="article:published_time" content="2020-12-11T00:00:00Z">
+    
+    
+    <meta property="article:author" content="LiuL">
+    
+    
+    <meta property="article:tag" content="Maven">
+    
+    <meta property="article:tag" content="Maven骨架">
+    
     
     <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
-    <meta property="og:url" content="http://localhost:4000/about/">
+    <meta property="og:url" content="http://localhost:4000/2020/12/11/maven-archetype/">
     <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
     
-    <title>About - 刘律的博客 | LiuL Blog</title>
+    <title>Maven自建骨架 - 刘律的博客 | LiuL Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -29,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/about/">
+    <link rel="canonical" href="http://localhost:4000/2020/12/11/maven-archetype/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -60,8 +72,8 @@
 
     <!-- Navigation -->
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -192,158 +204,208 @@
   </div>
 </div>
 
-    <!-- Page Header -->
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
 
 
 
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg');
+        background: ;
+    }
 
+    
+</style>
 
+<header class="intro-header style-text" >
 
-
-<header class="intro-header" style="background-image: url('/img/about-bg.jpg')">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="site-heading">
-        
-          <h1>About</h1>
-          <span class="subheading">你是我的梦想</span>
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Maven" title="Maven">Maven</a>
+                        
+                        <a class="tag" href="/archive/?tag=Maven%E9%AA%A8%E6%9E%B6" title="Maven骨架">Maven骨架</a>
+                        
+                    </div>
+                    <h1>Maven自建骨架</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by LiuL on December 11, 2020</span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </header>
 
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h1 id="1-为什么要使用骨架">1. 为什么要使用骨架</h1>
+
+<p>在使用idea进行maven开发项目时, 发现每次新建一个maven项目之后,
+自带的骨架中都缺少目录和配置文件. 每次都需要自己建包 , 修改文件夹状态.(很麻烦)</p>
+
+<h1 id="2-自定义骨架">2. 自定义骨架</h1>
+
+<h2 id="21-前提准备">2.1. 前提准备</h2>
+
+<ul>
+  <li>新建一个maven项目</li>
+  <li>项目添加目录</li>
+  <li>修改文件夹状态</li>
+  <li>pom.xml中导入所依赖的jar包.</li>
+  <li>并创建三层架构, 导入每次所需的配置文件 , 工具类</li>
+</ul>
+
+<blockquote>
+  <p>注: 每一个文件夹中都要有一个占位文件 , 否则它会认为是空目录 ,不会创建.</p>
+</blockquote>
+
+<h2 id="22-添加骨架依赖">2.2. 添加骨架依赖</h2>
+
+<p>工程创建好之后 , 需要在pom文件中添加创建骨架的插件.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-archetype-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="23-根据项目创建archetype">2.3. 根据项目创建archetype</h2>
+
+<p>添加好依赖以后, gitbash到工程跟目录，执行下面命令:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">mvn</span> <span class="n">archetype</span><span class="p">:</span><span class="k">create</span><span class="o">-</span><span class="k">from</span><span class="o">-</span><span class="n">project</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/20201211144113.png" alt="20201211144113" /></p>
+
+<p>执行完成后会在项目的target目录下，生成archetype目录</p>
+
+<p><img src="https://liulv.work/images/img/20201211144225.png" alt="20201211144225" /></p>
+
+<h2 id="24-安装archetype">2.4. 安装archetype</h2>
+
+<p>在上一步生成的archetype目录下，执行<code class="language-plaintext highlighter-rouge">mvn install</code>命令</p>
+
+<p><img src="https://liulv.work/images/img/20201211144425.png" alt="20201211144425" /></p>
+
+<p>再执行<code class="language-plaintext highlighter-rouge">mvn archetype:crawl</code>命令</p>
+
+<p><img src="https://liulv.work/images/img/20201211144650.png" alt="20201211144650" /></p>
+
+<p>执行完成后会在本地maven仓库生成一个archetype-atalog.xml文件，xml内容包含自己的骨架信息</p>
+
+<p><img src="https://liulv.work/images/img/20201211144819.png" alt="20201211144819" /></p>
+
+<p><img src="https://liulv.work/images/img/20201211144850.png" alt="20201211144850" /></p>
+
+<h1 id="3-使用自定义骨架">3. 使用自定义骨架</h1>
+
+<p>创建maven工程时候勾选Create from archetype并添加自定义的骨架</p>
+
+<p><img src="https://liulv.work/images/img/20201211145319.png" alt="20201211145319" /></p>
+
+<p>然后点击ok，选中自己的骨架创建工程即可</p>
+
+<p><img src="https://liulv.work/images/img/20201211145406.png" alt="20201211145406" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/12/08/druid/" data-toggle="tooltip" data-placement="top" title="Druid学习">
+                        Previous<br>
+                        <span>Druid学习</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/12/13/swagger/" data-toggle="tooltip" data-placement="top" title="Swagger配置使用">
+                        Next<br>
+                        <span>Swagger配置使用</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
         
 
-<!-- USE SIDEBAR -->
-    <!-- PostList Container -->
-    		<div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                postlist-container
-            ">
-    			                <!-- Language Selector -->
-                <select class="sel-lang" onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-                    <option value="0" selected> 中文 | Chinese </option>
-                    <option value="1"> 英文 | English </option>
-                </select>
-
-
-
-<!-- Chinese Version -->
-<div class="zh post-container">
-    
-    <blockquote>
-  <p>离开世界之前，一切都是过程。</p>
-</blockquote>
-
-<p>Hi，我是刘律，前端娱乐圈 NPC，编程语言/编译器初心者，<a href="https://www.facebook.com/">Facebook</a> 签约软件工程师，<a href="https://baike.baidu.com/item/%E4%B8%AD%E5%9B%BD%E4%BC%A0%E5%AA%92%E5%A4%A7%E5%AD%A6">广院</a>认证数字设计师，曾被招募为阿里巴巴 · <a href="http://alitrip.com">阿里旅行（飞猪）</a>· 前端工程师、微影时代 · 微票儿 · 前端基础设施工程团队负责人、<a href="https://ele.me/">饿了么</a> · 大前端团队 · <a href="https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509">PWA 顾问</a> 等。</p>
-
-<p>目前的物理活动范围主要在美帝硅谷，分身日常出没于<a href="https://liulv.work">博客</a>、<a href="https://weibo.com/v4liulv">微博</a>、<a href="https://www.zhihu.com/people/v4liulv/pins/posts">知乎</a>、<a href="https://twitter.com/v4liulv/">Twitter</a>、<a href="https://github.com/v4liulv">Github</a>、<a href="https://medium.com/@v4liulv">Medium</a>。</p>
-
-<h5 id="我的编程语言可视化-wip-"><a href="https://liulv.work/2020/05/05/pl-chart/">我的编程语言可视化 (WIP 🚧)</a></h5>
-
-<p>这个图表可视化了我对于各种编程语言的使用经历、兴趣，还附带了一些评语和解释等等。 啊我知道对比编程语言是一件很有争议的事情……自娱自乐一下！不要太较真哦 ;)</p>
-
-<h5 id="技术分享">技术分享</h5>
-
-<ul>
-  <li>[Upgrading to Progressive Web Apps][111] · [JSConf China Shanghai 2017]</li>
-  <li>Building Progressive Web Apps · [CSDI Guangzhou 2017]</li>
-  <li>The State of Progressive Web App · GDG IO Redux Beijing 2017</li>
-  <li>PWA Rehashing · Baidu HQ Beijing 2017</li>
-  <li>[Service Worker 101][111] · GDG DevFest Beijing 2016</li>
-  <li>[Progressive Web Apps][111] · QCon Shanghai 2016</li>
-  <li>Progressive Web App in my POV · GDG IO Redux Beijing 2016</li>
-  <li>[CSS Still Sucks 2015][111] · 2015</li>
-  <li>[JavaScript Modularization Journey][111] · 2015</li>
-</ul>
-
-
-</div>
-
-<!-- English Version -->
-<div class="en post-container">
-    
-    <blockquote>
-  <p>Your time is limited, so don’t waste it living someone else’s life.</p>
-</blockquote>
-
-<p>Hi, I am <em>@huxpro</em> (Huang, Xuan), a <a href="https://www.facebook.com/">Facebook</a> software engineer and a degreed digital designer. My interests range from programming languages in general (type system, type-based formal verification, compilers, runtime systems, garbage collection) to indurstial software engineering (web/mobile app development, user interface and UX, developer infrastructure and DX).</p>
-
-<p>In the past, I worked on <a href="https://www.alitrip.com/">Alitrip (Fliggy)</a> mobile and web apps under the <a href="https://en.wikipedia.org/wiki/Alibaba_Group">Alibaba Group</a>, found and lead front-end infrastructure team at a unicorn startup <a href="https://www.crunchbase.com/organization/beijing-weiying-technology">Beijing Weiying (WePiao)</a>, and helped <a href="https://en.wikipedia.org/wiki/Ele.me">Ele.me</a> to upgrade their mobile web into <a href="https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509">the first influential PWA (progressive web app) in China</a>.</p>
-
-<p>I studied BA, Digital Media Art at <a href="https://en.wikipedia.org/wiki/Communication_University_of_China">Communication University of China</a> and MS, Computer Science with a focus on programming languages at <a href="https://en.wikipedia.org/wiki/Rochester_Institute_of_Technology">Rochester Institute of Technology</a>.</p>
-
-<h5 id="my-pl-spectrum-wip-"><a href="https://liulv.work/2020/05/05/pl-chart/">My PL Spectrum (WIP 🚧)</a></h5>
-
-<p>I made a chart to visualize my experiences and interests on some of the programming languages.   I know, I know this could be very contraversial. But it’s a quite self-entertaining side project to do right? So have fun and don’t take it too serious!</p>
-
-<h5 id="appearence">Appearence</h5>
-
-<ul>
-  <li>[Upgrading to Progressive Web Apps][111] · [JSConf China Shanghai 2017]</li>
-  <li>Building Progressive Web Apps · [CSDI Guangzhou 2017]</li>
-  <li>The State of Progressive Web App · GDG IO Redux Beijing 2017</li>
-  <li>PWA Rehashing · Baidu HQ Beijing 2017</li>
-  <li>[Service Worker 101][111] · GDG DevFest Beijing 2016</li>
-  <li>[Progressive Web Apps][111] · QCon Shanghai 2016</li>
-  <li>Progressive Web App in my POV · GDG IO Redux Beijing 2016</li>
-  <li>[CSS Still Sucks 2015][111] · 2015</li>
-  <li>[JavaScript Modularization Journey][111] · 2015</li>
-</ul>
-
-
-</div>
-
-
-
-<!-- disqus 评论框 start -->
-<div class="comment">
-    <div id="disqus_thread" class="disqus-thread">
-
-    </div>
-</div>
-<!-- disqus 评论框 end -->
-
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "LiuL";
-    var disqus_identifier = "LiuL//about/";
-    var disqus_url = "http://localhost:4000/about/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus 公共JS代码 end -->
-
-
-    		</div>
     <!-- Sidebar Container -->
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
 
 
 <section>
+    
+        <hr class="hidden-sm hidden-xs">
     
     <h5><a href="/archive/">FEATURED TAGS</a></h5>
     <div class="tags">
@@ -381,71 +443,6 @@
 </section>
 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-  <hr>
-  <h5><a href="/about/">ABOUT ME</a></h5>
-  <div class="short-about">
-    
-    <img src="/img/avatar-LiuL-ny.jpg" />
-    
-    
-    <p>For the next quantum leap<br>离开世界之前，一切都是过程</p>
-    
-    <!-- SNS Link -->
-    
-
-
-<ul class="list-inline">
-
-
-  
-  
-  <li>
-    <a href="https://twitter.com/v4liulv">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
-  </li>
-  
-  
-  <li>
-    <a target="_blank" href="https://www.zhihu.com/people/v4liulv">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa  fa-stack-1x fa-inverse">知</i>
-      </span>
-    </a>
-  </li>
-  
-  
-  <li>
-    <a target="_blank" href="http://weibo.com/v4liulv">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
-  </li>
-  
-  
-  
-  <li>
-    <a target="_blank" href="https://github.com/v4liulv">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
-  </li>
-  
-  
-</ul>
-  </div>
-</section>
-
                 <!-- Friends Blog -->
                 
 <hr>
@@ -472,10 +469,69 @@
   
 </ul>
 
-    		</div>
-        
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "LiuL";
+    var disqus_identifier = "/2020/12/11/maven-archetype";
+    var disqus_url = "http://localhost:4000/2020/12/11/maven-archetype/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -646,7 +702,7 @@
     function generateCatalog(selector) {
 
         // interop with multilangual 
-        if ('true' == 'true') {
+        if ('' == 'true') {
             _containerSelector = 'div.post-container.active'
         } else {
             _containerSelector = 'div.post-container'
@@ -703,58 +759,6 @@
 
 
 <!-- Multi-Lingual -->
-
-<!-- Handle Language Change -->
-<script type="text/javascript">
-    // get nodes
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    var $select = document.querySelector("select");
-
-    // Changes at v1.8.1: include lang flag as a url query. This interop well with catalog hash anchors.
-    function getLang() { return new URLSearchParams(document.location.search).get("lang") }
-
-    function setLang(newLang) {
-        var params = new URLSearchParams(document.location.search)
-        params.set("lang", newLang)
-        document.location.search = params.toString()  // refresh.
-    }
-
-    // handle render
-    function _render() {
-        var lang = getLang()
-        // en
-        if (lang == "en") {
-            $select.selectedIndex = 1;
-            $en.style.display = "block";
-            $en.classList.add("active");
-            $zh.style.display = "none";
-            $zh.classList.remove("active");
-            // default to zh-cn
-        } else {
-            $select.selectedIndex = 0;
-            $zh.style.display = "block";
-            $zh.classList.add("active");
-            $en.style.display = "none";
-            $en.classList.remove("active");
-        }
-        // interop with catalog 
-        generateCatalog(".catalog-body");
-    }
-
-    // handle select change
-    function onLanChange(index) {
-        if (index == 0) {
-            lang = "zh"
-        } else {
-            lang = "en"
-        }
-        setLang(lang)
-    }
-
-    // init
-    _render();
-</script>
 
 
 <!-- Simple Jekyll Search -->
