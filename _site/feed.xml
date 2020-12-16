@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 16 Dec 2020 14:25:01 +0800</pubDate>
-    <lastBuildDate>Wed, 16 Dec 2020 14:25:01 +0800</lastBuildDate>
+    <pubDate>Wed, 16 Dec 2020 14:46:44 +0800</pubDate>
+    <lastBuildDate>Wed, 16 Dec 2020 14:46:44 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -337,6 +337,34 @@ Disabled&lt;/p&gt;
 	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;设置环境变量&quot;&gt;设置环境变量&lt;/h2&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'export HADOOP_HOME=/var/lib/hadoop/hadoop-2.7.3'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/etc/profile&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/etc/profile&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/etc/profile&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;启动&quot;&gt;启动&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;启动命令&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;start-all.sh&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;停止命令&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;stop-all.sh&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;访问&lt;/strong&gt;
+hdfs http://192.168.56.101:50070/&lt;/p&gt;
+
+&lt;p&gt;yarn  http://192.168.56.101:8088/&lt;/p&gt;
+
+&lt;hr /&gt;
+
 </description>
         <pubDate>Tue, 15 Dec 2020 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2020/12/15/hadoop-install/</link>
@@ -755,15 +783,15 @@ wikipedia loading complete! You may now query your data
 
 &lt;h2 id=&quot;31-前提&quot;&gt;3.1. 前提&lt;/h2&gt;
 
-&lt;p&gt;已经在同一可以互通网络安装了Druid 和 Hadoop, 并且都已经启动&lt;/p&gt;
+&lt;p&gt;已经在同一可以互通网络&lt;a href=&quot;#安装启动访问&quot;&gt;安装了Druid&lt;/a&gt;和&lt;a href=&quot;https://liulv.work/2020/12/15/hadoop-install/&quot;&gt;安装了Hadoop&lt;/a&gt; 并且都已经启动&lt;/p&gt;
 
-&lt;h2 id=&quot;拷贝数据到shared目录&quot;&gt;拷贝数据到shared目录&lt;/h2&gt;
+&lt;h2 id=&quot;32-拷贝数据到shared目录&quot;&gt;3.2. 拷贝数据到shared目录&lt;/h2&gt;
 
 &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 &lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;cp&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$DRUID_HOME&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/quickstart/tutorial/wikiticker-2015-09-12-sampled.json.gz&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/tmp/shared/wikiticker-2015-09-12-sampled.json.gz&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;设置hadoop目录&quot;&gt;设置Hadoop目录&lt;/h2&gt;
+&lt;h2 id=&quot;33-设置hadoop目录&quot;&gt;3.3. 设置Hadoop目录&lt;/h2&gt;
 
 &lt;p&gt;在Hadoop容器shell中，运行以下命令来设置本次教程需要的HDFS目录，同时拷贝输入数据到HDFS上&lt;/p&gt;
 

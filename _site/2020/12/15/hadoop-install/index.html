@@ -593,6 +593,34 @@ Disabled</p>
 <span class="nt">&lt;/configuration&gt;</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
+<h2 id="设置环境变量">设置环境变量</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">echo</span><span class="w"> </span><span class="s1">'export HADOOP_HOME=/var/lib/hadoop/hadoop-2.7.3'</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s1">'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin'</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">source</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="启动">启动</h2>
+
+<p><strong>启动命令</strong></p>
+
+<p>start-all.sh</p>
+
+<p><strong>停止命令</strong></p>
+
+<p>stop-all.sh</p>
+
+<p><strong>访问</strong>
+hdfs http://192.168.56.101:50070/</p>
+
+<p>yarn  http://192.168.56.101:8088/</p>
+
+<hr />
+
+
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">

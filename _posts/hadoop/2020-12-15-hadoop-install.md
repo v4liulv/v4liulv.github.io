@@ -263,3 +263,32 @@ mkdir -p /home/hadoop/data/tpm
 	</property>
 </configuration>
 ```
+
+## 设置环境变量
+
+```powershell
+echo 'export HADOOP_HOME=/var/lib/hadoop/hadoop-2.7.3' >> /etc/profile
+echo 'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin' >> /etc/profile
+source /etc/profile
+```
+
+## 启动
+
+**启动命令**
+
+start-all.sh
+
+**停止命令**
+
+stop-all.sh
+
+**访问**
+hdfs http://192.168.56.101:50070/
+
+yarn  http://192.168.56.101:8088/
+
+-------
+
+
+
+
