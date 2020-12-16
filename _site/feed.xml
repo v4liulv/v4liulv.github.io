@@ -5,8 +5,8 @@
     <description>关于程序与设计、黑客与画家 | 刘律，Web &amp; Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 16 Dec 2020 14:46:44 +0800</pubDate>
-    <lastBuildDate>Wed, 16 Dec 2020 14:46:44 +0800</lastBuildDate>
+    <pubDate>Wed, 16 Dec 2020 14:51:20 +0800</pubDate>
+    <lastBuildDate>Wed, 16 Dec 2020 14:51:20 +0800</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -783,7 +783,7 @@ wikipedia loading complete! You may now query your data
 
 &lt;h2 id=&quot;31-前提&quot;&gt;3.1. 前提&lt;/h2&gt;
 
-&lt;p&gt;已经在同一可以互通网络&lt;a href=&quot;#安装启动访问&quot;&gt;安装了Druid&lt;/a&gt;和&lt;a href=&quot;https://liulv.work/2020/12/15/hadoop-install/&quot;&gt;安装了Hadoop&lt;/a&gt; 并且都已经启动&lt;/p&gt;
+&lt;p&gt;已经在同一可以互通网络&lt;a href=&quot;#1-安装启动访问&quot;&gt;安装了Druid&lt;/a&gt;和&lt;a href=&quot;https://liulv.work/2020/12/15/hadoop-install/&quot;&gt;安装了Hadoop&lt;/a&gt; 并且都已经启动&lt;/p&gt;
 
 &lt;h2 id=&quot;32-拷贝数据到shared目录&quot;&gt;3.2. 拷贝数据到shared目录&lt;/h2&gt;
 
