@@ -339,7 +339,7 @@ Enforcing</p>
 <p>返回
 Disabled</p>
 
-<h2 id="设置ssh免密钥登录">设置ssh免密钥登录</h2>
+<h2 id="15-设置ssh免密钥登录">1.5. 设置ssh免密钥登录</h2>
 
 <p><strong>生成无密码的密钥对</strong></p>
 
@@ -459,6 +459,139 @@ Disabled</p>
 
 <p>解压后得到<code class="language-plaintext highlighter-rouge">/var/lib/hadoop/hadoop-2.7.3</code>目录</p>
 
+<h2 id="33-配置设置">3.3. 配置设置</h2>
+
+<p><strong>设置java_home</strong></p>
+
+<p>在hadoop-env、mapred-env、yarn-env.sh文件中，注释掉<code class="language-plaintext highlighter-rouge">export JAVA_HOME=$JAVA_HOME</code>,新增<code class="language-plaintext highlighter-rouge">export JAVA_HOME=/usr/lib/java/jdk1.8.0_112</code></p>
+
+<p><img src="https://liulv.work/images/img/20201216141935.png" alt="20201216141935" /></p>
+
+<p><strong>core-site设置</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;configuration&gt;</span>
+<span class="c">&lt;!--指定hdfs的唯一入口，以及namenode的地址--&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>hdfs://hadoop01:9000<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="c">&lt;!--配置hadoop的临时目录--&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>hadoop.tmp.dir<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>/home/hadoop/data/tpm<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注意hadoop01为节点的hostname, 如果无<code class="language-plaintext highlighter-rouge">/home/hadoop/data/tpm</code>请执行下面命令创建</p>
+</blockquote>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/home/hadoop/data/tpm</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>hdfs-site设置</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;configuration&gt;</span>
+	<span class="c">&lt;!--配置hdfs中文件块的副本数--&gt;</span>
+	<span class="nt">&lt;property&gt;</span>
+	<span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+	<span class="nt">&lt;value&gt;</span>1<span class="nt">&lt;/value&gt;</span>
+	<span class="nt">&lt;/property&gt;</span>
+  <span class="c">&lt;!--关闭hdfs的权限检查--&gt;</span>
+	<span class="nt">&lt;property&gt;</span>
+		<span class="nt">&lt;name&gt;</span>dfs.permissions.enabled<span class="nt">&lt;/name&gt;</span>
+		<span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+	<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>mapred-site设置</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>mapreduce.framework.name<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>yarn<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>mapreduce.jobhistory.address<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>hadoop01:10020<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>mapreduce.jobhistory.webapp.address<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>hadoop01:19888<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注意hadoop01为节点的hostname</p>
+</blockquote>
+
+<p><strong>yarn-site设置</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;configuration&gt;</span>
+	<span class="c">&lt;!--用于配置日志聚集，保存7天--&gt;</span>
+	<span class="nt">&lt;property&gt;</span>
+		<span class="nt">&lt;name&gt;</span>yarn.log-aggregation-enable<span class="nt">&lt;/name&gt;</span>
+		<span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+	<span class="nt">&lt;/property&gt;</span>
+	<span class="nt">&lt;property&gt;</span>
+		<span class="nt">&lt;name&gt;</span>yarn.log-aggregation.retain-seconds<span class="nt">&lt;/name&gt;</span>
+		<span class="nt">&lt;value&gt;</span>604800<span class="nt">&lt;/value&gt;</span>
+	<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 
                 <hr style="visibility: hidden;">

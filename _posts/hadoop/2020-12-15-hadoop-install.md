@@ -63,7 +63,7 @@ getenforce
 返回
 Disabled
 
-## 设置ssh免密钥登录
+## 1.5. 设置ssh免密钥登录
 
 **生成无密码的密钥对**
 
@@ -178,3 +178,88 @@ tar -zxvf hadoop-2.7.3.tar.gz
 
 解压后得到`/var/lib/hadoop/hadoop-2.7.3`目录
 
+## 3.3. 配置设置
+
+**设置java_home**
+
+在hadoop-env、mapred-env、yarn-env.sh文件中，注释掉`export JAVA_HOME=$JAVA_HOME`,新增`export JAVA_HOME=/usr/lib/java/jdk1.8.0_112`
+
+![20201216141935](https://liulv.work/images/img/20201216141935.png)
+
+
+**core-site设置**
+
+```xml
+<configuration>
+<!--指定hdfs的唯一入口，以及namenode的地址-->
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://hadoop01:9000</value>
+  </property>
+  <!--配置hadoop的临时目录-->
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/home/hadoop/data/tpm</value>
+  </property>
+</configuration>
+```
+
+> 注意hadoop01为节点的hostname, 如果无`/home/hadoop/data/tpm`请执行下面命令创建
+
+```powershell
+mkdir -p /home/hadoop/data/tpm
+```
+
+**hdfs-site设置**
+
+```xml
+<configuration>
+	<!--配置hdfs中文件块的副本数-->
+	<property>
+	<name>dfs.replication</name>
+	<value>1</value>
+	</property>
+  <!--关闭hdfs的权限检查-->
+	<property>
+		<name>dfs.permissions.enabled</name>
+		<value>false</value>
+	</property>
+</configuration>
+```
+
+**mapred-site设置**
+
+```xml
+<configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>hadoop01:10020</value>
+    </property>
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>hadoop01:19888</value>
+    </property>
+</configuration>
+```
+
+> 注意hadoop01为节点的hostname
+
+**yarn-site设置**
+
+```xml
+<configuration>
+	<!--用于配置日志聚集，保存7天-->
+	<property>
+		<name>yarn.log-aggregation-enable</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>yarn.log-aggregation.retain-seconds</name>
+		<value>604800</value>
+	</property>
+</configuration>
+```

@@ -1,0 +1,237 @@
+I"q=<h1 id="1-linux环境准备">1. linux环境准备</h1>
+
+<h2 id="11-服务器环境">1.1. 服务器环境</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>操作系统</th>
+      <th>操作系统版本</th>
+      <th>CPU</th>
+      <th>内存</th>
+      <th>磁盘</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Linux</td>
+      <td>Redhat7.6</td>
+      <td>8核8线程</td>
+      <td>8G</td>
+      <td>100G</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="12-设置hosts和hostname">1.2. 设置hosts和hostname</h2>
+
+<p>这里使用伪分布环境，单节点部署，所有只有一个节点</p>
+
+<p>编辑<code class="language-plaintext highlighter-rouge">/etc/hosts</code>, 添加如下值</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="mf">127.0.0.1</span><span class="w"> </span><span class="nf">hadoop01</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>编辑<code class="language-plaintext highlighter-rouge">/etc/hostname</code>,将其值删除，添加hadoop01</p>
+
+<h2 id="13-关闭防火墙">1.3. 关闭防火墙</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">systemctl</span><span class="w"> </span><span class="nx">stop</span><span class="w"> </span><span class="nx">firewalld</span><span class="w">
+</span><span class="nf">systemctl</span><span class="w"> </span><span class="nx">disable</span><span class="w"> </span><span class="nx">firewalld</span><span class="w"> 
+</span><span class="nf">systemctl</span><span class="w"> </span><span class="nx">status</span><span class="w"> </span><span class="nx">firewalld</span><span class="w"> 
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="14-关闭selinux">1.4. 关闭SELinux</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>getenforce
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回
+Enforcing</p>
+
+<p>执行关闭SELinux</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>setenforce 0
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/SELINUX=enforcing/SELINUX=disabled/g'</span> /etc/selinux/config
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>检查SELinux</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>getenforce
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回
+Disabled</p>
+
+<h2 id="15-设置ssh免密钥登录">1.5. 设置ssh免密钥登录</h2>
+
+<p><strong>生成无密码的密钥对</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh-keygen <span class="nt">-t</span> rsa
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(一路回车，生成无密码的密钥对。)</p>
+
+<p><strong>将公钥添加到认证文件中</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span> ~/.ssh/id_rsa.pub <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>设置authorized_keys的访问权限</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">chmod </span>600 ~/.ssh/authorized_keys
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>ssh无密码证书发给其他节点</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">ssh-copy-id</span><span class="w"> </span><span class="nt">-i</span><span class="w"> </span><span class="nx">~/.ssh/id_rsa.pub</span><span class="w"> </span><span class="nx">hadoop01</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>测试</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">ssh</span><span class="w"> </span><span class="nx">hadoop01</span><span class="w"> 
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2-jdk安装">2. JDK安装</h1>
+
+<p><strong>下载解压</strong></p>
+
+<p>下载jdk-8u112-linux-x64.tar
+`
+上传到服务器<code class="language-plaintext highlighter-rouge">/usr/lib/java/</code>，执行下面命令解压得到<code class="language-plaintext highlighter-rouge">/usr/lib/java/jdk1.8.0_112</code></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">tar</span><span class="w"> </span><span class="nx">zxvf</span><span class="w"> </span><span class="nx">/usr/lib/java/jdk-8u112-linux-x64.tar</span><span class="w"> </span><span class="nt">-C</span><span class="w"> </span><span class="nx">/usr/lib/java</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>设置环境变量</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nf">sudo</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s1">'export JAVA_HOME=/usr/lib/java/jdk1.8.0_112'</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">sudo</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s1">'export PATH=$PATH:$JAVA_HOME/bin'</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profil</span><span class="w">
+</span><span class="nf">sudo</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s1">'export CLASSPATH=.:$JAVA_HOME/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar'</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profil</span><span class="w">
+
+</span><span class="nf">source</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>检查</strong></p>
+
+<p>java -version</p>
+
+<p><strong>如果存在openJDK，修改默认jdk为我们配置的JDK</strong></p>
+
+<p>配置默认JDK，ubuntu下默认JDK是openJDK。。终端输入</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">sudo</span><span class="w"> </span><span class="nx">update-alternatives</span><span class="w"> </span><span class="nt">--install</span><span class="w"> </span><span class="nx">/usr/bin/java</span><span class="w"> </span><span class="nx">java</span><span class="w"> </span><span class="nx">/usr/lib/java/jdk1.8.0_112</span><span class="w"> </span><span class="nx">300</span><span class="w">
+</span><span class="nf">sudo</span><span class="w"> </span><span class="nx">update-alternatives</span><span class="w"> </span><span class="nt">--install</span><span class="w"> </span><span class="nx">/usr/lib/javac</span><span class="w"> </span><span class="nx">javac</span><span class="w"> </span><span class="nx">/usr/lib/java/jdk1.8.0_112/bin/javac</span><span class="w"> </span><span class="nx">300</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>执行下面命令，配置需要默认的JDK, 会列出jdk版本, 选择为我们配置的JDK回车确定即可</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">sudo</span><span class="w"> </span><span class="nx">update-alternatives</span><span class="w"> </span><span class="nt">--config</span><span class="w"> </span><span class="nx">java</span><span class="w"> 
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/20201216115811.png" alt="20201216115811" /></p>
+
+<p>再一次执行检查</p>
+
+<p>java -version</p>
+
+<p><img src="https://liulv.work/images/img/20201216115958.png" alt="20201216115958" /></p>
+
+<h1 id="3-hadoop安装">3. Hadoop安装</h1>
+
+<h2 id="31-下载hadoop包">3.1. 下载hadoop包</h2>
+
+<p>请点击Appache Hadoop官方的<a href="https://archive.apache.org/dist/hadoop/common/">下载地址</a>，查看对应版本，选择对应版本下载：</p>
+
+<p><img src="https://liulv.work/images/img/20201215185002.png" alt="20201215185002" /></p>
+
+<p>我们这里选择2.7.3版本进行下载，下载其中的hadoop-2.7.3.tar.gz</p>
+
+<p><img src="https://liulv.work/images/img/20201215185115.png" alt="20201215185115" /></p>
+
+<h2 id="32-拷贝解压">3.2. 拷贝解压</h2>
+
+<p>部署节点创建<code class="language-plaintext highlighter-rouge">/var/lib/hadoop</code>并并将下载的包拷贝其目录下</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/var/lib/hadoop</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://liulv.work/images/img/1608029546(1).png" alt="1608029546(1)" /></p>
+
+<p>使用下面命令进行解压</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">cd</span> <span class="o">/</span><span class="kt">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">hadoop</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">zxvf</span> <span class="n">hadoop</span><span class="o">-</span><span class="mf">2.7</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="na">tar</span><span class="o">.</span><span class="na">gz</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>解压后得到<code class="language-plaintext highlighter-rouge">/var/lib/hadoop/hadoop-2.7.3</code>目录</p>
+
+<h2 id="33-配置设置">3.3. 配置设置</h2>
+
+<p><strong>设置java_home</strong></p>
+
+<p>在hadoop-env、mapred-env、yarn-env.sh文件中，注释掉<code class="language-plaintext highlighter-rouge">export JAVA_HOME=$JAVA_HOME</code>,新增<code class="language-plaintext highlighter-rouge">export JAVA_HOME=/usr/lib/java/jdk1.8.0_112</code></p>
+
+<p><img src="https://liulv.work/images/img/20201216141935.png" alt="20201216141935" /></p>
+
+<p><strong>core-site设置</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="o">&lt;</span><span class="n">configuration</span><span class="o">&gt;</span>
+<span class="o">&lt;!--</span><span class="n">指定hdfs的唯一入口</span><span class="err">，</span><span class="n">以及namenode的地址</span><span class="o">--&gt;</span>
+  <span class="o">&lt;</span><span class="n">property</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">fs</span><span class="o">.</span><span class="na">defaultFS</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="nl">hdfs:</span><span class="c1">//hadoop01:9000&lt;/value&gt;</span>
+  <span class="o">&lt;/</span><span class="n">property</span><span class="o">&gt;</span>
+  <span class="o">&lt;!--</span><span class="n">配置hadoop的临时目录</span><span class="o">--&gt;</span>
+  <span class="o">&lt;</span><span class="n">property</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">hadoop</span><span class="o">.</span><span class="na">tmp</span><span class="o">.</span><span class="na">dir</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;/</span><span class="n">home</span><span class="o">/</span><span class="n">hadoop</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">tpm</span><span class="o">&lt;/</span><span class="n">value</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">property</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">configuration</span><span class="o">&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意hadoop01为本机的hostname, 如果无<code class="language-plaintext highlighter-rouge">/home/hadoop/data/tpm</code>请执行下面命令创建</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/home/hadoop/data/tpm</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>hdfs-site设置</strong></p>
+:ET

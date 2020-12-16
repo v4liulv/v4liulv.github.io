@@ -1,4 +1,4 @@
-I"M0<h1 id="1-linux环境准备">1. linux环境准备</h1>
+I"P1<h1 id="1-linux环境准备">1. linux环境准备</h1>
 
 <h2 id="11-服务器环境">1.1. 服务器环境</h2>
 
@@ -71,7 +71,7 @@ Enforcing</p>
 <p>返回
 Disabled</p>
 
-<h2 id="设置ssh免密钥登录">设置ssh免密钥登录</h2>
+<h2 id="15-设置ssh免密钥登录">1.5. 设置ssh免密钥登录</h2>
 
 <p><strong>生成无密码的密钥对</strong></p>
 
@@ -191,4 +191,9 @@ Disabled</p>
 
 <p>解压后得到<code class="language-plaintext highlighter-rouge">/var/lib/hadoop/hadoop-2.7.3</code>目录</p>
 
+<h2 id="33-配置设置">3.3. 配置设置</h2>
+
+<p><strong>设置java_home</strong></p>
+
+<p>在hadoop-env、mapred-env、yarn-env.sh文件中，注释掉<code class="language-plaintext highlighter-rouge">export JAVA_HOME=$JAVA_HOME</code>,新增</p>
 :ET
