@@ -1476,4 +1476,7 @@ ALTER TABLE [db].name DROP INDEX name - 从表的元数据中删除索引描述�
 
 由于只改变表的元数据或者删除文件，因此该操作是轻量级的，也可以被复制到其它节点（通过Zookeeper同步索引元数据）
 
+![20201211173641](https://liulv.work/images/img/20201211173641.png)
+
+
 

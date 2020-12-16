@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "在Linux上安装部署Hadoop",
+      "subtitle" : "Hadoop安装",
+      "tags"     : "Hadoop, Hadoop 安装",
+      "url"      : "/2020/12/15/hadoop-install/",
+      "date"     : "2020-12-15 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Swagger配置使用",
       "subtitle" : "",
       "tags"     : "Swagger",

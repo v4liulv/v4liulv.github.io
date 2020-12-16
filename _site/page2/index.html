@@ -232,6 +232,34 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2020/10/09/springboot-cy/">
+        <h2 class="post-title">
+            SpringBoot容器启动完成后执行
+        </h2>
+        
+        <h3 class="post-subtitle">
+            延迟启动
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                场景需求
+
+在开发中可能会有这样的情景。需要在容器启动的时候执行一些内容。比如读取配置文件，数据库连接，执行初始化等之类的。SpringBoot给我们提供了两个接口来帮助我们实现这种需求。这两个接口分别为CommandLineRunner和ApplicationRunner。他们的执行时机为容器启动完成的时候。
+
+实现
+
+这两个接口中有一个run方法，我们只需要实现这个方法即可。这两个接口的...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on October 9, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2020/09/28/docker/">
         <h2 class="post-title">
             Docker基础
@@ -534,40 +562,6 @@ windows运行Jekyll参考官方文档
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2020/08/17/akka-create-actor/">
-        <h2 class="post-title">
-            Akka创建Actor
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「AKKA」- 2.6.8
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. 简单介绍
-
-在新版的Akka中，创建Actor是我们最常用的，而创建Actor使用新版的AbstractBehavior有两种常用的方式创建，太常用了所以单独列出两种创建Actor的示例。
-
-2. 创建Actor的方式
-
-创建Actor新版本支持以下两种方式创建：
-
-  继承AbstractBehavior方式
-  方法直接函数式构造创建
-
-
-两种方式最终效果完全一致，可根据自己喜欢选...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on August 17, 2020
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -608,27 +602,27 @@ windows运行Jekyll参考官方文档
         
         
         
-                <a data-sort="0018" 
+                <a data-sort="0019" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0021" 
+                <a data-sort="0022" 
                     href="/archive/?tag=EMR"
                     title="EMR"
                     rel="4">EMR</a>
         
-                <a data-sort="0023" 
+                <a data-sort="0024" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0023" 
+                <a data-sort="0024" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0023" 
+                <a data-sort="0024" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>

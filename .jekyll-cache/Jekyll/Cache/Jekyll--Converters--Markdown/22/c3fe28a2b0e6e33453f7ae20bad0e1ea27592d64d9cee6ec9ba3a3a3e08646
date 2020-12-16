@@ -1,4 +1,4 @@
-I"y�<h1 id="1-clickhouse介绍">1. ClickHouse介绍</h1>
+I"դ<h1 id="1-clickhouse介绍">1. ClickHouse介绍</h1>
 
 <p>ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)。</p>
 
@@ -1778,5 +1778,7 @@ DROP COLUMN [IF EXISTS] name</p>
 <p>ALTER TABLE [db].name DROP INDEX name - 从表的元数据中删除索引描述，并从磁盘上删除索引文件</p>
 
 <p>由于只改变表的元数据或者删除文件，因此该操作是轻量级的，也可以被复制到其它节点（通过Zookeeper同步索引元数据）</p>
+
+<p><img src="https://liulv.work/images/img/20201211173641.png" alt="20201211173641" /></p>
 
 :ET
