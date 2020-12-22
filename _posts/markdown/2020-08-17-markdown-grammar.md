@@ -124,7 +124,11 @@ Jekyll 默认使用 [kramdown] 来渲染 markdown 类型文件，在 Minimalism 
 
 这是我开发的一个新主题 [Minimalism Theme][Minimalism]。
 
-### 2.1.3. 无序列表
+### 2.1.3. 内连接
+
+使用本文档内的标题连接，可以在()中使用`#标题系号-标题名`, 如[内连接-一级标题](#2-一级标题)
+
+### 2.1.4. 无序列表
 
 使用 `*` / `-` / `+` 表示无序列表。
 
@@ -142,7 +146,7 @@ Jekyll 默认使用 [kramdown] 来渲染 markdown 类型文件，在 Minimalism 
 * 无序列表项 二
 * 无序列表项 三
 
-### 2.1.4. 有序列表
+### 2.1.5. 有序列表
 
 使用数字和点表示有序列表。
 
@@ -160,7 +164,7 @@ Jekyll 默认使用 [kramdown] 来渲染 markdown 类型文件，在 Minimalism 
 2. 有序列表项 二
 3. 有序列表项 三
 
-### 2.1.5. 引用
+### 2.1.6. 引用
 
 使用 `>` 表示引用。
 
@@ -188,7 +192,7 @@ Jekyll 默认使用 [kramdown] 来渲染 markdown 类型文件，在 Minimalism 
 > Less is more. —— 「Andrea del Sarto」
 >> 万物之始，大道至简，衍化至繁。 —— 『道德经』
 
-### 2.1.6. 行内代码块
+### 2.1.7. 行内代码块
 
 使用 \`代码\` 表示行内代码块。
 
@@ -202,7 +206,7 @@ Jekyll 默认使用 [kramdown] 来渲染 markdown 类型文件，在 Minimalism 
 
 让主题 `Minimalism` 成为行内代码块。
 
-### 2.1.7. 代码块
+### 2.1.8. 代码块
 
 使用四个缩进空格表示代码块。
 
@@ -264,7 +268,7 @@ public class HelloWorld {
 }
 ```
 
-### 2.1.8. 插入图像
+### 2.1.9. 插入图像
 
 使用 \!\[描述](图片链接地址) 插入图像。
 
@@ -290,7 +294,7 @@ public class HelloWorld {
 
 ![头像](https://www.z4a.net/images/2017/08/31/shortcut_icon.png "头像")
 
-### 2.1.9. 分隔符
+### 2.1.10. 分隔符
 
 使用 `---` 可显示分隔符。
 
@@ -304,7 +308,7 @@ public class HelloWorld {
 
 ---
 
-### 2.1.10. 反转义
+### 2.1.11. 反转义
 
 使用 `\` 可使 Markdown 解析时不会去解析本该属于语法部分的一些符号。
 
@@ -318,7 +322,7 @@ public class HelloWorld {
 
 \`代码块\`
 
-### 2.1.11. Emoji
+### 2.1.12. Emoji
 
 主题同样也支持 Emoji 表情，使用方法很简单。
 
@@ -334,7 +338,7 @@ public class HelloWorld {
 
 Emoji 的代码参考 [Emoji sheet]。
 
-### 2.1.12. 段内换行
+### 2.1.13. 段内换行
 
 在同一段落里让文本换行，只需在上一行末尾加 2 个空格即可。
 

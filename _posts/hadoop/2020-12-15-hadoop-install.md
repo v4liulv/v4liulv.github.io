@@ -264,7 +264,7 @@ mkdir -p /home/hadoop/data/tpm
 </configuration>
 ```
 
-## 设置环境变量
+## 3.4. 设置环境变量
 
 ```powershell
 echo 'export HADOOP_HOME=/var/lib/hadoop/hadoop-2.7.3' >> /etc/profile
@@ -272,7 +272,10 @@ echo 'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin' >> /etc/profile
 source /etc/profile
 ```
 
-## 启动
+## 3.5. 启动
+
+**初始化**
+hadoop  namenode  -format
 
 **启动命令**
 
