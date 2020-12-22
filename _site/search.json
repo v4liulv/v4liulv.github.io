@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Flume+kafka+SparkStreaming实时日志分析",
+      "subtitle" : "日志分析",
+      "tags"     : "Flume+kafka+SparkStreaming",
+      "url"      : "/2020/12/22/flume-kafka-sparkstreaming/",
+      "date"     : "2020-12-22 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "在Linux上安装部署Hadoop",
       "subtitle" : "Hadoop安装",
       "tags"     : "Hadoop, Hadoop 安装",

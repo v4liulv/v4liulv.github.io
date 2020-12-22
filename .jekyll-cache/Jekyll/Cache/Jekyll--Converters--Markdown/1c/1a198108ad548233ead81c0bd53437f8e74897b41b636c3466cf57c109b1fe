@@ -1,0 +1,559 @@
+I"�<h1 id="1-背景">1. 背景</h1>
+
+<p>通过Flume抓起本地日志数据，实时生成Kafka流数据，通过SparkStreaming进行实时流数据解析，最终存入HDFS或Hive中。</p>
+
+<h1 id="2-整体架构">2. 整体架构</h1>
+
+<p><strong>技术选择1</strong></p>
+
+<p>业务日志会通过Nginx（或者其他方式）每分钟写入到磁盘中，现在我们想要使用Spark分析日志，就需要先将磁盘中的文件上传到HDFS上，然后Spark处理，最后存入Hive表中，如图所示：</p>
+
+<p><img src="https://liulv.work/images/img/20201222185409.png" alt="20201222185409" /></p>
+
+<p>这种方式有几个缺点：</p>
+
+<ol>
+  <li>
+    <p>我们的日志是通过Nginx每分钟存成一个文件，这样一天的文件数很多，不利于后续的分析任务，所以先要把一天的所有日志文件合并起来，需要格外合并处理</p>
+  </li>
+  <li>
+    <p>合并起来以后需要把该文件从磁盘传到Hdfs上，但是我们的日志服务器并不在Hadoop集群内，所以没办法直接传到Hdfs上，需要把文件从日志服务器传输到Hadoop集群所在的服务器，然后再上传到Hdfs，或者通过Ftp服务器通过ETL工具上传到Hdfs.</p>
+  </li>
+  <li>
+    <p>滞后一天分析数据已经不能满足我们新的实时业务需求了，最好能控制在一个小时的滞后时间</p>
+  </li>
+  <li>
+    <p>这种方式比较原始并且比较耗时，很多时间浪费在了网络传输上面，如果日志量大的话还有丢失数据的可能性</p>
+  </li>
+</ol>
+
+<p><strong>技术选择2</strong></p>
+
+<p>技术架构图如下：</p>
+
+<p><img src="https://liulv.work/images/img/20201222185757.png" alt="20201222185757" /></p>
+
+<p>Flume会实时监控写入本地日志的磁盘，只要有新的日志写入，Flume就会将日志以消息的形式传递给Kafka，然后Spark Streaming实时消费消息传入Hive</p>
+
+<p>Flume是什么呢，它为什么可以监控一个磁盘文件呢？简而言之，Flume是用来收集、汇聚并且移动大量日志文件的开源框架，所以很适合这种实时收集日志并且传递日志的场景。</p>
+
+<p>Kafka是一个消息系统，Flume收集的日志可以移动到Kafka消息队列中，然后就可以被多处消费了，而且可以保证不丢失数据。</p>
+
+<p>通过这套架构，收集到的日志可以及时被Flume发现传到Kafka，通过Kafka我们可以把日志用到各个地方，同一份日志可以存入Hdfs中，也可以离线进行分析，还可以实时计算，而且可以保证安全性，基本可以达到实时的要求。</p>
+
+<h1 id="3-安装zookeeper">3. 安装Zookeeper</h1>
+
+<h2 id="31-版本和下载解压">3.1. 版本和下载、解压</h2>
+
+<p>版本：3.4.8</p>
+
+<p><a href="https://archive.apache.org/dist/zookeeper/zookeeper-3.4.8/">下载地址</a></p>
+
+<p>创建zookeeper安装目录，</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/var/lib/zookeeper</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>上传下载包到/var/lib/zookeeper目录下, 执行下面解压命令</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">cd</span><span class="w"> </span><span class="nx">/var/lib/zookeeper</span><span class="w">
+</span><span class="nf">tar</span><span class="w"> </span><span class="nt">-zxvf</span><span class="w"> </span><span class="nx">zookeeper-3.4.8.tar.gz</span><span class="w">
+</span><span class="nf">rm</span><span class="w"> </span><span class="nt">-rf</span><span class="w"> </span><span class="nx">zookeeper-3.4.8.tar.gz</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="32-配置">3.2. 配置</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/data/zookeeper/logs</span><span class="w">
+</span><span class="nf">mkdir</span><span class="w"> </span><span class="nx">/data/zookeeper/data</span><span class="w">
+</span><span class="nf">chmod</span><span class="w"> </span><span class="nx">777</span><span class="w"> </span><span class="nx">/data/</span><span class="o">*</span><span class="w">
+
+</span><span class="nf">mv</span><span class="w"> </span><span class="nx">/var/lib/zookeeper/zookeeper-3.4.8/conf/zoo_sample.cfg</span><span class="w"> </span><span class="nx">/var/lib/zookeeper/zookeeper-3.4.8/conf/zoo.cfg</span><span class="w">
+
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"dataDir=/data/zookeeper/data"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/var/lib/zookeeper/zookeeper-3.4.8/conf/zoo.cfg</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"dataLogDir=/data/zookeeper/logs"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/var/lib/zookeeper/zookeeper-3.4.8/conf/zoo.cfg</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="33-设置环境变量">3.3. 设置环境变量</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">echo</span><span class="w"> </span><span class="s2">"export ZOOKEEPER_HOME=/var/lib/zookeeper/zookeeper-3.4.8"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"export PATH=</span><span class="nv">$ZOOKEEPER_HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">source</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="34-启动">3.4. 启动</h2>
+
+<p>sh $ZOOKEEPER_HOME/bin/zkServer.sh start</p>
+
+<p>这个命令使得zk服务进程在后台进行。如果想在前台中运行以便查看服务器进程的输出日志，可以通过以下命令运行：</p>
+
+<p>sh $ZOOKEEPER_HOME/bin/zkServer.sh start-foreground</p>
+
+<h2 id="35-连接">3.5. 连接</h2>
+
+<p>sh $ZOOKEEPER_HOME/bin/zkCli.sh -server localhost:2181</p>
+
+<h1 id="4-安装kafka">4. 安装Kafka</h1>
+
+<h2 id="41-下载并启动kafka">4.1. 下载并启动Kafka</h2>
+
+<p><a href="http://kafka.apache.org/">Apache Kafka</a>是一种高吞吐量消息总线，可与Flume很好地配合使用。在本教程中，我们将使用Kafka2.1.0。要下载Kafka，请在终端中执行以下命令：</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nx">/var/lib/kafka</span><span class="w">
+</span><span class="nf">cd</span><span class="w"> </span><span class="nx">/var/lib/kafka</span><span class="w">
+
+</span><span class="nf">curl</span><span class="w"> </span><span class="nt">-O</span><span class="w"> </span><span class="nx">https://archive.apache.org/dist/kafka/2.1.0/kafka_2.12-2.1.0.tgz</span><span class="w">
+</span><span class="nf">tar</span><span class="w"> </span><span class="nt">-xzf</span><span class="w"> </span><span class="nx">kafka_2.12-2.1.0.tgz</span><span class="w">
+</span><span class="nf">cd</span><span class="w"> </span><span class="nx">kafka_2.12-2.1.0</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>设置环境变量</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">echo</span><span class="w"> </span><span class="s2">"export KAFKA_HOME=/var/lib/kafka/kafka_2.12-2.1.0/"</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"export PATH=</span><span class="nv">$KAFKA_HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>通过在终端中运行以下命令来启动一个Kafka Broker：</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">sh</span><span class="w"> </span><span class="nv">$KAFKA_HOME</span><span class="nx">/bin/kafka-server-start.sh</span><span class="w"> </span><span class="nv">$KAFKA_HOME</span><span class="nx">/config/server.properties</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="42-创建topic">4.2. 创建topic</h2>
+
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –create –zookeeper localhost:2181 –replication-factor 2 –partitions 2 –topic launcher_click</p>
+
+<p>查看</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –describe –zookeeper localhost:2181 –topic launcher_click</p>
+
+<h1 id="5-安装flume">5. 安装flume</h1>
+
+<h2 id="51-下载解压">5.1. 下载解压</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nx">/var/lib/flume</span><span class="w">
+</span><span class="nf">cd</span><span class="w">  </span><span class="nx">/var/lib/flume</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">https://mirrors.bfsu.edu.cn/apache/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz</span><span class="w">
+</span><span class="nf">tar</span><span class="w"> </span><span class="nt">-xvf</span><span class="w"> </span><span class="nx">apache-flume-1.9.0-bin.tar.gz</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="52-修改环境变量">5.2. 修改环境变量</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">export</span><span class="w"> </span><span class="nx">FLUME_HOME</span><span class="o">=</span><span class="nf">/var/lib/flume/apache-flume-1.9.0-bin</span><span class="w">
+</span><span class="nx">export</span><span class="w"> </span><span class="nx">PATH</span><span class="o">=</span><span class="nv">$PATH</span><span class="p">:</span><span class="nv">$FLUME_HOME</span><span class="nf">/bin</span><span class="w">
+</span><span class="nx">source</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="53-修改配置">5.3. 修改配置</h2>
+
+<p>进入flume目录，修改conf/flume-env.sh</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">export</span><span class="w"> </span><span class="nx">JAVA_HOME</span><span class="o">=</span><span class="nf">/data/install/jdk</span><span class="w">
+</span><span class="nx">export</span><span class="w"> </span><span class="nx">JAVA_OPTS</span><span class="o">=</span><span class="s2">"-Xms1000m -Xmx2000m -Dcom.sun.management.jmxremote"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>添加配置文件：conf/flume_launcherclick.conf</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></td><td class="rouge-code"><pre><span class="c"># logser可以看做是flume服务的名称，每个flume都由sources、channels和sinks三部分组成
+# sources可以看做是数据源头、channels是中间转存的渠道、sinks是数据后面的去向
+</span><span class="py">logser.sources</span> <span class="p">=</span> <span class="s">src_launcherclick</span>
+<span class="py">logser.sinks</span> <span class="p">=</span> <span class="s">kfk_launcherclick</span>
+<span class="py">logser.channels</span> <span class="p">=</span> <span class="s">ch_launcherclick</span>
+
+<span class="c"># source
+# 源头类型是TAILDIR，就可以实时监控以追加形式写入文件的日志
+</span><span class="py">logser.sources.src_launcherclick.type</span> <span class="p">=</span> <span class="s">TAILDIR</span>
+<span class="c"># positionFile记录所有监控的文件信息
+</span><span class="py">logser.sources.src_launcherclick.positionFile</span> <span class="p">=</span> <span class="s">/data/install/flume/position/launcherclick/taildir_position.json</span>
+<span class="c"># 监控的文件组
+</span><span class="py">logser.sources.src_launcherclick.filegroups</span> <span class="p">=</span> <span class="s">f1</span>
+<span class="c"># 文件组包含的具体文件，也就是我们监控的文件
+</span><span class="py">logser.sources.src_launcherclick.filegroups.f1</span> <span class="p">=</span> <span class="s">/data/launcher/stat_app/.*</span>
+
+<span class="c"># interceptor
+# 写kafka的topic即可
+</span><span class="py">logser.sources.src_launcherclick.interceptors</span> <span class="p">=</span> <span class="s">i1 i2</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i1.type</span><span class="p">=</span><span class="s">static</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i1.key</span> <span class="p">=</span> <span class="s">type</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i1.value</span> <span class="p">=</span> <span class="s">launcher_click</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i2.type</span><span class="p">=</span><span class="s">static</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i2.key</span> <span class="p">=</span> <span class="s">topic</span>
+<span class="py">logser.sources.src_launcherclick.interceptors.i2.value</span> <span class="p">=</span> <span class="s">launcher_click</span>
+
+<span class="c"># channel
+</span><span class="py">logser.channels.ch_launcherclick.type</span> <span class="p">=</span> <span class="s">memory</span>
+<span class="py">logser.channels.ch_launcherclick.capacity</span> <span class="p">=</span> <span class="s">10000</span>
+<span class="py">logser.channels.ch_launcherclick.transactionCapacity</span> <span class="p">=</span> <span class="s">1000</span>
+
+<span class="c"># kfk sink
+# 指定sink类型是Kafka，说明日志最后要发送到Kafka
+</span><span class="py">logser.sinks.kfk_launcherclick.type</span> <span class="p">=</span> <span class="s">org.apache.flume.sink.kafka.KafkaSink</span>
+<span class="c"># Kafka broker
+</span><span class="py">logser.sinks.kfk_launcherclick.brokerList</span> <span class="p">=</span> <span class="s">localhost:9092</span>
+
+<span class="c"># Bind the source and sink to the channel
+</span><span class="py">logser.sources.src_launcherclick.channels</span> <span class="p">=</span> <span class="s">ch_launcherclick</span>
+<span class="py">logser.sinks.kfk_launcherclick.channel</span> <span class="p">=</span> <span class="s">ch_launcherclick</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="54-启动">5.4. 启动</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">nohup</span><span class="w"> </span><span class="nv">$FLUME_HOME</span><span class="nx">/bin/flume-ng</span><span class="w"> </span><span class="nx">agent</span><span class="w"> </span><span class="nt">--conf</span><span class="w"> </span><span class="nv">$FLUME_HOME</span><span class="nx">/conf/</span><span class="w"> </span><span class="nt">--conf-file</span><span class="w"> </span><span class="nv">$FLUME_HOME</span><span class="nx">/conf/flume-launcherclick.conf</span><span class="w"> </span><span class="nt">--name</span><span class="w"> </span><span class="nx">logser</span><span class="w"> </span><span class="nt">-Dflume</span><span class="o">.</span><span class="nf">root</span><span class="o">.</span><span class="nf">logger</span><span class="o">=</span><span class="nf">INFO</span><span class="p">,</span><span class="nx">console</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nv">$FLUME_HOME</span><span class="nx">/logs/flume_launcherclick.log</span><span class="w"> </span><span class="o">&amp;</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="6-准备日志数据文件">6. 准备日志数据文件</h1>
+
+<p>此时Kafka和Flume都已经启动了，从配置可以看到Flume的监控文件是/data/launcher/stat_app/.*，所以只要该目录下文件内容有增加就会发送到Kafka，大家可以自己追加一些测试日志到这个目录的文件下，然后开一个Kafka Consumer看一下Kafka是否接收到消息，这里我们完成SparkStreaming以后再看测试结果</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">/data/launcher/stat_app/</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>添加test.txt文件并添加一行数据</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="mf">183.160.102.250</span><span class="o">|</span><span class="mf">1493169060.849</span><span class="o">|</span><span class="nf">UEsDBBQACAgIAGBJmkoAAAAAAAAAAAAAAAABAAAAMGVVS3LrNhC8DVYvKmB</span><span class="o">+</span><span class="nx">GJRXWaVygBwABCGLZYm0fi9xKofPUCJgO9mQNUVwPt09DRX2Ih41MgaSX</span><span class="o">*</span><span class="nx">RrzOhOdfr77k48L7f6T1lOuzyPl2Uad</span><span class="o">+</span><span class="nx">OUj</span><span class="o">*</span><span class="nx">XiQmGikJMLlDD4BCmi5x</span><span class="o">+</span><span class="nx">PKHhNrD5uEXBARukRBFbtkXof2n8QiUT9M7JWoockL2Xevd3</span><span class="o">*</span><span class="nx">XHbvx</span><span class="o">*</span><span class="nx">xhlccwesxArTKJtyQvX3vMx3w5leNS3hxmGQpQ7qcTA7XqyJE8bn1SDB6D6rdM13q7TfPr1VVKA8HYq6oPUfFHi5CVqU1vqZQ6FoAepUcIPqHvkWH4</span><span class="o">+</span><span class="nx">R</span><span class="o">+</span><span class="nx">yV</span><span class="o">+</span><span class="nx">nfYhKvHUMktcZbpOwZ2klMiNh6CQQBCLbIsAHwlFqUBH0IjwkfBNvT</span><span class="o">+</span><span class="nx">NyVfKqX7JBK2jOOfcaoIr074yJ56d0J8yffKYj10PsxglferMqtzqXOt935</span><span class="o">*</span><span class="nx">D6drrXcL9XJyPshaackeU</span><span class="o">+</span><span class="nx">4lbFmPcSwReTFMKG0SqDelns57Gox</span><span class="o">+</span><span class="nx">c1jvjjjKw5YtacBNCS</span><span class="o">+</span><span class="nx">sXc6XR0D7IsE7scic4RPMTJp</span><span class="o">+</span><span class="nx">h8gr</span><span class="o">*</span><span class="nx">loIv9wgylHsETXpkabu3GCEST0qSOKiQta496EjH0MiDYl</span><span class="o">*</span><span class="nx">AeR4</span><span class="o">*</span><span class="nx">SzOpQoPkjpFdj7FPseIUnc2Ftpj5T0a7PX22KAcg1xTywtR5KQoOdIUYOGliMYnKF9i2RvbtsQWUNITSsRwcTz1Eo55Pn1NO2O</span><span class="o">+</span><span class="nx">T6Xg</span><span class="o">+</span><span class="nx">1gkkHDkDZQ1yKJuPMvgWyxeoQm5KYbQkAb8RsSp5NjH3AkwpbvIQLfSUJk7v6hNoI2TJhAtOl7dQy1pW6oc1BO9L3WMkzHej67PZZxT2VsFZOBhk8h1NcuoF</span><span class="o">+</span><span class="nx">P03v</span><span class="o">++</span><span class="nx">O39sMzV5QJG1n7TbYBAZFi2tkjXPWxQQoIgW8tApjim7aRZobe2nuvRxLz743dnq2eoU3DNm4z8NrUtMZpWt</span><span class="o">*</span><span class="nx">SmA8sO7ZsqRfOOR8Jrnt</span><span class="o">*</span><span class="nx">ueVr1cbvn2RUdTVx1aEmVo4H2OHqePqbdz2msi8tjzTDsG</span><span class="o">*</span><span class="nx">xiyU14rXurxLgJ2zxAUKXNkkjNUbrMo7fGnoAPeRrvZp</span><span class="o">*</span><span class="nx">5Ug7D8pfjsVb1st0Xpry42n2DK9qkzcFQdRVQL8Fs5hb6Xq2oPDepLMvx8ThPLuwjQFXY0pulmAX7NoHRpNvinKfDsqD4TQnXvK9u3JsADBm3WZAttVVt6MoqwPhdRbebk1QFInjXSAAReSJ7y8uQl</span><span class="o">+</span><span class="nx">3lcmXcC26ywbi</span><span class="o">+</span><span class="nx">oE0XHwhSjyJ0c7IopdDARbWV4MQ9IqsNHTFApa82tl7b7</span><span class="o">*</span><span class="nx">l9XVVz9aB5Q8aUEhPL0yYPH7v1jryWS62z0xKglBLaQbstgsLLv1BLBwjA8lu4twMAACkIAAA</span><span class="o">=</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="安装并启动hadoop">安装并启动Hadoop</h1>
+
+<p>安装并启动Hadoop请查看<a href="https://liulv.work/2020/12/15/hadoop-install/">相关教程</a></p>
+
+<h1 id="sparkstreaming编程">SparkStreaming编程</h1>
+
+<p>SparkStreaming编程</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+</pre></td><td class="rouge-code"><pre><span class="k">object</span> <span class="nc">LauncherStreaming</span> <span class="o">{</span>
+
+  <span class="k">val</span> <span class="nv">HDFS_DIR</span> <span class="k">=</span> <span class="s">"/user/kafka/launcher/click"</span>
+
+  <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+
+    <span class="nv">Logger</span><span class="o">.</span><span class="py">getLogger</span><span class="o">(</span><span class="s">"org.apache.spark"</span><span class="o">).</span><span class="py">setLevel</span><span class="o">(</span><span class="nv">Level</span><span class="o">.</span><span class="py">INFO</span><span class="o">)</span>
+    <span class="nv">System</span><span class="o">.</span><span class="py">setProperty</span><span class="o">(</span><span class="s">"spark.serializer"</span><span class="o">,</span> <span class="s">"org.apache.spark.serializer.KryoSerializer"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="nv">sparkConf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="py">setAppName</span><span class="o">(</span><span class="s">"LauncherStreaming"</span><span class="o">).</span><span class="py">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">)</span>
+
+    <span class="c1">//限制输出success文件</span>
+    <span class="nv">sparkConf</span><span class="o">.</span><span class="py">set</span><span class="o">(</span><span class="s">"mapreduce.fileoutputcommitter.marksuccessfuljobs"</span><span class="o">,</span> <span class="s">"false"</span><span class="o">)</span>
+
+    <span class="c1">//每60秒一个批次</span>
+    <span class="k">val</span> <span class="nv">ssc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StreamingContext</span><span class="o">(</span><span class="n">sparkConf</span><span class="o">,</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
+
+    <span class="c1">// 从Kafka中读取数据</span>
+    <span class="c1">// 日志内容：val str = "183.160.102.250|1493169060.849|UEsDBBQACAgIAGBJmkoAAAAAAAAAAAAAAAABAAAAMGVVS3LrNhC8DVYvKmB+GJRXWaVygBwABCGLZYm0fi9xKofPUCJgO9mQNUVwPt09DRX2Ih41MgaSX*RrzOhOdfr77k48L7f6T1lOuzyPl2Uad+OUj*XiQmGikJMLlDD4BCmi5x+PKHhNrD5uEXBARukRBFbtkXof2n8QiUT9M7JWoockL2Xevd3*XHbvx*xhlccwesxArTKJtyQvX3vMx3w5leNS3hxmGQpQ7qcTA7XqyJE8bn1SDB6D6rdM13q7TfPr1VVKA8HYq6oPUfFHi5CVqU1vqZQ6FoAepUcIPqHvkWH4+R+yV+nfYhKvHUMktcZbpOwZ2klMiNh6CQQBCLbIsAHwlFqUBH0IjwkfBNvT+NyVfKqX7JBK2jOOfcaoIr074yJ56d0J8yffKYj10PsxglferMqtzqXOt935*D6drrXcL9XJyPshaackeU+4lbFmPcSwReTFMKG0SqDelns57Gox+c1jvjjjKw5YtacBNCS+sXc6XR0D7IsE7scic4RPMTJp+h8gr*loIv9wgylHsETXpkabu3GCEST0qSOKiQta496EjH0MiDYl*AeR4*SzOpQoPkjpFdj7FPseIUnc2Ftpj5T0a7PX22KAcg1xTywtR5KQoOdIUYOGliMYnKF9i2RvbtsQWUNITSsRwcTz1Eo55Pn1NO2O+T6Xg+1gkkHDkDZQ1yKJuPMvgWyxeoQm5KYbQkAb8RsSp5NjH3AkwpbvIQLfSUJk7v6hNoI2TJhAtOl7dQy1pW6oc1BO9L3WMkzHej67PZZxT2VsFZOBhk8h1NcuoF+P03v++O39sMzV5QJG1n7TbYBAZFi2tkjXPWxQQoIgW8tApjim7aRZobe2nuvRxLz743dnq2eoU3DNm4z8NrUtMZpWt*SmA8sO7ZsqRfOOR8Jrnt*ueVr1cbvn2RUdTVx1aEmVo4H2OHqePqbdz2msi8tjzTDsG*xiyU14rXurxLgJ2zxAUKXNkkjNUbrMo7fGnoAPeRrvZp*5Ug7D8pfjsVb1st0Xpry42n2DK9qkzcFQdRVQL8Fs5hb6Xq2oPDepLMvx8ThPLuwjQFXY0pulmAX7NoHRpNvinKfDsqD4TQnXvK9u3JsADBm3WZAttVVt6MoqwPhdRbebk1QFInjXSAAReSJ7y8uQl+3lcmXcC26ywbi+oE0XHwhSjyJ0c7IopdDARbWV4MQ9IqsNHTFApa82tl7b7*l9XVVz9aB5Q8aUEhPL0yYPH7v1jryWS62z0xKglBLaQbstgsLLv1BLBwjA8lu4twMAACkIAAA="</span>
+    <span class="k">val</span> <span class="nv">kafkaStream</span> <span class="k">=</span> <span class="nv">KafkaUtils</span><span class="o">.</span><span class="py">createStream</span><span class="o">(</span>
+      <span class="n">ssc</span><span class="o">,</span>
+      <span class="s">"192.168.56.101:2181"</span><span class="o">,</span> <span class="c1">// Kafka集群使用的zookeeper</span>
+      <span class="s">"launcher-streaming"</span><span class="o">,</span> <span class="c1">// 该消费者使用的group.id</span>
+      <span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">](</span><span class="s">"launcher_click"</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="o">,</span> <span class="s">"launcher_click"</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="o">),</span> <span class="c1">// 日志在Kafka中的topic及其分区</span>
+      <span class="nv">StorageLevel</span><span class="o">.</span><span class="py">MEMORY_AND_DISK_SER</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">_2</span><span class="o">)</span> <span class="c1">// 获取日志内容</span>
+
+    <span class="nv">kafkaStream</span><span class="o">.</span><span class="py">foreachRDD</span><span class="o">((</span><span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+      <span class="nv">rdd</span><span class="o">.</span><span class="py">foreach</span><span class="o">((</span><span class="n">pairs1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nv">System</span><span class="o">.</span><span class="py">out</span><span class="o">.</span><span class="py">println</span><span class="o">(</span><span class="nv">pairs1</span><span class="o">.</span><span class="py">toString</span><span class="o">))</span>
+      <span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nv">rdd</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">log</span> <span class="k">=&gt;</span> <span class="nf">parseLog</span><span class="o">(</span><span class="n">log</span><span class="o">))</span> <span class="c1">// 分析处理原始日志</span>
+        <span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="nv">t</span><span class="o">.</span><span class="py">_1</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="nv">t</span><span class="o">.</span><span class="py">_2</span><span class="o">))</span>
+      <span class="c1">// 存入hdfs</span>
+      <span class="nf">println</span><span class="o">(</span><span class="s">"=============写HDFS Start========================"</span><span class="o">)</span>
+      <span class="nv">result</span><span class="o">.</span><span class="py">foreach</span><span class="o">((</span><span class="n">pairs1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nv">System</span><span class="o">.</span><span class="py">out</span><span class="o">.</span><span class="py">println</span><span class="o">(</span><span class="nv">pairs1</span><span class="o">.</span><span class="py">_1</span><span class="o">.</span><span class="py">toString</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="nv">pairs1</span><span class="o">.</span><span class="py">_2</span><span class="o">.</span><span class="py">toString</span><span class="o">))</span>
+      <span class="nf">println</span><span class="o">(</span><span class="s">"====================================="</span><span class="o">)</span>
+      <span class="c1">//result.saveAsHadoopFile(HDFS_DIR, classOf[String], classOf[String], classOf[LauncherMultipleTextOutputFormat[String, String]])</span>
+      <span class="nv">result</span><span class="o">.</span><span class="py">saveAsTextFile</span><span class="o">(</span><span class="nc">HDFS_DIR</span><span class="o">)</span>
+
+    <span class="o">})</span>
+
+    <span class="nv">ssc</span><span class="o">.</span><span class="py">start</span><span class="o">()</span>
+    <span class="c1">// 等待实时流</span>
+    <span class="nv">ssc</span><span class="o">.</span><span class="py">awaitTermination</span><span class="o">()</span>
+  <span class="o">}</span>
+
+  <span class="c1">// 分析日志</span>
+  <span class="k">def</span> <span class="nf">parseLog</span><span class="o">(</span><span class="n">log</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">String</span><span class="o">,</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+
+    <span class="k">var</span> <span class="n">data</span> <span class="k">=</span> <span class="n">log</span>
+    <span class="k">var</span> <span class="n">key</span> <span class="k">=</span> <span class="s">""</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="nv">sb</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span>
+      <span class="k">var</span> <span class="n">idx</span> <span class="k">=</span> <span class="mi">0</span>
+      <span class="c1">// 接收服务器获取的IP</span>
+      <span class="k">val</span> <span class="nv">ip</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="nv">log</span><span class="o">.</span><span class="py">indexOf</span><span class="o">(</span><span class="s">"|"</span><span class="o">))</span>
+      <span class="n">data</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">substring</span><span class="o">(</span><span class="nv">log</span><span class="o">.</span><span class="py">indexOf</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="nf">print</span><span class="o">(</span><span class="n">data</span><span class="o">)</span>
+
+      <span class="k">var</span> <span class="n">tss</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="nv">data</span><span class="o">.</span><span class="py">indexOf</span><span class="o">(</span><span class="s">"|"</span><span class="o">))</span>
+      <span class="n">tss</span> <span class="k">=</span> <span class="nv">tss</span><span class="o">.</span><span class="py">replaceAll</span><span class="o">(</span><span class="s">"\\."</span><span class="o">,</span> <span class="s">""</span><span class="o">)</span>
+      <span class="c1">// 服务器时间戳，13位</span>
+      <span class="k">val</span> <span class="nv">serverTimestamp</span> <span class="k">=</span> <span class="nv">tss</span><span class="o">.</span><span class="py">toLong</span>
+      <span class="k">val</span> <span class="nv">df</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">)</span>
+      <span class="c1">// 服务器时间</span>
+      <span class="k">val</span> <span class="nv">serverTime</span> <span class="k">=</span> <span class="nv">df</span><span class="o">.</span><span class="py">format</span><span class="o">(</span><span class="n">serverTimestamp</span><span class="o">)</span>
+      <span class="n">data</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">substring</span><span class="o">(</span><span class="nv">data</span><span class="o">.</span><span class="py">indexOf</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">keyDf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyy/MM/dd/"</span><span class="o">)</span>
+      <span class="n">key</span> <span class="k">=</span> <span class="nv">keyDf</span><span class="o">.</span><span class="py">format</span><span class="o">(</span><span class="n">serverTimestamp</span><span class="o">)</span>
+
+      <span class="c1">// 主体数据：imei列表&amp;品牌&amp;机型|包名&amp;文件crc&amp;时间戳列表;包名&amp;文件crc&amp;时间戳列表;...</span>
+      <span class="n">data</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">replaceAll</span><span class="o">(</span><span class="s">"\\*"</span><span class="o">,</span> <span class="s">"\\/"</span><span class="o">)</span>
+      <span class="n">data</span> <span class="k">=</span> <span class="nv">DataUtil</span><span class="o">.</span><span class="py">unzip</span><span class="o">(</span><span class="n">data</span><span class="o">)</span>
+
+      <span class="c1">// 解压后的数据格式</span>
+      <span class="c1">// 865066038753146-865066038753153&amp;meizu&amp;m5note|com.android.dialer&amp;1c5441a9&amp;1493109297305,1493110895807,1493112513536,1493112521588,1493112580015,1493112744680,1493138770296;cn.kuwo.player&amp;d1d03a24&amp;1493109460580;com.android.alarmclock&amp;3a6bc24a&amp;1493109495248,1493113574037,1493147103188;com.android.settings&amp;e49b42d4&amp;1493109801783,1493109835854,1493110147845,1493110230365,1493110320930,1493110344154,1493110350860,1493110796087,1493112348524,1493112850520,1493113933383,1493114212423,1493146022049,1493146963011;</span>
+      <span class="k">val</span> <span class="nv">dataArr</span> <span class="k">=</span> <span class="nv">data</span><span class="o">.</span><span class="py">split</span><span class="o">(</span><span class="s">"\\|"</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">phoneData</span> <span class="k">=</span> <span class="nf">dataArr</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">split</span><span class="o">(</span><span class="s">"&amp;"</span><span class="o">)</span>
+      <span class="c1">// imei列表</span>
+      <span class="k">val</span> <span class="nv">imeis</span> <span class="k">=</span> <span class="nf">phoneData</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">split</span><span class="o">(</span><span class="s">"-"</span><span class="o">).</span><span class="py">mkString</span><span class="o">(</span><span class="s">";"</span><span class="o">)</span>
+      <span class="c1">// 品牌</span>
+      <span class="k">val</span> <span class="nv">phoneBrand</span> <span class="k">=</span> <span class="nf">phoneData</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+      <span class="c1">// 机型</span>
+      <span class="k">val</span> <span class="nv">phoneModel</span> <span class="k">=</span> <span class="nf">phoneData</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+
+      <span class="k">val</span> <span class="nv">appData</span> <span class="k">=</span> <span class="nf">dataArr</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="py">split</span><span class="o">(</span><span class="s">";"</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">appArr</span> <span class="k">=</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">String</span><span class="o">]()</span>
+      <span class="nf">for</span> <span class="o">(</span><span class="n">app</span> <span class="k">&lt;-</span> <span class="n">appData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="nv">appDetail</span> <span class="k">=</span> <span class="nv">app</span><span class="o">.</span><span class="py">split</span><span class="o">(</span><span class="s">"&amp;"</span><span class="o">)</span>
+        <span class="c1">// 时间戳列表</span>
+        <span class="k">val</span> <span class="nv">timestamps</span> <span class="k">=</span> <span class="nf">appDetail</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="py">split</span><span class="o">(</span><span class="s">","</span><span class="o">)</span>
+        <span class="c1">// 点击次数</span>
+        <span class="k">val</span> <span class="nv">clickTimes</span> <span class="k">=</span> <span class="nv">timestamps</span><span class="o">.</span><span class="py">length</span>
+        <span class="n">appArr</span> <span class="o">+=</span> <span class="n">app</span> <span class="o">+</span> <span class="s">"&amp;"</span> <span class="o">+</span> <span class="n">clickTimes</span>
+      <span class="o">}</span>
+
+      <span class="c1">// imei有数据，app有数据</span>
+      <span class="nf">if</span> <span class="o">(</span><span class="nv">imeis</span><span class="o">.</span><span class="py">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">appArr</span><span class="o">.</span><span class="py">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="n">imeis</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="nf">if</span> <span class="o">(</span><span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="n">ip</span><span class="o">))</span> <span class="n">ip</span> <span class="k">else</span> <span class="s">" "</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="n">serverTimestamp</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="nf">if</span> <span class="o">(</span><span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="n">serverTime</span><span class="o">))</span> <span class="n">serverTime</span> <span class="k">else</span> <span class="s">" "</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="nf">if</span> <span class="o">(</span><span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="n">phoneBrand</span><span class="o">))</span> <span class="n">phoneBrand</span> <span class="k">else</span> <span class="s">" "</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="nf">if</span> <span class="o">(</span><span class="nv">StringUtils</span><span class="o">.</span><span class="py">isNotBlank</span><span class="o">(</span><span class="n">phoneModel</span><span class="o">))</span> <span class="n">phoneModel</span> <span class="k">else</span> <span class="s">" "</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="s">"|"</span><span class="o">)</span>
+        <span class="nv">sb</span><span class="o">.</span><span class="py">append</span><span class="o">(</span><span class="nv">appArr</span><span class="o">.</span><span class="py">mkString</span><span class="o">(</span><span class="s">";"</span><span class="o">))</span>
+      <span class="o">}</span>
+
+      <span class="n">data</span> <span class="k">=</span> <span class="nv">sb</span><span class="o">.</span><span class="py">toString</span><span class="o">()</span>
+
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="nv">e</span><span class="o">.</span><span class="py">printStackTrace</span><span class="o">()</span>
+        <span class="n">data</span> <span class="k">=</span> <span class="s">""</span>
+    <span class="o">}</span>
+
+    <span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">data</span><span class="o">)</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>启动本地模式运行SparkStreaming的main方法，然后开始测试，如远程打包工程jar包上传<code class="language-plaintext highlighter-rouge">/home/hadoop/jar/SparkLearning.jar</code>到可执行下面命令</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>nohup /data/install/spark-2.0.0-bin-hadoop2.7/bin/spark-submit  --master spark://hadoop01:7077  --executor-memory 1G --total-executor-cores 4   --class com.analysis.main.LauncherStreaming --jars /home/hadoop/jar/kafka-clients-0.10.0.0.jar,/home/hadoop/jar/metrics-core-2.2.0.jar,/home/hadoop/jar/zkclient-0.3.jar,/home/hadoop/jar/spark-streaming-kafka-0-8_2.11-2.0.0.jar,/home/hadoop/jar/kafka_2.11-0.8.2.1.jar  /home/hadoop/jar/SparkLearning.jar  &gt;&gt; /home/hadoop/logs/LauncherDM.log &amp;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>往Flume监控目录/data/launcher/stat_app/.*写日志，原始日志内容类似下面这样：</p>
+
+<pre><code class="language-log">118.120.102.3|1495608541.238|UEsDBBQACAgIACB2uEoAAAAAAAAAAAAAAAABAAAAMGWUbW7bMAyGb6NfnUFRFEWhJ+gBdgBZVjpjjp04brMAO*yY2DKa9Y+B1+DnQ1LCztoITgK4wPGHfNUhmKGUPOn3DyP*zdOxSWM3T33XXMqy9OP7xXTZiTC1xlL0HgMEi+BfHoooBEGKr3fPpYy5jMse4Xzupus4TKkrs4kZOhI51CgWWKxsUQBRPMDr1*w5Hcuc0LiUEFBwdXQxAARXHb3+QXlOfzya0uZWOGwlEwBDwLD5oJBVFHsEEPF2U0EUToyr8k4tg9v8AkRrIcKmxGsU2eqQIM45dKuKFICo5oveEqOjh2JAIITImyIJqBk3JS4qh7Wby*TroxnL9ZKHXrsyWeBQoMXaEgXUKh6mOQ1l7NLc*Hwz8aDpAtndLFJEetkVc6S9V*bg+RFiKMvnTv6ahuGUTmWexqEfi3Elezx0botJrCCQn5jfCzWaqaUOqNpFYO23ckYl5GOlx4rLQuUllh27SsjZyLQTUn4K+3uVczlOi+7uuMzTYLoibeIspk71DtKuJC+7T5qXPg9lLddaZs6+Lolnj7ANW0dBGKOn72m3cbQJI2Kq4*C6Xhz9E5Pzeeg*i2l1IAJtpReILNq6DY4peFjHeO5vffPZd2UyejEJ28Puo0sI*2*5ojvhfNcquWomFMVp02Pz++M6Nach3e6XR5wOlrdSg4T7RkgtQAuC6HYl2sc62i6dUq*om+HWjvdHAPSk8hYkegHraxC8PwPons73XZeozDfXmaRzzzaD2XI4fX0QX*8BUEsHCKeftc48AgAAmQQAAA==
+</code></pre>
+
+<p>查看HDFS的对应目录是否有内容：</p>
+
+<p><img src="https://liulv.work/images/img/20201222210130.png" alt="20201222210130" /></p>
+
+:ET

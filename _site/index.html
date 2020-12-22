@@ -232,6 +232,40 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2020/12/22/flume-kafka-sparkstreaming/">
+        <h2 class="post-title">
+            Flume+kafka+SparkStreaming实时日志分析
+        </h2>
+        
+        <h3 class="post-subtitle">
+            日志分析
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. 背景
+
+通过Flume抓起本地日志数据，实时生成Kafka流数据，通过SparkStreaming进行实时流数据解析，最终存入HDFS或Hive中。
+
+2. 整体架构
+
+技术选择1
+
+业务日志会通过Nginx（或者其他方式）每分钟写入到磁盘中，现在我们想要使用Spark分析日志，就需要先将磁盘中的文件上传到HDFS上，然后Spark处理，最后存入Hive表中，如图所示：
+
+
+
+这种方式...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on December 22, 2020
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2020/12/15/hadoop-install/">
         <h2 class="post-title">
             在Linux上安装部署Hadoop
@@ -551,43 +585,6 @@ ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)�
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2020/10/22/akka-cluster-topic/">
-        <h2 class="post-title">
-            Akka集群分布式主题消息及订阅
-        </h2>
-        
-        <h3 class="post-subtitle">
-            「AKKA」- 2.6.8
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                模块依赖
-
-分布式发布订阅主题API可用且可与核心akka-actor-typed模块一起使用，但是只有在集群应用程序中使用时才分发:
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-&lt;properties&gt;
-  &lt;akka.version&gt;2.6.8&lt;/akka.version&gt;
-  &lt;scala.binary.version&gt;2.13&lt;/sca...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on October 22, 2020
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -624,27 +621,27 @@ ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)�
         
         
         
-                <a data-sort="0019" 
+                <a data-sort="0020" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0022" 
+                <a data-sort="0023" 
                     href="/archive/?tag=EMR"
                     title="EMR"
                     rel="4">EMR</a>
         
-                <a data-sort="0024" 
+                <a data-sort="0025" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0024" 
+                <a data-sort="0025" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0024" 
+                <a data-sort="0025" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>
