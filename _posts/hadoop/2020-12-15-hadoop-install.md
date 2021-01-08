@@ -286,9 +286,17 @@ start-all.sh
 stop-all.sh
 
 **访问**
-hdfs http://192.168.56.101:50070/
+hdfs 
 
-yarn  http://192.168.56.101:8088/
+http://hadoop01:50070/
+
+yarn  
+
+http://hadoop01:8088/
+
+job history
+
+http://hadoop01:19888
 
 -------
 

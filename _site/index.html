@@ -232,6 +232,138 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2021/01/08/bigdata-hj/">
+        <h2 class="post-title">
+            大数据开发环境
+        </h2>
+        
+        <h3 class="post-subtitle">
+            快捷
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                1. 本地环境
+
+1.1. 前提
+
+安装前提有
+
+
+  已安装了Hadoop集群
+  已安装Kafka环境
+  已安装Spark环境
+  已安装Hive环境
+
+
+暂时用到的主要是Kafka、Hadoop、Spark
+
+本地伪分布模式单机模式
+
+1.2. 启动命令
+
+
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on January 8, 2021
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2021/01/06/linux-manager/">
+        <h2 class="post-title">
+            Linux管理手册
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Linux操作汇总
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                Linux管理手册
+
+1. 查看linux服务器配置信息命令
+
+1.1. 查看操作系统信息：
+
+1
+2
+3
+uname -a
+
+cat /etc/redhat-release 
+
+
+CentOS Linux release 7.5.1804 (Core)
+
+1.2. 查看是否是虚拟机还是物理机：
+
+https://blog.csdn.net/yangniuer/article/details...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on January 6, 2021
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2021/01/02/structured-streaming-kafka/">
+        <h2 class="post-title">
+            Structured Streaming消费Kafka流批分析
+        </h2>
+        
+        <h3 class="post-subtitle">
+            日志分析
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                版本信息
+
+
+  
+    
+      组件
+      版本
+      Tbds
+    
+  
+  
+    
+      Hadoop
+      2.7.3
+       
+    
+    
+      Spark
+      2.3.2
+       
+    
+    
+      Kafka
+      1.0.0
+       
+    
+  
+
+
+本地通过Yarn提交...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by LiuL on January 2, 2021
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2020/12/22/flume-kafka-sparkstreaming/">
         <h2 class="post-title">
             Flume+kafka+SparkStreaming实时日志分析
@@ -489,102 +621,6 @@ clickhouse-client –query=”insert into testdb.account FORMAT ...
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2020/11/27/emr-knox/">
-        <h2 class="post-title">
-            腾讯云EMR-Knox
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. Knox 说明
-
-读音 /nɑːks/
-
-目前 EMR-V1.3.1 和 EMR-V2.0.1 版本已经支持 Apache Knox，同Zookeeper/Hadoop一样为Hadoop集群必选组件，完成以下准备工作后，即可在公网直接访问 Yarn、HDFS 等服务的 Web UI
-
-1.1. 准备工作
-
-确认您已开通腾讯云，并且创建了一个 EMR 集群。
-EMR-V1.3.1 和 E...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on November 27, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/11/27/emr-alluxio/">
-        <h2 class="post-title">
-            腾讯云EMR-Alluxio
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. Alluxio 简介
-
-读音 /aluxshel/
-
-1.1. Alluxio 是什么
-
-Alluxio是一个基于内存的分布式文件系统，它是架构在底层分布式文件系统和上层分布式计算框架之间的一个中间件，主要职责是以文件形式在内存或其
-储设施中提供数据的存取服务。
-
-Alluxio的前身为Tachyon。
-
-1.2. Alluxio 应用场景
-
-Alluxio居于传统大数据存储（如：Am...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on November 27, 2020
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2020/10/25/click-house/">
-        <h2 class="post-title">
-            ClickHouse入门教程
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            
-                1. ClickHouse介绍
-
-ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)。
-
-1.1. 行数据库与列数据库区别
-
-在传统的行式数据库系统中，数据按顺序存储，处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有： MySQL、Postgres和MS SQL Server。
-
-在列式数据库系统中，存储格式是列名，列值1, 列2.方式存储，对...
-            
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by LiuL on October 25, 2020
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -621,27 +657,27 @@ ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)�
         
         
         
-                <a data-sort="0020" 
+                <a data-sort="0023" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0023" 
+                <a data-sort="0026" 
                     href="/archive/?tag=EMR"
                     title="EMR"
                     rel="4">EMR</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>
@@ -805,7 +841,7 @@ ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)�
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; LiuL Blog 2020
+                    Copyright &copy; LiuL Blog 2021
                     <br>
                     Powered by <a href="https://liulv.work">LiuL Blog</a> |
                     <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"

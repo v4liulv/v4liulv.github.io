@@ -1,0 +1,3555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="关于程序与设计、黑客与画家 | 刘律，Web & Mobile Lover，Software Engineer，UX Designer | 这里是 @Hux刘律 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="刘律, Hux刘律, LiuL, 鬼栈, v4liulv, @v4liulv, 刘律的博客, LiuL Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Linux管理手册 - 刘律的博客 | LiuL Blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="Linux管理手册
+">
+    
+    <meta property="article:published_time" content="2021-01-06T00:00:00Z">
+    
+    
+    <meta property="article:author" content="LiuL">
+    
+    
+    <meta property="article:tag" content="Linux">
+    
+    <meta property="article:tag" content="Linux 命令">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/img/avatar-LiuL-ny.jpg">
+    <meta property="og:url" content="http://localhost:4000/2021/01/06/linux-manager/">
+    <meta property="og:site_name" content="刘律的博客 | LiuL Blog">
+    
+    <title>Linux管理手册 - 刘律的博客 | LiuL Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2021/01/06/linux-manager/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/LiuL-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- LiuL change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">LiuL Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+<header class="intro-header style-text" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Linux" title="Linux">Linux</a>
+                        
+                        <a class="tag" href="/archive/?tag=Linux+%E5%91%BD%E4%BB%A4" title="Linux 命令">Linux 命令</a>
+                        
+                    </div>
+                    <h1>Linux管理手册</h1>
+                    
+                    <h2 class="subheading">Linux操作汇总</h2>
+                    <span class="meta">Posted by LiuL on January 6, 2021</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h2 id="linux管理手册">Linux管理手册</h2>
+
+<h1 id="1-查看linux服务器配置信息命令">1. 查看linux服务器配置信息命令</h1>
+
+<h2 id="11-查看操作系统信息">1.1. 查看操作系统信息：</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">uname</span><span class="w"> </span><span class="nt">-a</span><span class="w">
+
+</span><span class="nf">cat</span><span class="w"> </span><span class="nx">/etc/redhat-release</span><span class="w"> 
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>CentOS Linux release 7.5.1804 (Core)</p>
+
+<h2 id="12-查看是否是虚拟机还是物理机">1.2. 查看是否是虚拟机还是物理机：</h2>
+
+<p>https://blog.csdn.net/yangniuer/article/details/105320619</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>dmesg</td>
+      <td>grep -i virtual</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="13-查看-cpu信息">1.3. 查看 cpu信息：</h2>
+
+<p>cat /proc/cpuinfo</p>
+
+<h2 id="14-查看内存信息">1.4. 查看内存信息：</h2>
+
+<p>free</p>
+
+<p>free -g</p>
+
+<p>grep MemTotal /proc/meminfo</p>
+
+<h2 id="15-查看centos版本信息">1.5. 查看centos版本信息：</h2>
+
+<p>cat /etc/issue</p>
+
+<h2 id="16-查看磁盘使用情况">1.6. 查看磁盘使用情况：</h2>
+
+<p>df -h</p>
+
+<p>查看其它磁盘外设信息：
+fdisk -l</p>
+
+<p>smartctl –all /dev/sda
+如果没有smartctl 工具可以用 yum install smartmontools安装</p>
+
+<p>查看所有可用块设备的信息：
+lsblk</p>
+
+<h2 id="17-linux查看磁盘类型是否ssd盘">1.7. linux查看磁盘类型（是否SSD盘）</h2>
+<p>介绍两种方法：</p>
+
+<p>第一种：</p>
+
+<p>cat /sys/block/sda/queue/rotational</p>
+
+<p>注意：
+命令中的sba是你的磁盘名称，可以通过df命令查看磁盘，然后修改成你要的
+结果：
+返回0：SSD盘
+返回1：SATA盘</p>
+
+<h2 id="18-使用磁盘是否为raid">1.8. 使用磁盘是否为raid</h2>
+
+<p>https://www.cnblogs.com/JianGuoWan/p/7709971.html</p>
+
+<p>cat /proc/mdstat</p>
+
+<p>如果
+Personalities : 
+unused devices: <none></none></p>
+
+<p>则没做raid，或者是关闭的</p>
+
+<h2 id="19-查看所有硬件信息">1.9. 查看所有硬件信息</h2>
+<p>dmidecode |more
+或：dmesg |more</p>
+
+<h2 id="110-查看网卡信息">1.10. 查看网卡信息</h2>
+
+<p>ethtool eth0</p>
+
+<h1 id="2-创建文件命令">2. 创建文件命令</h1>
+
+<p>直接vim 编辑保存</p>
+
+<h1 id="3-tcp端口">3. TCP端口</h1>
+
+<h2 id="31-查看端口">3.1. 查看端口</h2>
+
+<p>netstat -lnpt</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>netstat -anp</td>
+      <td>grep 6500</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>查看端口号被那个进程id占用，然后
+kill -9</p>
+
+<p>查看那些程序使用tcp的80端口：</p>
+
+<p>fuser -n tcp 80</p>
+
+<h2 id="32-防火墙下打开端口">3.2. 防火墙下打开端口</h2>
+
+<h3 id="321-打开端口号">3.2.1. 打开端口号</h3>
+
+<p>TBDS Portal必须开放端口：80 443 8081 8080 8088</p>
+
+<p>iptables -A INPUT -ptcp –dport  443 -j ACCEPT
+iptables -A INPUT -ptcp –dport  8081 -j ACCEPT
+iptables -A INPUT -ptcp –dport  8080 -j ACCEPT
+iptables -A INPUT -ptcp –dport  8088 -j ACCEPT</p>
+
+<h3 id="322-查询端口是否已打开">3.2.2. 查询端口是否已打开</h3>
+
+<p>firewall-cmd –query-port=7788/tcp</p>
+
+<h3 id="323-关闭端口号">3.2.3. 关闭端口号</h3>
+
+<p>iptables -A OUTPUT -p tcp –dport 端口号-j DROP</p>
+
+<h3 id="324-保存设置">3.2.4. 保存设置</h3>
+
+<p>service iptables save 
+systemctl iptables save</p>
+
+<h1 id="4-添加用户">4. 添加用户</h1>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">useradd</span><span class="w"> </span><span class="nx">tbds_student_liulv</span><span class="w">
+</span><span class="nf">passwd</span><span class="w"> </span><span class="nx">tbds_student_liulv</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="5-日志查看">5. 日志查看</h1>
+
+<p><strong>跟踪最新日志</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">tailf</span><span class="w"> </span><span class="nx">/log/t.log</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>跟踪最新日志10行</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">tail</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nx">10</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>根据关键字查看日志</strong></p>
+
+<ul>
+  <li><strong>根据关键字查看日志</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat t.log</td>
+      <td>grep “Exception”</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>根据关键字查看后10行日志</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat t.log</td>
+      <td>grep “Error” -A 10</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>根据关键字查看前10行日志</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat t.log</td>
+      <td>grep “Error” -B 10</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>根据关键字查看前后10行日志，并显示出行号</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat -n t.log</td>
+      <td>grep “Warn” -C 10</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>查看日志前 50 行</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat t.log</td>
+      <td>head -n 50</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>查看日志后 50 行，并显示出行号</strong></li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>cat -n t.log</td>
+      <td>tail -n 50</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="6-linux-添加环境变量模版">6. Linux 添加环境变量模版</h1>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nf">echo</span><span class="w"> </span><span class="s2">"export SCALA_HOME=/usr/local/scala/scala-2.11.11"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"export PATH=</span><span class="nv">$SCALA_HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">cat</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span><span class="nf">source</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="7-gradle-项目自动化建构工具命令">7. gradle-项目自动化建构工具命令</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>gradle idea
+gradlew assemble <span class="nt">-Dorg</span>.gradle.java.home<span class="o">=</span>D:<span class="se">\g</span>ongji<span class="se">\J</span>ava<span class="se">\j</span>dk-12.0.2
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="8-rmp">8. rmp</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>yum groupinstall <span class="nt">--downloadonly</span> <span class="nt">--downloaddir</span><span class="o">=</span>/home/hadoop/desktop Desktop
+rpm <span class="nt">-ivh</span> ./<span class="k">*</span>.rpm <span class="nt">--nodeps</span> <span class="nt">--force</span>
+rpm <span class="nt">-qa</span> | <span class="nb">grep </span>realvnc
+rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> realvnc-vnc-server-6.5.0.41730-1.x86_64
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="9-磁盘查看">9. 磁盘查看：</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">df</span> <span class="nt">-hl</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>查看所有磁盘使用率</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">du</span> <span class="nt">-h</span> <span class="nt">--max-depth</span><span class="o">=</span>1
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>查看当前目录下最大的文件或路径。结果发现是我的hadoop data 目录占用超大，还有自己测试用的数据，不想随便清理，所以查看hdfs路径:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>hadoop fs <span class="nt">-du</span> <span class="nt">-h</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>此时发现占用空间最大的是 hbase的WAL日志占用比较大，直接删除，问题解决。</p>
+
+<h1 id="10-scp命令">10. SCP命令</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>scp <span class="nt">-r</span> /root root@43.224.34.73:/home/lk
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>1Hblsqt# 
+132.232.90.182 172.27.16.31
+172.27.16.104
+172.27.16.5</p>
+
+<h1 id="11-linux-重启关机">11. Linux 重启关机</h1>
+
+<p>$ reboot ———–重启
+$ halt ————-关机</p>
+
+<h1 id="12-端口和应用查看">12. 端口和应用查看</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>netstat -nptl</td>
+      <td>grep 10000</td>
+    </tr>
+    <tr>
+      <td>ps -ef</td>
+      <td>grep dse</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="13-建立软连接ln--s">13. 建立软连接ln -s</h1>
+
+<p>ln -s /usr/java/jdk1.8.0_151/jre/bin/java /usr/bin/java 
+ln -s /opt/jdk1.8.0_172/bin/jps /opt/jdk1.8.0_172/jre/bin/jps
+ln -s /usr/java/jdk1.8.0_172-amd64/bin/jps /usr/java/jdk1.8.0_172-amd64/jre/bin/jps</p>
+
+<h1 id="14-网络配置">14. 网络配置</h1>
+
+<h2 id="141-网络配置方式1">14.1. 网络配置方式1</h2>
+
+<p>安装完Linux系统后，无法上网 ping www.baidu.com 提示Network is unreachable
+解决办法：
+cd /etc/sysconfig/network-scripts
+vi ifcfg-enp0s3 （后缀为本机自动生成）</p>
+
+<p>TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp0s3
+UUID=fadf194d-7c3e-4b65-9ddc-8a0e780fc234
+DEVICE=enp0s3
+ONBOOT=yes
+IPADDR=192.168.99.101
+NETWORK=192.168.99.16
+NETSTAT=255.255.255.0
+GATEWAY=192.168.10.1
+DNS1=8.8.8.8
+DNS2=114.114.114.114</p>
+
+<p>2、重启网卡 service network restart</p>
+
+<h3 id="1411-新建网卡">14.1.1. 新建网卡</h3>
+
+<p>cd /etc/sysconfig/network-scripts/</p>
+
+<p>cp ifcfg-enp0s3 ifcfg-eth1</p>
+
+<h3 id="1412-networkmanager">14.1.2. NetworkManager</h3>
+
+<p>systemctl start NetworkManager
+systemctl status NetworkManager
+systemctl enable NetworkManager</p>
+
+<h3 id="1413-网卡配置界面-el7">14.1.3. 网卡配置界面 el7</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>nmtui
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>就添加个IP地址其他全部不变
+IP4 ADDR=192.168.19.20</p>
+
+<p>ip配置</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>nm-connection-editor
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>其中General勾选第一和第二个</p>
+
+<p>IPV4 Settings选择
+Mothod: Manual</p>
+
+<p>地址配置如下</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nv">IPADDR</span><span class="o">=</span>192.168.19.20
+<span class="nv">GATEWAY</span><span class="o">=</span>192.168.19.2
+<span class="nv">NETMASK</span><span class="o">=</span>255.255.255.0
+DNS <span class="nv">Servers</span><span class="o">=</span>192.168.19.2
+<span class="nv">DNS1</span><span class="o">=</span>118.118.118.9
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="1414-设置ip">14.1.4. 设置IP</h3>
+
+<p>nmcli connection show</p>
+
+<p>nmcli connection modify enp0s3 ipv4.addresses 192.168.99.101/24 ipv4.gateway 192.168.99.1 connection.autoconnect yes ipv4.method manual</p>
+
+<p>nmcli connection up enp0s3</p>
+
+<p>nmcli connection show <nmcliName></nmcliName></p>
+
+<p>nmcli connection modify enp0s3 ipv4.addresses 192.168.99.101/24</p>
+
+<h3 id="1415-网卡终端图形化工具">14.1.5. 网卡终端图形化工具</h3>
+
+<p>nm-connection-editor</p>
+
+<h3 id="1416-重启网络">14.1.6. 重启网络</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>systemctl restart network
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="1417-检查ip地址是否正确">14.1.7. 检查IP地址是否正确</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ifconfig
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="15-关闭防火墙并设置开机不启动">15. 关闭防火墙并设置开机不启动</h1>
+
+<h2 id="151-临时关闭防火墙">15.1. 临时关闭防火墙</h2>
+
+<p>el6:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>iptables <span class="nt">-F</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>el7:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>firewalld <span class="nt">-F</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>诊断域名：19c406791k.imwork.net 域名IP地址指向：47.98.161.190 转发服务器IP：47.98.161.190 域名已激活内网穿透功能，并与转发服务器IP指向一致   映射：19c406791k.imwork.net:31025 局域网服务器：
+192.168.19.129:1723 连接转发服务器成功   局域网服务器连接成功</p>
+
+<h2 id="152-关闭防火墙设置开机不启动">15.2. 关闭防火墙设置开机不启动</h2>
+
+<p><strong>el6</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>service iptables stop
+chkconfig iptables off
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>el7</strong></p>
+
+<p>systemctl status firewalld</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>systemctl stop firewalld
+systemctl disable firewalld 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="16-关闭selinux">16. 关闭SELinux</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>getenforce
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回
+Enforcing</p>
+
+<p>执行关闭SELinux</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>setenforce 0
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/SELINUX=enforcing/SELINUX=disabled/g'</span> /etc/selinux/config
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>检查SELinux</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>getenforce
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回
+Permissive</p>
+
+<h1 id="17-修改时区">17. 修改时区</h1>
+
+<h2 id="171-最新版本方法">17.1. 最新版本方法</h2>
+
+<p>tzselect：
+执行tzselect命令–&gt;选择Asia–&gt;选择China–&gt;选择east China - Beijing, Guangdong, Shanghai, etc–&gt;然后输入1。
+执行tzselect命令–&gt;5–&gt;9–&gt;选择east China - Beijing, Guangdong, Shanghai, etc–&gt;然后输入1。</p>
+
+<p>TZ=’Asia/Shanghai’; export TZ
+date命令查看到为CST, 即中国标准时间</p>
+
+<p>修改配置文件</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>vim /etc/sysconfig/clock
+
+<span class="nv">ZONE</span><span class="o">=</span><span class="s2">"Asia/Shanghai"</span>
+<span class="nv">UTC</span><span class="o">=</span><span class="nb">false
+</span><span class="nv">ARC</span><span class="o">=</span><span class="nb">false</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>//linux的时区设置为上海时区</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nb">rm</span> /etc/localtime
+<span class="nb">ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+<span class="nb">ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/UTC /etc/localtime
+
+timedatectl
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>//设置硬件时间和系统时间一致并校准
+hwclock –systohc</p>
+
+<h2 id="172-查看系统时区">17.2. 查看系统时区</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">date</span> <span class="nt">-R</span><span class="p">;</span> <span class="nb">date</span> +%z
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="o">[</span>root@hadoop05 ~]#  <span class="nb">date</span> <span class="nt">-R</span><span class="p">;</span> <span class="nb">date</span> +%z  
+Thu, 10 Nov 2016 17:20:24 <span class="nt">-08001</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如IOS6.6版本的是-08001，而我们使用的市区是上海的+8000东8时区，这样时间就不准需要进行时区调整+8000东8时区</p>
+
+<p>时区调整上海+8000东8时区</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cp</span> /etc/localtime /etc/localtime.bak
+<span class="nb">cp</span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>再检查时区和时间是否准确</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">date</span> <span class="nt">-R</span><span class="p">;</span> <span class="nb">date</span> +%z
+<span class="nb">date</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre> root@hadoop04 ~]# <span class="nb">date</span> <span class="nt">-R</span><span class="p">;</span> <span class="nb">date</span> +%z
+Fri, 11 Nov 2016 09:25:26 +0800
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>+0800时间也自动tongbu成功。和北京时间相同</p>
+
+<h2 id="173-设置时区方式二可选">17.3. 设置时区方式二(可选)</h2>
+
+<h3 id="1731-将linux系统时钟tongbu到远程ntp服务器">17.3.1. 将Linux系统时钟tongbu到远程NTP服务器</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>timedatectl set-ntp <span class="nb">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="1732-linux中设置本地时区">17.3.2. Linux中设置本地时区</h3>
+
+<p>使用set-timezone开关，如下所示。
+中国上海的时区：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>timedatectl set-timezone <span class="s2">"Asia/Shanghai"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="174-取消订阅服务el7">17.4. 取消订阅服务（el7）</h2>
+
+<p>订阅插件提示：This system is not registered with an entitlement server. You can use subscription-manager to register.</p>
+
+<p>每次yum调用(不禁掉plugins的情况下)，都会更新此文件。
+因此，为了不冲突，可以如下操作: 停止掉该插件的使用，在配置文件中把enable=0即可。</p>
+
+<p>[root@micocube ~] vim /etc/yum/pluginconf.d/subscription-manager.conf
+[main]
+enabled=0           #将它禁用掉</p>
+
+<h2 id="175-创建本地yum源">17.5. 创建本地yum源</h2>
+
+<h3 id="1751-配置yum仓库本地yum源">17.5.1. 配置yum仓库：本地yum源</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">rm</span> <span class="nt">-rf</span> /etc/yum.repos.d/<span class="k">*</span>
+vim /etc/yum.repos.d/redhat7.repo
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>修改如下内容</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="o">[</span>rhel]
+<span class="nv">name</span><span class="o">=</span>rhel
+<span class="nv">baseurl</span><span class="o">=</span>file:///media/cdrom
+<span class="nv">enabled</span><span class="o">=</span>1
+<span class="nv">gpgcheck</span><span class="o">=</span>0
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="1752-创建本地yum库目录">17.5.2. 创建本地yum库目录</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">mkdir</span> /media/cdrom
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>df -h 检查镜像盘是否成功</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">df</span> <span class="nt">-h</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如下</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nf">root</span><span class="err">@</span><span class="nx">localhost</span><span class="w"> </span><span class="nx">root</span><span class="p">]</span><span class="c"># df -h</span><span class="w">
+</span><span class="nf">Filesystem</span><span class="w">             </span><span class="nx">Size</span><span class="w">  </span><span class="nx">Used</span><span class="w"> </span><span class="nx">Avail</span><span class="w"> </span><span class="nx">Use</span><span class="o">%</span><span class="w"> </span><span class="nx">Mounted</span><span class="w"> </span><span class="nx">on</span><span class="w">
+</span><span class="nf">/dev/mapper/rhel-root</span><span class="w">   </span><span class="nx">50G</span><span class="w">  </span><span class="nx">2.9G</span><span class="w">   </span><span class="nx">48G</span><span class="w">   </span><span class="nx">6</span><span class="o">%</span><span class="w"> </span><span class="nx">/</span><span class="w">
+</span><span class="nf">devtmpfs</span><span class="w">               </span><span class="nx">3.8G</span><span class="w">     </span><span class="nx">0</span><span class="w">  </span><span class="nx">3.8G</span><span class="w">   </span><span class="nx">0</span><span class="o">%</span><span class="w"> </span><span class="nx">/dev</span><span class="w">
+</span><span class="nf">tmpfs</span><span class="w">                  </span><span class="nx">3.9G</span><span class="w">   </span><span class="nx">88K</span><span class="w">  </span><span class="nx">3.9G</span><span class="w">   </span><span class="nx">1</span><span class="o">%</span><span class="w"> </span><span class="nx">/dev/shm</span><span class="w">
+</span><span class="nf">tmpfs</span><span class="w">                  </span><span class="nx">3.9G</span><span class="w">  </span><span class="nx">8.9M</span><span class="w">  </span><span class="nx">3.9G</span><span class="w">   </span><span class="nx">1</span><span class="o">%</span><span class="w"> </span><span class="nx">/run</span><span class="w">
+</span><span class="nf">tmpfs</span><span class="w">                  </span><span class="nx">3.9G</span><span class="w">     </span><span class="nx">0</span><span class="w">  </span><span class="nx">3.9G</span><span class="w">   </span><span class="nx">0</span><span class="o">%</span><span class="w"> </span><span class="nx">/sys/fs/cgroup</span><span class="w">
+</span><span class="nf">/dev/mapper/rhel-home</span><span class="w">   </span><span class="nx">42G</span><span class="w">   </span><span class="nx">38M</span><span class="w">   </span><span class="nx">42G</span><span class="w">   </span><span class="nx">1</span><span class="o">%</span><span class="w"> </span><span class="nx">/home</span><span class="w">
+</span><span class="nf">/dev/sda1</span><span class="w">              </span><span class="nx">497M</span><span class="w">  </span><span class="nx">157M</span><span class="w">  </span><span class="nx">340M</span><span class="w">  </span><span class="nx">32</span><span class="o">%</span><span class="w"> </span><span class="nx">/boot</span><span class="w">
+</span><span class="nf">tmpfs</span><span class="w">                  </span><span class="nx">781M</span><span class="w">   </span><span class="nx">12K</span><span class="w">  </span><span class="nx">781M</span><span class="w">   </span><span class="nx">1</span><span class="o">%</span><span class="w"> </span><span class="nx">/run/user/0</span><span class="w">
+</span><span class="nf">/dev/sr0</span><span class="w">               </span><span class="nx">3.8G</span><span class="w">  </span><span class="nx">3.8G</span><span class="w">     </span><span class="nx">0</span><span class="w"> </span><span class="nx">100</span><span class="o">%</span><span class="w"> </span><span class="nx">/run/media/root/RHEL-7.2</span><span class="w"> </span><span class="nx">Server.x86_64</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="176-对镜像磁盘进行yum库目录挂盘">17.6. 对镜像磁盘进行yum库目录挂盘</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">mount</span><span class="w"> </span><span class="nx">/dev/sr0</span><span class="w"> </span><span class="nx">/media/cdrom</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="177-yum默认安装无法使用">17.7. YUM默认安装无法使用</h2>
+
+<h3 id="1771-查看redhat-70系统本身所安装的那些yum软件包">17.7.1. 查看redhat 7.0系统本身所安装的那些yum软件包</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nf">rpm</span><span class="w"> </span><span class="nt">-qa</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">grep</span><span class="w"> </span><span class="nx">yum</span><span class="w">
+
+</span><span class="nf">yum-utils-1.1.31-50.el7.noarch</span><span class="w">
+</span><span class="nx">yum-metadata-parser-1.1.4-10.el7.x86_64</span><span class="w">
+</span><span class="nf">yum-3.4.3-161.el7.noarch</span><span class="w">
+</span><span class="nx">PackageKit-yum-1.1.10-1.el7.x86_64</span><span class="w">
+</span><span class="nf">yum-rhn-plugin-2.0.1-10.el7.noarch</span><span class="w">
+</span><span class="nx">yum-langpacks-0.4.2-7.el7.noarch</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="178-卸载这些软件包">17.8. 卸载这些软件包</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nf">yum-updateonboot-1.1.31-52.el7.noarch</span><span class="w">
+</span><span class="nx">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-rhn-plugin-2.0.1-10.el7.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-metadata-parser-1.1.4-10.el7.x86_64</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-3.4.3-163.el7.centos.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-utils-1.1.31-50.el7.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-updateonboot-1.1.31-52.el7.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">yum-langpacks-0.4.2-7.el7.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">python-kitchen-1.1.1-5.el7.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-e</span><span class="w"> </span><span class="nx">python-chardet-2.2.1-1.el7_1.noarch</span><span class="w"> </span><span class="nt">--nodeps</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="179-下载包并安装">17.9. 下载包并安装</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/python-kitchen-1.1.1-5.el7.noarch.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/python-chardet-2.2.1-3.el7.noarch.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/yum-3.4.3-163.el7.centos.noarch.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/yum-metadata-parser-1.1.4-10.el7.x86_64.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/yum-utils-1.1.31-52.el7.noarch.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/yum-updateonboot-1.1.31-52.el7.noarch.rpm</span><span class="w">
+</span><span class="nf">wget</span><span class="w"> </span><span class="nx">http://mirrors.163.com/centos/7/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.31-52.el7.noarch.rpm</span><span class="w">
+
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-ivh</span><span class="w"> </span><span class="nx">python-</span><span class="o">*</span><span class="w">
+</span><span class="nf">rpm</span><span class="w"> </span><span class="nt">-ivh</span><span class="w"> </span><span class="nx">yum-</span><span class="o">*</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="1710-配置ntp服务">17.10. 配置NTP服务</h2>
+
+<p>外网环境：
+$ yum install ntp</p>
+
+<p>内网环境：
+a. 同样系统的Linux外网服务器下载rmp包和依赖包
+cd /home/hadoop/ntp
+yumdownloader –resolve ntp
+或
+yum install all –downloadonly –downloaddir=/home/hadoop/ntp ntp</p>
+
+<p>b. 拷贝/home/hadoop/ntp/包带内网服务器同样目录下</p>
+
+<p>c. 内网安装
+cd /home/hadoop/ntp/
+rpm -ivh ./*.rpm –nodeps –force</p>
+
+<h2 id="1711-启动-ntp">17.11. 启动 ntp</h2>
+
+<p>$ service ntpd start</p>
+
+<h2 id="1712-设置开机启动">17.12. 设置开机启动:</h2>
+
+<p>$ chkconfig ntpd on</p>
+
+<h2 id="1713-同步时间服务器">17.13. 同步时间服务器</h2>
+
+<p>vi /etc/ntp.conf</p>
+
+<p>把其中的server全部注销，并添加远程时间服务器或者master节点</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c"># server 0.centos.pool.ntp.org iburst  </span><span class="w">
+</span><span class="c"># server 1.centos.pool.ntp.org iburst  </span><span class="w">
+</span><span class="c"># server 2.centos.pool.ntp.org iburst  </span><span class="w">
+</span><span class="c"># server 3.centos.pool.ntp.org iburst</span><span class="w">
+
+</span><span class="c"># 阿里云时间服务器</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp1.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp2.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp3.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp4.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp5.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp6.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">ntp7.aliyun.com</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+
+</span><span class="c"># 本地ntp服务器</span><span class="w">
+</span><span class="nf">server</span><span class="w"> </span><span class="nx">master.ip.host</span><span class="w"> </span><span class="nx">iburst</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="1714-重启ntp服务">17.14. 重启ntp服务</h2>
+
+<p>$ service ntpd restart</p>
+
+<p>检查是否成功，用ntpstat命令查看同步状态，出现以下状态代表启动成功：
+$ ntpstat</p>
+
+<h1 id="18-修改主机名hostname">18. 修改主机名hostname</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>vim /etc/sysconfig/network
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>编辑为下面内容，其中Master为定义主机名，GATEWAY为本机的IP地址</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>NETWORKING=yes
+HOSTNAME=Master
+GATEWAY=192.168.19.20
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="19-修改hosts">19. 修改hosts</h1>
+
+<p>即ip与主机名的对应关系</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>vim /etc/hosts
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>编辑为下面内容</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>192.168.18.205  des01
+192.168.18.206  des02
+192.168.18.207  des03
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="20-ssh无密码登陆">20. ssh无密码登陆</h1>
+
+<h2 id="201-生成无密码的密钥对">20.1. 生成无密码的密钥对</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh-keygen <span class="nt">-t</span> rsa
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(一路回车，生成无密码的密钥对。)</p>
+
+<h2 id="202-将公钥添加到认证文件中">20.2. 将公钥添加到认证文件中</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span> ~/.ssh/id_rsa.pub <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="203-设置authorized_keys的访问权限">20.3. 设置authorized_keys的访问权限</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">chmod </span>600 ~/.ssh/authorized_keys
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="204-ssh无密码证书发给其他节点">20.4. ssh无密码证书发给其他节点</h2>
+
+<p>ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop01
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop02
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop03
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop04</p>
+
+<p>ssh-copy-id -i ~/.ssh/id_rsa.pub tbds-19.203</p>
+
+<h2 id="205-关闭大透明压缩">20.5. 关闭大透明压缩</h2>
+
+<p>echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag
+echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</p>
+
+<p>然后写入/etc/rc.local</p>
+
+<h1 id="21-禁止交换空间">21. 禁止交换空间</h1>
+
+<h1 id="22-linux-系统设置sh文件开机启动">22. Linux 系统设置sh文件开机启动</h1>
+
+<p>工作中有一个linux下的服务需要启动，但是机器总是断电，导致需要反复启动，找了一下开机自启动的方法，解决了这个问题。Linux设置开机自启动非常简单，只要找到rc.local文件，将你需要自启动的文件加进去即可。我的linux服务器的rc.local文件在/etc文件夹下。rc.local文件没有修改之前是这样滴：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="c">#</span>
+<span class="c"># This script will be executed *after* all the other init scripts.</span>
+<span class="c"># You can put your own initialization stuff in here if you don't</span>
+<span class="c"># want to do the full Sys V style init stuff.</span>
+
+<span class="nb">touch</span> /var/lock/subsys/local
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>设置rc.local是可执行 <code class="language-plaintext highlighter-rouge">chmod +x /etc/rc.d/rc.local</code>
+在文件下方直接添加你需要自启动文件的路径，然后直接写上启动命令，修改后的文件如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">echo</span> <span class="s2">"cd /usr/share/dse-studio/datastax-studio-6.0.0"</span> <span class="o">&gt;&gt;</span> /etc/rc.local
+<span class="nb">echo</span> <span class="s2">"nohup bin/datastax.sh &gt;&gt; /var/log/datastaxstudio/output.log 2&gt;&amp;1 &amp;"</span> <span class="o">&gt;&gt;</span> /etc/rc.local
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="c">#</span>
+<span class="c"># This script will be executed *after* all the other init scripts.</span>
+<span class="c"># You can put your own initialization stuff in here if you don't</span>
+<span class="c"># want to do the full Sys V style init stuff.</span>
+
+<span class="nb">touch</span> /var/lock/subsys/local
+
+<span class="nb">cd</span> /usr/share/dse-studio/datastax-studio-6.0.0
+<span class="nb">nohup </span>bin/datastax.sh <span class="o">&gt;&gt;</span> /var/log/datastaxstudio/output.log 2&gt;&amp;1 &amp;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="23-安装yum并配置阿里源">23. 安装Yum并配置阿里源</h1>
+
+<blockquote>
+  <p>redhat系统中，如果你想要更新yum仓库，它会提示让你注册才能更新，因为centos和redhat基本相同，所以我把yum这一套全换成centos的。</p>
+</blockquote>
+
+<ol>
+  <li>删除已安装的yum包(不必须)</li>
+</ol>
+
+<p>cd /etc/rpm/</p>
+
+<p>rm -rf ./m*</p>
+
+<ol>
+  <li>下载centos的yum包(不必须)</li>
+</ol>
+
+<p>wget https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/yum-metadata-parser-1.1.4-10.el7.x86_64.rpm
+wget https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/yum-utils-1.1.31-40.el7.noarch.rpm
+wget https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/yum-3.4.3-158.el7.centos.noarch.rpm
+wget https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.31-45.el7.noarch.rpm
+wget https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/python-urlgrabber-3.10-8.el7.noarch.rpm</p>
+
+<p>如果出现404错误，请去https://mirrors.aliyun.com/centos/7/os/x86_64/Packages/搜索关键词查询最新rpm包的链接。</p>
+
+<ol>
+  <li>强制安装rpm包</li>
+</ol>
+
+<p>–force –nodeps为忽略依赖检测的强制安装</p>
+
+<p>rpm -ivh python-urlgrabber-3.10-8.el7.noarch.rpm –force –nodeps</p>
+
+<p>rpm -ivh yum* –force –nodeps</p>
+
+<ol>
+  <li>查看yum包是否安装好</li>
+</ol>
+
+<p>[root@localhost yum.repos.d]# rpm -qa |grep yum
+yum-metadata-parser-1.1.4-10.el7.x86_64
+yum-utils-1.1.31-45.el7.noarch
+yum-3.4.3-158.el7.centos.noarch
+yum-plugin-fastestmirror-1.1.31-45.el7.noarch</p>
+
+<ol>
+  <li>修改repo</li>
+</ol>
+
+<p>下载源文件</p>
+
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+需要把Centos-7.repo文件中的$releasever全部替换为7</p>
+
+<p>67  cd /etc/yum.repos.d/
+   68  ls
+   69  vim CentOS-Base.repo
+在vim中执行:%s/$releasever/7/g快速替换。保存退出。</p>
+
+<ol>
+  <li>清空重载yum</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">yum</span> <span class="n">clean</span> <span class="k">all</span>
+<span class="n">yum</span> <span class="k">update</span>
+<span class="o">#</span> <span class="err">最后查看一下</span><span class="n">yum</span><span class="err">列表</span>
+<span class="n">yum</span> <span class="n">list</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="24-yum-需要的rpm包">24. yum 需要的rpm包</h1>
+
+<p>el6 :
+python-urlgrabber-3.9.1-9.el6.noarch
+yum-utils-1.1.30-14.el6.noarch
+yum-metadata-parser-1.1.2-16.el6.x86_64
+yum-plugin-security-1.1.30-14.el6.noarch
+yum-3.2.29-40.el6.noarch</p>
+
+<p>Linux 下载方式一</p>
+
+<p>wget https://mirrors.aliyun.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm
+wget https://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yyum-utils-1.1.30-41.el6.noarch.rpm
+wget https://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm 
+wget https://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-plugin-security-1.1.30-41.el6.noarch.rpm<br />
+wget https://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-3.2.29-81.el6.centos.noarch.rpm</p>
+
+<p>linux 下载方式二，离线下载拷贝，可看下面方式</p>
+
+<blockquote>
+  <p>a. 外网yum install –downloadonly –downloaddir=/home/hadoop/yum/ yum*
+b. 然后u盘拷贝/home/hadoop/yum/目录下rmp到内网环境执行
+c. rpm -ivh ./*.rpm –nodeps –force</p>
+</blockquote>
+
+<h1 id="25-yum-外网服务器下载rpm包到内网无法联网的服务器">25. yum 外网服务器下载rpm包到内网（无法联网的服务器）</h1>
+
+<p>自己找一台可以联网的机器，安装一个虚拟机，装上相同的操作系统，什么其他的软件都不要安装，如果你的内网环境rpm的时候，需要什么依赖，你就直接在可以联网的机器上执行，执行的命令为：</p>
+
+<p>方式一：</p>
+
+<ul>
+  <li>yum -install –downloadonly –downloaddir=/root/ 你的软件</li>
+</ul>
+
+<p>方式二：</p>
+
+<ul>
+  <li>yumdownloader –downloaddir=/home/hadoop/软件名 –resolve 软件名*</li>
+</ul>
+
+<p>然后就会只下载，不安装，通过U盘拷贝到内网环境, 比如安装httpd</p>
+
+<ul>
+  <li>cd /home/hadoop/http</li>
+  <li>rpm -ivh ./*.rpm –nodeps –force</li>
+</ul>
+
+<p>这条命令中 –nodeps 是不检查依赖 –force是覆盖安装，安装即可。</p>
+
+<h2 id="251">25.1.</h2>
+
+<p>vim /etc/yum/pluginconf.d/subscription-manager.conf</p>
+
+<p>[main]
+enabled=0           #将它禁用掉</p>
+
+<h2 id="252-yum清楚缓存">25.2. yum清楚缓存</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yum clean all
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yum list
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="26-yum安装外部远程vnc-可选">26. yum安装外部远程VNC （可选）</h1>
+
+<p>yum install tigervnc-server</p>
+
+<h1 id="27-安装httpd工具">27. 安装httpd工具</h1>
+
+<p>选择其中一台服务器部署httpd，创建本地源</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">mkdir</span> /tmp/httpd
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>拷贝下面两个文件到/tmp/httpd文件目录下</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>httpd-2.2.15-39.el6.centos.x86_64.rpm
+httpd-tools-2.2.15-39.el6.centos.x86_64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行下面命令进行安装</p>
+
+<p>el6 安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>	yum localinstall –nogpgcheck httpd<span class="k">*</span>
+	或者
+	rpm <span class="nt">-ivh</span> httpd-2.2.15-39.el6.centos.x86_64.rpm httpd-tools-2.2.15-39.el6.centos.x86_64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>el7 安装
+   需要依赖rpm文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>    apr-1.4.8-3.el7.x86_64
+	apr-util-1.5.2-6.el7.x86_64
+	httpd-tools-2.4.6-40.el7.x86_64
+	mailcap-2.1.41-2.el7.noarch 
+	httpd-2.4.6-40.el7.x86_64
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>安装命令：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>    rpm -ivh httpd-2.4.6-40.el7.x86_64.rpm httpd-tools-2.4.6-40.el7.x86_64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>创建http的rpm库地址/dse/enterprise/</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>mkdir -p /var/www/html/dse/enterprise/
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>授权目录</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>chmod -R ugo+rx /var/www/html/dse/enterprise/
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>启动httpd</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>service httpd start
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>检查启动情况
+浏览器上使用http://IP/dse/enterprise/， 如http://192.168.19.32/dse/enterprise/验证</p>
+
+<h1 id="28-httpd设置开机启动">28. httpd设置开机启动</h1>
+
+<p>chkconfig httpd on</p>
+
+<h1 id="29-安装vpn服务器pptp">29. 安装VPN服务器PPTP</h1>
+
+<h2 id="291-软件安装">29.1. 软件安装</h2>
+<p>安装依赖软件
+yum install -y ppp iptables perl</p>
+
+<p>安装pptpd软件
+https://pkgs.org/download/cpio下载包地址搜索pptpd，下载64位软件包到/home/hadoop/pptpd目录下pptpd-1.4.0-3.el6.x86_64.rpm
+然后进行安装</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nv">$ </span>rpm <span class="nt">-ivh</span> ./<span class="k">*</span>.rpm <span class="nt">--nodeps</span> <span class="nt">--force</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="292-配置文件">29.2. 配置文件</h2>
+
+<ul>
+  <li>配置ppp选项</li>
+</ul>
+
+<p>$ mv /etc/ppp/options.pptpd /etc/ppp/options.pptpd.bak
+$ vi /etc/ppp/options.pptpd</p>
+
+<p>输入下面内容：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre>name pptpd
+refuse-pap
+refuse-chap
+refuse-mschap
+require-mschap-v2
+require-mppe-128
+proxyarp
+lock
+nobsdcomp
+novj
+novjccomp
+nologfd
+idle 2592000
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>配置客户端连接用户信息</li>
+</ul>
+
+<p>mv /etc/ppp/chap-secrets /etc/ppp/chap-secrets.bak
+vi /etc/ppp/chap-secrets</p>
+
+<p>输入以下内容：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>#client server secret IP addresses
+liulv  pptpd  password *
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>配置pptpd信息</li>
+</ul>
+
+<p>$ mv /etc/pptpd.conf /etc/pptpd.conf.bak
+$ vi /etc/pptpd.conf</p>
+
+<p>输入以下内容：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>option /etc/ppp/options.pptpd
+logwtmp
+localip 192.168.19.1
+remoteip 192.168.19.11-30
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>配置启动路由转换</li>
+</ul>
+
+<p>$ vi /etc/sysctl.conf
+修改以下内容：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>net.ipv4.ip_forward = 1
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="293-启动pptp-vpn服务端">29.3. 启动pptp vpn服务端</h2>
+
+<p>$ service pptpd start</p>
+
+<h2 id="294-关闭防火墙">29.4. 关闭防火墙</h2>
+
+<p>iptables -F
+chkconfig iptables off</p>
+
+<h2 id="295-设置pptp-vpn开机启动">29.5. 设置pptp vpn开机启动</h2>
+
+<p>$ chkconfig pptpd on</p>
+
+<h2 id="296-日志信息">29.6. 日志信息</h2>
+
+<p>$ cat /var/log/messages</p>
+
+<h2 id="297-客户端连接">29.7. 客户端连接</h2>
+
+<p>可以查看下面“安装VPN客户端pptp-setup”信息</p>
+
+<h1 id="30-安装vpn客户端pptp-setup可选">30. 安装VPN客户端pptp-setup（可选）</h1>
+
+<p>外网下载包：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$ yum install --downloadonly --downloaddir=/home/hadoop/pptp-setup pptp-setup
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>拷贝到内网，安装</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nv">$ </span><span class="nb">cd</span> /home/hadoop/pptp-setup
+<span class="nv">$ </span>rpm <span class="nt">-ivh</span> ./<span class="k">*</span>.rpm <span class="nt">--nodeps</span> <span class="nt">--force</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>连接vpn</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>pptpsetup <span class="nt">--create</span> vpn <span class="nt">--server</span> 192.168.19.1 <span class="nt">--username</span> liulv <span class="nt">--password</span> 123456 <span class="nt">--encrypt</span> <span class="nt">--start</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>出现下面证明连接成功：</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>Using interface ppp0
+Connect: ppp0 &lt;<span class="nt">--</span><span class="o">&gt;</span> /dev/pts/2
+CHAP authentication succeeded
+MPPE 128-bit stateless compression enabled
+<span class="nb">local  </span>IP address 192.168.1.182
+remote IP address 192.168.1.180
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>但是此时发现，即使连上了vpn，还是不能上外网。这是因为路由的问题，查看路由
+$ route -n</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+192.168.1.180   0.0.0.0         255.255.255.255 UH    0      0        0 ppp0
+192.168.19.1    0.0.0.0         255.255.255.255 UH    0      0        0 eth0
+192.168.19.0    0.0.0.0         255.255.255.0   U     1      0        0 eth0
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>需要将ppp0的路由设为：将所有对外网络都通过ppp0路由。
+$ route add -net 0.0.0.0 dev ppp0</p>
+
+<p>查看路由
+$ route -n</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+192.168.1.180   0.0.0.0         255.255.255.255 UH    0      0        0 ppp0
+192.168.19.1    0.0.0.0         255.255.255.255 UH    0      0        0 eth0
+192.168.19.0    0.0.0.0         255.255.255.0   U     1      0        0 eth0
+0.0.0.0         0.0.0.0         0.0.0.0         U     0      0        0 ppp0
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="31-优化虚拟内存需求率">31. 优化虚拟内存需求率</h1>
+
+<h2 id="311-检查虚拟内存需求率">31.1. 检查虚拟内存需求率</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span> /proc/sys/vm/swappiness
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>显示如下：
+30</p>
+
+<h2 id="312-临时降低虚拟内存需求率">31.2. 临时降低虚拟内存需求率</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>sysctl vm.swappiness<span class="o">=</span>0
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="313-永久降低虚拟内存需求率">31.3. 永久降低虚拟内存需求率</h2>
+
+<p>RedHat 6</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">echo</span> <span class="s1">'vm.swappiness = 0'</span> <span class="o">&gt;</span> /etc/sysctl.d/swappiness.conf
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>并运行如下命令使生效</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>sysctl <span class="nt">-p</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>RedHat 7</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>sysctl <span class="nt">-w</span> vm.swappiness<span class="o">=</span>0
+<span class="nb">echo </span>vm.swappiness <span class="o">=</span> 0 <span class="o">&gt;&gt;</span> /etc/sysctl.conf
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="32-关闭透明大页面">32. 关闭透明大页面</h1>
+
+<h2 id="321-检查透明大页面">32.1. 检查透明大页面</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span> /sys/kernel/mm/transparent_hugepage/defrag
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果显示为（未关闭）：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>[always] madvise never
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="322-临时关闭透明大页面">32.2. 临时关闭透明大页面</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">echo </span>never <span class="o">&gt;</span> /sys/kernel/mm/transparent_hugepage/defrag
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>确认配置生效：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span> /sys/kernel/mm/transparent_hugepage/defrag
+<span class="sb">```</span>s
+显示为下面内容则关闭成功
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>always madvise [never]</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>
+## 32.3. 永久关闭透明大页面
+
+开机自动关闭
+```shell
+echo 'echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag' &gt;&gt; /etc/rc.local
+chmod +x /etc/rc.d/rc.local
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="33-安装jdk">33. 安装JDK</h1>
+
+<h2 id="331-检查java是否安装">33.1. 检查Java是否安装</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>rpm <span class="nt">-qa</span> | <span class="nb">grep </span>java
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>根据查询结果查看，如果有比如java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yum <span class="nt">-y</span> remove java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果需要卸载全部的openjdk, 运行下面命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yum <span class="nt">-y</span> remove java<span class="k">*</span>openjdk<span class="k">*</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="332-安装jdk---源码压缩包方式安装不推荐如果使用此方式22-步骤忽略">33.2. 安装JDK - 源码压缩包方式安装(不推荐，如果使用此方式2.2 步骤忽略)</h2>
+
+<h3 id="3321-下载安装压缩包">33.2.1. 下载安装压缩包</h3>
+
+<p>直接官网下载对应版本的JDK</p>
+
+<p>使用wget方式下载，不推荐，因为下载不一定成功压缩包会出现异常</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nb">mkdir</span> /usr/java
+<span class="nb">cd</span> /usr/java
+wget http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="3322-解压缩包">33.2.2. 解压缩包</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nb">mkdir</span> /usr/java
+<span class="nb">cd</span> /usr/java
+<span class="nb">tar</span> <span class="nt">-xzvf</span> jdk-8u151-linux-x64.tar.gz
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="333-rpm方式安装推荐安装方式如果使用此方式21步骤忽略">33.3. Rpm方式安装（推荐安装方式，如果使用此方式2.1步骤忽略）</h2>
+<p>步骤如下</p>
+
+<p>下载需要版本的rpm包如jdk-8u171-linux-x64.rpm到/usr/java</p>
+
+<p>Rpm安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> /usr/java
+rpm <span class="nt">-ivh</span> jdk-8u171-linux-x64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>rpm安装完成后删除rpm包</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-r</span> /tmp/jdk/jdk-8u171-linux-x64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>切换Java版本</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo mv</span> /usr/java/jdk1.8.0_171-amd64 /usr/java/jdk1.8.0_171
+<span class="nb">sudo </span>alternatives <span class="nt">--install</span> /usr/bin/java java /usr/java/jdk1.8.0_171/bin/java 1
+<span class="nb">sudo </span>update-alternatives <span class="nt">--set</span> java /usr/java/laster/jre/bin/java
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>配置jdk变量环境</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo echo</span> <span class="s1">'export JAVA_HOME=/usr/java/jdk1.8.0_101'</span> <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">sudo echo</span> <span class="s1">'export JRE_HOME=${JAVA_HOME}/jre'</span> <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">sudo echo</span> <span class="s1">'export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib'</span> <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">sudo echo</span> <span class="s1">'export PATH=${JAVA_HOME}/bin:$PATH'</span> <span class="o">&gt;&gt;</span> /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>导入java环境变量</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">source</span> /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>测试jdk的配置</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>sudo java -version
+sudo /usr/bin/java -version
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>[root@Master java]# java -version
+java version "1.8.0_112"
+Java(TM) SE Runtime Environment (build 1.8.0_112-b15)
+Java HotSpot(TM) 64-Bit Server VM (build 25.112-b15, mixed mode)
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="34-安装mysqlrhel-7">34. 安装Mysql(Rhel-7)</h1>
+
+<p>参考地址el6：http://www.cnblogs.com/dianqijiaodengdai/p/7731562.html</p>
+
+<p>参考地址el7: https://blog.csdn.net/xyang81/article/details/51759200</p>
+
+<p>mysql授权远程用户</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="n">root</span><span class="o">@</span><span class="nv">"192.168.19.1"</span> <span class="n">identified</span> <span class="k">by</span> <span class="nv">"@Wtt102501@"</span> <span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">;</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="n">root</span><span class="o">@</span><span class="nv">"192.168.19.1"</span> <span class="n">identified</span> <span class="k">by</span> <span class="nv">"123456"</span> <span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">;</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="n">root</span><span class="o">@</span><span class="nv">"hadoop02"</span> <span class="n">identified</span> <span class="k">by</span> <span class="nv">"123456"</span> <span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">;</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>查询用户远程权限</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="k">select</span> <span class="k">user</span><span class="p">,</span><span class="k">host</span> <span class="k">from</span> <span class="k">user</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="35-hadoop274-安装">35. HADOOP2.7.4 安装</h1>
+
+<h2 id="351-添加hadoop环境变量">35.1. 添加Hadoop环境变量</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nb">echo</span> <span class="s1">'export HADOOP_HOME=/usr/local/hadoop/hadoop-2.7.4'</span>  <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">echo</span> <span class="s1">'export PATH=$HADOOP_HOME/sbin:$HADOOP_HOME/bin:$PATH'</span> <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">source</span> /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="352-创建数据和日志目录">35.2. 创建数据和日志目录</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/dfs
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/dfs/data
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/dfs/checkpoint
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/dfs/name
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/yarn
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/yarn/nodemanager
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/tmp
+<span class="nb">mkdir</span> <span class="nt">-p</span> /data/hadoop/logs
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="353-namenode-format">35.3. namenode format</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> /usr/local/hadoop/hadoop-2.7.4/bin
+hadoop namenode <span class="nt">-format</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="36-spark安装">36. Spark安装</h1>
+
+<h2 id="361-配置环境变量">36.1. 配置环境变量</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>echo 'export SPARK_HOME=/usr/local/spark/spark-2.2.0' &gt;&gt; /etc/profile
+echo 'export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH'  &gt;&gt; /etc/profile
+echo 'export PATH=$SPARK_HOME/sbin:$PATH'  &gt;&gt; /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="362-同步文件的配置">36.2. 同步文件的配置</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>rsync <span class="nt">-av</span> /usr/local/spark/spark-2.2.0/conf Master1:/usr/local/spark/spark-2.2.0/conf
+/usr/local/scala/scala-2.11.11
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="363-scala环境变量">36.3. Scala环境变量</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">echo</span> <span class="s1">'export SCALA_HOME=/usr/local/scala/scala-2.11.11'</span>  <span class="o">&gt;&gt;</span> /etc/profile
+<span class="nb">echo</span> <span class="s1">'export PATH=$SCALA_HOME/bin:$PATH'</span>  <span class="o">&gt;&gt;</span> /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="364-环境变量生效">36.4. 环境变量生效</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">source</span> /etc/profile
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="365-spark运行测试">36.5. Spark运行测试</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> /usr/local/spark/spark-2.2.0/examples/jars
+spark-submit <span class="se">\</span>
+<span class="nt">--class</span> org.apache.spark.examples.SparkPi <span class="se">\</span>
+<span class="nt">--master</span> spark://Master:7077 <span class="se">\</span>
+<span class="nt">--executor-memory</span> 1G <span class="se">\</span>
+<span class="nt">--total-executor-cores</span> 4 <span class="se">\</span>
+/usr/local/spark/spark-2.2.0/examples/jars/spark-examples_2.11-2.2.0.jar 100
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="366-spark-yarn检查">36.6. Spark yarn检查</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>http://spark.apache.org/docs/latest/running-on-yarn.html
+--master yarn
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="37-扩展磁盘---基于源磁盘devsda">37. 扩展磁盘 - 基于源磁盘/dev/sda</h1>
+
+<h2 id="371-关机后vmware设置虚拟机然后点击磁盘以前100g-扩展为200g">37.1. 关机后VMware设置虚拟机然后点击磁盘以前100G, 扩展为200G</h2>
+
+<h2 id="372-开机后查看磁盘">37.2. 开机后查看磁盘</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>ll /dev/sd<span class="k">*</span>
+fdisk <span class="nt">-l</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="38-创建分区-sda已经有sda2了那么创建为3">38. 创建分区 sda已经有sda2了，那么创建为3</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>fdisk /dev/sda
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre>输入 p 打印现有分区情况（还没有分区）
+输入 n 新建分区
+输入 p 为建立主分区（此时的p是在n后的，不是打印）
+输入 3 为建立第三个主分区，前面已经建立了2个分区了
+分区起始位置可以直接回车，默认是1
+默认回车则为全部，（分区最后位置为 650（因为每个柱面约8M，650柱面约是5G，本实验只用5G，剩余的做增加LV实验用））
+输入 p 打印分区情况，发现已建立一个分区 /dev/sda3，但是 此分区为 Linux 格式
+
+改变系统标识符
+输入 t 改变分区3的属性
+输入 L 查看有个属性对应的命令
+输入 8e 改变分区1为 Linux LVM格式
+输入 p 打印分区情况，发现建立的分区 /dev/sdb1 为 Linux LVM 格式
+输入 w 保存创建的分区
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="381-查看磁盘分区是否创建成功">38.1. 查看磁盘分区是否创建成功</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>fdisk <span class="nt">-l</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="382-重启不需要reboot">38.2. 重启不需要reboot</h2>
+
+<p>使kernel重新读取分区表即可</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>partprobe
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="383-分区后-创建物理卷创建卷组创建逻辑卷逻辑卷挂盘">38.3. 分区后 创建物理卷，创建卷组，创建逻辑卷，逻辑卷挂盘</h2>
+
+<p>特别注意：Rhel7已经有卷组了和逻辑卷等全部都有只是扩展，这里就不创建了</p>
+
+<h3 id="3831-创建物理卷">38.3.1. 创建物理卷</h3>
+
+<p>扫面系统PV：pvscan
+创建物理卷PV
+pvcreate /dev/sdb3
+查看新添加的物理卷PV
+pvdisplay</p>
+
+<h3 id="3832-创建物理卷组">38.3.2. 创建物理卷组</h3>
+
+<p>vgscan
+vgcreate vg_test /dev/sda3
+vgdisplay</p>
+
+<h3 id="3833-创建逻辑卷">38.3.3. 创建逻辑卷</h3>
+
+<p>扫面系统LV：lvscan
+创建LV：lvcreate -l 1274 -n lv_test vg_test（1274是VG中PE的个数）</p>
+
+<p>创建逻辑卷根据物理卷100磁盘空间创建
+lvcreate -l 100%VG -n lv_data vg_data</p>
+
+<p>示例：
+（1）创建一个指定大小的lv，并指定名字为lv_2
+lvcreate -L 2G -n lv_2 vg_1
+（2）创建一个占全部卷组大小的lv，并指定名字为lv_3（注意前提是vg并没有创建有lv）
+lvcreate -l 100%VG -n lv_3 vg_1
+（3）创建一个空闲空间80%大小的lv，并指定名字为lv_4(常用)
+lvcreate -l 80%Free -n lv_4 vg_1</p>
+
+<p>查看LV：lvdisplay
+格式化刚刚创建的LV:
+mkfs -t ext4 /dev/vg_test/lv_test</p>
+
+<p>mkfs -t ext4 /dev/vg_data/lv_data</p>
+
+<h3 id="3834-创建目录并挂载">38.3.4. 创建目录并挂载</h3>
+
+<p>创建目录：mkdir /test
+挂载逻辑卷到目录：mount /dev/vg_test/lv_test /test
+mount /dev/vg_data/lv_data /data
+查看：df -h</p>
+
+<p>设置开机挂载：
+/dev/mapper/vg_test-lv_test /test     ext4    defaults        1 2
+ 写入 /etc/fstab</p>
+
+<p>tbds则需要修改为
+/dev/mapper/vg_data-lv_data /data ext4 defaults, noatime 0 0</p>
+
+<p>可执行以下命令应用修改的配置而无需重启系统:
+mount -o remount /data</p>
+
+<h3 id="3835-对分区进行格式化">38.3.5. 对分区进行格式化</h3>
+
+<p>mkfs.ext4 /dev/sda3</p>
+
+<h3 id="3836-将物理卷加入到卷组">38.3.6. 将物理卷加入到卷组</h3>
+
+<p>查看卷组信息
+vgdisplay
+返回结果
+VG Name               rhel</p>
+
+<h3 id="3837-添加物理卷devsda3到卷组rhel">38.3.7. 添加物理卷【/dev/sda3】到卷组【rhel】</h3>
+
+<p>vgextend rhel /dev/sda3</p>
+
+<h3 id="3838-添加成功通过下面命令确认sdb1所属的卷组">38.3.8. 添加成功，通过下面命令确认sdb1所属的卷组。</h3>
+
+<p>pvdisplay</p>
+
+<h2 id="384-可选-取消挂载">38.4. 可选, 取消挂载:</h2>
+
+<p>取消挂载
+umount /data
+取消逻辑卷
+lvremove /dev/vg_data/lv_data
+取消卷组
+vgremove vg_data
+取消物理卷
+pvremove /dev/sdb3
+取消/etc/fstab配置文件中对应的挂载信息</p>
+
+<h3 id="3841-扩充逻辑卷的容量">38.4.1. 扩充逻辑卷的容量</h3>
+
+<p>先通过下面命令查看系统里有哪些逻辑卷。
+lvdisplay
+df -h
+逻辑卷【/dev/rhel/root】挂在于根目录上，这个逻辑卷就是本次要扩充的对象
+可以看到逻辑卷【/dev/rhel/root】和文件系统【/dev/mapper/rhel-root】的路径有所不同，但他们都对应相同的设备。</p>
+
+<h3 id="3842-通过下面的命令扩充devrhelroot的容量">38.4.2. 通过下面的命令，扩充【/dev/rhel/root】的容量。</h3>
+
+<p>lvextend -L +40G /dev/rhel/root</p>
+
+<h3 id="3843-现在逻辑卷的容量扩充了但是它对应的文件系统的容量还是原来的大小">38.4.3. 现在逻辑卷的容量扩充了，但是它对应的文件系统的容量还是原来的大小。</h3>
+
+<p>df -h</p>
+
+<h3 id="3844-需要通过下面的命令扩充文件系统的大小">38.4.4. 需要通过下面的命令，扩充文件系统的大小。</h3>
+
+<p>xfs_growfs /dev/rhel/root</p>
+
+<h3 id="3845-查看文件系统显示的空间增大了">38.4.5. 查看文件系统，显示的空间增大了。</h3>
+
+<p>df -h</p>
+
+<h1 id="39-dnsmasq搭建本地dns服务器上网">39. Dnsmasq搭建本地dns服务器上网</h1>
+
+<h2 id="391-安装并启动dnsmasq">39.1. 、安装并启动Dnsmasq</h2>
+
+<p>yum remove dnsmasq
+yum install -y dnsmasq
+service dnsmasq start (rhle7 命令为：/bin/systemctl start  dnsmasq.service)</p>
+
+<h2 id="392-dnsmasq配置">39.2. 、Dnsmasq配置</h2>
+
+<p>2.1 查看dnsmasq的【配置路径】
+ll -d /etc/dnsmasq.conf</p>
+
+<h3 id="3921-编辑vim-etcdnsmasqconf-conf-diretcdnsmasqd">39.2.1. 编辑vim /etc/dnsmasq.conf （conf-dir=/etc/dnsmasq.d）</h3>
+
+<p>【rhel 6】方式</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>resolv-file=/etc/resolv.dnsmasq.conf
+strict-order
+addn-hosts=/etc/dnsmasq.hosts
+listen-address=127.0.0.1,192.168.1.244
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【rhel 7】方式
+vim /etc/dnsmasq.conf</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>listen-address=192.168.1.244,127.0.0.1
+cache-size=10000
+conf-dir=/etc/dnsmasq.d,.rpmnew,.rpmsave,.rpmorig
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>备注：resolv-file —- /dnsmasq 会从这个文件中寻找上游dns服务器
+strict-order  — //去掉前面的#
+addn-hosts — //在这个目里面添加记录
+listen-address —//监听地址</p>
+
+<h3 id="3922-同步到其他节点">39.2.2. 同步到其他节点</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>rsync <span class="nt">-av</span> /etc/dnsmasq.conf hadoop02:/etc/
+rsync <span class="nt">-av</span> /etc/dnsmasq.conf hadoop03:/etc/
+rsync <span class="nt">-av</span> /etc/dnsmasq.conf hadoop04:/etc/
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="3923-修改etcresolvconf">39.2.3. 修改/etc/resolv.conf</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">echo</span> <span class="s1">'nameserver 127.0.0.1'</span> <span class="o">&gt;</span> /etc/resolv.conf
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="3924-创建resolvdnsmasqconf文件并添加上游dns服务器的地址">39.2.4. 创建resolv.dnsmasq.conf文件并添加上游dns服务器的地址</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">touch</span> /etc/resolv.dnsmasq.conf
+<span class="nb">echo</span> <span class="s1">'nameserver 119.29.29.29'</span> <span class="o">&gt;</span> /etc/resolv.dnsmasq.conf
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>提示：resolv.dnsmasq.conf中设置的是真正的Nameserver，可以用电信、联通等公共的DNS</p>
+
+<h3 id="3925-创建dnsmasqhosts文件">39.2.5. 创建dnsmasq.hosts文件</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cp</span> /etc/hosts /etc/dnsmasq.hosts
+<span class="nb">echo</span> <span class="s1">'addn-hosts=/etc/dnsmasq.hosts'</span> <span class="o">&gt;&gt;</span> /etc/dnsmasq.conf
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ol>
+  <li>Dnsmasq启动</li>
+</ol>
+
+<p>3.1 设置Dnsmasq开机启动并启动Dnsmasq服务
+开机启动</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>chkconfig dnsmasq on <span class="o">(</span>rhle7 命令：systemctl <span class="nb">enable </span>dnsmasq<span class="o">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>启动Dnsmasq服务</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>/etc/init.d/dnsmasq restart （<span class="o">(</span>rhle7 命令为：systemctl restart  dnsmasq.service<span class="o">)</span>）
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>3.2 查看Dnsmasq是否正常启动：</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>netstat <span class="nt">-tunlp</span>|grep 53
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回下面信息：</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>tcp        0      0 0.0.0.0:53                  0.0.0.0:<span class="k">*</span>                   LISTEN      2491/dnsmasq        
+tcp        0      0 :::53                       :::<span class="k">*</span>                        LISTEN      2491/dnsmasq        
+udp        0      0 0.0.0.0:53                  0.0.0.0:<span class="k">*</span>                               2491/dnsmasq        
+udp        0      0 :::53                       :::<span class="k">*</span>                                    2491/dnsmasq
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>3.3 测试
+dig www.freehao123.com
+第一次是没有缓存，所以时间是200多
+第二次再次测试，因为已经有了缓存，所以查询时间已经变成了0.</p>
+
+<p>3.4 域名检查</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre>nslookup hadoop01.sinobest.com
+
+root@hadoop01 ~]# nslookup hadoop01.sinobest.com
+Server:		127.0.0.1
+Address:	127.0.0.1#53
+
+Name:	hadoop01.sinobest.com
+Address: 192.168.18.201
+
+<span class="o">[</span>root@hadoop01 ~]# 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="40-linux用户-相关命令">40. linux用户-相关命令</h1>
+
+<h2 id="401-linux里查看所有用户">40.1. Linux里查看所有用户</h2>
+
+<p>　　(1)在终端里. 其实只需要查看 /etc/passwd文件就行了.
+　　(2)看第三个参数:500以上的, 就是后面建的用户了. 其它则为系统的用户.
+或者用cat /etc/passwd |cut -f 1 -d :</p>
+
+<h2 id="402-用户管理命令">40.2. 用户管理命令</h2>
+
+<p>useradd 注：添加用户
+adduser 注：添加用户
+passwd 注：为用户设置密码
+userdel user名 注：删除用户
+groupdel user组名 注：删除用户组
+usermod 注：修改用户命令，可以通过usermod 来修改登录名、用户的家目录等等; 
+pwcov 注：同步用户从/etc/passwd 到/etc/shadow
+pwck 注：pwck是校验用户配置文件/etc/passwd 和/etc/shadow 文件内容是否合法或完整; 
+pwunconv 注：是pwcov 的立逆向操作，是从/etc/shadow和 /etc/passwd 创建/etc/passwd ，然后会删除 /etc/shadow 文件; 
+finger 注：查看用户信息工具
+id 注：查看用户的UID、GID及所归属的用户组
+chfn 注：更改用户信息工具
+su 注：用户切换工具
+sudo 注：sudo 是通过另一个用户来执行命令(execute a command as another user)，su 是用来切换用户，然后通过切换到的用户来完成相应的任务，但sudo 能后面直接执行命令，比如sudo 不需要root 密码就可以执行root 赋与的执行只有root才能执行相应的命令; 但得通过visudo 来编辑/etc/sudoers来实现; 
+visudo 注：visodo 是编辑 /etc/sudoers 的命令; 也可以不用这个命令，直接用vi 来编辑 /etc/sudoers 的效果是一样的; 
+sudoedit 注：和sudo 功能差不多;</p>
+
+<h2 id="403-管理用户组group的工具或命令">40.3. 管理用户组(group)的工具或命令;</h2>
+
+<p>groupadd 注：添加用户组; 
+groupdel 注：删除用户组; 
+groupmod 注：修改用户组信息
+groups 注：显示用户所属的用户组
+grpck
+grpconv 注：通过/etc/group和/etc/gshadow 的文件内容来同步或创建/etc/gshadow ，如果/etc/gshadow 不存在则创建; 
+grpunconv 注：通过/etc/group 和/etc/gshadow 文件内容来同步或创建/etc/group ，然后删除gshadow文件</p>
+
+<p>给已有的用户增加工作组
+usermod -G groupname username  （这个会把用户从其他组中去掉）
+从组中删除用户
+编辑/etc/group 找到GROUP1那一行，删除 A
+或者用命令
+gpasswd -d userA GROUP</p>
+
+<h2 id="404-异常问题-useraddhadoop-组已经存在---如果您想将此用户加入到该组请使用--g-参数">40.4. 异常问题 useradd：hadoop 组已经存在 - 如果您想将此用户加入到该组，请使用 -g 参数</h2>
+
+<p>解决办法:
+  useradd hadoop -g hadoop</p>
+
+<h2 id="405-异常问题bash-homehadoopbashrc-权限不够">40.5. 异常问题：bash: /home/hadoop/.bashrc: 权限不够</h2>
+
+<p>解决办法：
+  chown -R hadoop:hadoop /home/hadoop</p>
+
+<p>listen_address 设置本机IP值
+192.168.10.30
+native_transport_address 设置本机IP以外的值192.168.10.80
+[lifecycle_manager]</p>
+
+<h2 id="406-平台检查确保dse的兼容性和支持在自己的风险下禁用默认值-false">40.6. 平台检查确保DSE的兼容性和支持。在自己的风险下禁用。默认值: False</h2>
+
+<p>disable_platform_check = True</p>
+
+<p>Lifecycle Manager目前不支持管理DSE多实例节点</p>
+
+<p>RetHad7  httpd 安装</p>
+
+<h2 id="407-将下面下载好的rpm包拷贝到节点的tmphttpd上">40.7. 将下面下载好的rpm包拷贝到节点的/tmp/httpd上</h2>
+
+<p>apr-1.4.8-3.el7.x86_64
+apr-util-1.5.2-6.el7.x86_64
+httpd-tools-2.4.6-40.el7.x86_64
+mailcap-2.1.41-2.el7.noarch 
+httpd-2.4.6-40.el7.x86_64</p>
+
+<h2 id="408-httpd安装">40.8. httpd安装</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> /tmp/httpd
+rpm <span class="nt">-ivh</span> httpd-2.4.6-40.el7.x86_64.rpm httpd-tools-2.4.6-40.el7.x86_64.rpm
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="409-创建自己需要的rmp源地址并授权">40.9. 创建自己需要的rmp源地址，并授权</h2>
+
+<p>比如test，可以多级，如/test/erj
+$ mkdir /var/http/html/test
+$ chmod -R ugo+rx /var/http/html/test</p>
+
+<p>$ mkdir /var/http/html/test/erj
+$chmod -R ugo+rx /var/http/html/test/erj</p>
+
+<h2 id="4010-启动httpd注意关闭防火墙">40.10. 启动httpd（注意关闭防火墙）</h2>
+
+<p>service httpd start</p>
+
+<h2 id="4011-检查启动状态">40.11. 检查启动状态</h2>
+
+<p>service httpd status</p>
+
+<h2 id="4012-web浏览器访问-如果能访问成功那么httpd安装就已经成功了">40.12. Web浏览器访问, 如果能访问成功那么HTTPD安装就已经成功了</h2>
+
+<p>http://id/test</p>
+
+<h2 id="4013-设置开机启动">40.13. 设置开机启动</h2>
+
+<p>el6:
+chkconfig httpd on</p>
+
+<p>el7:
+systemctl enable httpd.service 
+如果此方式不行 进行下面命令设置开机启动
+chkconfig httpd on</p>
+
+<h2 id="4014-检查开机启动">40.14. 检查开机启动</h2>
+
+<p>el7:
+systemctl status httpd</p>
+
+<h1 id="41-自定义开机启动服务">41. 自定义开机启动服务</h1>
+
+<p>vim /etc/init.d/dse</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="c">#</span>
+<span class="c"># dse start/stop dse</span>
+<span class="c">#</span>
+<span class="c"># chkconfig: 2345 85 15</span>
+<span class="c"># description: start dse/dse at boot time</span>
+
+start<span class="o">(){</span>
+        <span class="nb">echo</span> <span class="s2">"start dse"</span>
+		su cassandra
+        dse cassandra <span class="nt">-k</span> <span class="nt">-g</span> <span class="nt">-s</span>
+		<span class="nb">exit </span>0<span class="p">;</span>
+<span class="o">}</span>
+stop<span class="o">(){</span>
+        <span class="nb">echo</span> <span class="s2">"stop dse"</span>
+		su cassandra
+        dse cassandra <span class="nt">-k</span> <span class="nt">-g</span> <span class="nt">-s</span>
+		<span class="nb">exit </span>0<span class="p">;</span>
+<span class="o">}</span>
+
+<span class="k">case</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="k">in
+</span>start<span class="p">)</span>
+        start
+        <span class="p">;;</span>
+stop<span class="p">)</span>
+        stop
+        <span class="p">;;</span>
+<span class="k">*</span><span class="p">)</span>
+        <span class="nb">echo</span> <span class="s2">"Usage: </span><span class="nv">$0</span><span class="s2"> {start|stop}"</span>
+        <span class="nb">exit </span>1
+        <span class="p">;;</span>
+<span class="k">esac</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>开机启动</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>service shadowsocks start
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="42-shell编程">42. Shell编程</h1>
+
+<h2 id="421-hello-world">42.1. Hello World</h2>
+
+<p>打印信息，相当于System.out.println(“Hello World”); ;</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>#!/bin/bash
+echo "Hello World !"
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="422-变量">42.2. 变量</h2>
+
+<h3 id="4221-定义变量">42.2.1. 定义变量</h3>
+
+<p>定义变量时，变量名不加美元符号（$，PHP语言中变量需要），如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nv">your_name</span><span class="o">=</span><span class="s2">"runoob.com"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意，变量名和等号之间不能有空格，这可能和你熟悉的所有编程语言都不一样。同时，变量名的命名须遵循如下规则：</p>
+
+<ul>
+  <li>命名只能使用英文字母，数字和下划线，首个字符不能以数字开头。</li>
+  <li>中间不能有空格，可以使用下划线（_）。</li>
+  <li>不能使用标点符号。</li>
+</ul>
+
+<p>-不能使用bash里的关键字（可用help命令查看保留关键字）。</p>
+
+<h3 id="4222-使用变量-通过--加变量名-使用变量">42.2.2. 使用变量, 通过 $ 加变量名 使用变量</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="nv">your_name</span><span class="o">=</span><span class="s2">"qinjx"</span>
+<span class="nb">echo</span> <span class="nv">$your_name</span>
+<span class="nb">echo</span> <span class="k">${</span><span class="nv">your_name</span><span class="k">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>加花括号是为了帮助解释器识别变量的边界，比如下面这种情况</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">for </span>skill <span class="k">in </span>Ada Coffe Action Java<span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="s2">"I am good at </span><span class="k">${</span><span class="nv">skill</span><span class="k">}</span><span class="s2">Script"</span>
+<span class="k">done</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>推荐给所有变量加上花括号，这是个好的编程习惯。</p>
+
+<p>已定义的变量，可以被重新定义，如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+
+<span class="nv">your_name</span><span class="o">=</span><span class="s2">"tom"</span>
+<span class="nb">echo</span> <span class="nv">$your_name</span>
+<span class="nv">your_name</span><span class="o">=</span><span class="s2">"alibaba"</span>
+<span class="nb">echo</span> <span class="nv">$your_name</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意，第二次赋值的时候不能写$your_name=”alibaba”，使用变量的时候才加美元符（$）。</p>
+
+<h3 id="4223-只读变量">42.2.3. 只读变量</h3>
+
+<p>使用 readonly 命令可以将变量定义为只读变量，只读变量的值不能被改变。
+下面的例子尝试更改只读变量，结果报错：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="nv">myUrl</span><span class="o">=</span><span class="s2">"http://www.w3cschool.cc"</span>
+<span class="nb">readonly </span>myUrl
+<span class="nv">myUrl</span><span class="o">=</span><span class="s2">"http://www.runoob.com"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>报错信息：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>[root@dse02 1.0.0]# ./renamefile.sh 
+./renamefile.sh: line 4: myUrl: readonly variable
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4224-删除变量">42.2.4. 删除变量</h3>
+
+<p>使用 unset 命令可以删除变量。语法：
+unset variable_name</p>
+
+<p>变量被删除后不能再次使用。unset 命令不能删除只读变量。</p>
+
+<p>实例</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="nv">myUrl</span><span class="o">=</span><span class="s2">"http://www.runoob.com"</span>
+<span class="nb">unset </span>myUrl
+<span class="nb">echo</span> <span class="nv">$myUrl</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4225-获取变量字符串长度">42.2.5. 获取变量字符串长度</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="nv">string</span><span class="o">=</span><span class="s2">"abcd"</span>
+<span class="nb">echo</span> <span class="k">${#</span><span class="nv">string</span><span class="k">}</span> <span class="c">#输出 4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4226-提取子字符串">42.2.6. 提取子字符串</h3>
+
+<p>以下实例从字符串第 2 个字符开始截取 4 个字符：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/sh</span>
+<span class="nv">string</span><span class="o">=</span><span class="s2">"runoob is a great site"</span>
+<span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span>:1:4<span class="k">}</span> <span class="c"># 输出 unoo</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="423-shell-数组">42.3. Shell 数组</h2>
+
+<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。
+类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。</p>
+
+<h3 id="4231-定义数组">42.3.1. 定义数组</h3>
+
+<p>在Shell中，用括号来表示数组，数组元素用”空格”符号分割开。定义数组的一般形式为：
+数组名=(值1 值2 … 值n)</p>
+
+<p>例如：</p>
+
+<p>array_name=(value0 value1 value2 value3)</p>
+
+<p>或者
+array_name=(
+value0
+value1
+value2
+value3
+)</p>
+
+<p>还可以单独定义数组的各个分量：
+array_name[0]=value0
+array_name[1]=value1
+array_name[n]=valuen
+可以不使用连续的下标，而且下标的范围没有限制。</p>
+
+<h3 id="4232-读取数组">42.3.2. 读取数组</h3>
+
+<p>读取数组元素值的一般格式是：</p>
+
+<p>${数组名[下标]}</p>
+
+<p>例如：
+valuen=${array_name[n]}</p>
+
+<p>使用@符号可以获取数组中的所有元素，例如：
+echo ${array_name[@]}</p>
+
+<h3 id="4233-获取数组的长度">42.3.3. 获取数组的长度</h3>
+
+<p>获取数组长度的方法与获取字符串长度的方法相同，例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># 取得数组元素的个数</span>
+<span class="nv">length</span><span class="o">=</span><span class="k">${#</span><span class="nv">array_name</span><span class="p">[@]</span><span class="k">}</span>
+<span class="c"># 或者</span>
+<span class="nv">length</span><span class="o">=</span><span class="k">${#</span><span class="nv">array_name</span><span class="p">[*]</span><span class="k">}</span>
+<span class="c"># 取得数组单个元素的长度</span>
+<span class="nv">lengthn</span><span class="o">=</span><span class="k">${#</span><span class="nv">array_name</span><span class="p">[n]</span><span class="k">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="424-shell-传递参数">42.4. Shell 传递参数</h2>
+
+<p>我们可以在执行 Shell 脚本时，向脚本传递参数，脚本内获取参数的格式为：$n。n 代表一个数字，1 为执行脚本的第一个参数，2 为执行脚本的第二个参数，以此类推……</p>
+
+<p>实例：
+以下实例我们向脚本传递三个参数，并分别输出，其中 $0 为执行的文件名：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>#!/bin/bash
+# author:liulv
+# url:
+
+echo "Shell 传递参数实例！";
+echo "执行的文件名：$0";
+echo "第一个参数为：$1";
+echo "第二个参数为：$2";
+echo "第三个参数为：$3";
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>为脚本设置可执行权限，并执行脚本，输出结果如下所示：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>$ chmod +x test.sh 
+$ ./test.sh 1 2 3
+Shell 传递参数实例！
+执行的文件名：./test.sh
+第一个参数为：1
+第二个参数为：2
+第三个参数为：3
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>另外，还有几个特殊字符用来处理参数：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>| 参数处理  |  说明 |
+| ------------ | ------------ |
+| $#  | 传递到脚本的参数个数 |
+| $*  | 以一个单字符串显示所有向脚本传递的参数。如"$*"用「"」括起来的情况、以"$1 $2 … $n"的形式输出所有参数。  |
+| $$  | 脚本运行的当前进程ID号  |
+| $!  | 后台运行的最后一个进程的ID号  |
+| $@  | 与$*相同，但是使用时加引号，并在引号中返回每个参数。如"$@"用「"」括起来的情况、以"$1" "$2" … "$n" 的形式输出所有参数。   |
+| $-  | 显示Shell使用的当前选项，与set命令功能相同。  |
+| $?  | 显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。  |
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># author:liulv</span>
+<span class="c"># url:</span>
+
+<span class="nb">echo</span> <span class="s2">"Shell 传递参数实例！"</span><span class="p">;</span>
+<span class="nb">echo</span> <span class="s2">"第一个参数为：</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+
+<span class="nb">echo</span> <span class="s2">"参数个数为：$#"</span><span class="p">;</span>
+<span class="nb">echo</span> <span class="s2">"传递的参数作为一个字符串显示：</span><span class="nv">$*</span><span class="s2">"</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>$* 与 $@ 区别：</p>
+
+<p>相同点：都是引用所有参数。
+  不同点：只有在双引号中体现出来。假设在脚本运行时写了三个参数 1、2、3，，则 “ * “ 等价于 “1 2 3”（传递了一个参数），而 “@” 等价于 “1” “2” “3”（传递了三个参数）。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># author:liulv</span>
+<span class="c"># url:</span>
+
+<span class="nb">echo</span> <span class="s2">"-- </span><span class="se">\$</span><span class="s2">* 演示 ---"</span>
+<span class="k">for </span>i <span class="k">in</span> <span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nv">$i</span>
+<span class="k">done
+
+</span><span class="nb">echo</span> <span class="s2">"-- </span><span class="se">\$</span><span class="s2">@ 演示 ---"</span>
+<span class="k">for </span>i <span class="k">in</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nv">$i</span>
+<span class="k">done</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="425-shell运算符">42.5. Shell运算符</h2>
+
+<p>原生bash不支持简单的数学运算，但是可以通过其他命令来实现，例如 awk 和 expr，expr 最常用。
+expr 是一款表达式计算工具，使用它能完成表达式的求值操作。</p>
+
+<p>例如，两个数相加(注意使用的是反引号 ` 而不是单引号 ‘)：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr </span>2 + 2<span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"两数之和为 : </span><span class="nv">$val</span><span class="s2">"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>执行脚本，输出结果如下所示：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>两数之和为 : 4
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>两点注意：</p>
+
+<ul>
+  <li>表达式和运算符之间要有空格，例如 2+2 是不对的，必须写成 2 + 2，这与我们熟悉的大多数编程语言不一样。</li>
+  <li>完整的表达式要被 ` ` 包含，注意这个字符不是常用的单引号，在 Esc 键下边。</li>
+</ul>
+
+<h3 id="4251-关系运算符">42.5.1. 关系运算符</h3>
+
+<p>下表列出了常用的算术运算符，假定变量 a 为 10，变量 b 为 20：
+运算符   说明  举例</p>
+
+<ul>
+  <li>加法 <code class="language-plaintext highlighter-rouge">expr $a + $b</code> 结果为 30。</li>
+  <li>减法 <code class="language-plaintext highlighter-rouge">expr $a - $b</code> 结果为 -10。</li>
+  <li>乘法 <code class="language-plaintext highlighter-rouge">expr $a \* $b</code> 结果为  200。</li>
+</ul>
+
+<p>/   除法 <code class="language-plaintext highlighter-rouge">expr $b / $a</code> 结果为 2。
+%   取余 <code class="language-plaintext highlighter-rouge">expr $b % $a</code> 结果为 0。
+=   赋值  a=$b 将把变量 b 的值赋给 a。
+==  相等。用于比较两个数字，相同则返回 true。   [ $a == $b ] 返回 false。
+!=  不相等。用于比较两个数字，不相同则返回 true。   [ $a != $b ] 返回 true。</p>
+
+<p>注意：条件表达式要放在方括号之间，并且要有空格，例如: [$a==$b] 是错误的，必须写成 [ $a == $b ]。</p>
+
+<p>实例</p>
+
+<p>算术运算符实例如下:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
+<span class="nv">a</span><span class="o">=</span>10
+<span class="nv">b</span><span class="o">=</span>20
+
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$a</span> + <span class="nv">$b</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"a + b : </span><span class="nv">$val</span><span class="s2">"</span>
+
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$a</span> - <span class="nv">$b</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"a - b : </span><span class="nv">$val</span><span class="s2">"</span>
+
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$a</span> <span class="se">\*</span> <span class="nv">$b</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"a * b : </span><span class="nv">$val</span><span class="s2">"</span>
+
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$b</span> / <span class="nv">$a</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"b / a : </span><span class="nv">$val</span><span class="s2">"</span>
+
+<span class="nv">val</span><span class="o">=</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$b</span> % <span class="nv">$a</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"b % a : </span><span class="nv">$val</span><span class="s2">"</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">==</span> <span class="nv">$b</span> <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"a 等于 b"</span>
+<span class="k">fi
+if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">!=</span> <span class="nv">$b</span> <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"a 不等于 b"</span>
+<span class="k">fi</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4252-布尔运算符">42.5.2. 布尔运算符</h3>
+
+<p>下表列出了常用的布尔运算符，假定变量 a 为 10，变量 b 为 20：</p>
+
+<p>运算符   说明  举例
+!   非运算，表达式为 true 则返回 false，否则返回 true。  [ ! false ] 返回 true。
+-o  或运算，有一个表达式为 true 则返回 true。  [ $a -lt 20 -o $b -gt 100 ] 返回 true。
+-a  与运算，两个表达式都为 true 才返回 true。  [ $a -lt 20 -a $b -gt 100 ] 返回 false。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="nv">a</span><span class="o">=</span>10
+<span class="nv">b</span><span class="o">=</span>20
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="o">!=</span> <span class="nv">$b</span> <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> != </span><span class="nv">$b</span><span class="s2"> : a 不等于 b"</span>
+<span class="k">else
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> != </span><span class="nv">$b</span><span class="s2">: a 等于 b"</span>
+<span class="k">fi
+if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> 100 <span class="nt">-a</span> <span class="nv">$b</span> <span class="nt">-gt</span> 15 <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 100 且 </span><span class="nv">$b</span><span class="s2"> 大于 15 : 返回 true"</span>
+<span class="k">else
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 100 且 </span><span class="nv">$b</span><span class="s2"> 大于 15 : 返回 false"</span>
+<span class="k">fi
+if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> 100 <span class="nt">-o</span> <span class="nv">$b</span> <span class="nt">-gt</span> 100 <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 100 或 </span><span class="nv">$b</span><span class="s2"> 大于 100 : 返回 true"</span>
+<span class="k">else
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 100 或 </span><span class="nv">$b</span><span class="s2"> 大于 100 : 返回 false"</span>
+<span class="k">fi
+if</span> <span class="o">[</span> <span class="nv">$a</span> <span class="nt">-lt</span> 5 <span class="nt">-o</span> <span class="nv">$b</span> <span class="nt">-gt</span> 100 <span class="o">]</span>
+<span class="k">then
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 5 或 </span><span class="nv">$b</span><span class="s2"> 大于 100 : 返回 true"</span>
+<span class="k">else
+   </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$a</span><span class="s2"> 小于 5 或 </span><span class="nv">$b</span><span class="s2"> 大于 100 : 返回 false"</span>
+<span class="k">fi</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4253-逻辑运算符">42.5.3. 逻辑运算符</h3>
+
+<p>以下介绍 Shell 的逻辑运算符，假定变量 a 为 10，变量 b 为 20:
+运算符   说明  举例
+&amp;&amp;  逻辑的 AND   [[ $a -lt 100 &amp;&amp; $b -gt 100 ]] 返回 false
+||  逻辑的 OR  [[ $a -lt 100 || $b -gt 100 ]] 返回 true</p>
+
+<h3 id="4254-字符串运算符">42.5.4. 字符串运算符</h3>
+
+<p>下表列出了常用的字符串运算符，假定变量 a 为 “abc”，变量 b 为 “efg”：
+运算符   说明  举例
+=   检测两个字符串是否相等，相等返回 true。  [ $a = $b ] 返回 false。
+!=  检测两个字符串是否相等，不相等返回 true。   [ $a != $b ] 返回 true。
+-z  检测字符串长度是否为0，为0返回 true。  [ -z $a ] 返回 false。
+-n  检测字符串长度是否为0，不为0返回 true。   [ -n “$a” ] 返回 true。
+str   检测字符串是否为空，不为空返回 true。   [ $a ] 返回 true。</p>
+
+<h3 id="4255-文件测试运算符">42.5.5. 文件测试运算符</h3>
+
+<p>文件测试运算符用于检测 Unix 文件的各种属性。</p>
+
+<p>属性检测描述如下：
+操作符   说明  举例
+-b file   检测文件是否是块设备文件，如果是，则返回 true。  [ -b $file ] 返回 false。
+-c file   检测文件是否是字符设备文件，如果是，则返回 true。   [ -c $file ] 返回 false。
+-d file   检测文件是否是目录，如果是，则返回 true。   [ -d $file ] 返回 false。
+-f file   检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。  [ -f $file ] 返回 true。
+-g file   检测文件是否设置了 SGID 位，如果是，则返回 true。  [ -g $file ] 返回 false。
+-k file   检测文件是否设置了粘着位(Sticky Bit)，如果是，则返回 true。  [ -k $file ] 返回 false。
+-p file   检测文件是否是有名管道，如果是，则返回 true。   [ -p $file ] 返回 false。
+-u file   检测文件是否设置了 SUID 位，如果是，则返回 true。  [ -u $file ] 返回 false。
+-r file   检测文件是否可读，如果是，则返回 true。  [ -r $file ] 返回 true。
+-w file   检测文件是否可写，如果是，则返回 true。  [ -w $file ] 返回 true。
+-x file   检测文件是否可执行，如果是，则返回 true。   [ -x $file ] 返回 true。
+-s file   检测文件是否为空（文件大小是否大于0），不为空返回 true。   [ -s $file ] 返回 true。
+-e file   检测文件（包括目录）是否存在，如果是，则返回 true。  [ -e $file ] 返回 true。</p>
+
+<h2 id="426-linux压缩zip和解压zip">42.6. Linux压缩Zip和解压Zip</h2>
+
+<p><strong>压缩服务器上当前目录的内容为xxx.zip文件</strong></p>
+
+<p>zip -r xxx.zip ./*</p>
+
+<p>将当前目录下的所有文件和文件夹全部压缩成myfile.zip文件, －r表示递归压缩子目录下所有文件.</p>
+
+<p><strong>其他</strong></p>
+
+<p>zip -d myfile.zip smart.txt
+删除压缩文件中smart.txt文件
+zip -m myfile.zip ./rpm_info.txt
+向压缩文件中myfile.zip中添加rpm_info.txt文件</p>
+
+<p><strong>解压zip文件到当前目录</strong></p>
+
+<p>unzip filename.zip</p>
+
+<ul>
+  <li>unzip
+unzip -o -d /home/sunny myfile.zip
+把myfile.zip文件解压到 /home/sunny/
+-o: 不提示的情况下覆盖文件；
+-d:-d /home/sunny 指明将文件解压缩到/home/sunny目录下；</li>
+</ul>
+
+<p><strong>有些服务器没有安装zip包执行不了zip和unzip命令，可使用yum安装</strong></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">yum</span><span class="w"> </span><span class="nx">list</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">grep</span><span class="w"> </span><span class="nx">zip/unzip</span><span class="w"> 
+</span><span class="nf">yum</span><span class="w"> </span><span class="nx">install</span><span class="w"> </span><span class="nx">zip</span><span class="w">
+</span><span class="nf">yum</span><span class="w"> </span><span class="nx">install</span><span class="w"> </span><span class="nx">unzip</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="427-linux压缩和解压缩命令">42.7. linux压缩和解压缩命令</h2>
+
+<p>tar
+  解包：tar zxvf filename.tar
+  打包：tar -czvf rpm.tar rpm
+zip命令
+  解压：unzip filename.zip
+  压缩：zip filename.zip dirname
+gz命令
+  解压1：gunzip filename.gz
+  解压2：gzip -d filename.gz
+  压缩：gzip filename
+   .tar.gz 和  .tgz
+   解压：tar zxvf filename.tar.gz
+   压缩：tar zcvf filename.tar.gz dirname
+   压缩多个文件：tar zcvf filename.tar.gz dirname1 dirname2 dirname3…..
+bz2命令
+  解压1：bzip2 -d filename.bz2
+  解压2：bunzip2 filename.bz2
+  压缩：bzip2 -z filename.tar.bz2
+  解压：tar jxvf filename.tar.bz2
+  压缩：tar jcvf filename.tar.bz2 dirname
+bz命令
+   解压1：bzip2 -d filename.bz
+   解压2：bunzip2 filename.bz
+      .tar.bz
+      解压：tar jxvf filename.tar.bz</p>
+
+<p>z命令
+   解压：uncompress filename.z
+   压缩：compress filename
+      .tar.z
+         解压：tar zxvf filename.tar.z
+         压缩：tar zcvf filename.tar.z dirname</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2021/01/02/structured-streaming-kafka/" data-toggle="tooltip" data-placement="top" title="Structured Streaming消费Kafka流批分析">
+                        Previous<br>
+                        <span>Structured Streaming消费Kafka流批分析</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2021/01/08/bigdata-hj/" data-toggle="tooltip" data-placement="top" title="大数据开发环境">
+                        Next<br>
+                        <span>大数据开发环境</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0023" 
+                    href="/archive/?tag=Akka"
+                    title="Akka"
+                    rel="7">Akka</a>
+        
+                <a data-sort="0026" 
+                    href="/archive/?tag=EMR"
+                    title="EMR"
+                    rel="4">EMR</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
+                    title="数字贵阳"
+                    rel="2">数字贵阳</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=Akka+cluster"
+                    title="Akka cluster"
+                    rel="2">Akka cluster</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=DataX"
+                    title="DataX"
+                    rel="2">DataX</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="http://mida.re/">乱序</a></li>
+  
+  <li><a href="https://xuechundesign.github.io">Sherry Wu</a></li>
+  
+  <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+  
+  <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+  
+  <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+  
+  <li><a href="http://tiye.me/">JiyinYiyong</a></li>
+  
+  <li><a href="https://www.ruoyaowu.com/">David's Game</a></li>
+  
+  <li><a href="http://dhong.co">DHong Say</a></li>
+  
+  <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "LiuL";
+    var disqus_identifier = "/2021/01/06/linux-manager";
+    var disqus_url = "http://localhost:4000/2021/01/06/linux-manager/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/v4liulv">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/v4liulv">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="http://weibo.com/v4liulv">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/v4liulv">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; LiuL Blog 2021
+                    <br>
+                    Powered by <a href="https://liulv.work">LiuL Blog</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
+                        height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=v4liulv&repo=v4liulv.github.io&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/LiuL-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by LiuL
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'liulv.work';
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by LiuL to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -103,21 +103,31 @@ sh $ZOOKEEPER_HOME/bin/zkCli.sh -server localhost:2181
 
 ## 4.1. 下载并启动Kafka
 
-[Apache Kafka](http://kafka.apache.org/)是一种高吞吐量消息总线，可与Flume很好地配合使用。在本教程中，我们将使用Kafka2.1.0。要下载Kafka，请在终端中执行以下命令：
+[Apache Kafka](http://kafka.apache.org/)是一种高吞吐量消息总线，可与Flume很好地配合使用。在本教程中，我们将使用Kafka2.1.0 或 kafka1.0.0。要下载Kafka，请在终端中执行以下命令：
 
 ```powershell
 mkdir /var/lib/kafka
 cd /var/lib/kafka
 
-curl -O https://archive.apache.org/dist/kafka/2.1.0/kafka_2.12-2.1.0.tgz
-tar -xzf kafka_2.12-2.1.0.tgz
-cd kafka_2.12-2.1.0
+# kafka 2.1.0
+# curl -O https://archive.apache.org/dist/kafka/2.1.0/kafka_2.12-2.1.0.tgz
+# tar -xzf kafka_2.12-2.1.0.tgz
+# cd kafka_2.12-2.1.0
+
+# kafka 1.0.0
+curl -O https://archive.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz
+tar -xzf kafka_2.11-1.0.0.tgz
+cd kafka_2.11-1.0.0
 ```
 
 设置环境变量
 
+
 ```powershell
-echo "export KAFKA_HOME=/var/lib/kafka/kafka_2.12-2.1.0/"
+# 2.1.0
+# echo "export KAFKA_HOME=/var/lib/kafka/kafka_2.12-2.1.0/"
+# 1.0.0
+echo "export KAFKA_HOME=/var/lib/kafka/kafka_2.11-1.0.0/"
 echo "export PATH=$KAFKA_HOME/bin:$PATH" >> /etc/profile
 ```
 
@@ -129,12 +139,101 @@ sh $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties
 
 ## 4.2. 创建topic
 
-sh $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 2 --topic launcher_click
+sh $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181/kafka --replication-factor 1 --partitions 2 --topic launcher_click
 
 
 查看
 
-sh $KAFKA_HOME/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic launcher_click
+sh $KAFKA_HOME/bin/kafka-topics.sh --describe --zookeeper localhost:2181/kafka --topic launcher_click
+
+
+
+## 测试kafka
+
+### 创建topic
+
+sh $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181/kafka --replication-factor 1 --partitions 2 --topic ogg_etl_serial
+
+launcher_click
+
+### 查看topic
+
+sh $KAFKA_HOME/bin/kafka-topics.sh --describe --zookeeper localhost:2181/kafka --topic topic1
+
+#### 创建生产者并且生产数据测试
+```sh
+sh $KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic ogg_etl_serial --producer.config $KAFKA_HOME/config/producer.properties
+```
+输入一个abc生成数据然后按enter
+abc
+
+sh $KAFKA_HOME/bin/kafka-console-producer.sh  --broker-list localhost:9092 --producer.config $KAFKA_HOME/config/producer.properties --topic topic01
+
+#### 创建消费者并且查看是否消费数据
+
+消费者组为：test-consumer-group，在kafka 0.9版本就支撑--bootstrap-server维护offsite, 同时也支持zookeeper维护
+
+不通过zookeeper维护的
+
+```sh
+sh $KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ogg_etl_serial --from-beginning  --delete-consumer-offsets --consumer.config $KAFKA_HOME/config/consumer.properties
+```
+
+通过zookeeper维护的消费者组
+
+sh $KAFKA_HOME/bin/kafka-console-consumer.sh --zookeeper 127.0.0.1:2181 --topic ogg_etl_serial --from-beginning --group test01
+
+
+sh $KAFKA_HOME/bin/kafka-console-consumer.sh --zookeeper 127.0.0.1:2181 --topic topic01  --group group01/group02
+
+
+bootstrap.servers=localhost:9092
+
+group.id=test-consumer-grou
+
+如果看到下面有abc的打印证明测试成功
+abc
+
+#### 查看消费情况
+
+**0.x**
+sh $KAFKA_HOME/bin/ConsumerOffsetChecker.sh \
+--broker-info \
+--zookeeper localhost:2181 \
+--group test-consumer-group \
+--topic ogg_etl_serial
+
+
+**2.0版本**
+sh $KAFKA_HOME/bin/kafka-run-class.sh \
+kafka.tools.ConsumerOffsetChecker \
+--broker-info \
+--zookeeper localhost:2181 \
+--group test-consumer-group  \
+--topic ogg_etl_serial
+
+**开源1.x版本**
+
+通过zookeeper维护的
+
+sh $KAFKA_HOME/bin/kafka-consumer-groups.sh \
+--zookeeper localhost:2181 \
+--describe \
+--group test-consumer-group
+
+sh $KAFKA_HOME/bin/kafka-consumer-groups.sh \
+--zookeeper localhost:2181 \
+--list
+
+不通过zookeeper维护的
+
+sh $KAFKA_HOME/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --new-consumer --list
+
+sh $KAFKA_HOME/bin/kafka-consumer-groups.sh \
+--bootstrap-server localhost:9092 \
+--new-consumer \
+--describe \
+--group test-consumer-group
 
 
 # 5. 安装flume

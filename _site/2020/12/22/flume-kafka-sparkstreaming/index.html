@@ -375,7 +375,7 @@
 
 <h2 id="41-下载并启动kafka">4.1. 下载并启动Kafka</h2>
 
-<p><a href="http://kafka.apache.org/">Apache Kafka</a>是一种高吞吐量消息总线，可与Flume很好地配合使用。在本教程中，我们将使用Kafka2.1.0。要下载Kafka，请在终端中执行以下命令：</p>
+<p><a href="http://kafka.apache.org/">Apache Kafka</a>是一种高吞吐量消息总线，可与Flume很好地配合使用。在本教程中，我们将使用Kafka2.1.0 或 kafka1.0.0。要下载Kafka，请在终端中执行以下命令：</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -383,19 +383,37 @@
 4
 5
 6
+7
+8
+9
+10
+11
+12
 </pre></td><td class="rouge-code"><pre><span class="nf">mkdir</span><span class="w"> </span><span class="nx">/var/lib/kafka</span><span class="w">
 </span><span class="nf">cd</span><span class="w"> </span><span class="nx">/var/lib/kafka</span><span class="w">
 
-</span><span class="nf">curl</span><span class="w"> </span><span class="nt">-O</span><span class="w"> </span><span class="nx">https://archive.apache.org/dist/kafka/2.1.0/kafka_2.12-2.1.0.tgz</span><span class="w">
-</span><span class="nf">tar</span><span class="w"> </span><span class="nt">-xzf</span><span class="w"> </span><span class="nx">kafka_2.12-2.1.0.tgz</span><span class="w">
-</span><span class="nf">cd</span><span class="w"> </span><span class="nx">kafka_2.12-2.1.0</span><span class="w">
+</span><span class="c"># kafka 2.1.0</span><span class="w">
+</span><span class="c"># curl -O https://archive.apache.org/dist/kafka/2.1.0/kafka_2.12-2.1.0.tgz</span><span class="w">
+</span><span class="c"># tar -xzf kafka_2.12-2.1.0.tgz</span><span class="w">
+</span><span class="c"># cd kafka_2.12-2.1.0</span><span class="w">
+
+</span><span class="c"># kafka 1.0.0</span><span class="w">
+</span><span class="nf">curl</span><span class="w"> </span><span class="nt">-O</span><span class="w"> </span><span class="nx">https://archive.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz</span><span class="w">
+</span><span class="nf">tar</span><span class="w"> </span><span class="nt">-xzf</span><span class="w"> </span><span class="nx">kafka_2.11-1.0.0.tgz</span><span class="w">
+</span><span class="nf">cd</span><span class="w"> </span><span class="nx">kafka_2.11-1.0.0</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>设置环境变量</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre><span class="nf">echo</span><span class="w"> </span><span class="s2">"export KAFKA_HOME=/var/lib/kafka/kafka_2.12-2.1.0/"</span><span class="w">
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># 2.1.0</span><span class="w">
+</span><span class="c"># echo "export KAFKA_HOME=/var/lib/kafka/kafka_2.12-2.1.0/"</span><span class="w">
+</span><span class="c"># 1.0.0</span><span class="w">
+</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"export KAFKA_HOME=/var/lib/kafka/kafka_2.11-1.0.0/"</span><span class="w">
 </span><span class="nf">echo</span><span class="w"> </span><span class="s2">"export PATH=</span><span class="nv">$KAFKA_HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">/etc/profile</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></div></div>
 
@@ -407,11 +425,95 @@
 
 <h2 id="42-创建topic">4.2. 创建topic</h2>
 
-<p>sh $KAFKA_HOME/bin/kafka-topics.sh –create –zookeeper localhost:2181 –replication-factor 2 –partitions 2 –topic launcher_click</p>
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –create –zookeeper localhost:2181/kafka –replication-factor 1 –partitions 2 –topic launcher_click</p>
 
 <p>查看</p>
 
-<p>sh $KAFKA_HOME/bin/kafka-topics.sh –describe –zookeeper localhost:2181 –topic launcher_click</p>
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –describe –zookeeper localhost:2181/kafka –topic launcher_click</p>
+
+<h2 id="测试kafka">测试kafka</h2>
+
+<h3 id="创建topic">创建topic</h3>
+
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –create –zookeeper localhost:2181/kafka –replication-factor 1 –partitions 2 –topic ogg_etl_serial</p>
+
+<p>launcher_click</p>
+
+<h3 id="查看topic">查看topic</h3>
+
+<p>sh $KAFKA_HOME/bin/kafka-topics.sh –describe –zookeeper localhost:2181/kafka –topic topic1</p>
+
+<h4 id="创建生产者并且生产数据测试">创建生产者并且生产数据测试</h4>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>sh <span class="nv">$KAFKA_HOME</span>/bin/kafka-console-producer.sh <span class="nt">--broker-list</span> localhost:9092 <span class="nt">--topic</span> ogg_etl_serial <span class="nt">--producer</span>.config <span class="nv">$KAFKA_HOME</span>/config/producer.properties
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>输入一个abc生成数据然后按enter
+abc</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-console-producer.sh  –broker-list localhost:9092 –producer.config $KAFKA_HOME/config/producer.properties –topic topic01</p>
+
+<h4 id="创建消费者并且查看是否消费数据">创建消费者并且查看是否消费数据</h4>
+
+<p>消费者组为：test-consumer-group，在kafka 0.9版本就支撑–bootstrap-server维护offsite, 同时也支持zookeeper维护</p>
+
+<p>不通过zookeeper维护的</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>sh <span class="nv">$KAFKA_HOME</span>/bin/kafka-console-consumer.sh <span class="nt">--bootstrap-server</span> localhost:9092 <span class="nt">--topic</span> ogg_etl_serial <span class="nt">--from-beginning</span>  <span class="nt">--delete-consumer-offsets</span> <span class="nt">--consumer</span>.config <span class="nv">$KAFKA_HOME</span>/config/consumer.properties
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>通过zookeeper维护的消费者组</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-console-consumer.sh –zookeeper 127.0.0.1:2181 –topic ogg_etl_serial –from-beginning –group test01</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-console-consumer.sh –zookeeper 127.0.0.1:2181 –topic topic01  –group group01/group02</p>
+
+<p>bootstrap.servers=localhost:9092</p>
+
+<p>group.id=test-consumer-grou</p>
+
+<p>如果看到下面有abc的打印证明测试成功
+abc</p>
+
+<h4 id="查看消费情况">查看消费情况</h4>
+
+<p><strong>0.x</strong>
+sh $KAFKA_HOME/bin/ConsumerOffsetChecker.sh <br />
+–broker-info <br />
+–zookeeper localhost:2181 <br />
+–group test-consumer-group <br />
+–topic ogg_etl_serial</p>
+
+<p><strong>2.0版本</strong>
+sh $KAFKA_HOME/bin/kafka-run-class.sh <br />
+kafka.tools.ConsumerOffsetChecker <br />
+–broker-info <br />
+–zookeeper localhost:2181 <br />
+–group test-consumer-group  <br />
+–topic ogg_etl_serial</p>
+
+<p><strong>开源1.x版本</strong></p>
+
+<p>通过zookeeper维护的</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-consumer-groups.sh <br />
+–zookeeper localhost:2181 <br />
+–describe <br />
+–group test-consumer-group</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-consumer-groups.sh <br />
+–zookeeper localhost:2181 <br />
+–list</p>
+
+<p>不通过zookeeper维护的</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-consumer-groups.sh –bootstrap-server localhost:9092 –new-consumer –list</p>
+
+<p>sh $KAFKA_HOME/bin/kafka-consumer-groups.sh <br />
+–bootstrap-server localhost:9092 <br />
+–new-consumer <br />
+–describe <br />
+–group test-consumer-group</p>
 
 <h1 id="5-安装flume">5. 安装flume</h1>
 
@@ -833,6 +935,13 @@
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/2021/01/02/structured-streaming-kafka/" data-toggle="tooltip" data-placement="top" title="Structured Streaming消费Kafka流批分析">
+                        Next<br>
+                        <span>Structured Streaming消费Kafka流批分析</span>
+                        </a>
+                    </li>
+                    
                 </ul>
                 <hr style="visibility: hidden;">
 
@@ -886,27 +995,27 @@
         
         
         
-                <a data-sort="0020" 
+                <a data-sort="0023" 
                     href="/archive/?tag=Akka"
                     title="Akka"
                     rel="7">Akka</a>
         
-                <a data-sort="0023" 
+                <a data-sort="0026" 
                     href="/archive/?tag=EMR"
                     title="EMR"
                     rel="4">EMR</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=%E6%95%B0%E5%AD%97%E8%B4%B5%E9%98%B3"
                     title="数字贵阳"
                     rel="2">数字贵阳</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=Akka+cluster"
                     title="Akka cluster"
                     rel="2">Akka cluster</a>
         
-                <a data-sort="0025" 
+                <a data-sort="0028" 
                     href="/archive/?tag=DataX"
                     title="DataX"
                     rel="2">DataX</a>
@@ -1064,7 +1173,7 @@
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; LiuL Blog 2020
+                    Copyright &copy; LiuL Blog 2021
                     <br>
                     Powered by <a href="https://liulv.work">LiuL Blog</a> |
                     <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
