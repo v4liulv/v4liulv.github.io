@@ -1,0 +1,32 @@
+I"�<h1 id="1-本地环境">1. 本地环境</h1>
+
+<h2 id="11-前提">1.1. 前提</h2>
+
+<p>安装前提有</p>
+
+<ul>
+  <li>已安装了Hadoop集群</li>
+  <li>已安装Kafka环境</li>
+  <li>已安装Spark环境</li>
+  <li>已安装Hive环境</li>
+</ul>
+
+<p>暂时用到的主要是Kafka、Hadoop、Spark</p>
+
+<p>本地伪分布模式单机模式</p>
+
+<h2 id="12-启动命令">1.2. 启动命令</h2>
+
+<h3 id="zookeeper">Zookeeper</h3>
+
+<p>sh $ZOOKEEPER_HOME/bin/zkServer.sh start</p>
+
+<h3 id="连接操作zookeeper">连接操作zookeeper</h3>
+<p>sh $ZOOKEEPER_HOME/bin/zkCli.sh -server hadoop01:2181</p>
+
+<h3 id="kafka">Kafka</h3>
+
+<h4 id="启动kafka">启动Kafka</h4>
+<p>sh $KAFKA_HOME/bin/kafka-server-start.sh -daemon $KAFKA_HOME/config/server.properties</p>
+
+:ET

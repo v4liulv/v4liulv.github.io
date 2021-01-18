@@ -8,17 +8,17 @@ tags:
   - Structured Streaming
 ---
 
-# 版本信息
+# 1. 版本信息
 
 
-|组件  |版本  |Tbds  |
-|---------|---------|---------|
-|Hadoop     |    2.7.3     |         |
-|Spark     |   2.3.2      |         |
-|Kafka     |    1.0.0     |         |
+| 组件   | 版本  | Tbds |
+| ------ | ----- | ---- |
+| Hadoop | 2.7.3 |      |
+| Spark  | 2.3.2 |      |
+| Kafka  | 1.0.0 |      |
 
 
-# 本地通过Yarn提交SparkStructuredStreaming
+# 2. 本地通过Yarn提交SparkStructuredStreaming
 
 ```powershell
 groupId = org.apache.spark
@@ -26,9 +26,9 @@ artifactId = spark-sql-kafka-0-10_2.11
 version = 2.3.2
 ```
 
-# SpringBoot整合SparkOnYarn远程提交运行Spark-BUG
+# 3. SpringBoot整合SparkOnYarn远程提交运行Spark-BUG
 
-## No FileSystem for scheme: hdfs
+## 3.1. No FileSystem for scheme: hdfs
 
 Spark运行程序报错No FileSystem for scheme: hdfs
 
@@ -36,7 +36,7 @@ Spark运行程序报错No FileSystem for scheme: hdfs
 
 解决办法：Spark程序spark.yarn.jars包目录引入hadoop-hdfs包。
 
-## NoClassDefFoundError: com/fasterxml/jackson/databind/ObjectMapper
+## 3.2. NoClassDefFoundError: com/fasterxml/jackson/databind/ObjectMapper
 
 SpringBoot启动报错
 
@@ -47,7 +47,7 @@ SpringBoot启动报错
 
 - 办法：使用jackson-databind-2.10.3依赖版本
 
-## GsonBuilder报错 
+## 3.3. GsonBuilder报错 
 
 application so that it contains a single, compatible version of com.google.gson.GsonBuilder
 
@@ -61,7 +61,7 @@ application so that it contains a single, compatible version of com.google.gson.
 </dependency>
 ```
 
-## User did not initialize spark context!
+## 3.4. User did not initialize spark context!
 
 Uncaught exception: java.lang.IllegalStateException: User did not initialize spark context!
 
@@ -71,7 +71,7 @@ Spark运行程序报错，配置了spark.submit.deployMode为cluster，还配置
 去掉spark.driver.host配置，这个配置只有在spark.submit.deployMode为client
 
 
-## 调度异常堵塞
+## 3.5. 调度异常堵塞
 
 [AccumulationJob-1] accumulation schedule delay, expect:1609618320000, actual: 1609618448754
 
